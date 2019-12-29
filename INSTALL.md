@@ -16,12 +16,12 @@ The assembler used is [**rgbds**](https://github.com/bentley/rgbds).
 
 Set up the repository.
 
-	git clone https://github.com/huderlem/harvestmoongb
-	cd harvestmoongb
+	git clone https://github.com/huderlem/carrotcrazy
+	cd carrotcrazy
 
-This project is incomplete and requires the user to provide an original Harvest Moon GB ROM.  Name this file `baserom.gb` and place it in the root `harvestmoongb` directory.
+This project is incomplete and requires the user to provide an original Looney Tunes: Carrot Crazy GBC ROM.  Name this file `baserom.gbc` and place it in the root `carrotcrazy` directory.
 
-To build `harvestmoongb.gb`:
+To build `carrotcrazy.gbc`:
 
 	make
 
@@ -31,7 +31,7 @@ To remove all generated files by the build process:
 
 	make clean
 
-To compare the built `harvestmoongb.gb` to the original ROM:
+To compare the built `carrotcrazy.gbc` to the original ROM:
 
 	make compare
 
@@ -59,9 +59,9 @@ The latest compatible version of **rgbds** is  [**0.3.8**](https://github.com/re
 
 Then set up the repository. In the **Cygwin terminal**:
 
-	git clone https://github.com/huderlem/harvestmoongb.git
-	cd harvestmoongb
+	git clone https://github.com/huderlem/carrotcrazy.git
+	cd carrotcrazy
 
-To build `harvestmoongb.gb`:
+To build `carrotcrazy.gbc`:
 
 	make
