@@ -1,9 +1,9 @@
-# Harvest Moon GB
+# Looney Tunes: Carrot Crazy
 
-This is a disassembly of Harvest Moon GB (USA) (SGB Enhanced).
+This is a disassembly of Looney Tunes - Carrot Crazy (USA) (En,Fr,Es) (GB Compatible).
 
 It builds the following rom:
 
-* Harvest Moon GB (U) [S][!].gb  `md5: 7EF69878C3B5BC5532C69A51A2DD42F3`
+* Looney Tunes - Carrot Crazy (USA) (En,Fr,Es) (GB Compatible).gbc  `md5: B6C357BB1A544FB1F8731CBDC3046596`
 
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
