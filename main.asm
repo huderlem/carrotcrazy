@@ -25,7 +25,11 @@ INCBIN "baserom.gbc", $10000, $14000 - $10000
 
 SECTION "ROM Bank $05", ROMX[$4000], BANK[$5]
 
-INCBIN "baserom.gbc", $14000, $18000 - $14000
+INCBIN "baserom.gbc", $14000, $16e8c - $14000
+
+INCLUDE "data/passwords.asm"
+
+INCBIN "baserom.gbc", $16eab, $17dd6 - $16eab
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
