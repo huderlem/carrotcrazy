@@ -10,3 +10,8 @@ wPasswordEntryCursor:: ; $dee7
 	ds 1
 wPasswordCharacters:: ; $dee8
 	ds 3
+
+	ds $14
+
+wCurScreen:: ; $deff
+	ds 1
