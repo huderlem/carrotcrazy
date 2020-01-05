@@ -118,7 +118,12 @@ INCBIN "baserom.gbc", $54000, $58000 - $54000
 
 SECTION "ROM Bank $16", ROMX[$4000], BANK[$16]
 
-INCBIN "baserom.gbc", $58000, $5C000 - $58000
+INCBIN "baserom.gbc", $58000, $59d9d - $58000
+
+InfogramesCopyrightTiles:
+	INCBIN "gfx/infogrames_copyright.2bpp.lz"
+
+INCBIN "baserom.gbc", $59fc2, $5C000 - $59fc2
 
 SECTION "ROM Bank $17", ROMX[$4000], BANK[$17]
 

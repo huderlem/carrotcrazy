@@ -35,7 +35,7 @@ tidy:
 	$(MAKE) -C tools clean
 
 clean: tidy
-	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pcm' \) -exec rm {} +
+	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.lz' \) -exec rm {} +
 
 %.interleave.2bpp: %.interleave.png
 	rgbgfx -o $@ $<
@@ -46,3 +46,6 @@ clean: tidy
 
 %.1bpp: %.png
 	rgbgfx -d1 -o $@ $<
+
+%.2bpp.lz: %.2bpp
+	tools/rnc p $< $@ -m=2
