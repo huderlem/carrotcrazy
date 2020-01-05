@@ -5,7 +5,11 @@ INCLUDE "constants.asm"
 
 SECTION "ROM Bank $00", ROM0[$0]
 
-INCBIN "baserom.gbc", $0, $4000 - $0
+INCBIN "baserom.gbc", $0, $3eca - $0
+
+INCLUDE "home/load.asm"
+
+INCBIN "baserom.gbc", $3ff1, $4000 - $3ff1
 
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
@@ -33,7 +37,24 @@ INCBIN "baserom.gbc", $16eab, $17dd6 - $16eab
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
-INCBIN "baserom.gbc", $18000, $1C000 - $18000
+INCBIN "baserom.gbc", $18000, $1bcb0 - $18000
+
+Data_1bcb0:
+	db $16
+	dw $5d9d
+	dw $9550
+
+	db $16
+	dw $5fc2
+	dw $9800
+
+	db $16
+	dw $6021
+	dw $d9d5
+
+	db $FF
+
+INCBIN "baserom.gbc", $1bcc0, $1c000 - $1bcc0
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 

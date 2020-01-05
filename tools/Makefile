@@ -5,7 +5,8 @@ CFLAGS := -std=c99 -Wall -Wextra
 
 tools := \
 	gfx \
-	scan_includes
+	scan_includes \
+	rnc
 
 all: $(tools)
 	@:
