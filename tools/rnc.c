@@ -28,6 +28,7 @@ typedef struct huftable_s {
 #pragma pack(pop)
 
 typedef struct vars_s {
+    uint8  quiet;
     uint16 max_matches;
     uint16 enc_key;
     uint32 pack_block_size;
@@ -1540,6 +1541,14 @@ int parse_args(int argc, char **argv, vars_t *vars)
     if (argc < 2)
         return 1;
 
+    if (argv[1][0] == 'q') {
+        vars->quiet = 1;
+        argv++;
+        argc--;
+    } else {
+        vars->quiet = 0;
+    }
+
     if (strchr("pus", argv[1][0]) || strchr("PUS", argv[1][0]))
     {
         switch (argv[1][0])
@@ -1590,8 +1599,10 @@ int parse_args(int argc, char **argv, vars_t *vars)
 
 int main(int argc, char *argv[])
 {
-    printf("-= RNC ProPackED v1.4 [by Lab 313] (11/04/2018) =-\n");
-    printf("-----------------------------\n");
+    if (argc >= 2 && argv[1][0] != 'q') {
+        printf("-= RNC ProPackED v1.4 [by Lab 313] (11/04/2018) =-\n");
+        printf("-----------------------------\n");
+    }
 
     if (argc <= 2) {
         printf("Compression type: Huffman + LZ77\n");
@@ -1607,6 +1618,11 @@ int main(int argc, char *argv[])
     if (parse_args(argc, argv, v)) {
         printf("Wrong command line specified!\n");
         return 1;
+    }
+
+    if (v->quiet) {
+        argv++;
+        argc--;
     }
 
     if (v->method == 1)
@@ -1673,8 +1689,10 @@ int main(int argc, char *argv[])
         fwrite(v->output, v->output_offset, 1, out);
         fclose(out);
 
-        printf("File successfully %s!\n", ((v->pus_mode == 0) ? "packed" : "unpacked"));
-        printf("Original/new size: %d/%zd bytes\n", (v->pus_mode == 1) ? (v->packed_size + RNC_HEADER_SIZE) : v->file_size, v->output_offset);
+        if (!v->quiet) {
+            printf("File successfully %s!\n", ((v->pus_mode == 0) ? "packed" : "unpacked"));
+            printf("Original/new size: %d/%zd bytes\n", (v->pus_mode == 1) ? (v->packed_size + RNC_HEADER_SIZE) : v->file_size, v->output_offset);
+        }
     }
     else {
         switch (error_code) {

@@ -48,4 +48,4 @@ clean: tidy
 	rgbgfx -d1 -o $@ $<
 
 %.2bpp.lz: %.2bpp
-	tools/rnc p $< $@ -m=2
+	tools/rnc q p $< $@ -m=2
