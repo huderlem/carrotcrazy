@@ -21,7 +21,19 @@ INCBIN "baserom.gbc", $8000, $C000 - $8000
 
 SECTION "ROM Bank $03", ROMX[$4000], BANK[$3]
 
-INCBIN "baserom.gbc", $c000, $da76 - $c000
+WarnerBrosCopyrightLogoTiles:
+	INCBIN "gfx/warner_bros_copyright/logo.interleave.2bpp.lz"
+WarnerBrosCopyrightTrademarkTiles:
+	INCBIN "gfx/warner_bros_copyright/trademark.2bpp.lz"
+WarnerBrosCopyrightLolaBunnyTiles:
+	INCBIN "gfx/warner_bros_copyright/lola_bunny.2bpp.lz"
+
+INCBIN "baserom.gbc", $c765, $ccff - $c765
+
+FarmSceneTiles:
+	INCBIN "gfx/titlescreen/background.2bpp.lz"
+
+INCBIN "baserom.gbc", $d674, $da76 - $d674
 
 InfogramesCopyrightTiles:
 	INCBIN "gfx/infogrames_copyright/background.2bpp.lz"
@@ -71,7 +83,12 @@ INCBIN "baserom.gbc", $20000, $24000 - $20000
 
 SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
-INCBIN "baserom.gbc", $24000, $28000 - $24000
+INCBIN "baserom.gbc", $24000, $27c51 - $24000
+
+WarnerBrosCopyrightEdgeTiles:
+	INCBIN "gfx/warner_bros_copyright/edge.2bpp.lz"
+
+INCBIN "baserom.gbc", $27ced, $28000 - $27ced
 
 SECTION "ROM Bank $0A", ROMX[$4000], BANK[$A]
 
@@ -91,14 +108,22 @@ INCBIN "baserom.gbc", $34000, $38000 - $34000
 
 SECTION "ROM Bank $0E", ROMX[$4000], BANK[$E]
 
-INCBIN "baserom.gbc", $38000, $3bf94 - $38000
+INCBIN "baserom.gbc", $38000, $3bd22 - $38000
+
+WarnerBrosCopyrightBugsBunnyTiles:
+	INCBIN "gfx/warner_bros_copyright/bugs_bunny.2bpp.lz"
 
 InfogramesCopyrightTilemap:
 	INCBIN "gfx/infogrames_copyright/background.tilemap.lz"
 
 SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
-INCBIN "baserom.gbc", $3C000, $40000 - $3C000
+INCBIN "baserom.gbc", $3C000, $3fceb - $3C000
+
+WarnerBrosCopyrightTiles:
+	INCBIN "gfx/warner_bros_copyright/background.2bpp.lz"
+
+INCBIN "baserom.gbc", $3ff8c, $40000 - $3ff8c
 
 SECTION "ROM Bank $10", ROMX[$4000], BANK[$10]
 

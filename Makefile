@@ -49,3 +49,5 @@ clean: tidy
 
 %.lz: %
 	tools/rnc q p $< $@ -m=2
+
+include graphics_rules.mk
