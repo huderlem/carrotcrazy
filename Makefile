@@ -47,5 +47,5 @@ clean: tidy
 %.1bpp: %.png
 	rgbgfx -d1 -o $@ $<
 
-%.2bpp.lz: %.2bpp
+%.lz: %
 	tools/rnc q p $< $@ -m=2
