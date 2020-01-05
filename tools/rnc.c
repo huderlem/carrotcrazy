@@ -1,3 +1,15 @@
+// Decompiled source of the famous RNC ProPack compression tool.
+// https://github.com/lab313ru/rnc_propack_source
+//
+// LICENSING (Copied verbatim from the rnc_propack_source Git repo)
+// To make it more clear:
+// Rob Northen knows about this project, and has no claims about it.
+// 
+// Usage:
+// You may use this source code in any commercial|no commercial project you want.
+// 
+// You may even do not specify this repo's url if you want. But it would be great for me if you do that!:)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
