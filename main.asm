@@ -21,7 +21,12 @@ INCBIN "baserom.gbc", $8000, $C000 - $8000
 
 SECTION "ROM Bank $03", ROMX[$4000], BANK[$3]
 
-INCBIN "baserom.gbc", $C000, $10000 - $C000
+INCBIN "baserom.gbc", $c000, $da76 - $c000
+
+InfogramesCopyrightTiles:
+	INCBIN "gfx/infogrames_copyright/background.2bpp.lz"
+
+INCBIN "baserom.gbc", $dc9f, $10000 - $dc9f
 
 SECTION "ROM Bank $04", ROMX[$4000], BANK[$4]
 
@@ -86,7 +91,10 @@ INCBIN "baserom.gbc", $34000, $38000 - $34000
 
 SECTION "ROM Bank $0E", ROMX[$4000], BANK[$E]
 
-INCBIN "baserom.gbc", $38000, $3C000 - $38000
+INCBIN "baserom.gbc", $38000, $3bf94 - $38000
+
+InfogramesCopyrightTilemap:
+	INCBIN "gfx/infogrames_copyright/background.tilemap.lz"
 
 SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
@@ -121,11 +129,11 @@ SECTION "ROM Bank $16", ROMX[$4000], BANK[$16]
 INCBIN "baserom.gbc", $58000, $59d9d - $58000
 
 InfogramesCopyrightGBCTiles:
-	INCBIN "gfx/infogrames_copyright_gbc.2bpp.lz"
+	INCBIN "gfx/infogrames_copyright/background_gbc.2bpp.lz"
 InfogramesCopyrightGBCTilemap:
-	INCBIN "gfx/infogrames_copyright_gbc.tilemap.lz"
+	INCBIN "gfx/infogrames_copyright/background_gbc.tilemap.lz"
 InfogramesCopyrightGBCAttributesTilemap:
-	INCBIN "gfx/infogrames_copyright_gbc.attrmap.lz"
+	INCBIN "gfx/infogrames_copyright/background_gbc.attrmap.lz"
 
 SECTION "ROM Bank $17", ROMX[$4000], BANK[$17]
 
