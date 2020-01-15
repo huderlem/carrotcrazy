@@ -362,7 +362,7 @@ rOCPD EQU $FF6B
 
 
 ; --
-; -- SVBK ($FF4F)
+; -- SVBK ($FF70)
 ; -- Select Main RAM Bank (R/W)
 ; --
 rSVBK EQU $FF70

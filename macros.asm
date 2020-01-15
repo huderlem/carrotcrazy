@@ -35,3 +35,7 @@ x = x + -8
 bigdw: MACRO ; big-endian word
 	dx 2, \1
 	ENDM
+
+RGB: MACRO
+	dw (\3 << 10 | \2 << 5 | \1)
+	ENDM
