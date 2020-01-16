@@ -241,7 +241,89 @@ Start_:
 	call SetInitialScreen
 	jp InitNextScreen
 
-INCBIN "baserom.gbc", $16a, $322f - $16a
+INCBIN "baserom.gbc", $16a, $4f8 - $16a
+
+InitInfogramesCopyrightScreen:
+	call Func_fb4
+	call Func_3dce
+	call ResetFrameCounter
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, InfogramesCopyrightScreenGBCPalettes
+	call LoadCGBPalettesHome
+	ld hl, vBGMap
+	ld bc, $400
+	call Func_10e9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJOFF | LCDCF_BGON
+	ld [rLCDC], a
+.delayFrame
+	call WaitVBlank
+	call Func_3dc6
+	call UpdateFrameCounter
+	sub a
+.delayNextVBlank
+	dec a
+	jr nz, .delayNextVBlank
+	ld a, [hFrameCounter]
+	and a
+	jr nz, .delayFrame
+	call Func_3ddc
+	jr .delayFrame
+
+INCBIN "baserom.gbc", $530, $fb4 - $530
+
+Func_fb4:
+	ld bc, $da00
+	ld de, $da80
+.asm_fba
+	ld a, [bc]
+	ld [$ff8a], a
+	ld a, [de]
+	ld [bc], a
+	inc c
+	ld a, [$ff8a]
+	ld [de], a
+	inc e
+	jr nz, .asm_fba
+	ld bc, $d900
+	ld de, $d980
+.asm_fcc
+	ld a, [bc]
+	ld [$ff8a], a
+	ld a, [de]
+	ld [bc], a
+	inc c
+	ld a, [$ff8a]
+	ld [de], a
+	inc e
+	jr nz, .asm_fcc
+	ret
+
+INCBIN "baserom.gbc", $fd9, $10e9 - $fd9
+
+Func_10e9:
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ret nz
+	ld d, $d9
+.loop
+	sub a
+	ld [rVBK], a
+	ld e, [hl]
+	ld a, 1
+	ld [rVBK], a
+	ld a, [de]
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .loop
+	sub a
+	ld [rVBK], a
+	ret
+
+INCBIN "baserom.gbc", $1103, $322f - $1103
 
 ResetPlayerData:
 	ld a, [wDifficultySetting]
@@ -296,7 +378,29 @@ DMARoutine:
 	jr nz, .waitLoop
 	ret
 
-INCBIN "baserom.gbc", $3dc6, $3e13 - $3dc6
+Func_3dc6:
+	ld a, Bank(Func_17568)
+	ld [MBC5RomBank], a
+	jp Func_17568
+
+Func_3dce:
+	call Func_3e3d
+	ld a, Bank(Func_1759b)
+	ld [MBC5RomBank], a
+	ld bc, $1fd
+	jp Func_1759b
+
+Func_3ddc:
+	ld a, [$defc]
+	and a
+	ret nz
+	call Func_3e47
+	ld a, Bank(Func_1759b)
+	ld [MBC5RomBank], a
+	ld bc, $ff0c
+	jp Func_1759b
+
+INCBIN "baserom.gbc", $3def, $3e13 - $3def
 
 Func_3e13:
 	ld a, Bank(Func_8053)
@@ -312,7 +416,19 @@ Func_3e31:
 	ld [MBC5RomBank], a
 	jp Func_8059
 
-INCBIN "baserom.gbc", $3e3d, $3e8b - $3e3d
+Func_3e3d:
+	ld a, Bank(Func_805c)
+	ld [MBC5RomBank], a
+	ld a, $04
+	jp Func_805c
+
+Func_3e47:
+	ld a, Bank(Func_805f)
+	ld [MBC5RomBank], a
+	ld a, $04
+	jp Func_805f
+
+INCBIN "baserom.gbc", $3e51, $3e8b - $3e51
 
 InitNextScreen:
 	sub a
@@ -418,7 +534,13 @@ INCBIN "baserom.gbc", $8056, $8059 - $8056
 Func_8059:
 	jp Func_8522
 
-INCBIN "baserom.gbc", $805c, $8522 - $805c
+Func_805c:
+	jp Func_895d
+
+Func_805f:
+	jp Func_8957
+
+INCBIN "baserom.gbc", $8062, $8522 - $8062
 
 Func_8522:
 	ld a, $ff
@@ -507,7 +629,33 @@ Func_853d:
 	ld [$db44], a
 	jp Func_876e
 
-INCBIN "baserom.gbc", $85be, $876e - $85be
+INCBIN "baserom.gbc", $85be, $869d - $85be
+
+Func_869d:
+	ld [$db64], a
+	ld a, l
+	ld [$db60], a
+	ld a, h
+	ld [$db61], a
+	jr .asm_86b9
+	ld a, [de]
+	ld [$db64], a
+	inc de
+	ld a, [de]
+	ld [$db60], a
+	inc de
+	ld a, [de]
+	ld [$db61], a
+	inc de
+.asm_86b9
+	xor a
+	ld [$db62], a
+	ld [$db63], a
+	inc a
+	ld [$db65], a
+	ret
+
+INCBIN "baserom.gbc", $86c5, $876e - $86c5
 
 Func_876e:
 	xor a
@@ -573,7 +721,17 @@ Func_876e:
 	ld [rNR34], a
 	ret
 
-INCBIN "baserom.gbc", $87b7, $C000 - $87b7
+INCBIN "baserom.gbc", $87b7, $8957 - $87b7
+
+Func_8957:
+	ld hl, $77ee
+	jp Func_869d
+
+Func_895d:
+	ld hl, $77f7
+	jp Func_869d
+
+INCBIN "baserom.gbc", $8963, $C000 - $8963
 
 SECTION "ROM Bank $03", ROMX[$4000], BANK[$3]
 
@@ -606,7 +764,57 @@ INCBIN "baserom.gbc", $14000, $16e8c - $14000
 
 INCLUDE "data/passwords.asm"
 
-INCBIN "baserom.gbc", $16eab, $17dd6 - $16eab
+INCBIN "baserom.gbc", $16eab, $17568 - $16eab
+
+Func_17568:
+	ld a, [hPaused]
+	and a
+	ret nz
+Func_1756c:
+	ld hl, $defb
+	dec [hl]
+	ret nz
+	ld a, $08
+	ld [hli], a
+	ld a, [hli]
+	add a
+	ld a, [hl]
+	jr c, .asm_17586
+	ret z
+	add a, $03
+	cp $0c
+	jr nz, .asm_17589
+	dec l
+	sub a
+	ld [hl], a
+	ret
+.asm_17586
+	sub $03
+	jp c, InitNextScreen
+.asm_17589
+	ld [hl], a
+	ld hl, $3def
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld [rBGP], a
+	ld a, [hli]
+	ld [rOBP0], a
+	ld a, [hl]
+	ld [rOBP1], a
+	ret
+
+Func_1759b:
+	ld hl, $defb
+	ld a, $01
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld [hl], c
+	jr Func_1756c
+
+INCBIN "baserom.gbc", $175a6, $17dd6 - $175a6
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
@@ -718,7 +926,61 @@ ReadAndLoadCGBpalettes:
 	ld l, a
 	jp LoadCGBPalettesHome
 
-INCBIN "baserom.gbc", $1a924, $1af18 - $1a924
+INCBIN "baserom.gbc", $1a924, $1a93a - $1a924
+
+InfogramesCopyrightScreenGBCPalettes:
+	db 8 ; 8 background palettes
+	; BG Palette 0
+	RGB(0, 0, 0)
+	RGB(10, 10, 10)
+	RGB(21, 21, 21)
+	RGB(31, 31, 31)
+
+	; BG Palette 1
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+
+	; BG Palette 2
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+
+	; BG Palette 3
+	RGB(31, 31, 31)
+	RGB(28, 0, 0)
+	RGB(31, 31, 0)
+	RGB(21, 0, 22)
+
+	; BG Palette 4
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+	RGB(0, 31, 0)
+
+	; BG Palette 5
+	RGB(0, 31, 0)
+	RGB(31, 31, 31)
+	RGB(16, 0, 16)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(31, 31, 31)
+	RGB(0, 23, 0)
+	RGB(0, 0, 23)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(31, 31, 31)
+	RGB(0, 23, 0)
+	RGB(31, 31, 0)
+	RGB(0, 0, 23)
+
+	db 0 ; 0 sprite palettes
+	
+INCBIN "baserom.gbc", $1a97c, $1af18 - $1a97c
 
 ; This only holds colors 1-3. The first transparent color is hardcoded
 ; in LoadCGBPalettes.
@@ -901,35 +1163,21 @@ Data_1b030:
 	dw $0000
 
 Data_1b0cc:
-	db $03
-	dw $5A76
-	dw $9550
-
-	db $0E
-	dw $7F94
-	dw $9800
-
-	db $FF ; terminator
-	dw $04F8
+	compressed_data InfogramesCopyrightTiles, $9550
+	compressed_data InfogramesCopyrightTilemap, $9800
+	db $ff
+	dw InitInfogramesCopyrightScreen
 
 INCBIN "baserom.gbc", $1b0d9, $1bcb0 - $1b0d9
 
 Data_1bcb0:
-	db $16
-	dw $5d9d
-	dw $9550
+	compressed_data InfogramesCopyrightGBCTiles, $9550
+	compressed_data InfogramesCopyrightGBCTilemap, $9800
+	compressed_data InfogramesCopyrightGBCAttributesTilemap, $d9d5
+	db $ff
+	dw InitInfogramesCopyrightScreen
 
-	db $16
-	dw $5fc2
-	dw $9800
-
-	db $16
-	dw $6021
-	dw $d9d5
-
-	db $FF
-
-INCBIN "baserom.gbc", $1bcc0, $1c000 - $1bcc0
+INCBIN "baserom.gbc", $1bcc2, $1c000 - $1bcc2
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 
