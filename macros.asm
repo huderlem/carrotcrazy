@@ -39,3 +39,21 @@ bigdw: MACRO ; big-endian word
 RGB: MACRO
 	dw (\3 << 10 | \2 << 5 | \1)
 	ENDM
+
+; \1: source data
+; \2: destination
+compressed_data: MACRO
+	db Bank(\1)
+	dw \1
+	dw \2
+	ENDM
+
+; \1: source data
+; \2: destination
+; \3: num bytes
+uncompressed_data: MACRO
+	db Bank(\1)
+	dw \1
+	dw ($8000 | \3)
+	dw \2
+	ENDM

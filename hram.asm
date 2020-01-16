@@ -1,8 +1,14 @@
+hDMARoutine EQU $ff80
+
 ; Set to non-zero value to indicate the game is paused.
 hPaused EQU $ff92
 
 ; Increments by one every frame. Does not increment when game is paused.
 hFrameCounter EQU $ff94
+
+hCurHealth EQU $ffed
+hMaxHealth EQU $ffee
+hNumLives  EQU $ffef
 
 ; Holds a 2-byte little-endian BCD value.
 hScore EQU $fff0

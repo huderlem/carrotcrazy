@@ -22,7 +22,7 @@ endif
 
 $(ROM): $(OBJS)
 	rgblink -p 0xFF -n $(ROM:.gbc=.sym) -m $(ROM:.gbc=.map) -o $@ $(OBJS)
-	rgbfix -jvc -l 0x33 -m 0x19 -p 0xFF -r 0 -t "BUGS BUNNY" $@
+	rgbfix -jvc -k "70" -l 0x33 -m 0x19 -p 0xFF -r 0 -t "BUGS BUNNY" $@
 
 compare: $(ROM)
 	@$(MD5) rom.md5
