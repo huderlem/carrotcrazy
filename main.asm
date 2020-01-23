@@ -310,7 +310,116 @@ InitWarnerBrosCopyrightScreen:
 	call Func_3ddc
 	jr .asm_54e
 
-INCBIN "baserom.gbc", $587, $fb4 - $587
+INCBIN "baserom.gbc", $587, $5ca - $587
+
+Func_5ca:
+	call LoadWarnerBrosBannerQuadrants
+	call Func_3e51
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	ld hl, $c502
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3a4d
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, WarnerBrosCopyrightScreenGBCPalettes
+	call LoadCGBPalettesHome
+	call Func_d67
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+Func_5f4:
+	call Func_3dfb
+	call WaitVBlank
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $731c
+	ld bc, $0
+	call Func_3ca6
+	call Func_3d96
+	call Func_3dc6
+	call ReadJoyPad_Home
+	ld a, [wLanguageSetting]
+	swap a
+	add 55
+	ld b, a
+	ld c, $14
+	ld hl, $6db3
+	ld a, $05
+	ld [MBC5RomBank], a
+	call Func_3ca6
+	ld a, [$defc]
+	and a
+	jp nz, Func_5f4
+	ld hl, wLanguageSetting
+	ld a, [wNewKeys]
+	bit PADB_SELECT, a
+	jr nz, .moveCursorDown
+	add a ; check if down pressed (PADF_DOWN)
+	jr nc, .checkUpPressed
+.moveCursorDown
+	inc [hl]
+	jr .resolveCursor
+.checkUpPressed
+	add a
+	jr nc, .ok
+	dec [hl]
+.resolveCursor
+	ld b, 3 ; num languages
+	ld a, [hl]
+	cp $ff
+	jr nz, .checkMax
+	dec b
+	ld [hl], b
+	jr .redraw
+.checkMax
+	cp b
+	jr c, .redraw
+	ld [hl], $00
+.redraw
+	ld a, $07
+	call Func_3e1b
+.ok
+	ld a, [wNewKeys]
+	and PADF_START | PADF_A
+	jp z, Func_5f4
+	ld a, $08
+	call Func_3e1b
+	call Func_3ddc
+	jp Func_5f4
+
+INCBIN "baserom.gbc", $669, $d67 - $669
+
+Func_d67:
+	ld hl, vBGMap
+	ld bc, $400
+.asm_d6d
+	ld a, $7f
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_d6d
+	ld hl, $9841
+	ld bc, $e
+	ld a, $83
+	ld d, $0e
+.asm_d7f
+	ld e, $12
+.asm_d81
+	ld [hli], a
+	inc a
+	dec e
+	jr nz, .asm_d81
+	add hl, bc
+	dec d
+	jr nz, .asm_d7f
+	ret
+
+INCBIN "baserom.gbc", $d8b, $fb4 - $d8b
 
 Func_fb4:
 	ld bc, $da00
@@ -384,7 +493,55 @@ ResetPlayerData:
 	ld [hScore + 1], a
 	ret
 
-INCBIN "baserom.gbc", $324e, $3a82 - $324e
+INCBIN "baserom.gbc", $324e, $3a4d - $324e
+
+Func_3a4d:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+.asm_3a51
+	ld a, [hli]
+	cp $ff
+	ret z
+	and a
+	jr z, Func_3a4d
+	push hl
+	sub $30
+	ld l, a
+	ld h, $00
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld bc, $c000
+	add hl, bc
+	ld b, h
+	ld c, l
+.asm_3a68
+	ld a, [bc]
+	inc c
+	ld l, a
+	ld a, [bc]
+	inc c
+	ld h, a
+	cpl
+	and l
+	ld l, a
+	ld a, [de]
+	and h
+	or l
+	ld [de], a
+	inc e
+	ld a, [de]
+	and h
+	ld [de], a
+	inc de
+	ld a, c
+	and $0f
+	jr nz, .asm_3a68
+	pop hl
+	jr .asm_3a51
 
 Func_3a82:
 	ld a, $05
@@ -734,7 +891,22 @@ Func_3bb4:
 	pop hl
 	ret
 
-INCBIN "baserom.gbc", $3c58, $3ca6 - $3c58
+ReadJoyPad_Home:
+	ld a, Bank(ReadJoyPad)
+	ld [MBC5RomBank], a
+	jp ReadJoyPad
+
+INCBIN "baserom.gbc", $3c60, $3c72 - $3c60
+
+Func_3c72:
+	sub a
+	ld hl, wNewKeys
+	ld [hld], a
+	cpl
+	ld [hl], a
+	ret
+
+INCBIN "baserom.gbc", $3c7a, $3ca6 - $3c7a
 
 Func_3ca6:
 	ld a, [hli]
@@ -814,14 +986,34 @@ Func_3dfb:
 	ld [MBC5RomBank], a
 	jp Func_804a
 
-INCBIN "baserom.gbc", $3e03, $3e13 - $3e03
+INCBIN "baserom.gbc", $3e03, $3e0b - $3e03
+
+Func_3e0b:
+	ld a, Bank(Func_8050)
+	ld [MBC5RomBank], a
+	jp Func_8050
 
 Func_3e13:
 	ld a, Bank(Func_8053)
 	ld [MBC5RomBank], a
 	jp Func_8053
 
-INCBIN "baserom.gbc", $3e1b, $3e31 - $3e1b
+Func_3e1b:
+; play sound effect?
+	push bc
+	push de
+	push hl
+	ld b, a
+	ld a, Bank(Func_8056)
+	ld [MBC5RomBank], a
+	ld a, b
+	call Func_8056
+	pop hl
+	pop de
+	pop bc
+	ld a, $01
+	ld [MBC5RomBank], a
+	ret
 
 Func_3e31:
 	sub a
@@ -934,10 +1126,10 @@ ResetInitialData:
 	ld bc, $7e
 	call ClearData
 	sub a
-	ld [$deec], a
+	ld [wLanguageSetting], a
 	ld [wDifficultySetting], a
 	ld [$deb6], a
-	ld [$dde8], a
+	ld [wEnableLevelSkip], a
 	ld hl, wPasswordCharacters
 	ld [hli], a
 	ld [hli], a
@@ -965,12 +1157,16 @@ INCBIN "baserom.gbc", $8000, $804a - $8000
 Func_804a:
 	jp Func_80e6
 
-INCBIN "baserom.gbc", $804d, $8053 - $804d
+INCBIN "baserom.gbc", $804d, $8050 - $804d
+
+Func_8050:
+	jp Func_809b
 
 Func_8053:
 	jp Func_853d
 
-INCBIN "baserom.gbc", $8056, $8059 - $8056
+Func_8056:
+	jp Func_891a
 
 Func_8059:
 	jp Func_8522
@@ -981,7 +1177,17 @@ Func_805c:
 Func_805f:
 	jp Func_8957
 
-INCBIN "baserom.gbc", $8062, $80e6 - $8062
+INCBIN "baserom.gbc", $8062, $8098 - $8062
+
+Func_8098:
+	jp Func_891d
+
+Func_809b:
+	xor a
+	ld [$db42], a
+	jp Func_876e
+
+INCBIN "baserom.gbc", $80a2, $80e6 - $80a2
 
 Func_80e6:
 	ld a, [$db42]
@@ -1572,7 +1778,46 @@ Func_876e:
 	ld [rNR34], a
 	ret
 
-INCBIN "baserom.gbc", $87b7, $8957 - $87b7
+INCBIN "baserom.gbc", $87b7, $891a - $87b7
+
+Func_891a:
+	jp Func_8098
+
+Func_891d:
+	ld [$de27], a
+	ld c, a
+	ld a, $11
+	ld [$de38], a
+	xor a
+	ld [$de04], a
+	ld [$de0b], a
+	ld [$de2f], a
+	ld [$de2c], a
+	ld [$de0e], a
+	inc a
+	ld [$de0a], a
+	ld a, $f4
+	ld [$de0d], a
+	ld a, c
+	ld de, $de02
+	add a
+	add $a4
+	ld l, a
+	adc $71
+	sub l
+	ld h, a
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, l
+	ld l, e
+	ld e, a
+	ld a, h
+	ld h, d
+	ld d, a
+	ld a, [de]
+	ld [hl], a
+	ret
 
 Func_8957:
 	ld hl, $77ee
@@ -1694,7 +1939,10 @@ WarnerBrosCopyrightTrademarkTiles:
 WarnerBrosCopyrightLolaBunnyTiles:
 	INCBIN "gfx/warner_bros_copyright/lola_bunny.2bpp.lz"
 
-INCBIN "baserom.gbc", $c765, $ccff - $c765
+LanguageSelectFontTiles:
+	INCBIN "gfx/language_select/font.2bpp.lz"
+
+INCBIN "baserom.gbc", $c944, $ccff - $c944
 
 FarmSceneTiles:
 	INCBIN "gfx/titlescreen/background.2bpp.lz"
@@ -1838,7 +2086,60 @@ Func_175a6:
 	ld [$ff93], a
 	ret
 
-INCBIN "baserom.gbc", $17643, $17dd6 - $17643
+INCBIN "baserom.gbc", $17643, $17af0 - $17643
+
+ReadJoyPad:
+	ld a, [wEnableLevelSkip]
+	and a
+	jr z, .readJoyPad
+	ld a, [wNewKeys]
+	bit PADB_SELECT, a
+	jr z, .readJoyPad
+	ld a, [hPaused]
+	and a
+	jr z, .readJoyPad
+	ld hl, $3e8b
+	push hl
+	jp Func_3e0b
+.readJoyPad
+	sub a
+	ld c, a
+	ld a, $20
+	ld [$ff00+c], a
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld b, a
+	ld a, $10
+	ld [$ff00+c], a
+	ld a, b
+	and $0f
+	swap a
+	ld b, a
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	ld a, [$ff00+c]
+	and $0f
+	or b
+	cpl
+	ld b, a
+	ld a, $30
+	ld [$ff00+c], a
+	ld a, [wHeldKeys]
+	xor b
+	and b
+	ld [wNewKeys], a
+	ld a, b
+	ld [wHeldKeys], a
+	ret
+
+INCBIN "baserom.gbc", $17b39, $17dd6 - $17b39
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
@@ -2054,7 +2355,7 @@ Data_1af94:
 	dw $ffff
 	dw Data_1b0cc ; SCREEN_COPYRIGHT_INFOGRAMES
 	dw Data_1b0d9 ; SCREEN_COPYRIGHT_WARNER_BROS
-	dw $7129 ; SCREEN_LANGUAGE_SELECT
+	dw Data_1b129 ; SCREEN_LANGUAGE_SELECT
 	dw $716f ; SCREEN_TITLESCREEN
 	dw $7147 ; SCREEN_OPTIONS
 	dw $7194 ; SCREEN_INTRO_SCENE
@@ -2134,7 +2435,7 @@ Data_1b030:
 	dw $ffff
 	dw Data_1bcb0 ; SCREEN_COPYRIGHT_INFOGRAMES
 	dw Data_1b0d9 ; SCREEN_COPYRIGHT_WARNER_BROS
-	dw $7129 ; SCREEN_LANGUAGE_SELECT
+	dw Data_1b129 ; SCREEN_LANGUAGE_SELECT
 	dw $7c63 ; SCREEN_TITLESCREEN
 	dw $7147 ; SCREEN_OPTIONS
 	dw $7c8d ; SCREEN_INTRO_SCENE
@@ -2225,11 +2526,22 @@ Data_1b0d9:
 	compressed_data WarnerBrosCopyrightBugsBunnyTiles, $c560
 	uncompressed_data WarnerBrosCopyrightAmpersandTiles, $c8e0, $40
 	compressed_data WarnerBrosCopyrightLolaBunnyTiles, $c920
-	compressed_data WarnerBrosCopyrightLogoTiles, $81C0
+	compressed_data WarnerBrosCopyrightLogoTiles, $81c0
 	db $ff
 	dw InitWarnerBrosCopyrightScreen
 
-INCBIN "baserom.gbc", $1b10f, $1bcb0 - $1b10f
+INCBIN "baserom.gbc", $1b10f, $1b129 - $1b10f
+
+Data_1b129:
+	compressed_data WarnerBrosCopyrightTiles, $8830
+	compressed_data WarnerBrosCopyrightEdgeTiles, $8000
+	compressed_data LanguageSelectCarrotTiles, $81c0
+	compressed_data LanguageSelectFontTiles, $c000
+	compressed_data GameText, $c500
+	db $ff
+	dw Func_5ca
+
+INCBIN "baserom.gbc", $1b145, $1bcb0 - $1b145
 
 Data_1bcb0:
 	compressed_data InfogramesCopyrightGBCTiles, $9550
@@ -2264,7 +2576,8 @@ INCBIN "baserom.gbc", $28000, $2bf2a - $28000
 WarnerBrosCopyrightUnderLicenseByTiles:
 	INCBIN "gfx/warner_bros_copyright/under_license_by.2bpp"
 
-INCBIN "baserom.gbc", $2bfaa, $2C000 - $2bfaa
+LanguageSelectCarrotTiles:
+	INCBIN "gfx/language_select/carrot.interleave.2bpp.lz"
 
 SECTION "ROM Bank $0B", ROMX[$4000], BANK[$B]
 
@@ -2272,7 +2585,12 @@ INCBIN "baserom.gbc", $2C000, $30000 - $2C000
 
 SECTION "ROM Bank $0C", ROMX[$4000], BANK[$C]
 
-INCBIN "baserom.gbc", $30000, $34000 - $30000
+INCBIN "baserom.gbc", $30000, $314b0 - $30000
+
+GameText:
+	INCBIN "data/game_text.bin.lz"
+
+INCBIN "baserom.gbc", $31ae0, $34000 - $31ae0
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
