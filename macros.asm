@@ -54,6 +54,6 @@ compressed_data: MACRO
 uncompressed_data: MACRO
 	db Bank(\1)
 	dw \1
-	dw ($8000 | \3)
+	dw \3
 	dw \2
 	ENDM
