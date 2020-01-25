@@ -2,11 +2,28 @@ SECTION "WRAM Bank 0", WRAM0
 
 wRAMStart::
 
-	ds $1000
+; Every 4-byte group is a metatile.
+wMetatiles:: ; $c000
+	ds $400
+
+	ds $100
+
+wMetatileRowPointers:: ; $c500
+	ds $100
+
+wLevelMap:: ; $c600
+	ds $a00
 
 SECTION "WRAM Bank 1", WRAMX
+	ds $500 ; wLevelMap continues until $d500
 
-	ds $de8
+wd500:
+	ds $500
+
+wGBCTileAttributes:: ; $da00
+	ds $100
+
+	ds $2e8
 
 ; If this is set to non-zero, press start + select will skip the current level.
 ; This is enabled with a secret dev password. See data/passwords.asm

@@ -10,3 +10,9 @@ gfx/warner_bros_copyright/logo.interleave.2bpp: %.2bpp: %.png
 
 gfx/titlescreen/background.2bpp: %.2bpp: %.png
 	rgbgfx -x 11 -o $@ $<
+
+gfx/studio/ceiling_floor.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<
+
+gfx/studio/ceiling_floor_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<

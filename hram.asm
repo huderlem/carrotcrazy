@@ -6,6 +6,12 @@ hPaused EQU $ff92
 ; Increments by one every frame. Does not increment when game is paused.
 hFrameCounter EQU $ff94
 
+hCameraXOffset EQU $ffa0
+hCameraYOffset EQU $ffa2
+
+hLevelPixelWidth  EQU $ffa6
+hLevelPixelHeight EQU $ffa8
+
 hCurHealth EQU $ffed
 hMaxHealth EQU $ffee
 hNumLives  EQU $ffef

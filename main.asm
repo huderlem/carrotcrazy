@@ -156,7 +156,7 @@ LoadWarnerBrosBannerQuadrants:
 	sub $20
 	ld e, a
 	ld a, d
-	sbc $00
+	sbc 0
 	ld d, a
 	dec l
 	jr nz, .asm_8d
@@ -421,16 +421,16 @@ Func_d67:
 
 INCBIN "baserom.gbc", $d8b, $e73 - $d8b
 
-Func_e73:
+InitStudioScreen:
 	sub a
 	ld [$dde2], a
 	push hl
-	ld hl, $72c8
+	ld hl, StudioScreenData
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
-	jr nz, .asm_e84
-	ld hl, $7c33
-.asm_e84
+	jr nz, .load
+	ld hl, StudioScreenData_GBC
+.load
 	call LoadData
 	call Func_3e51
 	call Func_fb4
@@ -444,7 +444,7 @@ Func_e73:
 	ld [bc], a
 	inc c
 	ld a, [bc]
-	sbc $00
+	sbc 0
 	ld [bc], a
 	call Func_1965
 	call Func_39f1
@@ -500,9 +500,9 @@ Func_e73:
 	cp 31
 	jr nz, .waitPastCeiling
 	call WaitHBlankStart
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld [rSCX], a
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	ld [rSCY], a
 	call Func_3dfb
 	ld a, [$dde2]
@@ -547,7 +547,7 @@ Func_e73:
 	cp $6f
 	jr nz, .asm_f67
 	call WaitHBlankStart
-	ld hl, $ffa1
+	ld hl, hCameraXOffset + 1
 	ld a, [hld]
 	ld b, a
 	ld a, [hl]
@@ -564,7 +564,7 @@ Func_e73:
 	cp $76
 	jr nz, .asm_f83
 	call WaitHBlankStart
-	ld hl, $ffa1
+	ld hl, hCameraXOffset + 1
 	ld a, [hld]
 	ld b, a
 	ld a, [hl]
@@ -575,7 +575,7 @@ Func_e73:
 	call $2e27
 	ld a, $c0
 	ld [rSCY], a
-	ld hl, $ffa1
+	ld hl, hCameraXOffset + 1
 	ld a, [hld]
 	ld b, a
 	ld a, [hl]
@@ -1241,7 +1241,7 @@ Func_29e9:
 	jr .asm_2a57
 .asm_29fb
 	ld bc, $4fc
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld d, a
 	ld a, [$ffc8]
 	sub d
@@ -1259,7 +1259,7 @@ Func_29e9:
 .asm_2a14
 	ld [$ffa4], a
 	ld bc, $4fc
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	ld d, a
 	ld a, [$ffca]
 	sub d
@@ -1283,10 +1283,10 @@ Func_29e9:
 	ld a, [$ffad]
 	bit 2, a
 	ret nz
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	and a
 	jr nz, .asm_2a43
-	ld a, [$ffa1]
+	ld a, [hCameraXOffset + 1]
 	and a
 	ret z
 .asm_2a43
@@ -1309,10 +1309,10 @@ Func_29e9:
 	ld a, [$ffad]
 	bit 2, a
 	ret nz
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	add $b1
 	ld c, a
-	ld a, [$ffa1]
+	ld a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
 	ld a, [$ff98]
@@ -1339,33 +1339,40 @@ Func_2a84:
 	ld [MBC5RomBank], a
 	jp Func_17643
 
-Func_2a8c:
+; Prepares a metatile to be drawn on screen.
+; Input: bc = metatile x pixel offset
+;        de = metatile y pixel offset
+;
+; Returns: hl = metatile source address
+;          de = bg map destination address
+;          b  = 0 if metatile should be drawn, $ff if it shouldn't be drawn
+PrepareDrawMetatile:
 	bit 7, b
-	jr nz, .asm_2ae6
+	jr nz, .dontDrawMetatile ; exit if metatile has negative x offset
 	bit 7, d
-	jr nz, .asm_2ae6
-	ld hl, $ffa6
+	jr nz, .dontDrawMetatile ; exit if metatile has negative y offset
+	ld hl, hLevelPixelWidth
 	ld a, [hli]
 	sub c
 	ld a, [hli]
 	sbc b
-	jr c, .asm_2ae6
+	jr c, .dontDrawMetatile ; exit if metatile is outside horizontal boundaries
 	ld a, [hli]
 	sub e
 	ld a, [hli]
 	sbc d
-	jr c, .asm_2ae6
+	jr c, .dontDrawMetatile ; exit if metatile is outside vertical boundaries
 	ld h, b
 	ld l, c
 	add hl, hl
 	add hl, hl
-	ld b, h
+	ld b, h ; b = metatile horizontal offset
 	ld h, d
 	ld l, e
 	add hl, hl
 	add hl, hl
-	ld l, h
-	ld h, $c5
+	ld l, h ; l = metatile vertical offset
+	ld h, (wMetatileRowPointers >> 8)
 	sla l
 	ld a, [hli]
 	ld h, [hl]
@@ -1390,10 +1397,10 @@ Func_2a8c:
 	add l
 	ld l, a
 	ld l, [hl]
-	ld h, $30
+	ld h, (wMetatiles >> 10)
 	add hl, hl
 	add hl, hl
-	ld d, $26
+	ld d, (_SCRN0 >> 10)
 	ld a, e
 	and $f0
 	add a
@@ -1406,31 +1413,32 @@ Func_2a8c:
 	add a
 	rl d
 	ld e, a
-	ld b, $00
+	ld b, 0
 	ret
-.asm_2ae6
+.dontDrawMetatile
 	ld b, $ff
 	ret
 
-Func_2ae9:
+DrawMetatile_HBlank:
 	ld a, [rSTAT]
 	and STATF_LCD
-	jr z, Func_2ae9
-.asm_2aef
+	jr z, DrawMetatile_HBlank ; wait for current HBlank to end
+.waitHBlank
 	ld a, [rSTAT]
 	and STATF_LCD
-	jr nz, .asm_2aef
-Func_2af5:
+	jr nz, .waitHBlank
+DrawMetatile:
 	ld a, b
 	and a
 	ret nz
+	; load the 4 tiles defined by the metatile
 	ld a, [hli]
 	ld [de], a
 	inc e
 	ld a, [hli]
 	ld [de], a
 	ld a, e
-	add $1f
+	add $1f ; jump to the lower-left tile in the metatile
 	ld e, a
 	ld a, [hli]
 	ld [de], a
@@ -1439,22 +1447,26 @@ Func_2af5:
 	ld [de], a
 	ret
 
-Func_2b07:
+; Draws the metatile's GBC tile attributes during HBlank.
+; Input: hl = last tile in metatile
+;        de = destination bg address for last tile in metatile
+;        b  = 0 if metatile should be drawn, $ff if it should be skipped
+DrawMetatileGBCAttributes_HBlank:
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
-.asm_2b0c
+.waitCurrentHBlankFinish
 	ld a, [rSTAT]
 	and STATF_LCD
-	jr z, .asm_2b0c
-.asm_2b12
+	jr z, .waitCurrentHBlankFinish
+.waitHBlankStart
 	ld a, [rSTAT]
 	and STATF_LCD
-	jr nz, .asm_2b12
+	jr nz, .waitHBlankStart
 	ld a, b
 	and a
 	ret nz
-	ld b, $da
+	ld b, (wGBCTileAttributes >> 8)
 	ld a, 1
 	ld [rVBK], a
 	ld a, [hld]
@@ -1466,16 +1478,16 @@ Func_2b07:
 	ld c, a
 	ld a, [bc]
 	ld [de], a
-.asm_2b2a
+.waitCurrentHBlankFinish2
 	ld a, [rSTAT]
 	and STATF_LCD
-	jr z, .asm_2b2a
-.asm_2b30
+	jr z, .waitCurrentHBlankFinish2
+.waitHBlankStart2
 	ld a, [rSTAT]
 	and STATF_LCD
-	jr nz, .asm_2b30
+	jr nz, .waitHBlankStart2
 	ld a, e
-	sub $1f
+	sub $1f ; jump up to previous row in bg for metatile
 	ld e, a
 	ld a, [hld]
 	ld c, a
@@ -1489,14 +1501,18 @@ Func_2b07:
 	ld [rVBK], a
 	ret
 
-Func_2b46:
+; Draws the metatile's GBC tile attributes.
+; Input: hl = last tile in metatile
+;        de = destination bg address for last tile in metatile
+;        b  = 0 if metatile should be drawn, $ff if it should be skipped
+DrawMetatileGBCAttributes:
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld a, b
 	and a
 	ret nz
-	ld b, $da
+	ld b, (wGBCTileAttributes >> 8)
 	ld a, 1
 	ld [rVBK], a
 	ld a, [hld]
@@ -1509,7 +1525,7 @@ Func_2b46:
 	ld a, [bc]
 	ld [de], a
 	ld a, e
-	sub $1f
+	sub $1f ; jump up to previous bg row for metatile
 	ld e, a
 	ld a, [hld]
 	ld c, a
@@ -1526,7 +1542,7 @@ Func_2b46:
 Func_2b6d:
 	ld a, $06
 	ld [MBC5RomBank], a
-	ld c, $a0
+	ld c, (hCameraXOffset & $ff)
 	ld b, $04
 .asm_2b76
 	ld a, [hli]
@@ -1534,9 +1550,9 @@ Func_2b6d:
 	inc c
 	dec b
 	jr nz, .asm_2b76
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld [rSCX], a
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	ld [rSCY], a
 	sub a
 	ld [$ff00+c], a
@@ -1544,24 +1560,24 @@ Func_2b6d:
 	ld [$ff00+c], a
 	inc c
 	push hl
-	ld hl, $c600
-	ld b, $02
-.asm_2b8f
+	ld hl, wLevelMap
+	ld b, 2
+.initLevelPixelDimensions
 	ld a, [hli]
 	sub $01
 	ld [$ff00+c], a
 	inc c
 	ld a, [hli]
-	sbc $00
+	sbc 0
 	ld [$ff00+c], a
 	inc c
 	dec b
-	jr nz, .asm_2b8f
+	jr nz, .initLevelPixelDimensions
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
 	ld hl, $c606
-	ld bc, $c500
+	ld bc, wMetatileRowPointers
 .asm_2ba5
 	ld a, l
 	ld [bc], a
@@ -1602,7 +1618,7 @@ Func_2b6d:
 	ld a, [hl]
 	adc $00
 	ld [hl], a
-	call Func_2bea
+	call DrawWholeScreenMetatiles
 	pop hl
 	ret
 
@@ -1617,30 +1633,30 @@ Func_2bdf:
 	inc c
 	ret
 
-Func_2bea:
-	ld hl, $ffa0
+DrawWholeScreenMetatiles:
+	ld hl, hCameraXOffset
 	ld a, [hli]
 	sub $10
 	ld c, a
 	ld a, [hli]
-	sbc $00
+	sbc 0
 	ld b, a
 	ld a, [hli]
 	sub $10
 	ld e, a
 	ld a, [hli]
-	sbc $00
+	sbc 0
 	ld d, a
 	ld h, $10
-.asm_2bff
+.rowLoop
 	ld l, $10
-.asm_2c01
+.metatileLoop
 	push hl
 	push bc
 	push de
-	call Func_2a8c
-	call Func_2af5
-	call Func_2b46
+	call PrepareDrawMetatile
+	call DrawMetatile
+	call DrawMetatileGBCAttributes
 	pop de
 	pop bc
 	ld hl, $10
@@ -1649,7 +1665,7 @@ Func_2bea:
 	ld c, l
 	pop hl
 	dec l
-	jr nz, .asm_2c01
+	jr nz, .metatileLoop
 	push hl
 	ld hl, $ff00
 	add hl, bc
@@ -1661,7 +1677,7 @@ Func_2bea:
 	ld e, l
 	pop hl
 	dec h
-	jr nz, .asm_2bff
+	jr nz, .rowLoop
 	ret
 
 INCBIN "baserom.gbc", $2c2b, $2c9f - $2c2b
@@ -1734,12 +1750,12 @@ Func_2c9f:
 	inc hl
 	and $1f
 	ld [$ff8c], a
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld d, a
 	ld a, [$ffc8]
 	sub d
 	ld d, a
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	ld e, a
 	ld a, [$ffca]
 	sub e
@@ -1932,14 +1948,14 @@ Func_3252:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	ld e, a
 	ld a, [bc]
 	inc bc
 	inc bc
 	sub e
 	ld e, a
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld d, a
 	ld a, [bc]
 	inc bc
@@ -2114,10 +2130,10 @@ Func_3939:
 	sub a
 	ld [$ffe8], a
 	ld hl, $ffdb
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	add $a0
 	ld [hli], a
-	ld a, [$ffa1]
+	ld a, [hCameraXOffset + 1]
 	adc $00
 	ld [hli], a
 	ld a, [$ffc8]
@@ -2136,7 +2152,7 @@ Func_3939:
 	sub b
 	ld [hli], a
 	ld a, [$ffcb]
-	sbc $00
+	sbc 0
 	ld [hli], a
 	ld a, [hli]
 	ld [MBC5RomBank], a
@@ -2144,9 +2160,9 @@ Func_3939:
 	ld h, [hl]
 	ld l, a
 	inc hl
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld c, a
-	ld a, [$ffa1]
+	ld a, [hCameraXOffset + 1]
 	ld b, a
 .asm_3977
 	ld a, [hld]
@@ -2190,10 +2206,10 @@ Func_3939:
 	ld [$ffe2], a
 	ld a, h
 	ld [$ffe3], a
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	add $e0
 	ld e, a
-	ld a, [$ffa3]
+	ld a, [hCameraYOffset + 1]
 	adc $ff
 	ld d, a
 	inc bc
@@ -2272,10 +2288,10 @@ Func_39f1:
 	sub a
 	ld [$ffe8], a
 	ld hl, $ffdb
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	add $a0
 	ld [hli], a
-	ld a, [$ffa1]
+	ld a, [hCameraXOffset + 1]
 	adc $00
 	ld [hli], a
 	ld a, [$ffc8]
@@ -2288,7 +2304,7 @@ Func_39f1:
 	sub $1e
 	ld [hli], a
 	ld a, [$ffcb]
-	sbc $00
+	sbc 0
 	ld [hli], a
 	sub a
 	ld [$ffe9], a
@@ -2564,7 +2580,7 @@ Func_3a82:
 	ld [bc], a
 	inc c
 	ld a, [$ff8f]
-	sbc $00
+	sbc 0
 	ld [bc], a
 	inc c
 	ld a, [hli]
@@ -2721,12 +2737,12 @@ Func_3c72:
 INCBIN "baserom.gbc", $3c7a, $3c98 - $3c7a
 
 Func_3c98:
-	ld a, [$ffa0]
+	ld a, [hCameraXOffset]
 	ld e, a
 	ld a, c
 	sub e
 	ld c, a
-	ld a, [$ffa2]
+	ld a, [hCameraYOffset]
 	ld e, a
 	ld a, b
 	sub e
@@ -3820,7 +3836,10 @@ INCBIN "baserom.gbc", $d674, $da76 - $d674
 InfogramesCopyrightTiles:
 	INCBIN "gfx/infogrames_copyright/background.2bpp.lz"
 
-INCBIN "baserom.gbc", $dc9f, $f545 - $dc9f
+StudioCameraArrowTiles:
+	INCBIN "gfx/studio/camera_arrow.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $dde7, $f545 - $dde7
 
 WarnerBrosCopyrightAmpersandTiles:
 	INCBIN "gfx/warner_bros_copyright/ampersand.2bpp"
@@ -3885,7 +3904,20 @@ INCBIN "baserom.gbc", $f656, $10000 - $f656
 
 SECTION "ROM Bank $04", ROMX[$4000], BANK[$4]
 
-INCBIN "baserom.gbc", $10000, $14000 - $10000
+INCBIN "baserom.gbc", $10000, $105d6 - $10000
+
+StudioCeilingFloorTiles:
+	INCBIN "gfx/studio/ceiling_floor.2bpp.lz"
+StudioCeilingFloorTilemap:
+	INCBIN "gfx/studio/ceiling_floor.tilemap.lz"
+StudioTiles:
+	INCBIN "gfx/studio/tiles.2bpp.lz"
+StudioMetatiles:
+	INCBIN "gfx/studio/metatiles.bin.lz"
+StudioMap:
+	INCBIN "data/levels/studio.vdmap.lz"
+
+INCBIN "baserom.gbc", $11387, $14000 - $11387
 
 SECTION "ROM Bank $05", ROMX[$4000], BANK[$5]
 
@@ -4055,9 +4087,9 @@ Func_17643:
 .asm_17681
 	ld [hl], a
 .asm_17682
-	call Func_2a8c
-	call Func_2ae9
-	call Func_2b07
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
 	pop de
 	pop bc
 	ld a, [$ffa4]
@@ -4108,9 +4140,9 @@ Func_17643:
 .asm_176cb
 	dec bc
 	push bc
-	call Func_2a8c
-	call Func_2ae9
-	call Func_2b07
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
 	pop bc
 	pop de
 	ld a, [$ffa4]
@@ -4122,9 +4154,9 @@ Func_17643:
 .asm_176e2
 	add hl, bc
 	ld a, l
-	ld [$ffa0], a
+	ld [hCameraXOffset], a
 	ld a, h
-	ld [$ffa1], a
+	ld [hCameraXOffset + 1], a
 Func_176e9:
 	ld a, [$ffa5]
 	add a
@@ -4166,9 +4198,9 @@ Func_176e9:
 .asm_17722
 	ld [hl], a
 .asm_17723
-	call Func_2a8c
-	call Func_2ae9
-	call Func_2b07
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
 	pop de
 	pop bc
 	ld a, [$ffa5]
@@ -4220,9 +4252,9 @@ Func_176e9:
 .asm_1776d
 	dec de
 	push de
-	call Func_2a8c
-	call Func_2ae9
-	call Func_2b07
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
 	pop de
 	pop bc
 	ld a, [$ffa5]
@@ -4234,9 +4266,9 @@ Func_176e9:
 .asm_17784
 	add hl, de
 	ld a, l
-	ld [$ffa2], a
+	ld [hCameraYOffset], a
 	ld a, h
-	ld [$ffa3], a
+	ld [hCameraYOffset + 1], a
 Func_1778b:
 	sub a
 	ld [$ffa4], a
@@ -4244,7 +4276,7 @@ Func_1778b:
 	ret
 
 Func_17791:
-	ld hl, $ffa0
+	ld hl, hCameraXOffset
 	ld a, [hli]
 	add c
 	ld c, a
@@ -4387,7 +4419,7 @@ Func_17929:
 	ld a, [$ffd1]
 	sub $68
 	ld a, [$ffd2]
-	sbc $00
+	sbc 0
 	jr c, .asm_17a06
 	add a
 	jr c, .asm_17a06
@@ -5022,13 +5054,41 @@ Data_1b129:
 	db $ff
 	dw Func_5ca
 
-INCBIN "baserom.gbc", $1b145, $1b2ee - $1b145
+INCBIN "baserom.gbc", $1b145, $1b2c8 - $1b145
+
+StudioScreenData:
+	compressed_data StudioTiles, $8C80
+	compressed_data StudioMetatiles, wMetatiles
+	db $0F
+	dw $7F8C, $C400
+	compressed_data StudioMap, wLevelMap
+	compressed_data StudioCeilingFloorTiles, $8840
+	compressed_data StudioCeilingFloorTilemap, $9B00
+	compressed_data StudioCameraArrowTiles, $8560
+	db $ff
+	dw $4065
 
 Data_1b2ee:
 	db $ff
-	dw Func_e73
+	dw InitStudioScreen
 
-INCBIN "baserom.gbc", $1b2f1, $1bcb0 - $1b2f1
+INCBIN "baserom.gbc", $1b2f1, $1bc33 - $1b2f1
+
+StudioScreenData_GBC:
+	compressed_data StudioTilesGBC, $8C80
+	compressed_data StudioMetatilesGBC, wMetatiles
+	db $16
+	dw $4701, $C400
+	compressed_data StudioMapGBC, wLevelMap
+	compressed_data StudioCeilingFloorTilesGBC, $8840
+	compressed_data StudioCeilingFloorTilemapGBC, $9B00
+	compressed_data StudioCameraArrowTiles, $8560
+	compressed_data StudioTileAttributesGBC, $DA48
+	compressed_data StudioCeilingFloorTileAttributesGBC, $D9BC
+	db $ff
+	dw $4065
+
+INCBIN "baserom.gbc", $1bc63, $1bcb0 - $1bc63
 
 Data_1bcb0:
 	compressed_data InfogramesCopyrightGBCTiles, $9550
@@ -5128,7 +5188,25 @@ INCBIN "baserom.gbc", $54000, $58000 - $54000
 
 SECTION "ROM Bank $16", ROMX[$4000], BANK[$16]
 
-INCBIN "baserom.gbc", $58000, $59d9d - $58000
+StudioTilesGBC:
+	INCBIN "gfx/studio/tiles_gbc.2bpp.lz"
+
+INCBIN "baserom.gbc", $58701, $5871d - $58701
+
+StudioMetatilesGBC:
+	INCBIN "gfx/studio/metatiles_gbc.bin.lz"
+StudioMapGBC:
+	INCBIN "data/levels/studio_gbc.vdmap.lz"
+StudioTileAttributesGBC:
+	INCBIN "gfx/studio/tile_attributes_gbc.bin.lz"
+StudioCeilingFloorTilesGBC:
+	INCBIN "gfx/studio/ceiling_floor_gbc.2bpp.lz"
+StudioCeilingFloorTilemapGBC:
+	INCBIN "gfx/studio/ceiling_floor_gbc.tilemap.lz"
+StudioCeilingFloorTileAttributesGBC:
+	INCBIN "gfx/studio/ceiling_floor_tile_attributes_gbc.bin.lz"
+
+INCBIN "baserom.gbc", $58e87, $59d9d - $58e87
 
 InfogramesCopyrightGBCTiles:
 	INCBIN "gfx/infogrames_copyright/background_gbc.2bpp.lz"
