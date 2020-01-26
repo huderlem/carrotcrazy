@@ -259,7 +259,7 @@ InitInfogramesCopyrightScreen:
 	ld [rLCDC], a
 .delayFrame
 	call WaitVBlank
-	call Func_3dc6
+	call TryInitNextScreenHome
 	call UpdateFrameCounter
 	sub a
 .delayNextVBlank
@@ -285,7 +285,7 @@ InitWarnerBrosCopyrightScreen:
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
 .asm_54e
-	call Func_3dfb
+	call TickMusicEngineHome
 	call Func_3a82
 	call WaitVBlank
 	ld a, [$deee]
@@ -297,8 +297,8 @@ InitWarnerBrosCopyrightScreen:
 	ld bc, $5c39
 	call Func_3ca6
 .asm_56c
-	call Func_3d96
-	call Func_3dc6
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
 	ld a, %10010000
 	ld [rOBP0], a
 	ld a, [$def2]
@@ -332,15 +332,15 @@ Func_5ca:
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
 Func_5f4:
-	call Func_3dfb
+	call TickMusicEngineHome
 	call WaitVBlank
 	ld a, $05
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
 	call Func_3ca6
-	call Func_3d96
-	call Func_3dc6
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
 	call ReadJoyPad_Home
 	ld a, [wLanguageSetting]
 	swap a
@@ -419,11 +419,29 @@ Func_d67:
 	jr nz, .asm_d7f
 	ret
 
-INCBIN "baserom.gbc", $d8b, $e73 - $d8b
+INCBIN "baserom.gbc", $d8b, $e5c - $d8b
 
+InitStudioCreditsScreen:
+	ld bc, wInCreditsScene
+	ld a, $ff
+	ld [bc], a
+	inc c
+	ld a, $01
+	ld [bc], a
+	inc c
+	sub a
+	ld [bc], a
+	inc c
+	ld a, $56
+	ld [bc], a
+	inc c
+	ld a, $76
+	ld [bc], a
+	jr asm_e77
 InitStudioScreen:
 	sub a
-	ld [$dde2], a
+	ld [wInCreditsScene], a
+asm_e77:
 	push hl
 	ld hl, StudioScreenData
 	ld a, [hGameBoyColorDetection]
@@ -434,7 +452,7 @@ InitStudioScreen:
 	call LoadData
 	call Func_3e51
 	call Func_fb4
-	ld hl, $6a68
+	ld hl, StudioScreenGBCPalettes
 	call LoadCGBPalettesHome
 	pop hl
 	call Func_2b6d
@@ -474,27 +492,27 @@ InitStudioScreen:
 	ld a, l
 	and a
 	jr nz, .asm_eda
-	ld a, $90
-	ld [$ff4a], a
-	ld a, $a5
-	ld [$ff4b], a
-	ld a, [$dde2]
+	ld a, 144
+	ld [rWY], a
+	ld a, 165
+	ld [rWX], a
+	ld a, [wInCreditsScene]
 	and a
-	jr z, .asm_ef6
-	ld hl, $777d
+	jr z, .initLCDC
+	ld hl, Data_1b77d
 	call LoadData
-.asm_ef6
-	ld a, $e7
-	ld [$ff40], a
-.Func_efa:
-	call Func_3d96
-	ld a, [$dde2]
+.initLCDC
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.mainLoop:
+	call ClearOAMBufferHome
+	ld a, [wInCreditsScene]
 	and a
-	jr nz, .asm_f09
+	jr nz, .tryInitNextScreen
 	call ReadJoyPad_Home
-	call Func_3c60
-.asm_f09
-	call Func_3dc6
+	call TryTogglePause
+.tryInitNextScreen
+	call TryInitNextScreenHome
 .waitPastCeiling
 	ld a, [rLY]
 	cp 31
@@ -504,8 +522,8 @@ InitStudioScreen:
 	ld [rSCX], a
 	ld a, [hCameraYOffset]
 	ld [rSCY], a
-	call Func_3dfb
-	ld a, [$dde2]
+	call TickMusicEngineHome
+	ld a, [wInCreditsScene]
 	and a
 	jr z, .asm_f49
 	ld a, Bank(Func_f610)
@@ -529,23 +547,23 @@ InitStudioScreen:
 	ld [hl], a
 	jr .asm_f55
 .asm_f49
-	call Func_1989
+	call HandlePlayerInput
 	call Func_1940
 	call $235e
-	call Func_29e9
+	call PrepareCameraUpdate
 .asm_f55
 	call Func_2a84
-	ld a, [$dde2]
+	ld a, [wInCreditsScene]
 	and a
 	jr nz, .asm_f61
 	call Func_2c9f
 .asm_f61
 	call Func_3939
 	call Func_3252
-.asm_f67
+.waitFloor
 	ld a, [rLY]
-	cp $6f
-	jr nz, .asm_f67
+	cp 111
+	jr nz, .waitFloor
 	call WaitHBlankStart
 	ld hl, hCameraXOffset + 1
 	ld a, [hld]
@@ -557,12 +575,12 @@ InitStudioScreen:
 	rra
 	add [hl]
 	ld [rSCX], a
-	ld a, $70
+	ld a, 112
 	ld [rSCY], a
-.asm_f83
+.waitSecondaryFloor
 	ld a, [rLY]
-	cp $76
-	jr nz, .asm_f83
+	cp 118
+	jr nz, .waitSecondaryFloor
 	call WaitHBlankStart
 	ld hl, hCameraXOffset + 1
 	ld a, [hld]
@@ -573,7 +591,7 @@ InitStudioScreen:
 	add [hl]
 	ld [rSCX], a
 	call $2e27
-	ld a, $c0
+	ld a, 192
 	ld [rSCY], a
 	ld hl, hCameraXOffset + 1
 	ld a, [hld]
@@ -586,7 +604,7 @@ InitStudioScreen:
 	add [hl]
 	ld [rSCX], a
 	call UpdateFrameCounter
-	jp .Func_efa
+	jp .mainLoop
 
 Func_fb4:
 	ld bc, $da00
@@ -681,7 +699,7 @@ Func_1965:
 	ld [$ff00+c], a
 	ret
 
-Func_1989:
+HandlePlayerInput:
 	ld a, [hPaused]
 	and a
 	ret nz
@@ -699,7 +717,7 @@ Func_1989:
 	ld c, a
 	ld a, [hli]
 	ld d, a
-	ld a, [$def9]
+	ld a, [wHeldKeys]
 	ld e, a
 	ld a, [$ffb5]
 	and a
@@ -783,14 +801,14 @@ Func_1a73:
 .asm_1a84
 	push bc
 	push de
-	ld a, [$ffc8]
+	ld a, [hPlayerXPos]
 	sub $0a
 	bit 5, b
 	jr z, .asm_1a90
 	add $0c
 .asm_1a90
 	ld c, a
-	ld a, [$ffca]
+	ld a, [hPlayerYPos]
 	sub $18
 	ld b, a
 	ld hl, $1af3
@@ -1151,10 +1169,10 @@ Func_1cdc:
 	ret nz
 	bit 4, b
 	jr z, .asm_1d0b
-	ld a, [$defa]
-	bit 2, a
+	ld a, [wNewKeys]
+	bit PADB_SELECT, a
 	jr z, .asm_1d00
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	and a
 	jr nz, .asm_1d00
 	ld a, $3c
@@ -1227,14 +1245,14 @@ Func_2342:
 
 INCBIN "baserom.gbc", $235e, $29e9 - $235e
 
-Func_29e9:
+PrepareCameraUpdate:
 	ld a, [hPaused]
 	and a
 	ret nz
 	ld a, [$de84]
 	and a
 	ret nz
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	add a
 	jr z, .asm_29fb
 	jr c, .asm_2a32
@@ -1243,9 +1261,9 @@ Func_29e9:
 	ld bc, $4fc
 	ld a, [hCameraXOffset]
 	ld d, a
-	ld a, [$ffc8]
+	ld a, [hPlayerXPos]
 	sub d
-	sub $4c
+	sub 76 ; x pixel position for when the camera starts scrolling horizontally
 	bit 7, a
 	jr nz, .asm_2a10
 	cp b
@@ -1261,9 +1279,9 @@ Func_29e9:
 	ld bc, $4fc
 	ld a, [hCameraYOffset]
 	ld d, a
-	ld a, [$ffca]
+	ld a, [hPlayerYPos]
 	sub d
-	sub $58
+	sub 88 ; y pixel position for when the camera starts scrolling vertically
 	bit 7, a
 	jr nz, .asm_2a2b
 	cp b
@@ -1290,7 +1308,7 @@ Func_29e9:
 	and a
 	ret z
 .asm_2a43
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	cp $fe
 	jr nz, .asm_2a4e
 	ld a, $ff
@@ -1300,7 +1318,7 @@ Func_29e9:
 	ld a, [hFrameCounter]
 	rra
 	ret c
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	ld [$ffa4], a
 	ret
 .asm_2a57
@@ -1320,7 +1338,7 @@ Func_29e9:
 	ld a, [$ff99]
 	sbc b
 	ret c
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	cp $01
 	jr z, .asm_2a7b
 	srl a
@@ -1330,7 +1348,7 @@ Func_29e9:
 	ld a, [hFrameCounter]
 	rra
 	ret c
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	ld [$ffa4], a
 	ret
 
@@ -1576,7 +1594,7 @@ Func_2b6d:
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld hl, $c606
+	ld hl, wLevelMap + 6
 	ld bc, wMetatileRowPointers
 .asm_2ba5
 	ld a, l
@@ -1616,7 +1634,7 @@ Func_2b6d:
 	add $08
 	ld [hli], a
 	ld a, [hl]
-	adc $00
+	adc 0
 	ld [hl], a
 	call DrawWholeScreenMetatiles
 	pop hl
@@ -1732,7 +1750,7 @@ Func_2c9f:
 	ld a, [bc]
 	ld [hl], a
 .asm_2cd9
-	ld a, [$ff93]
+	ld a, [hActiveSprites]
 	ld c, a
 	ld b, $df
 	ld hl, $ffd8
@@ -1752,12 +1770,12 @@ Func_2c9f:
 	ld [$ff8c], a
 	ld a, [hCameraXOffset]
 	ld d, a
-	ld a, [$ffc8]
+	ld a, [hPlayerXPos]
 	sub d
 	ld d, a
 	ld a, [hCameraYOffset]
 	ld e, a
-	ld a, [$ffca]
+	ld a, [hPlayerYPos]
 	sub e
 	ld e, a
 	ld a, [$ffb9]
@@ -1827,7 +1845,7 @@ Func_2c9f:
 	jr nz, .asm_2d42
 .asm_2d5e
 	ld a, c
-	ld [$ff93], a
+	ld [hActiveSprites], a
 	ret
 
 Func_2d62:
@@ -1861,7 +1879,7 @@ INCBIN "baserom.gbc", $2d85, $31e1 - $2d85
 Func_31e1:
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld a, [$ff95]
+	ld a, [hForcedSideScrollSpeed]
 	ld hl, $722c
 	ld bc, vBGWin
 	and a
@@ -1976,7 +1994,7 @@ Func_3252:
 	inc hl
 	and $1f
 	ld [$ff8d], a
-	ld a, [$ff93]
+	ld a, [hActiveSprites]
 	ld c, a
 	ld b, $df
 	ld a, [$ff8c]
@@ -2031,7 +2049,7 @@ Func_3252:
 	pop hl
 	inc hl
 	ld a, c
-	ld [$ff93], a
+	ld [hActiveSprites], a
 	jr .asm_3265
 .asm_32df
 	ld bc, $dd80
@@ -2136,10 +2154,10 @@ Func_3939:
 	ld a, [hCameraXOffset + 1]
 	adc $00
 	ld [hli], a
-	ld a, [$ffc8]
+	ld a, [hPlayerXPos]
 	add $08
 	ld [hli], a
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	adc $00
 	ld [hli], a
 	ld a, [$ffaf]
@@ -2148,10 +2166,10 @@ Func_3939:
 	jr nc, .asm_3960
 	srl b
 .asm_3960
-	ld a, [$ffca]
+	ld a, [hPlayerYPos]
 	sub b
 	ld [hli], a
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	sbc 0
 	ld [hli], a
 	ld a, [hli]
@@ -2294,16 +2312,16 @@ Func_39f1:
 	ld a, [hCameraXOffset + 1]
 	adc $00
 	ld [hli], a
-	ld a, [$ffc8]
+	ld a, [hPlayerXPos]
 	add $08
 	ld [hli], a
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	adc $00
 	ld [hli], a
-	ld a, [$ffca]
+	ld a, [hPlayerYPos]
 	sub $1e
 	ld [hli], a
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	sbc 0
 	ld [hli], a
 	sub a
@@ -2715,16 +2733,16 @@ ReadJoyPad_Home:
 	ld [MBC5RomBank], a
 	jp ReadJoyPad
 
-Func_3c60:
-	ld a, [$defa]
-	bit 3, a
+TryTogglePause:
+	ld a, [wNewKeys]
+	bit PADB_START, a
 	ret z
 	ld a, [hPaused]
 	cpl
 	ld [hPaused], a
 	and a
-	jp z, Func_3e0b
-	jp Func_3e03
+	jp z, ResumeMusicHome
+	jp PauseMusicHome
 
 Func_3c72:
 	sub a
@@ -2755,17 +2773,17 @@ Func_3ca6:
 	ld a, [hli]
 	ld d, a
 	push de
-	ld a, [$ff93]
+	ld a, [hActiveSprites]
 	ld e, a
 	ld d, $df
 	ret
 
 INCBIN "baserom.gbc", $3cb1, $3d96 - $3cb1
 
-Func_3d96:
-	ld a, Bank(Func_175a6)
+ClearOAMBufferHome:
+	ld a, Bank(ClearOAMBuffer)
 	ld [MBC5RomBank], a
-	jp Func_175a6
+	jp ClearOAMBuffer
 
 WriteDMACodeToHRAM:
 	ld hl, DMARoutine
@@ -2786,7 +2804,7 @@ WriteDMACodeToHRAM:
 	jr nz, .clear
 	call hDMARoutine
 	sub a
-	ld [$ff93], a
+	ld [hActiveSprites], a
 	ret
 
 DMARoutine:
@@ -2798,10 +2816,10 @@ DMARoutine:
 	jr nz, .waitLoop
 	ret
 
-Func_3dc6:
-	ld a, Bank(Func_17568)
+TryInitNextScreenHome:
+	ld a, Bank(TryInitNextScreen)
 	ld [MBC5RomBank], a
-	jp Func_17568
+	jp TryInitNextScreen
 
 Func_3dce:
 	call Func_3e3d
@@ -2822,20 +2840,20 @@ Func_3ddc:
 
 INCBIN "baserom.gbc", $3def, $3dfb - $3def
 
-Func_3dfb:
-	ld a, Bank(Func_804a)
+TickMusicEngineHome:
+	ld a, Bank(TickMusicEngine)
 	ld [MBC5RomBank], a
-	jp Func_804a
+	jp TickMusicEngine
 
-Func_3e03:
-	ld a, Bank(Func_804d)
+PauseMusicHome:
+	ld a, Bank(PauseMusic)
 	ld [MBC5RomBank], a
-	jp Func_804d
+	jp PauseMusic
 
-Func_3e0b:
-	ld a, Bank(Func_8050)
+ResumeMusicHome:
+	ld a, Bank(ResumeMusic)
 	ld [MBC5RomBank], a
-	jp Func_8050
+	jp ResumeMusic
 
 Func_3e13:
 	ld a, Bank(Func_8053)
@@ -3013,14 +3031,14 @@ SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
 INCBIN "baserom.gbc", $8000, $804a - $8000
 
-Func_804a:
-	jp Func_80e6
+TickMusicEngine:
+	jp TickMusicEngine_
 
-Func_804d:
-	jp Func_80a2
+PauseMusic:
+	jp PauseMusic_
 
-Func_8050:
-	jp Func_809b
+ResumeMusic:
+	jp ResumeMusic_
 
 Func_8053:
 	jp Func_853d
@@ -3042,12 +3060,12 @@ INCBIN "baserom.gbc", $8062, $8098 - $8062
 Func_8098:
 	jp Func_891d
 
-Func_809b:
+ResumeMusic_:
 	xor a
 	ld [$db42], a
 	jp Func_876e
 
-Func_80a2:
+PauseMusic_:
 	xor a
 	ld [rNR12], a
 	ld [rNR22], a
@@ -3073,7 +3091,7 @@ Func_80a2:
 
 INCBIN "baserom.gbc", $80c8, $80e6 - $80c8
 
-Func_80e6:
+TickMusicEngine_:
 	ld a, [$db42]
 	and a
 	jp nz, Func_81c1
@@ -3854,7 +3872,7 @@ Func_f610:
 	ld a, [hl]
 	cp $ff
 	jp z, InitNextScreen
-	ld a, [$ff93]
+	ld a, [hActiveSprites]
 	ld e, a
 	ld d, $df
 .asm_f621
@@ -3889,7 +3907,7 @@ Func_f610:
 	cp $01
 	jr nz, .asm_f625
 	ld a, e
-	ld [$ff93], a
+	ld [hActiveSprites], a
 	ld a, [hFrameCounter]
 	cp $ff
 	ret nz
@@ -3927,11 +3945,11 @@ INCLUDE "data/passwords.asm"
 
 INCBIN "baserom.gbc", $16eab, $17568 - $16eab
 
-Func_17568:
+TryInitNextScreen:
 	ld a, [hPaused]
 	and a
 	ret nz
-Func_1756c:
+TryInitNextScreen_:
 	ld hl, $defb
 	dec [hl]
 	ret nz
@@ -3973,18 +3991,18 @@ Func_1759b:
 	ld a, b
 	ld [hli], a
 	ld [hl], c
-	jr Func_1756c
+	jr TryInitNextScreen_
 
-Func_175a6:
+ClearOAMBuffer:
 	ld a, [hPaused]
 	and a
 	ret nz
 	call hDMARoutine
-	ld a, [$ff93]
-	cp $a1
-	jr c, .asm_175b5
-	ld a, $a0
-.asm_175b5
+	ld a, [hActiveSprites]
+	cp 161
+	jr c, .ok
+	ld a, 160
+.ok
 	srl a
 	srl a
 	ld b, a
@@ -3999,47 +4017,47 @@ Func_175a6:
 	sub a
 	jp hl
 .asm_175c8
-	ld [$df9c], a
-	ld [$df98], a
-	ld [$df94], a
-	ld [$df90], a
-	ld [$df8c], a
-	ld [$df88], a
-	ld [$df84], a
-	ld [$df80], a
-	ld [$df7c], a
-	ld [$df78], a
-	ld [$df74], a
-	ld [$df70], a
-	ld [$df6c], a
-	ld [$df68], a
-	ld [$df64], a
-	ld [$df60], a
-	ld [$df5c], a
-	ld [$df58], a
-	ld [$df54], a
-	ld [$df50], a
-	ld [$df4c], a
-	ld [$df48], a
-	ld [$df44], a
-	ld [$df40], a
-	ld [$df3c], a
-	ld [$df38], a
-	ld [$df34], a
-	ld [$df30], a
-	ld [$df2c], a
-	ld [$df28], a
-	ld [$df24], a
-	ld [$df20], a
-	ld [$df1c], a
-	ld [$df18], a
-	ld [$df14], a
-	ld [$df10], a
-	ld [$df0c], a
-	ld [$df08], a
-	ld [$df04], a
-	ld [$df00], a
-	ld [$ff93], a
+	ld [wOAMBuffer + $9c], a
+	ld [wOAMBuffer + $98], a
+	ld [wOAMBuffer + $94], a
+	ld [wOAMBuffer + $90], a
+	ld [wOAMBuffer + $8c], a
+	ld [wOAMBuffer + $88], a
+	ld [wOAMBuffer + $84], a
+	ld [wOAMBuffer + $80], a
+	ld [wOAMBuffer + $7c], a
+	ld [wOAMBuffer + $78], a
+	ld [wOAMBuffer + $74], a
+	ld [wOAMBuffer + $70], a
+	ld [wOAMBuffer + $6c], a
+	ld [wOAMBuffer + $68], a
+	ld [wOAMBuffer + $64], a
+	ld [wOAMBuffer + $60], a
+	ld [wOAMBuffer + $5c], a
+	ld [wOAMBuffer + $58], a
+	ld [wOAMBuffer + $54], a
+	ld [wOAMBuffer + $50], a
+	ld [wOAMBuffer + $4c], a
+	ld [wOAMBuffer + $48], a
+	ld [wOAMBuffer + $44], a
+	ld [wOAMBuffer + $40], a
+	ld [wOAMBuffer + $3c], a
+	ld [wOAMBuffer + $38], a
+	ld [wOAMBuffer + $34], a
+	ld [wOAMBuffer + $30], a
+	ld [wOAMBuffer + $2c], a
+	ld [wOAMBuffer + $28], a
+	ld [wOAMBuffer + $24], a
+	ld [wOAMBuffer + $20], a
+	ld [wOAMBuffer + $1c], a
+	ld [wOAMBuffer + $18], a
+	ld [wOAMBuffer + $14], a
+	ld [wOAMBuffer + $10], a
+	ld [wOAMBuffer + $c], a
+	ld [wOAMBuffer + $8], a
+	ld [wOAMBuffer + $4], a
+	ld [wOAMBuffer], a
+	ld [hActiveSprites], a
 	ret
 
 Func_17643:
@@ -4297,7 +4315,7 @@ Func_17929:
 	ld a, [hPaused]
 	and a
 	ret nz
-	ld hl, $ffc8
+	ld hl, hPlayerXPos
 	ld c, $cd
 	ld b, $04
 .asm_17934
@@ -4540,10 +4558,10 @@ Func_17929:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [$ffca]
+	ld a, [hPlayerYPos]
 	sub c
 	ld c, a
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	sbc b
 	ld b, a
 	ld a, [hl]
@@ -4593,7 +4611,7 @@ ReadJoyPad:
 	jr z, .readJoyPad
 	ld hl, $3e8b
 	push hl
-	jp Func_3e0b
+	jp ResumeMusicHome
 .readJoyPad
 	sub a
 	ld c, a
@@ -4641,7 +4659,10 @@ INCBIN "baserom.gbc", $18000, $1a5a3 - $18000
 WarnerBrosCopyrightInteractiveEntertainmentTiles:
 	INCBIN "gfx/warner_bros_copyright/interactive_entertainment.2bpp"
 
-INCBIN "baserom.gbc", $1a663, $1a89f - $1a663
+StudioCreditsTextTiles:
+	INCBIN "gfx/studio/credits_text.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $1a84e, $1a89f - $1a84e
 
 ; Loads common sprite palettes and the specified BG and
 ; sprite palettes. Also clears the BG map attributes.
@@ -5072,7 +5093,14 @@ Data_1b2ee:
 	db $ff
 	dw InitStudioScreen
 
-INCBIN "baserom.gbc", $1b2f1, $1bc33 - $1b2f1
+INCBIN "baserom.gbc", $1b2f1, $1b77d - $1b2f1
+
+Data_1b77d:
+	compressed_data StudioCreditsTextTiles, $8340
+	db $ff
+	dw InitStudioCreditsScreen
+
+INCBIN "baserom.gbc", $1b785, $1bc33 - $1b785
 
 StudioScreenData_GBC:
 	compressed_data StudioTilesGBC, $8C80

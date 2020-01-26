@@ -23,7 +23,13 @@ wd500:
 wGBCTileAttributes:: ; $da00
 	ds $100
 
-	ds $2e8
+	ds $2e2
+
+; $ff if in credits scene, $00 otherwise.
+wInCreditsScene:: ; $dde2
+	ds 1
+
+	ds 5
 
 ; If this is set to non-zero, press start + select will skip the current level.
 ; This is enabled with a secret dev password. See data/passwords.asm
