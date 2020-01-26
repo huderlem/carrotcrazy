@@ -549,7 +549,7 @@ asm_e77:
 .asm_f49
 	call HandlePlayerInput
 	call Func_1940
-	call $235e
+	call Func_235e
 	call PrepareCameraUpdate
 .asm_f55
 	call Func_2a84
@@ -725,15 +725,28 @@ HandlePlayerInput:
 	bit 2, b
 	jp nz, Func_1a73
 	ld a, [hl]
-	add $b8
+	add (.jumpTable & $ff)
 	ld l, a
-	ld a, $19
-	adc $00
+	ld a, (.jumpTable >> 8)
+	adc 0
 	ld h, a
 	jp hl
+.jumpTable
 	jp Func_1afd
-
-INCBIN "baserom.gbc", $19bb, $19e5 - $19bb
+	jp Func_1d20
+	jp Func_1d61
+	jp Func_1dc9
+	jp Func_1e1e
+	jp Func_1e86
+	jp Func_1e8c
+	jp Func_1f73
+	jp Func_1fcf
+	jp Func_1fe3
+	jp Func_2045
+	jp Func_2081
+	jp Func_2145
+	jp Func_226c
+	jp Func_22c9
 
 Func_19e5:
 	bit 1, b
@@ -1202,8 +1215,973 @@ Func_1d0e:
 .asm_1d1d
 	jp Func_19e5
 
-INCBIN "baserom.gbc", $1d20, $2326 - $1d20
+Func_1d20:
+	call $232c
+	ld d, $00
+	res 4, b
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_1d39
+	ld a, [$ffb7]
+	dec a
+	ld [$ffb7], a
+	jr nz, .asm_1d39
+	sub a
+	ld [$ffb0], a
+	jr .asm_1d5e
+.asm_1d39
+	bit 7, e
+	jr z, .asm_1d41
+	ld a, $14
+	jr .asm_1d47
+.asm_1d41
+	bit 6, e
+	jr z, .asm_1d49
+	ld a, $ec
+.asm_1d47
+	ld [$ffc6], a
+.asm_1d49
+	sub a
+	bit 5, e
+	jr z, .asm_1d54
+	set 5, b
+	ld a, $ff
+	jr .asm_1d5c
+.asm_1d54
+	bit 4, e
+	jr z, .asm_1d5c
+	res 5, b
+	ld a, $01
+.asm_1d5c
+	ld [$ffc4], a
+.asm_1d5e
+	jp Func_19e5
 
+Func_1d61:
+	sub a
+	ld [$ffc4], a
+	ld [$ff8a], a
+	ld hl, hPlayerXPos
+	ld a, [$ffba]
+	sub [hl]
+	inc l
+	ld a, [$ffbb]
+	sbc [hl]
+	jr c, .asm_1d79
+	ld hl, $ffba
+	ld a, $ff
+	jr .asm_1d88
+.asm_1d79
+	ld hl, $ffbc
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc l
+	ld a, [$ffc9]
+	sbc [hl]
+	dec l
+	ld a, $01
+	jr c, .asm_1d93
+.asm_1d88
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [hPlayerXPos], a
+	ld a, [hl]
+	ld [$ffc9], a
+	sub a
+	ld [$ffc5], a
+.asm_1d93
+	bit 5, e
+	jr z, .asm_1d9b
+	set 5, b
+	jr .asm_1da1
+.asm_1d9b
+	bit 4, e
+	jr z, .asm_1da1
+	res 5, b
+.asm_1da1
+	ld a, [$defa]
+	rra
+	jr nc, .asm_1dc6
+	bit 5, b
+	ld a, [$ff8a]
+	jr z, .asm_1db4
+	inc a
+	jr z, .asm_1dc6
+	ld a, $e0
+	jr .asm_1db9
+.asm_1db4
+	dec a
+	jr z, .asm_1dc6
+	ld a, $20
+.asm_1db9
+	ld [$ffc5], a
+	ld a, $04
+	call Func_3e1b
+	ld hl, $2dcd
+	call Func_2d62
+.asm_1dc6
+	jp Func_19e5
+
+Func_1dc9:
+	call Func_2324
+	sub a
+	bit 6, e
+	jr z, .asm_1dd5
+	ld a, $f4
+	jr .asm_1ddb
+.asm_1dd5
+	bit 7, e
+	jr z, .asm_1ddb
+	ld a, $0c
+.asm_1ddb
+	ld [$ffc6], a
+	ld hl, $77c9
+	bit 7, b
+	jr z, .asm_1de7
+	ld hl, $77ec
+.asm_1de7
+	and a
+	ld a, $0c
+	jr z, .asm_1df0
+	ld a, [hPlayerYPos]
+	and $1c
+.asm_1df0
+	add l
+	ld [$ffd6], a
+	ld a, h
+	adc $00
+	ld [$ffd7], a
+	sub a
+	ld [$ffd5], a
+	bit 4, b
+	jr nz, .asm_1e14
+	bit 1, e
+	jr z, .asm_1e19
+	bit 6, b
+	jr nz, .asm_1e1b
+	ld a, $06
+	ld [$ffb2], a
+	ld a, $0b
+	call Func_3e1b
+	set 0, b
+	set 6, b
+.asm_1e14
+	sub a
+	ld [$ffb0], a
+	jr .asm_1e1b
+.asm_1e19
+	res 6, b
+.asm_1e1b
+	jp Func_19e5
+
+Func_1e1e:
+	sub a
+	ld [$ffc4], a
+	ld [$ff8a], a
+	ld hl, hPlayerXPos
+	ld a, [$ffba]
+	sub [hl]
+	inc l
+	ld a, [$ffbb]
+	sbc [hl]
+	jr c, .asm_1e36
+	ld hl, $ffba
+	ld a, $ff
+	jr .asm_1e45
+.asm_1e36
+	ld hl, $ffbc
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc l
+	ld a, [$ffc9]
+	sbc [hl]
+	dec l
+	ld a, $01
+	jr c, .asm_1e50
+.asm_1e45
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [hPlayerXPos], a
+	ld a, [hl]
+	ld [$ffc9], a
+	sub a
+	ld [$ffc5], a
+.asm_1e50
+	bit 5, e
+	jr z, .asm_1e58
+	set 5, b
+	jr .asm_1e5e
+.asm_1e58
+	bit 4, e
+	jr z, .asm_1e5e
+	res 5, b
+.asm_1e5e
+	ld a, [$defa]
+	rra
+	jr nc, .asm_1e83
+	bit 5, b
+	ld a, [$ff8a]
+	jr z, .asm_1e71
+	inc a
+	jr z, .asm_1e83
+	ld a, $f0
+	jr .asm_1e76
+.asm_1e71
+	dec a
+	jr z, .asm_1e83
+	ld a, $10
+.asm_1e76
+	ld [$ffc5], a
+	ld a, $04
+	call Func_3e1b
+	ld hl, $2dd5
+	call Func_2d62
+.asm_1e83
+	jp Func_19e5
+
+Func_1e86:
+	call Func_2324
+	jp Func_19e5
+
+Func_1e8c:
+	call Func_2324
+	ld a, [$ffc0]
+	and a
+	jr z, .asm_1e9a
+	dec a
+	ld [$ffc0], a
+	jp .asm_1f70
+.asm_1e9a
+	ld a, [$ffc1]
+	and a
+	jr z, .asm_1eb6
+	dec a
+	ld [$ffc1], a
+	jp nz, .asm_1f70
+	sub a
+	ld [$ffb0], a
+	ld hl, hPlayerYPos
+	ld a, [hl]
+	sub $01
+	ld [hli], a
+	ld a, [hl]
+	sbc $00
+	ld [hl], a
+	jp .asm_1f70
+.asm_1eb6
+	sub a
+	bit 5, e
+	jr z, .asm_1ec1
+	set 5, b
+	ld a, $f4
+	jr .asm_1ec9
+.asm_1ec1
+	bit 4, e
+	jr z, .asm_1ec9
+	res 5, b
+	ld a, $0c
+.asm_1ec9
+	ld [$ffc5], a
+	ld hl, $786e
+	ld a, [hPlayerXPos]
+	bit 2, a
+	jr z, .asm_1ed7
+	ld hl, $7872
+.asm_1ed7
+	ld a, l
+	ld [$ffd6], a
+	ld a, h
+	ld [$ffd7], a
+	sub a
+	ld [$ffd5], a
+	bit 1, c
+	jr z, .asm_1ef2
+	bit 6, e
+	jr z, .asm_1ef2
+	ld a, $2a
+	ld [$ffc1], a
+	ld hl, $2de1
+	call Func_2d62
+.asm_1ef2
+	push bc
+	push de
+	ld hl, hPlayerXPos
+	ld a, [hli]
+	and $f0
+	ld c, a
+	ld b, [hl]
+	ld hl, $ffaa
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, $05
+	ld [$2000], a
+	ld a, [hli]
+	ld [$ff8a], a
+.asm_1f0a
+	ld a, [$ff8a]
+	and a
+	jr z, .asm_1f6e
+	dec a
+	ld [$ff8a], a
+	ld a, [hli]
+	ld d, a
+	and $0f
+	swap a
+	ld e, a
+	cp c
+	jr nz, .asm_1f25
+	ld a, d
+	and $f0
+	swap a
+	ld d, a
+	cp b
+	jr z, .asm_1f28
+.asm_1f25
+	inc hl
+	jr .asm_1f0a
+.asm_1f28
+	ld a, [hl]
+	ld [$ff8b], a
+	ld hl, hPlayerYPos
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	dec de
+	ld a, e
+	and $f0
+	ld e, a
+	push bc
+	push de
+	ld h, b
+	ld l, c
+	add hl, hl
+	add hl, hl
+	ld b, h
+	ld h, d
+	ld l, e
+	add hl, hl
+	add hl, hl
+	ld l, h
+	ld h, $c5
+	sla l
+	ld a, [hli]
+	ld h, [hl]
+	sla b
+	add b
+	ld l, a
+	jr nc, .asm_1f4f
+	inc h
+.asm_1f4f
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, e
+	and $30
+	rrca
+	rrca
+	add l
+	ld l, a
+	ld a, c
+	and $30
+	swap a
+	add l
+	ld l, a
+	ld a, [$ff8b]
+	ld [hl], a
+	pop de
+	pop bc
+	call $2a8c
+	call $2ae9
+	call $2b07
+.asm_1f6e
+	pop de
+	pop bc
+.asm_1f70
+	jp Func_19e5
+
+Func_1f73:
+	sub a
+	ld [$ffc4], a
+	ld [$ff8a], a
+	ld hl, hPlayerXPos
+	ld a, [$ffba]
+	sub [hl]
+	inc l
+	ld a, [$ffbb]
+	sbc [hl]
+	jr c, .asm_1f8b
+	ld hl, $ffba
+	ld a, $ff
+	jr .asm_1f9a
+.asm_1f8b
+	ld hl, $ffbc
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc l
+	ld a, [$ffc9]
+	sbc [hl]
+	dec l
+	ld a, $01
+	jr c, .asm_1fa5
+.asm_1f9a
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [hPlayerXPos], a
+	ld a, [hl]
+	ld [$ffc9], a
+	sub a
+	ld [$ffc5], a
+.asm_1fa5
+	ld a, [$ff8a]
+	bit 5, e
+	jr z, .asm_1fb4
+	set 5, b
+	inc a
+	jr z, .asm_1fc1
+	ld a, $f0
+	jr .asm_1fbf
+.asm_1fb4
+	bit 4, e
+	jr z, .asm_1fc1
+	res 5, b
+	dec a
+	jr z, .asm_1fc1
+	ld a, $10
+.asm_1fbf
+	ld [$ffc5], a
+.asm_1fc1
+	ld a, [hFrameCounter]
+	and $0f
+	jr nz, .asm_1fcc
+	ld a, $05
+	call Func_3e1b
+.asm_1fcc
+	jp Func_19e5
+
+Func_1fcf:
+	call Func_2324
+	bit 5, e
+	jr z, .asm_1fda
+	set 5, b
+	jr .asm_1fe0
+.asm_1fda
+	bit 4, e
+	jr z, .asm_1fe0
+	res 5, b
+.asm_1fe0
+	jp Func_19e5
+
+Func_1fe3:
+	sub a
+	ld [$ffc4], a
+	ld [$ff8a], a
+	ld hl, hPlayerXPos
+	ld a, [$ffba]
+	sub [hl]
+	inc l
+	ld a, [$ffbb]
+	sbc [hl]
+	jr c, .asm_1ffb
+	ld hl, $ffba
+	ld a, $ff
+	jr .asm_200a
+.asm_1ffb
+	ld hl, $ffbc
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc l
+	ld a, [$ffc9]
+	sbc [hl]
+	dec l
+	ld a, $01
+	jr c, .asm_2015
+.asm_200a
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [hPlayerXPos], a
+	ld a, [hl]
+	ld [$ffc9], a
+	sub a
+	ld [$ffc5], a
+.asm_2015
+	bit 5, e
+	jr z, .asm_201d
+	set 5, b
+	jr .asm_2023
+.asm_201d
+	bit 4, e
+	jr z, .asm_2023
+	res 5, b
+.asm_2023
+	ld a, [$defa]
+	rra
+	jr nc, .asm_2042
+	bit 5, b
+	ld a, [$ff8a]
+	jr z, .asm_2036
+	inc a
+	jr z, .asm_2042
+	ld a, $f8
+	jr .asm_203b
+.asm_2036
+	dec a
+	jr z, .asm_2042
+	ld a, $08
+.asm_203b
+	ld [$ffc5], a
+	ld a, $04
+	call Func_3e1b
+.asm_2042
+	jp Func_19e5
+
+Func_2045:
+	sub a
+	ld [$ffc4], a
+	ld [$ff8a], a
+	ld hl, $ffbc
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc l
+	ld a, [$ffc9]
+	sbc [hl]
+	dec l
+	jr c, .asm_2064
+	ld a, $01
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [hPlayerXPos], a
+	ld a, [hl]
+	ld [$ffc9], a
+	sub a
+	ld [$ffc5], a
+.asm_2064
+	ld a, [$defa]
+	rra
+	jr nc, .asm_207e
+	ld a, [$ff8a]
+	dec a
+	jr z, .asm_207e
+	ld a, $28
+	ld [$ffc5], a
+	ld a, $04
+	call Func_3e1b
+	ld hl, $2df9
+	call Func_2d62
+.asm_207e
+	jp Func_19e5
+
+Func_2081:
+	call Func_2324
+	ld a, [$ffd6]
+	cp $3b
+	jp nz, .asm_2121
+	ld a, [$ffd7]
+	cp $78
+	jp nz, .asm_2121
+	sub a
+	ld [$ff8a], a
+	ld a, $02
+	ld [$ff8b], a
+.asm_2099
+	ld hl, $ffba
+	ld a, [hPlayerXPos]
+	cp [hl]
+	inc hl
+	jr nz, .asm_20ad
+	ld a, [$ffc9]
+	cp [hl]
+	jr nz, .asm_20ad
+	ld hl, $ff8a
+	inc [hl]
+	jr .asm_20d4
+.asm_20ad
+	ld hl, $ffba
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc hl
+	ld a, [$ffc9]
+	sbc [hl]
+	ld hl, hPlayerXPos
+	jr c, .asm_20c6
+	ld a, [hl]
+	sub $01
+	ld [hli], a
+	ld a, [hl]
+	sbc $00
+	ld [hl], a
+	jr .asm_20ce
+.asm_20c6
+	ld a, [hl]
+	add $01
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hl], a
+.asm_20ce
+	ld hl, $ff8b
+	dec [hl]
+	jr nz, .asm_2099
+.asm_20d4
+	ld a, $02
+	ld [$ff8b], a
+.asm_20d8
+	ld hl, $ffbc
+	ld a, [hPlayerYPos]
+	cp [hl]
+	inc hl
+	jr nz, .asm_20ec
+	ld a, [$ffcb]
+	cp [hl]
+	jr nz, .asm_20ec
+	ld hl, $ff8a
+	inc [hl]
+	jr .asm_2113
+.asm_20ec
+	ld hl, $ffbc
+	ld a, [hPlayerYPos]
+	sub [hl]
+	inc hl
+	ld a, [$ffcb]
+	sbc [hl]
+	ld hl, hPlayerYPos
+	jr c, .asm_2105
+	ld a, [hl]
+	sub $01
+	ld [hli], a
+	ld a, [hl]
+	sbc $00
+	ld [hl], a
+	jr .asm_210d
+.asm_2105
+	ld a, [hl]
+	add $01
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hl], a
+.asm_210d
+	ld hl, $ff8b
+	dec [hl]
+	jr nz, .asm_20d8
+.asm_2113
+	ld a, [$ff8a]
+	cp $02
+	jr nz, .asm_2142
+	ld hl, $2e01
+	call Func_2d62
+	jr .asm_2142
+.asm_2121
+	ld a, [$ffd6]
+	sub $4d
+	ld a, [$ffd7]
+	sbc $79
+	jr c, .asm_2142
+	bit 7, b
+	ld a, [$ffd6]
+	jr nz, .asm_2139
+	sub $4d
+	cp $0c
+	jr c, .asm_2142
+	jr .asm_213f
+.asm_2139
+	sub $60
+	cp $0c
+	jr c, .asm_2142
+.asm_213f
+	sub a
+	ld [$ffb0], a
+.asm_2142
+	jp Func_19e5
+
+Func_2145:
+	sub a
+	ld [$ffc4], a
+	ld [$ff8a], a
+	ld hl, hPlayerXPos
+	ld a, [$ffba]
+	sub [hl]
+	inc l
+	ld a, [$ffbb]
+	sbc [hl]
+	jr c, .asm_215d
+	ld hl, $ffba
+	ld a, $ff
+	jr .asm_216c
+.asm_215d
+	ld hl, $ffbc
+	ld a, [hPlayerXPos]
+	sub [hl]
+	inc l
+	ld a, [$ffc9]
+	sbc [hl]
+	dec l
+	ld a, $01
+	jr c, .asm_2177
+.asm_216c
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [hPlayerXPos], a
+	ld a, [hl]
+	ld [$ffc9], a
+	sub a
+	ld [$ffc5], a
+.asm_2177
+	bit 5, e
+	jr z, .asm_2183
+	ld a, [$ffeb]
+	set 7, a
+	ld [$ffeb], a
+	jr .asm_218d
+.asm_2183
+	bit 4, e
+	jr z, .asm_218d
+	ld a, [$ffeb]
+	res 7, a
+	ld [$ffeb], a
+.asm_218d
+	ld a, [$ffeb]
+	add a
+	ld a, [$ff8a]
+	jr nc, .asm_219b
+	inc a
+	jr z, .asm_21a2
+	ld a, $f0
+	jr .asm_21a0
+.asm_219b
+	dec a
+	jr z, .asm_21a2
+	ld a, $10
+.asm_21a0
+	ld [$ffc5], a
+.asm_21a2
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_21bf
+	ld hl, $ffeb
+	bit 7, [hl]
+	jr z, .asm_21b7
+	ld a, [hl]
+	and $7f
+	jr z, .asm_21bf
+	dec [hl]
+	jr .asm_21bf
+.asm_21b7
+	ld a, [hl]
+	and $7f
+	cp $08
+	jr z, .asm_21bf
+	inc [hl]
+.asm_21bf
+	ld hl, $7973
+	bit 7, b
+	jr z, .asm_21c9
+	ld hl, $799a
+.asm_21c9
+	ld a, [$ffeb]
+	and $7f
+	res 5, b
+	cp $05
+	jr c, .asm_21d5
+	set 5, b
+.asm_21d5
+	add a
+	add a
+	add l
+	ld [$ffd6], a
+	ld a, h
+	adc $00
+	ld [$ffd7], a
+	sub a
+	ld [$ffd5], a
+	ld a, [$ffbe]
+	ld l, a
+	ld a, [$ffbf]
+	ld h, a
+	ld a, [hPlayerYPos]
+	sub l
+	ld a, [$ffcb]
+	sbc h
+	ld a, $fd
+	jr c, .asm_21f4
+	ld a, $f8
+.asm_21f4
+	ld [$ffc6], a
+	push bc
+	push de
+	ld a, [hPlayerXPos]
+	ld c, a
+	ld a, [hPlayerYPos]
+	ld b, a
+	ld a, [$ffeb]
+	add a
+	jr c, .asm_221a
+	add $48
+	ld l, a
+	ld a, $22
+	adc $00
+	ld h, a
+	ld a, [hli]
+	add c
+	sub $07
+	ld c, a
+	ld a, [hl]
+	add b
+	add $09
+	ld b, a
+	ld hl, $51
+	jr .asm_222f
+.asm_221a
+	add $5a
+	ld l, a
+	ld a, $22
+	adc $00
+	ld h, a
+	ld a, [hli]
+	add c
+	add $0a
+	ld c, a
+	ld a, [hl]
+	add b
+	add $07
+	ld b, a
+	ld hl, $41
+.asm_222f
+	ld a, [hFrameCounter]
+	bit 2, a
+	jr z, .asm_2238
+	call Func_3c98
+.asm_2238
+	pop de
+	pop bc
+	ld a, [hFrameCounter]
+	and $0f
+	jr nz, .asm_2245
+	ld a, $05
+	call Func_3e1b
+.asm_2245
+	jp Func_19e5
+
+INCBIN "baserom.gbc", $2248, $226c - $2248
+
+Func_226c:
+	call Func_2324
+	res 4, b
+	set 5, b
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_2285
+	ld a, [$ffb7]
+	dec a
+	ld [$ffb7], a
+	jr nz, .asm_2285
+	sub a
+	ld [$ffb0], a
+	jr .asm_22c6
+.asm_2285
+	bit 7, e
+	jr z, .asm_228d
+	ld a, $10
+	jr .asm_2293
+.asm_228d
+	bit 6, e
+	jr z, .asm_2295
+	ld a, $f0
+.asm_2293
+	ld [$ffc6], a
+.asm_2295
+	ld a, $f0
+	bit 5, e
+	jr z, .asm_229f
+	ld a, $e0
+	jr .asm_22a5
+.asm_229f
+	bit 4, e
+	jr z, .asm_22a5
+	ld a, $10
+.asm_22a5
+	ld [$ffc5], a
+	ld hl, hPlayerYPos
+	ld a, [hli]
+	sub $30
+	ld a, [hld]
+	sbc $00
+	jr nc, .asm_22b9
+	ld a, $30
+	ld [hli], a
+	sub a
+	ld [hl], a
+	jr .asm_22c6
+.asm_22b9
+	ld a, [hli]
+	sub $7c
+	ld a, [hld]
+	sbc $00
+	jr c, .asm_22c6
+	ld a, $7c
+	ld [hli], a
+	sub a
+	ld [hl], a
+.asm_22c6
+	jp Func_19e5
+
+Func_22c9:
+	ld hl, hPlayerYPos
+	ld a, [$ffba]
+	sub [hl]
+	inc l
+	ld a, [$ffbb]
+	sbc [hl]
+	jr c, .asm_22e0
+	ld a, [$ffbb]
+	ld [hld], a
+	ld a, [$ffba]
+	ld [hl], a
+	sub a
+	ld [$ffc6], a
+	jr .asm_22f5
+.asm_22e0
+	ld a, [$defa]
+	rra
+	jr nc, .asm_22f5
+	ld a, $e0
+	ld [$ffc6], a
+	ld a, $04
+	call Func_3e1b
+	ld hl, $2e0d
+	call Func_2d62
+.asm_22f5
+	push bc
+	push de
+	ld a, $05
+	ld [$2000], a
+	ld hl, $78ab
+	bit 4, b
+	jr nz, .asm_2314
+	ld a, [hFrameCounter]
+	and $0c
+	srl a
+	add $a3
+	ld l, a
+	ld a, $78
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+.asm_2314
+	ld a, [hPlayerYPos]
+	ld b, a
+	ld a, [hPlayerXPos]
+	ld c, a
+	call Func_3c98
+	pop de
+	pop bc
+	res 4, b
+	jp Func_19e5
+
+Func_2324:
+	ld d, $00
 Func_2326:
 	sub a
 	ld [$ffaf], a
@@ -1243,7 +2221,1108 @@ Func_2342:
 	ld [$ffad], a
 	ret
 
-INCBIN "baserom.gbc", $235e, $29e9 - $235e
+Func_235e:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld hl, hPlayerXPos
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ld hl, $ffad
+	ld a, [hld]
+	and $10
+	ld [hli], a
+	ld a, [hl]
+	and $e7
+	ld [hli], a
+	res 1, [hl]
+	sub a
+	ld [$ffd4], a
+	ld a, [$ffb0]
+	cp $21
+	ret z
+	ld a, [$ffb0]
+	cp $12
+	jr nz, .asm_2399
+	ld hl, $4
+	add hl, bc
+	ld b, h
+	ld c, l
+	call Func_28fd
+	ld hl, $fffc
+	add hl, bc
+	ld b, h
+	ld c, l
+	jp .asm_2583
+.asm_2399
+	bit 7, b
+	jr z, .asm_23a2
+	ld hl, $0
+	jr .asm_23e8
+.asm_23a2
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jr z, .asm_23b7
+	ld a, [hCameraXOffset]
+	ld l, a
+	ld a, [$ffa1]
+	ld h, a
+	ld a, l
+	cp c
+	jr nz, .asm_23c1
+	ld a, h
+	cp b
+	jr nz, .asm_23c1
+	jr .asm_23e8
+.asm_23b7
+	ld a, [$ff96]
+	add $10
+	ld l, a
+	ld a, [$ff97]
+	adc $00
+	ld h, a
+.asm_23c1
+	ld a, c
+	sub l
+	ld a, b
+	sbc h
+	jr c, .asm_23e8
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jr z, .asm_23d8
+	ld a, [hCameraXOffset]
+	add $90
+	ld l, a
+	ld a, [$ffa1]
+	adc $00
+	ld h, a
+	jr .asm_23e2
+.asm_23d8
+	ld a, [$ff98]
+	sub $18
+	ld l, a
+	ld a, [$ff99]
+	sbc $00
+	ld h, a
+.asm_23e2
+	ld a, l
+	sub c
+	ld a, h
+	sbc b
+	jr nc, .asm_23ea
+.asm_23e8
+	ld b, h
+	ld c, l
+.asm_23ea
+	dec de
+	bit 7, d
+	jr z, .asm_23f4
+	ld hl, $1
+	jr .asm_2420
+.asm_23f4
+	inc de
+	ld a, [$ff9e]
+	add $10
+	ld l, a
+	ld a, [$ff9f]
+	adc $00
+	ld h, a
+	ld a, e
+	sub l
+	ld a, d
+	sbc h
+	jr c, .asm_2420
+	ld a, [$ff9c]
+	add $10
+	ld l, a
+	ld a, [$ff9d]
+	adc $00
+	ld h, a
+	ld a, l
+	sub e
+	ld a, h
+	sbc d
+	jr nc, .asm_2427
+	call Func_28c4
+	call Func_1ae2
+	ld d, h
+	ld e, l
+	jp .asm_2583
+.asm_2420
+	ld d, h
+	ld e, l
+	sub a
+	ld [$ffc6], a
+	ld [$ffcc], a
+.asm_2427
+	ld a, [$ffc6]
+	add a
+	jr nc, .asm_244a
+	ld hl, $ffe2
+	add hl, de
+	ld d, h
+	ld e, l
+	call Func_258e
+	ld hl, $8
+	add hl, bc
+	ld b, h
+	ld c, l
+	call Func_258e
+	ld hl, $1e
+	add hl, de
+	ld d, h
+	ld e, l
+	ld hl, $fff8
+	add hl, bc
+	ld b, h
+	ld c, l
+.asm_244a
+	ld a, [$ffc5]
+	add a
+	jr nc, .asm_2469
+	ld hl, $8
+	add hl, bc
+	ld b, h
+	ld c, l
+	ld a, $ff
+	call Func_2617
+	ld hl, $fff8
+	add hl, bc
+	ld b, h
+	ld c, l
+	sub a
+	call Func_2617
+	call Func_28db
+	jr .asm_2481
+.asm_2469
+	sub a
+	call Func_2617
+	ld hl, $8
+	add hl, bc
+	ld b, h
+	ld c, l
+	ld a, $ff
+	call Func_2617
+	call Func_28db
+	ld hl, $fff8
+	add hl, bc
+	ld b, h
+	ld c, l
+.asm_2481
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jp nz, .asm_2583
+	ld a, [$ffb0]
+	and a
+	jp nz, .asm_2583
+	ld a, [$ffad]
+	bit 2, a
+	jp nz, .asm_2583
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, .asm_249f
+	cp $38
+	jp nc, .asm_2583
+.asm_249f
+	ld hl, $4
+	add hl, bc
+	ld b, h
+	ld c, l
+	inc de
+	call Func_299f
+	dec de
+	cp $1e
+	jr z, .asm_24f5
+	cp $21
+	jr z, .asm_24f5
+	cp $24
+	jr z, .asm_24f5
+	cp $15
+	jr nz, .asm_2529
+	ld a, c
+	and $0f
+	cp $04
+	jr c, .asm_2529
+	cp $0c
+	jr nc, .asm_2529
+	ld a, [$ffad]
+	bit 4, a
+	jr z, .asm_2529
+	ld a, [$def9]
+	add a
+	jr nc, .asm_2529
+	ld a, [$ffaf]
+	bit 4, a
+	jr nz, .asm_2529
+	ld a, e
+	add $0e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, c
+	and $f0
+	add $09
+	ld c, a
+	ld a, $09
+	ld [$ffb0], a
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	call Func_2326
+	jp .asm_257d
+.asm_24f5
+	ld a, [$ffad]
+	bit 4, a
+	jr z, .asm_2529
+	ld a, [$def9]
+	add a
+	jr nc, .asm_2529
+	ld a, [$ffaf]
+	bit 4, a
+	jr nz, .asm_2529
+	ld a, [$ffad]
+	add a
+	jr c, .asm_2529
+	inc de
+	ld a, $12
+	ld [$ffb0], a
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld hl, $2ddd
+	call Func_2d62
+	ld a, $58
+	ld [$ffc0], a
+	sub a
+	ld [$ffc1], a
+	call Func_2326
+	jr .asm_257d
+.asm_2529
+	ld hl, $ffe2
+	add hl, de
+	ld d, h
+	ld e, l
+	call Func_299f
+	ld hl, $ffad
+	cp $15
+	jr z, .asm_253d
+	cp $12
+	jr nz, .asm_2571
+.asm_253d
+	ld a, c
+	and $0f
+	cp $04
+	jr c, .asm_2571
+	cp $0c
+	jr nc, .asm_2571
+	bit 4, [hl]
+	jr z, .asm_255c
+	ld a, [$def9]
+	bit 6, a
+	jr z, .asm_2571
+	ld a, [$ffaf]
+	bit 4, a
+	jr nz, .asm_2571
+	res 0, [hl]
+	dec de
+.asm_255c
+	bit 0, [hl]
+	jr nz, .asm_2577
+	ld a, c
+	and $f0
+	add $09
+	ld c, a
+	ld a, $09
+	ld [$ffb0], a
+	set 6, [hl]
+	call Func_2326
+	jr .asm_2577
+.asm_2571
+	ld a, [$ffad]
+	res 0, a
+	ld [$ffad], a
+.asm_2577
+	ld hl, $1e
+	add hl, de
+	ld d, h
+	ld e, l
+.asm_257d
+	ld hl, $fffc
+	add hl, bc
+	ld b, h
+	ld c, l
+.asm_2583:
+	ld hl, hPlayerXPos
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	ret
+
+Func_258e:
+	call Func_299f
+	add (.jumpTable & $ff)
+	ld l, a
+	ld a, (.jumpTable >> 8)
+	adc $00
+	ld h, a
+	jp hl
+.jumpTable
+	jp Func_25ef
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25da
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25da
+	jp Func_25fb
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+	jp Func_25d9
+
+Func_25d9:
+	ret
+
+Func_25da:
+	ld a, e
+	or $0f
+	ld l, a
+	ld h, d
+	inc hl
+	ld a, [$ffcf]
+	sub l
+	jr c, .asm_25e7
+	sub $1e
+.asm_25e7
+	ld a, [$ffd0]
+	sbc h
+	ret c
+	ld d, h
+	ld e, l
+	jr asm_260d
+Func_25ef:
+	ld a, [$ffb0]
+	cp $09
+	ret nz
+	ld a, e
+	or $0f
+	ld e, a
+	inc de
+	jr asm_260d
+Func_25fb:
+	ld a, [$ffb6]
+	and a
+	jr nz, Func_25da
+	ld a, [$ffb0]
+	and a
+	jr nz, Func_25da
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+	jr Func_25da
+asm_260d:
+	sub a
+	ld [$ffc6], a
+	ld [$ffcc], a
+	ld [$ffb2], a
+	ld [$ffb3], a
+	ret
+
+Func_2617:
+	ld [$ffd3], a
+	call Func_299f
+	add (.jumpTable & $ff)
+	ld l, a
+	ld a, (.jumpTable >> 8)
+	adc 0
+	ld h, a
+	jp hl
+.jumpTable
+	jp Func_2791
+	jp Func_2665
+	jp Func_2665
+	jp Func_2664
+	jp Func_2664
+	jp Func_267a
+	jp Func_2664
+	jp Func_2698
+	jp Func_2665
+	jp Func_269f
+	jp Func_2665
+	jp Func_2665
+	jp Func_2665
+	jp Func_26b1
+	jp Func_26d9
+	jp Func_2704
+	jp Func_2727
+	jp Func_274d
+	jp Func_2772
+	jp Func_2664
+	jp Func_2889
+
+Func_2664:
+	ret
+
+Func_2665:
+	ld a, [$ffcf]
+	ld l, a
+	ld a, [$ffd0]
+	ld h, a
+	ld a, e
+	and $f0
+	sub l
+	ld a, d
+	sbc h
+	ret c
+	ld a, e
+	and $f0
+	ld e, a
+	dec de
+	jp Func_28b7
+
+Func_267a:
+	ld a, e
+	and $0f
+	cp $08
+	ret c
+	ld a, [$ffcf]
+	ld l, a
+	ld a, [$ffd0]
+	ld h, a
+	ld a, e
+	and $f0
+	add $08
+	sub l
+	ld a, d
+	sbc h
+	ret c
+	ld a, e
+	and $f0
+	add $07
+	ld e, a
+	jp Func_28b7
+
+Func_2698:
+	ld a, [$ffb0]
+	cp $09
+	jr nz, Func_2665
+	ret
+
+Func_269f:
+	ld a, [$ffb6]
+	and a
+	jr nz, Func_2665
+	ld a, [$ffb0]
+	and a
+	jr nz, Func_2665
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+	jr Func_2665
+
+Func_26b1:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	sub $10
+	cpl
+	ld l, a
+	ld a, c
+	and $0f
+	srl a
+	cp l
+	jr nc, Func_26c8
+	ld a, [$ffac]
+	and a
+	ret z
+Func_26c8:
+	ld a, c
+	and $0f
+	srl a
+	sub $0f
+	cpl
+	ld l, a
+	ld a, e
+	and $f0
+	or l
+	ld e, a
+	jp Func_28b7
+
+Func_26d9:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	sub $10
+	cpl
+	ld l, a
+	ld a, c
+	and $0f
+	srl a
+	add $08
+	cp l
+	jr nc, Func_26f2
+	ld a, [$ffac]
+	and a
+	ret z
+Func_26f2:
+	ld a, c
+	and $0f
+	srl a
+	sub $08
+	cpl
+	ld l, a
+	ld a, e
+	and $f0
+	or l
+	ld e, a
+	dec de
+	jp Func_28b7
+
+Func_2704:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, c
+	and $0f
+	srl a
+	ld l, a
+	ld a, e
+	and $0f
+	cp l
+	jr nc, Func_2718
+	ld a, [$ffac]
+	and a
+	ret z
+Func_2718:
+	ld a, c
+	and $0f
+	srl a
+	ld l, a
+	ld a, e
+	and $f0
+	or l
+	ld e, a
+	dec de
+	jp Func_28b7
+
+Func_2727:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, c
+	and $0f
+	srl a
+	add $08
+	ld l, a
+	ld a, e
+	and $0f
+	cp l
+	jr nc, Func_273d
+	ld a, [$ffac]
+	and a
+	ret z
+Func_273d:
+	ld a, c
+	and $0f
+	srl a
+	add $07
+	ld l, a
+	ld a, e
+	and $f0
+	or l
+	ld e, a
+	jp Func_28b7
+
+Func_274d:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	sub $10
+	cpl
+	ld l, a
+	ld a, c
+	and $0f
+	cp l
+	jr nc, Func_2762
+	ld a, [$ffac]
+	and a
+	ret z
+Func_2762:
+	ld a, c
+	and $0f
+	sub $10
+	cpl
+	ld l, a
+	ld a, e
+	and $f0
+	or l
+	ld e, a
+	dec de
+	jp Func_28b7
+
+Func_2772:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, c
+	and $0f
+	ld l, a
+	ld a, e
+	and $0f
+	cp l
+	jr nc, Func_2784
+	ld a, [$ffac]
+	and a
+	ret z
+Func_2784:
+	ld a, c
+	and $0f
+	ld l, a
+	ld a, e
+	and $f0
+	or l
+	ld e, a
+	dec de
+	jp Func_28b7
+
+Func_2791:
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	ret nz
+	push de
+	ld a, e
+	and $f0
+	ld e, a
+	dec de
+	call Func_299f
+	pop de
+	cp $33
+	jp z, Func_283d
+	cp $36
+	jp z, Func_2863
+	cp $27
+	jp z, Func_27f1
+	cp $30
+	jp z, Func_2817
+	push de
+	ld a, e
+	or $0f
+	ld e, a
+	inc de
+	call Func_299f
+	pop de
+	cp $33
+	jp z, Func_2849
+	cp $36
+	jp z, Func_286f
+	cp $2a
+	jp z, Func_27fd
+	cp $2d
+	jp z, Func_2823
+	cp $06
+	jr z, .asm_27d8
+	cp $03
+	ret nz
+.asm_27d8
+	ld a, [$ffd4]
+	inc a
+	ld [$ffd4], a
+	cp $02
+	ret nz
+	ld a, [$ffac]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	cp $0d
+	ret c
+	ld a, e
+	or $0f
+	ld e, a
+	jp Func_28b7
+
+Func_27f1:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, e
+	and $f0
+	ld e, a
+	dec de
+	jp Func_26c8
+
+Func_27fd:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, [$ffac]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	cp $0e
+	ret c
+	ld a, [$ffc6]
+	add a
+	ret c
+	ld a, e
+	or $0f
+	ld e, a
+	inc de
+	jp Func_26f2
+
+Func_2817:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, e
+	and $f0
+	ld e, a
+	dec de
+	jp Func_273d
+
+Func_2823:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, [$ffac]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	cp $0e
+	ret c
+	ld a, [$ffc6]
+	add a
+	ret c
+	ld a, e
+	or $0f
+	ld e, a
+	inc de
+	jp Func_2718
+
+Func_283d:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, e
+	and $f0
+	ld e, a
+	dec de
+	jp Func_2762
+
+Func_2849:
+	ld a, [$ffd3]
+	and a
+	ret z
+	ld a, [$ffac]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	cp $0d
+	ret c
+	ld a, [$ffc6]
+	add a
+	ret c
+	ld a, e
+	or $0f
+	ld e, a
+	inc de
+	jp Func_2762
+
+Func_2863:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, e
+	and $f0
+	ld e, a
+	dec de
+	jp Func_2784
+
+Func_286f:
+	ld a, [$ffd3]
+	and a
+	ret nz
+	ld a, [$ffac]
+	and a
+	ret z
+	ld a, e
+	and $0f
+	cp $0d
+	ret c
+	ld a, [$ffc6]
+	add a
+	ret c
+	ld a, e
+	or $0f
+	ld e, a
+	inc de
+	jp Func_2784
+
+Func_2889:
+	ld a, e
+	and $0f
+	cp $08
+	ret c
+	ld a, [$ffcf]
+	ld l, a
+	ld a, [$ffd0]
+	ld h, a
+	ld a, e
+	and $f0
+	add $08
+	sub l
+	ld a, d
+	sbc h
+	ret c
+	ld a, e
+	and $f0
+	add $07
+	ld e, a
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_28b4
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_28b4
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_28b4
+	jp Func_28b7
+
+Func_28b7:
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, Func_28c4
+	cp $38
+	jr c, Func_28c4
+	call Func_1ae2
+Func_28c4:
+	sub a
+	ld [$ffc6], a
+	ld [$ffb2], a
+	ld [$ffb3], a
+	ld a, $f0
+	ld [$ffcc], a
+	ld a, [$ffad]
+	set 4, a
+	ld [$ffad], a
+	sub a
+	ld [$ffd1], a
+	ld [$ffd2], a
+	ret
+
+Func_28db:
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jr z, .asm_28e5
+	ld a, [$ffad]
+	bit 2, a
+	ret nz
+.asm_28e5
+	push de
+	call Func_28fd
+	ld hl, $fff1
+	add hl, de
+	ld d, h
+	ld e, l
+	call Func_28fd
+	ld hl, $fff1
+	add hl, de
+	ld d, h
+	ld e, l
+	call Func_28fd
+	pop de
+	ret
+
+Func_28fd:
+	call Func_299f
+	add (.jumpTable & $ff)
+	ld l, a
+	ld a, (.jumpTable >> 8)
+	adc 0
+	ld h, a
+	jp hl
+.jumpTable
+	jp Func_2948
+	jp Func_2948
+	jp Func_2949
+	jp Func_2949
+	jp Func_2949
+	jp Func_2948
+	jp Func_2948
+	jp Func_2948
+	jp Func_2949
+	jp Func_296c
+	jp Func_297e
+	jp Func_2985
+	jp Func_2992
+	jp Func_2948
+	jp Func_2948
+	jp Func_2948
+	jp Func_2948
+	jp Func_2948
+	jp Func_2948
+	jp Func_2949
+	jp Func_2948
+
+Func_2948:
+	ret
+
+Func_2949:
+	ld a, [$ffc5]
+	add a
+	jr c, .asm_2957
+	ld a, c
+	and $f0
+	ld c, a
+	dec bc
+	ld a, $f0
+	jr .asm_295d
+.asm_2957
+	ld a, c
+	or $0f
+	ld c, a
+	inc bc
+	sub a
+.asm_295d
+	ld [$ffc7], a
+	ld hl, $ffc5
+	sub a
+	ld [hld], a
+	ld [hl], a
+	ld a, [$ffad]
+	set 3, a
+	ld [$ffad], a
+	ret
+
+Func_296c:
+	ld a, [$ffb6]
+	and a
+	jr nz, Func_2949
+	ld a, [$ffb0]
+	and a
+	jr nz, Func_2949
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+	jr Func_2949
+
+Func_297e:
+	ld a, [$ffae]
+	set 1, a
+	ld [$ffae], a
+	ret
+
+Func_2985:
+	ld a, c
+	and $0f
+	cp $0c
+	ret nc
+	ld a, [$ffae]
+	set 1, a
+	ld [$ffae], a
+	ret
+
+Func_2992:
+	ld a, c
+	and $0f
+	cp $04
+	ret c
+	ld a, [$ffae]
+	set 1, a
+	ld [$ffae], a
+	ret
+
+Func_299f:
+	bit 7, b
+	jr nz, .asm_29e7
+	bit 7, d
+	jr nz, .asm_29e7
+	ld hl, hLevelPixelWidth
+	ld a, [hli]
+	sub c
+	ld a, [hli]
+	sbc b
+	jr c, .asm_29e7
+	ld a, [hli]
+	sub e
+	ld a, [hli]
+	sbc d
+	jr c, .asm_29e7
+	push bc
+	push de
+	ld h, b
+	ld l, c
+	add hl, hl
+	add hl, hl
+	ld b, h
+	ld h, d
+	ld l, e
+	add hl, hl
+	add hl, hl
+	ld l, h
+	ld h, $c5
+	sla l
+	ld a, [hli]
+	ld h, [hl]
+	sla b
+	add b
+	ld l, a
+	jr nc, .asm_29cf
+	inc h
+.asm_29cf
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, e
+	and $30
+	rrca
+	rrca
+	add l
+	ld l, a
+	ld a, c
+	and $30
+	swap a
+	add l
+	ld l, a
+	ld l, [hl]
+	ld h, (wMetatileCollisionAttributes >> 8)
+	ld a, [hl]
+	pop de
+	pop bc
+	ret
+.asm_29e7
+	sub a
+	ret
 
 PrepareCameraUpdate:
 	ld a, [hPaused]
@@ -4010,13 +6089,13 @@ ClearOAMBuffer:
 	add b
 	sub $79
 	cpl
-	ld hl, .asm_175c8
+	ld hl, .jumpTable
 	ld c, a
 	ld b, $00
 	add hl, bc
 	sub a
 	jp hl
-.asm_175c8
+.jumpTable
 	ld [wOAMBuffer + $9c], a
 	ld [wOAMBuffer + $98], a
 	ld [wOAMBuffer + $94], a
@@ -5080,7 +7159,7 @@ INCBIN "baserom.gbc", $1b145, $1b2c8 - $1b145
 StudioScreenData:
 	compressed_data StudioTiles, $8C80
 	compressed_data StudioMetatiles, wMetatiles
-	compressed_data StudioCollisionAttributes, wTileCollisionAttributes
+	compressed_data StudioCollisionAttributes, wMetatileCollisionAttributes
 	compressed_data StudioMap, wLevelMap
 	compressed_data StudioCeilingFloorTiles, $8840
 	compressed_data StudioCeilingFloorTilemap, $9B00
@@ -5104,7 +7183,7 @@ INCBIN "baserom.gbc", $1b785, $1bc33 - $1b785
 StudioScreenData_GBC:
 	compressed_data StudioTilesGBC, $8C80
 	compressed_data StudioMetatilesGBC, wMetatiles
-	compressed_data StudioCollisionAttributesGBC, wTileCollisionAttributes
+	compressed_data StudioCollisionAttributesGBC, wMetatileCollisionAttributes
 	compressed_data StudioMapGBC, wLevelMap
 	compressed_data StudioCeilingFloorTilesGBC, $8840
 	compressed_data StudioCeilingFloorTilemapGBC, $9B00

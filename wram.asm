@@ -6,7 +6,7 @@ wRAMStart::
 wMetatiles:: ; $c000
 	ds $400
 
-wTileCollisionAttributes:: ; $c400
+wMetatileCollisionAttributes:: ; $c400
 	ds $100
 
 wMetatileRowPointers:: ; $c500
