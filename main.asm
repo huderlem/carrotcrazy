@@ -243,7 +243,7 @@ Start_:
 
 INCBIN "baserom.gbc", $16a, $4f8 - $16a
 
-InitInfogramesCopyrightScreen:
+RunInfogramesCopyrightScreen:
 	call Func_fb4
 	call Func_3dce
 	call ResetFrameCounter
@@ -271,7 +271,7 @@ InitInfogramesCopyrightScreen:
 	call Func_3ddc
 	jr .delayFrame
 
-InitWarnerBrosCopyrightScreen:
+RunWarnerBrosCopyrightScreen:
 	call LoadWarnerBrosBannerQuadrants
 	call Func_3e51
 	call Func_3bb4
@@ -421,7 +421,7 @@ Func_d67:
 
 INCBIN "baserom.gbc", $d8b, $e5c - $d8b
 
-InitStudioCreditsScreen:
+RunStudioCreditsScreen:
 	ld bc, wInCreditsScene
 	ld a, $ff
 	ld [bc], a
@@ -438,7 +438,7 @@ InitStudioCreditsScreen:
 	ld a, $76
 	ld [bc], a
 	jr asm_e77
-InitStudioScreen:
+RunStudioScreen:
 	sub a
 	ld [wInCreditsScene], a
 asm_e77:
@@ -5049,7 +5049,7 @@ Data_1b0cc:
 	compressed_data InfogramesCopyrightTiles, $9550
 	compressed_data InfogramesCopyrightTilemap, $9800
 	db $ff
-	dw InitInfogramesCopyrightScreen
+	dw RunInfogramesCopyrightScreen
 
 Data_1b0d9:
 	compressed_data WarnerBrosCopyrightTiles, $8830
@@ -5062,7 +5062,7 @@ Data_1b0d9:
 	compressed_data WarnerBrosCopyrightLolaBunnyTiles, $c920
 	compressed_data WarnerBrosCopyrightLogoTiles, $81c0
 	db $ff
-	dw InitWarnerBrosCopyrightScreen
+	dw RunWarnerBrosCopyrightScreen
 
 INCBIN "baserom.gbc", $1b10f, $1b129 - $1b10f
 
@@ -5080,8 +5080,7 @@ INCBIN "baserom.gbc", $1b145, $1b2c8 - $1b145
 StudioScreenData:
 	compressed_data StudioTiles, $8C80
 	compressed_data StudioMetatiles, wMetatiles
-	db $0F
-	dw $7F8C, $C400
+	compressed_data StudioCollisionAttributes, wTileCollisionAttributes
 	compressed_data StudioMap, wLevelMap
 	compressed_data StudioCeilingFloorTiles, $8840
 	compressed_data StudioCeilingFloorTilemap, $9B00
@@ -5091,22 +5090,21 @@ StudioScreenData:
 
 Data_1b2ee:
 	db $ff
-	dw InitStudioScreen
+	dw RunStudioScreen
 
 INCBIN "baserom.gbc", $1b2f1, $1b77d - $1b2f1
 
 Data_1b77d:
 	compressed_data StudioCreditsTextTiles, $8340
 	db $ff
-	dw InitStudioCreditsScreen
+	dw RunStudioCreditsScreen
 
 INCBIN "baserom.gbc", $1b785, $1bc33 - $1b785
 
 StudioScreenData_GBC:
 	compressed_data StudioTilesGBC, $8C80
 	compressed_data StudioMetatilesGBC, wMetatiles
-	db $16
-	dw $4701, $C400
+	compressed_data StudioCollisionAttributesGBC, wTileCollisionAttributes
 	compressed_data StudioMapGBC, wLevelMap
 	compressed_data StudioCeilingFloorTilesGBC, $8840
 	compressed_data StudioCeilingFloorTilemapGBC, $9B00
@@ -5123,7 +5121,7 @@ Data_1bcb0:
 	compressed_data InfogramesCopyrightGBCTilemap, $9800
 	compressed_data InfogramesCopyrightGBCAttributesTilemap, $d9d5
 	db $ff
-	dw InitInfogramesCopyrightScreen
+	dw RunInfogramesCopyrightScreen
 
 INCBIN "baserom.gbc", $1bcc2, $1c000 - $1bcc2
 
@@ -5188,7 +5186,8 @@ INCBIN "baserom.gbc", $3C000, $3fceb - $3C000
 WarnerBrosCopyrightTiles:
 	INCBIN "gfx/warner_bros_copyright/background.2bpp.lz"
 
-INCBIN "baserom.gbc", $3ff8c, $40000 - $3ff8c
+StudioCollisionAttributes:
+	INCBIN "data/levels/studio_collision_attrs.bin.lz"
 
 SECTION "ROM Bank $10", ROMX[$4000], BANK[$10]
 
@@ -5218,9 +5217,8 @@ SECTION "ROM Bank $16", ROMX[$4000], BANK[$16]
 
 StudioTilesGBC:
 	INCBIN "gfx/studio/tiles_gbc.2bpp.lz"
-
-INCBIN "baserom.gbc", $58701, $5871d - $58701
-
+StudioCollisionAttributesGBC:
+	INCBIN "data/levels/studio_collision_attrs_gbc.bin.lz"
 StudioMetatilesGBC:
 	INCBIN "gfx/studio/metatiles_gbc.bin.lz"
 StudioMapGBC:
