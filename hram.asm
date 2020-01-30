@@ -31,5 +31,9 @@ hScore EQU $fff0
 hNumCarrots  EQU $fff3
 hCarrotMeter EQU $fff4
 
+; Holds the count of obtained letters for EXTRA.
+; If all letters were obtained, the player gets to go to the bonus stage.
+hEXTRALetters EQU $fffd
+
 ; Set to $11 if running on a Game Boy Color. $00 otherwise.
 hGameBoyColorDetection EQU $FFFE

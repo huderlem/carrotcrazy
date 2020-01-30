@@ -241,7 +241,478 @@ Start_:
 	call SetInitialScreen
 	jp InitNextScreen
 
-INCBIN "baserom.gbc", $16a, $4f8 - $16a
+Func_16a:
+	ld bc, $da00
+	ld de, $da80
+.asm_170
+	ld a, [bc]
+	ld [$ff8a], a
+	ld a, [de]
+	ld [bc], a
+	inc c
+	ld a, [$ff8a]
+	ld [de], a
+	inc e
+	jr nz, .asm_170
+	call Func_3e51
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld hl, $6a1a
+	call LoadCGBPalettesHome
+	ld hl, vBGMap
+	ld bc, $400
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_1b1
+	ld d, $da
+.asm_19f
+	sub a
+	ld [rVBK], a
+	ld e, [hl]
+	ld a, 1
+	ld [rVBK], a
+	ld a, [de]
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_19f
+	sub a
+	ld [rVBK], a
+.asm_1b1
+	ld a, Bank(Func_17b59)
+	ld [MBC5RomBank], a
+	jp Func_17b59
+
+Func_1b9:
+	ld a, $c7
+	ld [rLCDC], a
+.asm_1bd
+	ld a, [$defd]
+	ld c, a
+	ld b, $00
+	ld hl, $3def
+	add hl, bc
+	ld a, [hl]
+	and $0c
+	srl a
+	srl a
+	ld b, a
+	swap a
+	or b
+	ld b, a
+	ld a, [hl]
+	and $c0
+	or b
+	ld [rBGP], a
+	sub a
+	ld [rSCY], a
+	ld hl, $d37
+	ld c, $38
+	ld b, $8e
+	call Func_cdf
+	ld hl, $d4f
+	ld c, $18
+	ld b, $8e
+	call Func_cdf
+	ld hl, $d37
+	call Func_cae
+.asm_1f6
+	ld a, [rLY]
+	cp 55
+	jr nz, .asm_1f6
+	call WaitHBlankStart
+	ld a, [$defd]
+	ld c, a
+	ld b, $00
+	ld hl, $3def
+	add hl, bc
+	ld a, [hli]
+	ld [rBGP], a
+	ld a, $70
+	ld [rSCY], a
+	ld hl, $d4f
+	call Func_cae
+	call ClearOAMBufferHome
+	call TickMusicEngineHome
+	call ReadJoyPadHome
+	call WaitVBlank
+	ld a, Bank(Func_f585)
+	ld [MBC5RomBank], a
+	call Func_f585
+	call TryInitNextScreenHome
+	call UpdateFrameCounter
+	jp .asm_1bd
+
+Func_233:
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ret nz
+	ld hl, vBGMap
+	ld b, $da
+.asm_23d
+	sub a
+	ld [rVBK], a
+	ld c, [hl]
+	ld a, 1
+	ld [rVBK], a
+	ld a, [bc]
+	ld [hli], a
+	ld a, h
+	cp $9c
+	jr nz, .asm_23d
+	sub a
+	ld [rVBK], a
+	ret
+
+Func_250:
+	ld a, [hEXTRALetters]
+	cp 5 ; check if player obtained all 5 EXTRA letters
+	jp nz, InitNextScreen
+	push hl
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ld hl, $7740
+	jr nz, .asm_264
+	ld hl, $77f6
+.asm_264
+	call LoadData
+	call Func_3e51
+	ld a, Bank(Func_17ba8)
+	ld [MBC5RomBank], a
+	call Func_17ba8
+	ld hl, $775e
+	call LoadData
+	ld a, Bank(Func_17be2)
+	ld [MBC5RomBank], a
+	call Func_17be2
+	pop hl
+	ld a, $06
+	ld [MBC5RomBank], a
+	ld bc, $ddd9
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld hl, $ddde
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, Bank(Func_7b8a)
+	ld [MBC5RomBank], a
+	call Func_7b8a
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld a, Bank(Func_17bf9)
+	ld [MBC5RomBank], a
+	call Func_17bf9
+	ld hl, $6f32
+	call LoadCGBPalettesHome
+	ld c, $00
+	call Func_1023
+	call Func_fb4
+	call Func_233
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_2cc
+	call ReadJoyPadHome
+	call TryTogglePause
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_31c
+.asm_2d8
+	ld a, [rLY]
+	cp 51
+	jr nz, .asm_2d8
+	ld a, $80
+	ld [rBCPS], a
+	ld hl, Data_361
+	call WaitHBlankStart
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+.asm_2fa
+	ld a, [rLY]
+	cp 69
+	jr nz, .asm_2fa
+	ld a, $80
+	ld [rBCPS], a
+	ld hl, Data_367
+	call WaitHBlankStart
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+.asm_31c
+	call TickMusicEngineHome
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_347
+.asm_325
+	ld a, [rLY]
+	cp 119
+	jr nz, .asm_325
+	ld a, $80
+	ld [rBCPS], a
+	ld hl, Data_36d
+	call WaitHBlankStart
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+	ld a, [hli]
+	ld [rBCPD], a
+.asm_347
+	call WaitVBlank
+	call Func_373
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
+	ld a, $01
+	ld [MBC5RomBank], a
+	call $795e
+	call UpdateFrameCounter
+	jp .asm_2cc
+
+Data_361:
+	RGB(31, 25, 11)
+	RGB(20, 12, 5)
+	RGB(11, 5, 0)
+
+Data_367:
+	RGB(31, 30, 5)
+	RGB(19, 18, 3)
+	RGB(10, 7, 0)
+
+Data_36d:
+	RGB(31, 20, 16)
+	RGB(22, 8, 6)
+	RGB(13, 3, 1)
+
+Func_373:
+	ld a, Bank(Func_17c3a)
+	ld [MBC5RomBank], a
+	call Func_17c3a
+	ld a, $04
+	ld [MBC5RomBank], a
+	call Func_3153
+	call Func_3153
+	ret
+
+Func_387:
+	call LoadWarnerBrosBannerQuadrants
+	call Func_3e51
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld hl, $c528
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3a42
+	ld hl, $6924
+	call LoadCGBPalettesHome
+	ld a, Bank(Func_17c82)
+	ld [MBC5RomBank], a
+	call Func_17c82
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_3b4
+	call TickMusicEngineHome
+	call WaitVBlank
+	call Func_433
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $731c
+	ld bc, $0
+	call Func_3ca6
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
+	call ReadJoyPadHome
+	call UpdateFrameCounter
+	ld a, Bank(Func_17ca6)
+	ld [MBC5RomBank], a
+	call Func_17ca6
+	ld a, [hEXTRALetters]
+	cp 5
+	jr nz, .asm_3f4
+	ld a, [hFrameCounter]
+	bit 4, a
+	jr nz, .asm_3f4
+	ld bc, $8044
+	ld hl, $7b43
+	call Func_3ca6
+.asm_3f4
+	ld hl, $de80
+	ld a, [hl]
+	and a
+	jr z, .asm_3ff
+	dec [hl]
+	jp .asm_3b4
+.asm_3ff
+	ld a, [hNumCarrots]
+	and a
+	jr z, .asm_420
+	ld a, [hFrameCounter]
+	and 7
+	jp nz, .asm_3b4
+	ld a, [hNumCarrots]
+	sub 1
+	daa
+	ld [hNumCarrots], a
+	ld bc, $2
+	call AddScore
+	ld a, $0f
+	call Func_3e1b
+	jp .asm_3b4
+.asm_420
+	ld a, [wNewKeys]
+	and PADF_START | PADF_A
+	jp z, .asm_3b4
+	ld a, $08
+	call Func_3e1b
+	call Func_3ddc
+	jp .asm_3b4
+
+Func_433:
+	ld a, [hFrameCounter]
+	and $3
+	ret nz
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $dda2
+	ld bc, $80e0
+	ld de, $4280
+	ld a, $12
+	call Func_2f9e
+	ret
+
+Func_44c:
+	push hl
+	ld hl, $76f4
+	call LoadData
+	call Func_3e51
+	pop hl
+	call LoadWarnerBrosBannerQuadrants
+	ld a, $06
+	ld [MBC5RomBank], a
+	ld bc, $ddc9
+	ld a, [wDifficultySetting]
+	and a
+	jr z, .asm_46b
+	inc hl
+	inc hl
+	inc hl
+.asm_46b
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hl]
+	ld [bc], a
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld hl, $c526
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3a42
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, $69e6
+	call LoadCGBPalettesHome
+	call Func_d67
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_49a
+	call TickMusicEngineHome
+	call WaitVBlank
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $731c
+	ld bc, $0
+	call Func_3ca6
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
+	call ReadJoyPadHome
+	call UpdateFrameCounter
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $ddc9
+	ld de, $6e86
+	ld b, $03
+.asm_4c7
+	push bc
+	ld a, [de]
+	inc de
+	ld b, a
+	ld a, [de]
+	inc de
+	ld c, a
+	push de
+	ld a, [hli]
+	push hl
+	add a
+	ld l, a
+	ld h, $00
+	ld de, $6df1
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+	pop hl
+	pop de
+	pop bc
+	dec b
+	jr nz, .asm_4c7
+	ld a, [wNewKeys]
+	and PADF_START | PADF_A
+	jp z, .asm_49a
+	ld a, $08
+	call Func_3e1b
+	call Func_3ddc
+	jp .asm_49a
 
 RunInfogramesCopyrightScreen:
 	call Func_fb4
@@ -310,7 +781,36 @@ RunWarnerBrosCopyrightScreen:
 	call Func_3ddc
 	jr .asm_54e
 
-INCBIN "baserom.gbc", $587, $5ca - $587
+
+Func_587:
+	call LoadWarnerBrosBannerQuadrants
+	call Func_3e51
+	call Func_3bb4
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, $6b36
+	call LoadCGBPalettesHome
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_5a5
+	call TickMusicEngineHome
+	call Func_3a82
+	call WaitVBlank
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
+	ld a, [$def2]
+	and a
+	jr nz, .asm_5a5
+	ld hl, $def6
+	dec [hl]
+	jr nz, .asm_5a5
+	ld a, $03
+	ld [wCurScreen], a
+	call Func_3ddc
+	jr .asm_5a5
 
 Func_5ca:
 	call LoadWarnerBrosBannerQuadrants
@@ -341,7 +841,7 @@ Func_5f4:
 	call Func_3ca6
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
-	call ReadJoyPad_Home
+	call ReadJoyPadHome
 	ld a, [wLanguageSetting]
 	swap a
 	add 55
@@ -391,7 +891,721 @@ Func_5f4:
 	call Func_3ddc
 	jp Func_5f4
 
-INCBIN "baserom.gbc", $669, $d67 - $669
+Func_669:
+	call LoadWarnerBrosBannerQuadrants
+	call Func_3e51
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld hl, $c504
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3a42
+	ld hl, $dee6
+	sub a
+	ld [hli], a
+	ld [hl], a
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, $69e6
+	call LoadCGBPalettesHome
+	call Func_d67
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_69c
+	call TickMusicEngineHome
+	call WaitVBlank
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $731c
+	ld bc, $0
+	call Func_3ca6
+	call ClearOAMBufferHome
+	call TryInitNextScreenHome
+	call ReadJoyPadHome
+	call UpdateFrameCounter
+	ld a, Bank(Func_17cfd)
+	ld [MBC5RomBank], a
+	call Func_17cfd
+	ld a, [$defc]
+	and a
+	jp nz, .asm_69c
+	ld hl, wPasswordEntryCursor
+	ld a, [hl]
+	and a
+	jp z, .asm_76d
+	add $e7
+	ld c, a
+	ld a, $de
+	adc $00
+	ld b, a
+	ld a, [wNewKeys]
+	bit PADB_A, a
+	jr nz, .asm_6e5
+	add a
+	jr nc, .asm_6ea
+.asm_6e5
+	ld a, [bc]
+	inc a
+	ld [bc], a
+	jr .asm_6fc
+.asm_6ea
+	add a
+	jr nc, .asm_6f2
+	ld a, [bc]
+	dec a
+	ld [bc], a
+	jr .asm_6fc
+.asm_6f2
+	add a
+	jr nc, .asm_6f8
+	dec [hl]
+	jr .asm_6fc
+.asm_6f8
+	add a
+	jr nc, .asm_6fc
+	inc [hl]
+.asm_6fc
+	ld a, [hl]
+	and a
+	jr nz, .asm_704
+	ld [hl], $03
+	jr .asm_70a
+.asm_704
+	cp $04
+	jr nz, .asm_70a
+	ld [hl], $01
+.asm_70a
+	ld a, [bc]
+	cp $05
+	jr nz, .asm_713
+	sub a
+	ld [bc], a
+	jr .asm_71a
+.asm_713
+	cp $ff
+	jr nz, .asm_71a
+	ld a, $04
+	ld [bc], a
+.asm_71a
+	ld a, [wNewKeys]
+	and PADF_START | PADF_B
+	jp z, .asm_69c
+	ld a, $08
+	call Func_3e1b
+	ld a, Bank(Passwords)
+	ld [MBC5RomBank], a
+	ld hl, Passwords
+	ld a, [hli]
+	ld d, a
+.asm_731
+	ld e, $03
+	ld bc, wPasswordCharacters
+.asm_736
+	ld a, [bc]
+	inc c
+	cp [hl]
+	jr nz, .asm_756
+	inc hl
+	dec e
+	jr nz, .asm_736
+	ld a, [hli]
+	cp $ff
+	jr nz, .asm_749
+	ld [wEnableLevelSkip], a
+	jr .asm_79b
+.asm_749
+	ld [wCurScreen], a
+	ld a, [hl]
+	ld [wDifficultySetting], a
+	call Func_3ddc
+	jp .asm_69c
+.asm_756
+	inc e
+	inc e
+	ld c, e
+	ld b, $00
+	add hl, bc
+	dec d
+	jr nz, .asm_731
+	ld hl, wPasswordCharacters
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	sub a
+	ld [wPasswordEntryCursor], a
+	jp .asm_69c
+.asm_76d
+	ld hl, $dee6
+	ld a, [wNewKeys]
+	bit PADB_SELECT, a
+	jr nz, .asm_77a
+	add a
+	jr nc, .asm_77d
+.asm_77a
+	inc [hl]
+	jr .asm_781
+.asm_77d
+	add a
+	jr nc, .asm_794
+	dec [hl]
+.asm_781
+	ld a, [hl]
+	inc a
+	jr nz, .asm_789
+	ld [hl], $02
+	jr .asm_78f
+.asm_789
+	cp $04
+	jr nz, .asm_78f
+	ld [hl], $00
+.asm_78f
+	ld a, $07
+	call Func_3e1b
+.asm_794
+	ld a, [wNewKeys]
+	bit PADB_B, a
+	jr z, .asm_7a5
+.asm_79b
+	ld a, SCREEN_TITLESCREEN - 1
+	ld [wCurScreen], a
+	call Func_3ddc
+	jr .asm_7c1
+.asm_7a5
+	and PADF_LEFT | PADF_RIGHT | PADF_A
+	jp z, .asm_69c
+	ld hl, $dee6
+	ld a, [hli]
+	and a
+	jr nz, .asm_7b5
+	ld [hl], $01
+	jr .asm_7c1
+.asm_7b5
+	ld hl, wDifficultySetting
+	dec a
+	jr nz, .asm_7be
+	ld hl, $defe
+.asm_7be
+	ld a, [hl]
+	cpl
+	ld [hl], a
+.asm_7c1
+	ld a, $08
+	call Func_3e1b
+	jp .asm_69c
+
+Func_7c9:
+	call Func_fb4
+	call Func_3e51
+	call Func_2c73
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld a, Bank(Func_17d6e)
+	ld [MBC5RomBank], a
+	call Func_17d6e
+	ld a, $09
+	ld [MBC5RomBank], a
+	ld hl, $4000
+	ld bc, $82a0
+	ld de, $500
+.asm_7f4
+	ld a, [hli]
+	ld [bc], a
+	inc bc
+	dec de
+	ld a, e
+	or d
+	jr nz, .asm_7f4
+	ld hl, $6992
+	call LoadCGBPalettesHome
+	ld hl, vBGMap
+	ld bc, $400
+	call Func_10e9
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_822
+	ld a, 1
+	ld [rVBK], a
+	ld hl, vBGMap
+	ld b, $e0
+.asm_81a
+	sub a
+	ld [hli], a
+	dec b
+	jr nz, .asm_81a
+	sub a
+	ld [rVBK], a
+.asm_822
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_826
+	ld a, [$defd]
+	ld c, a
+	ld b, $00
+	ld hl, $3def
+	add hl, bc
+	ld a, [hl]
+	and $0c
+	srl a
+	srl a
+	ld b, a
+	swap a
+	or b
+	ld b, a
+	ld a, [hl]
+	and $c0
+	or b
+	ld [rBGP], a
+	ld hl, $ded2
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_851
+	inc [hl]
+	bit 7, [hl]
+	jr z, .asm_851
+	inc [hl]
+.asm_851
+	ld a, [hli]
+	add a
+	jr c, .asm_858
+	dec [hl]
+	jr .asm_859
+.asm_858
+	inc [hl]
+.asm_859
+	ld a, [hl]
+	cp $ff
+	jr nz, .asm_861
+	inc [hl]
+	jr .asm_866
+.asm_861
+	cp $39
+	jr nz, .asm_866
+	dec [hl]
+.asm_866
+	sub a
+	ld [rSCY], a
+	sub a
+	ld [rSCX], a
+	call TickMusicEngineHome
+	call ReadJoyPadHome
+	call Func_2c2b
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $6eab
+	ld de, $ded8
+	ld a, $07
+	ld [$ff8a], a
+.asm_884
+	ld a, [de]
+	add [hl]
+	ld [de], a
+	inc e
+	inc hl
+	ld a, [de]
+	adc [hl]
+	cp $a0
+	jr c, .asm_895
+	cp $e0
+	jr nc, .asm_895
+	add $c0
+.asm_895
+	ld [de], a
+	inc e
+	inc hl
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	push de
+	push hl
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+	pop hl
+	pop de
+	inc hl
+	inc hl
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_884
+.asm_8ae
+	ld a, [rLY]
+	cp 55
+	jr nz, .asm_8ae
+	call WaitHBlankStart
+	ld a, [$dec7]
+	ld [rSCX], a
+	ld a, 112
+	ld [rSCY], a
+	ld a, [$defd]
+	ld c, a
+	ld b, $00
+	ld hl, $3def
+	add hl, bc
+	ld a, [hl]
+	ld [rBGP], a
+	ld a, [$ded2]
+	cp $70
+	jr c, .asm_8d9
+	ld sp, $c000
+	jr .asm_8f9
+.asm_8d9
+	cp $60
+	jr c, .asm_8e7
+	ld sp, $c3c0
+	ld a, $01
+	ld [$ded4], a
+	jr .asm_8f9
+.asm_8e7
+	ld hl, $6f1e
+	and $1e
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+.asm_8f9
+	ld hl, $96c0
+	ld b, $28
+.waitCurrentHBlankFinish
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .waitCurrentHBlankFinish
+.waitHBlankStart
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .waitHBlankStart
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	dec b
+	jr nz, .waitCurrentHBlankFinish
+	ld sp, wStack
+	ld a, [$ded4]
+	and a
+	jr z, .asm_94a
+	ld c, a
+	ld b, $00
+	ld hl, $6ef8
+	add hl, bc
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld b, [hl]
+	ld c, $3c
+	ld hl, $6eea
+	call Func_3ca6
+	ld hl, $ded4
+	inc [hl]
+	ld a, [hl]
+	cp $26
+	jr c, .asm_94a
+	sub a
+	ld [hl], a
+.asm_94a
+	ld hl, $ded5
+	ld a, [$ded2]
+	cp $4e
+	jr nc, .asm_95b
+.asm_954
+	ld a, $e8
+	ld [hli], a
+	sub a
+	ld [hl], a
+	jr .asm_9a3
+.asm_95b
+	cp $78
+	jr nc, .asm_98b
+	ld a, [hFrameCounter]
+	rra
+	jr nc, .asm_965
+	inc [hl]
+.asm_965
+	ld a, [hli]
+	ld c, a
+	inc [hl]
+	ld a, [hl]
+	cp $30
+	jr c, .asm_96f
+	sub a
+	ld [hl], a
+.asm_96f
+	and $f8
+	srl a
+	srl a
+	ld e, a
+	ld d, $00
+	ld hl, $6f3e
+	add hl, de
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld b, $70
+	call Func_3ca6
+	jr .asm_9a3
+.asm_98b
+	cp $c8
+	jr nc, .asm_954
+	ld a, [hFrameCounter]
+	rra
+	jr nc, .asm_995
+	dec [hl]
+.asm_995
+	ld c, [hl]
+	ld b, $70
+	ld hl, $6fe6
+	ld a, $05
+	ld [MBC5RomBank], a
+	call Func_3ca6
+.asm_9a3
+	ld a, [rLY]
+	cp 112
+	jr nz, .asm_9a3
+	ld a, [$dec9]
+	ld [rSCX], a
+.asm_9ae
+	ld a, [rLY]
+	cp 118
+	jr nz, .asm_9ae
+	ld a, [$decb]
+	ld [rSCX], a
+.asm_9b9
+	ld a, [rLY]
+	cp 128
+	jr nz, .asm_9b9
+	ld a, [$decd]
+	ld [rSCX], a
+	call WaitVBlank
+	call TryInitNextScreenHome
+	call ClearOAMBufferHome
+	call UpdateFrameCounter
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld a, [$ded7]
+	ld hl, $6ff8
+	and a
+	jr nz, .asm_9e1
+	ld hl, $702a
+.asm_9e1
+	ld bc, $5034
+	call Func_3ca6
+	ld a, [$defc]
+	and a
+	jp nz, .asm_826
+	ld a, [hFrameCounter]
+	and $1c
+	srl a
+	srl a
+	ld c, a
+	ld b, $00
+	ld hl, $705c
+	add hl, bc
+	ld a, [hl]
+	ld [rOBP1], a
+	ld a, [wNewKeys]
+	and PADF_DOWN | PADF_UP | PADF_SELECT
+	jr z, .asm_a12
+	ld hl, $ded7
+	ld a, [hl]
+	cpl
+	ld [hl], a
+	ld a, $07
+	call Func_3e1b
+.asm_a12
+	ld a, [wNewKeys]
+	and PADF_START | PADF_A
+	jp z, .asm_826
+	ld a, $08
+	call Func_3e1b
+	ld hl, $ded7
+	ld a, [hl]
+	and a
+	ld a, $05
+	jr z, .asm_a2a
+	ld a, $04
+.asm_a2a
+	ld [wCurScreen], a
+	call Func_3ddc
+	jp .asm_826
+
+INCBIN "baserom.gbc", $a33, $c7d - $a33
+
+Func_c7d:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld [$ff8a], a
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [$dec1]
+	add a
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, l
+	ld [$ff8e], a
+	ld a, h
+	ld [$ff8f], a
+	dec hl
+	ld a, [hli]
+	ld [$ff8b], a
+	ld a, [hl]
+	and $1f
+	ld [$ff8c], a
+	add a
+	add a
+	ld [$ff8d], a
+	ld a, [hli]
+	and $e0
+	ld h, [hl]
+	ld l, a
+	ret
+
+Func_cae:
+	call Func_c7d
+	ld sp, hl
+	ld h, d
+	ld l, e
+.waitCurrentHBlankFinish
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .waitCurrentHBlankFinish
+.waitHBlankStart
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .waitHBlankStart
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ld a, [$ff8d]
+	dec a
+	ld [$ff8d], a
+	jr nz, .waitCurrentHBlankFinish
+	ld sp, wStack - 2
+	ret
+
+Func_cdf:
+	call Func_c7d
+	ld hl, $ff8e
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	inc hl
+	inc hl
+	ld a, [hActiveSprites]
+	ld e, a
+	ld d, $df
+.asm_cef
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [$ff8a]
+	ld [de], a
+	inc e
+	add $02
+	ld [$ff8a], a
+	ld a, [$ff8b]
+	ld [de], a
+	inc e
+	inc hl
+	ld a, [$ff8c]
+	dec a
+	ld [$ff8c], a
+	jr nz, .asm_cef
+	ld a, e
+	ld [hActiveSprites], a
+	ret
+
+Func_d0f:
+	ld [$ff8a], a
+	ld a, [bc]
+	and a
+	ret z
+	cp $ff
+	ret z
+	inc bc
+	sub $40
+	add a
+	add $80
+	ld [$ff8b], a
+	ld a, [hActiveSprites]
+	ld l, a
+	ld h, $df
+	ld a, d
+	add $10
+	ld [hli], a
+	ld a, e
+	add $08
+	ld e, a
+	ld [hli], a
+	ld a, [$ff8b]
+	ld [hli], a
+	ld a, [$ff8a]
+	ld [hli], a
+	ld a, l
+	ld [hActiveSprites], a
+	ret
+
+INCBIN "baserom.gbc", $d37, $d67 - $d37
 
 Func_d67:
 	ld hl, vBGMap
@@ -419,7 +1633,113 @@ Func_d67:
 	jr nz, .asm_d7f
 	ret
 
-INCBIN "baserom.gbc", $d8b, $e5c - $d8b
+Func_d8b:
+	push hl
+	ld hl, $71b2
+	call LoadData
+	call Func_3e51
+	pop hl
+	call LoadWarnerBrosBannerQuadrants
+	ld a, $06
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	push hl
+	ld h, b
+	ld l, c
+	call LoadCGBPalettesHome
+	pop hl
+	ld a, $06
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld [$ddc4], a
+	ld a, [hli]
+	ld [$ddc5], a
+	ld a, [hli]
+	ld [$ddc6], a
+	ld a, [hli]
+	ld [$ddc7], a
+	ld a, [hli]
+	ld [$ddc8], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3a42
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld hl, $dec0
+	ld a, $80
+	ld [hli], a
+	ld a, $02
+	ld [hli], a
+	ld [hl], $bc
+	sub a
+	ld [$dec3], a
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	call Func_d67
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_df2
+	call WaitVBlank
+	call TryInitNextScreenHome
+	ld a, $90
+	ld [rOBP0], a
+	call ReadJoyPadHome
+	call UpdateFrameCounter
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $731c
+	ld bc, $0
+	call Func_3ca6
+	ld a, $03
+	ld [MBC5RomBank], a
+	ld hl, $ddc5
+	ld a, [hFrameCounter]
+	bit 5, a
+	jr z, .asm_e21
+	ld hl, $ddc7
+.asm_e21
+	ld bc, $6840
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+	ld hl, $dec0
+	ld a, [hli]
+	and a
+	jr z, .asm_e35
+	dec l
+	dec [hl]
+	jr .asm_e41
+.asm_e35
+	inc l
+	ld a, [hl]
+	cp $b0
+	jr nz, .asm_e40
+	call Func_3ddc
+	jr .asm_e41
+.asm_e40
+	inc [hl]
+.asm_e41
+	call ClearOAMBufferHome
+	call TickMusicEngineHome
+	ld a, [$defc]
+	and a
+	jp nz, .asm_df2
+	ld a, [$defa]
+	and $09
+	jp z, .asm_df2
+	call Func_3ddc
+	jp .asm_df2
 
 RunStudioCreditsScreen:
 	ld bc, wInCreditsScene
@@ -509,7 +1829,7 @@ asm_e77:
 	ld a, [wInCreditsScene]
 	and a
 	jr nz, .tryInitNextScreen
-	call ReadJoyPad_Home
+	call ReadJoyPadHome
 	call TryTogglePause
 .tryInitNextScreen
 	call TryInitNextScreenHome
@@ -633,7 +1953,155 @@ Func_fb4:
 	jr nz, .asm_fcc
 	ret
 
-INCBIN "baserom.gbc", $fd9, $10e9 - $fd9
+Func_fd9:
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ret nz
+	push hl
+	ld a, 1
+	ld [rVBK], a
+	ld a, $04
+	ld [MBC5RomBank], a
+	ld bc, $4100
+	ld de, $8340
+	call Decompress
+	sub a
+	ld [rVBK], a
+	pop hl
+	ld b, h
+	ld c, l
+	ld d, $06
+	ld a, 1
+	ld [rVBK], a
+.asm_ffd
+	ld a, [bc]
+	or $08
+	ld [bc], a
+	inc bc
+	dec d
+	jr nz, .asm_ffd
+	sub a
+	ld [rVBK], a
+	ld b, $60
+.asm_100a
+	ld a, [hl]
+	cp $a0
+	jr c, .asm_101e
+	cp $b3
+	jr nc, .asm_101e
+	ld a, 1
+	ld [rVBK], a
+	ld a, [hl]
+	or $08
+	ld [hl], a
+	sub a
+	ld [rVBK], a
+.asm_101e
+	inc hl
+	dec b
+	jr nz, .asm_100a
+	ret
+
+Func_1023:
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ret nz
+	ld a, 1
+	ld [rVBK], a
+	ld de, vBGWin
+	ld b, $60
+.asm_1031
+	ld a, c
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .asm_1031
+	sub a
+	ld [rVBK], a
+	ret
+
+Func_103b:
+	call Func_fb4
+	call Func_0
+	ld a, [$dde9]
+	ld c, a
+	call Func_1023
+	ld bc, $c602
+	ld a, [bc]
+	sub $40
+	ld [bc], a
+	inc c
+	ld a, [bc]
+	sbc $00
+	ld [bc], a
+	call Func_2b6d
+	call Func_1965
+	call Func_39f1
+	call Func_3e51
+	call Func_2fe2
+	call Func_2342
+	call Func_3335
+	call Func_392e
+	call Func_18d1
+	call Func_2d73
+	call Func_3dce
+	call Func_3c72
+	call WriteDMACodeToHRAM
+	call ResetFrameCounter
+	call Func_31e1
+	sub a
+	ld [$de84], a
+	ld a, 120
+	ld [rWY], a
+	ld a, 7
+	ld [rWX], a
+	ld hl, vBGWin
+	call Func_fd9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_1097
+	call ClearOAMBufferHome
+	call ReadJoyPadHome
+	call TryTogglePause
+	call TryInitNextScreenHome
+	call TickMusicEngineHome
+	call HandlePlayerInput
+	call Func_1940
+	call Func_235e
+	call PrepareCameraUpdate
+	call Func_2a84
+	call Func_3939
+	call Func_173b
+	call Func_3252
+	call Func_2c9f
+	call $2e21
+	call UpdateFrameCounter
+	jr .asm_1097
+
+Func_10c9:
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_10d1
+	ld b, d
+	ld c, e
+.asm_10d1
+	ld hl, $9a00
+	ld de, vBGWin
+.asm_10d7
+	ld a, [hl]
+	sub b
+	ld [hli], a
+	ld a, [de]
+	sub c
+	ld [de], a
+	inc de
+	ld a, l
+	cp $a0
+	jr nz, .asm_10d7
+	ld a, h
+	cp $9b
+	jr nz, .asm_10d7
+	ret
 
 Func_10e9:
 	ld a, [hGameBoyColorDetection]
@@ -656,14 +2124,1097 @@ Func_10e9:
 	ld [rVBK], a
 	ret
 
-INCBIN "baserom.gbc", $1103, $1940 - $1103
+Func_1103:
+	call Func_fb4
+	call Func_11fc
+	call Func_2b6d
+	call Func_1965
+	call Func_39f1
+	call Func_3e51
+	call Func_2fe2
+	call Func_2342
+	call Func_2c73
+	call Func_3335
+	call Func_392e
+	call Func_18d1
+	call Func_2d73
+	call Func_3dce
+	call Func_3c72
+	call WriteDMACodeToHRAM
+	call ResetFrameCounter
+	ld a, -1
+	ld [hForcedSideScrollSpeed], a
+	call Func_31e1
+	ld a, 56
+	ld [$de83], a
+	ld [rWY], a
+	ld a, $b0
+	ld [$de82], a
+	ld a, 165
+	ld [rWX], a
+	ld hl, $9a00
+	ld bc, $160
+	call Func_10e9
+	ld bc, $2987
+	ld de, $298e
+	call Func_10c9
+	ld a, $6f
+	ld [$de81], a
+	ld a, $78
+	ld [$de84], a
+	ld hl, $2de5
+	call Func_2d62
+	ld hl, $9ba0
+	call Func_fd9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_1179
+	ld a, 128
+	ld [rSCY], a
+	ld a, [$dec7]
+	ld [rSCX], a
+	ld hl, $de82
+	ld a, [hli]
+	cp $a6
+	jr c, .asm_1194
+	ld a, $a5
+	ld [rWX], a
+	ld a, $90
+	ld [rWY], a
+	jr .asm_1199
+.asm_1194
+	ld [rWX], a
+	ld a, [hl]
+	ld [rWY], a
+.asm_1199
+	call ClearOAMBufferHome
+	call ReadJoyPadHome
+	call TryTogglePause
+	call Func_1722
+	call Func_162d
+	call TryInitNextScreenHome
+	call TickMusicEngineHome
+	call Func_173b
+	call HandlePlayerInput
+	call Func_2c2b
+.asm_11b7
+	ld a, [rLY]
+	cp 72
+	jr nz, .asm_11b7
+	ld a, [$dec9]
+	ld [rSCX], a
+	call Func_1940
+.asm_11c5
+	ld a, [rLY]
+	cp 76
+	jr nz, .asm_11c5
+	ld a, [$decb]
+	ld [rSCX], a
+	call Func_235e
+.asm_11d3
+	ld a, [rLY]
+	cp 87
+	jr nz, .asm_11d3
+	call WaitHBlankStart
+	ld a, [hCameraYOffset]
+	ld [rSCY], a
+	ld a, [hCameraXOffset]
+	ld [rSCX], a
+	call PrepareCameraUpdate
+	call Func_2a84
+	call Func_3939
+	call Func_3252
+	call Func_2c9f
+	call $2e21
+	call UpdateFrameCounter
+	jp .asm_1179
+
+Func_11fc:
+	call Func_0
+	ld a, [hli]
+	ld [$ddea], a
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ret nz
+	ld a, 1
+	ld [rVBK], a
+	ld bc, vBGWin
+	ld de, $400
+.asm_1212
+	ld a, [$ddea]
+	ld [bc], a
+	inc bc
+	dec de
+	ld a, e
+	or d
+	jr nz, .asm_1212
+	ld bc, $9ba0
+	ld d, $60
+.asm_1221
+	ld a, [$dde9]
+	ld [bc], a
+	inc bc
+	dec d
+	jr nz, .asm_1221
+	sub a
+	ld [rVBK], a
+	ret
+
+Func_122d:
+	call Func_fb4
+	call Func_11fc
+	call Func_2b6d
+	call Func_1965
+	call Func_39f1
+	call Func_3e51
+	call Func_2fe2
+	call Func_2342
+	call Func_2c73
+	call Func_3335
+	call Func_392e
+	call Func_18d1
+	call Func_2d73
+	call Func_3dce
+	call Func_3c72
+	call WriteDMACodeToHRAM
+	call ResetFrameCounter
+	ld a, -1
+	ld [hForcedSideScrollSpeed], a
+	call Func_31e1
+	ld a, 64
+	ld [$de83], a
+	ld [rWY], a
+	ld a, $b8
+	ld [$de82], a
+	ld a, 165
+	ld [rWX], a
+	ld hl, $9a00
+	ld bc, $1a0
+	call Func_10e9
+	ld bc, $1886
+	ld de, $1881
+	call Func_10c9
+	ld a, $7f
+	ld [$de81], a
+	ld a, $78
+	ld [$de84], a
+	ld hl, $2de5
+	call Func_2d62
+	ld hl, $9ba0
+	call Func_fd9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_12a3
+	ld a, 128
+	ld [rSCY], a
+	ld a, [$dec7]
+	ld [rSCX], a
+	ld hl, $de82
+	ld a, [hli]
+	cp $a6
+	jr c, .asm_12be
+	ld a, 165
+	ld [rWX], a
+	ld a, 144
+	ld [rWY], a
+	jr .asm_12c3
+.asm_12be
+	ld [rWX], a
+	ld a, [hl]
+	ld [rWY], a
+.asm_12c3
+	call ClearOAMBufferHome
+	call ReadJoyPadHome
+	call TryTogglePause
+	call Func_1722
+	call TickMusicEngineHome
+	call HandlePlayerInput
+	call Func_1940
+	call Func_235e
+	call PrepareCameraUpdate
+	call Func_2a84
+	call Func_3939
+	call Func_173b
+.asm_12e7
+	ld a, [rLY]
+	cp 72
+	jr nz, .asm_12e7
+	ld a, [$dec9]
+	ld [rSCX], a
+	call TryInitNextScreenHome
+	call Func_2c2b
+.asm_12f8
+	ld a, [rLY]
+	cp 80
+	jr nz, .asm_12f8
+	ld a, [$decb]
+	ld [rSCX], a
+	call Func_3252
+.asm_1306
+	ld a, [rLY]
+	cp 96
+	jr nz, .asm_1306
+	ld a, [$decd]
+	ld [rSCX], a
+	call Func_16d2
+.asm_1314
+	ld a, [rLY]
+	cp 103
+	jr nz, .asm_1314
+	call WaitHBlankStart
+	ld a, [hCameraYOffset]
+	ld [rSCY], a
+	ld a, [hCameraXOffset]
+	ld [rSCX], a
+	call Func_2c9f
+	call $2e21
+	call UpdateFrameCounter
+	jp .asm_12a3
+
+
+Func_1331:
+	call Func_fb4
+	call Func_11fc
+	call Func_2b6d
+	call Func_1965
+	call Func_39f1
+	call Func_3e51
+	call Func_2fe2
+	call Func_2342
+	call Func_2c73
+	call Func_3335
+	call Func_392e
+	call Func_18d1
+	call Func_2d73
+	call Func_3dce
+	call Func_3c72
+	call WriteDMACodeToHRAM
+	call ResetFrameCounter
+	ld a, 1
+	ld [hForcedSideScrollSpeed], a
+	call Func_31e1
+	ld hl, $9a00
+	ld bc, $120
+	call Func_10e9
+	ld hl, $9a00
+	ld bc, $120
+.asm_137a
+	ld a, [hl]
+	sub $09
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_137a
+	ld hl, $9b20
+	ld bc, $80
+	ld d, $c4
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_13a6
+	push hl
+	push bc
+	ld a, 1
+	ld [rVBK], a
+.asm_1397
+	ld a, $01
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_1397
+	sub a
+	ld [rVBK], a
+	pop bc
+	pop hl
+	ld d, $c5
+.asm_13a6
+	ld a, [hl]
+	sub d
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_13a6
+	ld a, $00
+	ld [$de82], a
+	ld a, $38
+	ld [$de81], a
+	ld a, $78
+	ld [$de84], a
+	ld hl, $2de5
+	call Func_2d62
+	ld a, 144
+	ld [rWY], a
+	ld a, 7
+	ld [rWX], a
+	sub a
+	ld [$ddc3], a
+	ld a, [$ffad]
+	set 5, a
+	ld [$ffad], a
+	ld hl, $9ba0
+	call Func_fd9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_13df
+	ld a, $80
+	ld [rSCY], a
+	ld a, [$dec7]
+	ld [rSCX], a
+	call ClearOAMBufferHome
+	call ReadJoyPadHome
+	call TryTogglePause
+	call TryInitNextScreenHome
+	call HandlePlayerInput
+	call Func_1940
+	call Func_235e
+	call TickMusicEngineHome
+	call PrepareCameraUpdate
+	call Func_2a84
+	call Func_2c2b
+	call Func_1722
+	call Func_16fc
+.asm_140f
+	ld a, [rLY]
+	cp 72
+	jr nz, .asm_140f
+	ld a, [$de82]
+	cpl
+	inc a
+	ld [rSCX], a
+	call Func_3939
+	call Func_173b
+	call Func_3252
+.asm_1425
+	ld a, [rLY]
+	cp 103
+	jr nz, .asm_1425
+	call WaitHBlankStart
+	ld a, [hCameraYOffset]
+	ld [rSCY], a
+	ld a, [hCameraXOffset]
+	ld [rSCX], a
+	call Func_2c9f
+	call $2e21
+	call UpdateFrameCounter
+	jp .asm_13df
+
+Func_1442:
+	call Func_fb4
+	call Func_11fc
+	call Func_2b6d
+	call Func_1965
+	call Func_39f1
+	call Func_3e51
+	call Func_2fe2
+	call Func_2342
+	call Func_3335
+	call Func_392e
+	call Func_18d1
+	call Func_2d73
+	call Func_3dce
+	call Func_3c72
+	call WriteDMACodeToHRAM
+	call ResetFrameCounter
+	ld a, -2
+	ld [hForcedSideScrollSpeed], a
+	call Func_31e1
+	ld a, 24
+	ld [$de83], a
+	ld [rWY], a
+	ld a, $b0
+	ld [$de82], a
+	ld a, 165
+	ld [rWX], a
+	ld hl, vBGWin
+	ld bc, $100
+	call Func_10e9
+	ld hl, vBGWin
+	ld bc, $100
+.asm_1498
+	ld a, [hl]
+	sub $a2
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_1498
+	ld a, $90
+	ld [$de81], a
+	ld a, $78
+	ld [$de84], a
+	ld hl, $2de5
+	call Func_2d62
+	ld hl, $9ba0
+	call Func_fd9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_14bb
+	ld hl, $de82
+	ld a, [hli]
+	cp 166
+	jr c, .asm_14cd
+	ld a, 165
+	ld [rWX], a
+	ld a, 144
+	ld [rWY], a
+	jr .asm_14d2
+.asm_14cd
+	ld [rWX], a
+	ld a, [hl]
+	ld [rWY], a
+.asm_14d2
+	ld a, $90
+	ld [$ff49], a
+	call ClearOAMBufferHome
+	call ReadJoyPadHome
+	call TryTogglePause
+	call TryInitNextScreenHome
+	call Func_1722
+	call Func_1704
+	call TickMusicEngineHome
+	call HandlePlayerInput
+	call Func_1940
+	call Func_235e
+	call PrepareCameraUpdate
+	call Func_2a84
+	call Func_3939
+	call Func_173b
+.asm_1500
+	ld a, [rLY]
+	cp 88
+	jr nz, .asm_1500
+	ld a, 176
+	ld [rWX], a
+	call Func_3252
+	call Func_2c9f
+	call $2e21
+	call UpdateFrameCounter
+	jr .asm_14bb
+
+Func_1518:
+	call Func_fb4
+	call Func_11fc
+	call Func_2b6d
+	call Func_1965
+	call Func_39f1
+	call Func_3e51
+	call Func_2fe2
+	call Func_2342
+	call Func_2c73
+	call Func_3335
+	call Func_392e
+	call Func_18d1
+	call Func_2d73
+	call Func_3dce
+	call Func_3c72
+	call WriteDMACodeToHRAM
+	call ResetFrameCounter
+	ld a, -1
+	ld [hForcedSideScrollSpeed], a
+	call Func_31e1
+	ld a, 48
+	ld [$de83], a
+	ld [rWY], a
+	ld a, $b8
+	ld [$de82], a
+	ld a, 165
+	ld [rWX], a
+	ld hl, $9a00
+	ld bc, $1a0
+	call Func_10e9
+	call Func_fb4
+	ld a, $14
+	ld [$2000], a
+	ld bc, $7100
+	ld de, $d9af
+	call Decompress
+	call Func_fb4
+	ld hl, vBGWin
+	ld bc, $100
+	call Func_10e9
+	ld bc, $b7c
+	ld de, $c7e
+	call Func_10c9
+	ld a, $87
+	ld [$de81], a
+	ld a, $78
+	ld [$de84], a
+	ld hl, $2de5
+	call Func_2d62
+	ld hl, $9ba0
+	call Func_fd9
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_15ab
+	ld a, 128
+	ld [rSCY], a
+	ld a, [$dec7]
+	ld [rSCX], a
+	ld hl, $de82
+	ld a, [hli]
+	cp 166
+	jr c, .asm_15c6
+	ld a, 165
+	ld [rWX], a
+	ld a, 144
+	ld [rWY], a
+	jr .asm_15cb
+.asm_15c6
+	ld [rWX], a
+	ld a, [hl]
+	ld [rWY], a
+.asm_15cb
+	call ClearOAMBufferHome
+	call ReadJoyPadHome
+	call TryTogglePause
+	call Func_1722
+	call TickMusicEngineHome
+	call HandlePlayerInput
+	call Func_1940
+	call Func_235e
+	call PrepareCameraUpdate
+	call Func_2a84
+.asm_15e9
+	ld a, [rLY]
+	cp 64
+	jr nz, .asm_15e9
+	ld a, [$dec9]
+	ld [rSCX], a
+	call Func_3939
+	call Func_173b
+	call Func_3252
+.asm_15fd
+	ld a, [rLY]
+	cp 103
+	jr nz, .asm_15fd
+	call WaitHBlankStart
+	ld a, [hCameraYOffset]
+	ld [rSCY], a
+	ld a, [hCameraXOffset]
+	ld [rSCX], a
+	call TryInitNextScreenHome
+	call Func_2c2b
+	call Func_170c
+.asm_1617
+	ld a, [rLY]
+	cp 112
+	jr nz, .asm_1617
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+	call Func_2c9f
+	call $2e21
+	call UpdateFrameCounter
+	jp .asm_15ab
+
+Func_162d:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $de82
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld hl, $7396
+	call Func_3ca6
+	ld a, [$ffad]
+	bit 2, a
+	ret nz
+	ld hl, $de82
+	ld a, [hld]
+	cp [hl]
+	ld a, [hFrameCounter]
+	jr nc, .asm_1652
+	cpl
+	inc a
+.asm_1652
+	and $0c
+	srl a
+	srl a
+	ld b, a
+	ld c, $00
+	ld hl, $7800
+	add hl, bc
+	ld a, $02
+	ld [MBC5RomBank], a
+	ld sp, hl
+	ld d, $15
+	ld hl, $8e90
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .waitCurrentHBlankFinish
+	ld hl, $8e20
+.waitCurrentHBlankFinish
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .waitCurrentHBlankFinish
+.waitHBlankStart
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .waitHBlankStart
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	dec d
+	jr nz, .waitCurrentHBlankFinish
+.waitCurrentHBlankFinish2
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .waitCurrentHBlankFinish2
+.waitHBlankStart2
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .waitHBlankStart2
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld [hl], b
+	ld sp, $dffe
+	ld a, [$de82]
+	sub $10
+	ld c, a
+	ld a, [hCameraXOffset]
+	add c
+	ld c, a
+	ld a, [hCameraXOffset + 1]
+	adc $00
+	ld b, a
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	ret c
+	call Func_1ae2
+	ret
+
+Func_16d2:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld a, [hFrameCounter]
+	and $1c
+	srl a
+	srl a
+	add $f2
+	ld l, a
+	ld a, $73
+	adc $00
+	ld h, a
+	ld a, [hl]
+	ld [$de83], a
+	ld hl, $de82
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld hl, $73bc
+	call Func_3ca6
+	ret
+
+Func_16fc:
+	ld a, Bank(Func_173fa)
+	ld [MBC5RomBank], a
+	jp Func_173fa
+
+Func_1704:
+	ld a, Bank(Func_177a1)
+	ld [MBC5RomBank], a
+	jp Func_177a1
+
+Func_170c:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $de82
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld hl, $7ad6
+	call Func_3ca6
+	ret
+
+Func_1722:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, [$ffad]
+	bit 2, a
+	ret nz
+	ld a, [hFrameCounter]
+	rra
+	ret c
+	ld hl, $de81
+	ld a, [hli]
+	cp [hl]
+	ret z
+	jr c, .asm_1739
+	inc [hl]
+	ret
+.asm_1739
+	dec [hl]
+	ret
+
+Func_173b:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld hl, $ddad
+	call Func_1748
+	ld hl, $ddb8
+Func_1748:
+	ld a, [hli]
+	add [hl]
+	bit 7, a
+	jr nz, .asm_1754
+	cp $28
+	jr c, .asm_1754
+	ld a, $28
+.asm_1754
+	ld [hli], a
+	ld e, a
+	or [hl]
+	ret z
+	ld a, [hli]
+	ld d, a
+	ld [$ff8a], a
+	ld a, [hFrameCounter]
+	rra
+	jr c, .asm_1763
+	sra d
+.asm_1763
+	ld a, [hli]
+	ld c, a
+	ld a, [hld]
+	ld b, a
+	ld a, d
+	bit 7, a
+	ld d, $ff
+	jr nz, .asm_1770
+	ld d, $00
+.asm_1770
+	add c
+	ld c, a
+	ld [hli], a
+	ld a, b
+	adc d
+	ld b, a
+	ld [hli], a
+	ld d, $00
+	ld a, e
+	add a
+	jr nc, .asm_177f
+	ld d, $ff
+.asm_177f
+	ld e, d
+	add a
+	rl e
+	add a
+	rl e
+	add a
+	rl e
+	add [hl]
+	ld [hli], a
+	ld a, [hl]
+	adc e
+	ld [hli], a
+	ld e, a
+	ld a, [hl]
+	adc d
+	ld [hli], a
+	ld d, a
+	push hl
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_17e2
+	ld a, [$ffb0]
+	cp $21
+	jr z, .asm_17e2
+	ld a, [$ffae]
+	bit 1, a
+	jr nz, .asm_17e2
+	ld a, [$ffdd]
+	sub c
+	ld l, a
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_17e2
+	ld a, l
+	cp $10
+	jr nc, .asm_17e2
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr z, .asm_17c7
+	inc a
+	jr nz, .asm_17e2
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f8
+	jr c, .asm_17e2
+	jr .asm_17dc
+.asm_17c7
+	ld a, [$ffaf]
+	rra
+	jr nc, .asm_17d5
+	ld a, [hPlayerYPos]
+	sub e
+	cp $0f
+	jr nc, .asm_17e2
+	jr .asm_17dc
+.asm_17d5
+	ld a, [hPlayerYPos]
+	sub e
+	cp $1e
+	jr nc, .asm_17e2
+.asm_17dc
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_17e2
+	pop hl
+	push hl
+	push bc
+	push de
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld a, [$ff8a]
+	add a
+	ld a, [hFrameCounter]
+	jr nc, .asm_17f9
+	cpl
+	inc a
+.asm_17f9
+	and d
+	srl a
+	srl a
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld d, b
+	ld b, e
+	call Func_3c7a
+	pop de
+	pop bc
+	and a
+	jr nz, .asm_185e
+	call Func_299f
+	add (.jumpTable & $ff)
+	ld l, a
+	ld a, (.jumpTable >> 8)
+	adc $00
+	ld h, a
+	jp hl
+.jumpTable
+	jp .asm_185c
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185c
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185e
+	jp .asm_185c
+	jp .asm_185e
+.asm_185c
+	pop hl
+	ret
+.asm_185e
+	pop hl
+	ld bc, $fff8
+	add hl, bc
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ret
+
+Func_1868:
+	ld de, $ddae
+	call Func_1873
+	and a
+	ret z
+	ld de, $ddb9
+Func_1873:
+	ld a, [de]
+	and a
+	ret nz
+	inc e
+	ld a, [de]
+	and a
+	ret nz
+	push hl
+	dec e
+	dec e
+	ld a, [bc]
+	inc bc
+	ld [de], a
+	inc e
+	ld a, [bc]
+	inc bc
+	ld [de], a
+	inc e
+	ld a, [bc]
+	inc bc
+	bit 5, [hl]
+	jr z, .asm_188d
+	cpl
+	inc a
+.asm_188d
+	ld [de], a
+	inc e
+	bit 5, [hl]
+	dec hl
+	dec hl
+	jr nz, .asm_18a3
+	inc bc
+	ld a, [bc]
+	inc bc
+	add [hl]
+	inc hl
+	ld [de], a
+	inc e
+	ld a, [hld]
+	adc $00
+	ld [de], a
+	inc e
+	jr .asm_18af
+.asm_18a3
+	ld a, [bc]
+	inc bc
+	inc bc
+	add [hl]
+	inc hl
+	ld [de], a
+	inc e
+	ld a, [hld]
+	adc $ff
+	ld [de], a
+	inc e
+.asm_18af
+	sub a
+	ld [de], a
+	inc e
+	ld a, [bc]
+	inc bc
+	dec hl
+	dec hl
+	add [hl]
+	inc hl
+	ld [de], a
+	inc e
+	ld a, [hl]
+	adc $ff
+	ld [de], a
+	inc e
+	ld a, [bc]
+	inc bc
+	ld [de], a
+	inc e
+	ld a, [bc]
+	inc bc
+	ld [de], a
+	inc e
+	ld a, [bc]
+	ld [de], a
+	pop hl
+	ld a, $0e
+	call Func_3e1b
+	sub a
+	ret
+
+Func_18d1:
+	ld hl, $ddad
+	ld b, $16
+	sub a
+.asm_18d7
+	ld [hli], a
+	dec b
+	jr nz, .asm_18d7
+	ret
+
+INCBIN "baserom.gbc", $18dc, $1940 - $18dc
 
 Func_1940:
 	ld a, Bank(Func_17929)
 	ld [MBC5RomBank], a
 	jp Func_17929
 
-INCBIN "baserom.gbc", $1948, $1965 - $1948
+Func_1948:
+	ld [$ffc3], a
+	sub a
+	ld [$ffb2], a
+	ld [$ffb3], a
+	ld [$ffb4], a
+	ld [$ffb6], a
+	ld [$ffaf], a
+	ld [$ffd1], a
+	ld [$ffd2], a
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $0c
+	call Func_3e1b
+	ret
 
 Func_1965:
 	ld c, $c2
@@ -845,16 +3396,16 @@ Func_1a73:
 	jr .asm_1add
 .asm_1abd
 	inc [hl]
-	ld a, [$deff]
+	ld a, [wCurScreen]
 	dec a
-	ld [$deff], a
+	ld [wCurScreen], a
 	ld a, [hMaxHealth]
 	ld [hCurHealth], a
 	ld a, [hNumLives]
 	and a
 	jr nz, .asm_1ad5
 	ld a, $4b
-	ld [$deff], a
+	ld [wCurScreen], a
 	jr .asm_1ada
 .asm_1ad5
 	sub $01
@@ -867,7 +3418,6 @@ Func_1a73:
 	pop bc
 .asm_1adf
 	jp Func_19e9
-
 
 Func_1ae2:
 	ld a, [$ffad]
@@ -1216,7 +3766,7 @@ Func_1d0e:
 	jp Func_19e5
 
 Func_1d20:
-	call $232c
+	call Func_232c
 	ld d, $00
 	res 4, b
 	ld a, [hFrameCounter]
@@ -1276,7 +3826,7 @@ Func_1d61:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
@@ -1286,7 +3836,7 @@ Func_1d61:
 	ld a, [hli]
 	ld [hPlayerXPos], a
 	ld a, [hl]
-	ld [$ffc9], a
+	ld [hPlayerXPos + 1], a
 	sub a
 	ld [$ffc5], a
 .asm_1d93
@@ -1299,7 +3849,7 @@ Func_1d61:
 	jr z, .asm_1da1
 	res 5, b
 .asm_1da1
-	ld a, [$defa]
+	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_1dc6
 	bit 5, b
@@ -1393,7 +3943,7 @@ Func_1e1e:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
@@ -1403,7 +3953,7 @@ Func_1e1e:
 	ld a, [hli]
 	ld [hPlayerXPos], a
 	ld a, [hl]
-	ld [$ffc9], a
+	ld [hPlayerXPos + 1], a
 	sub a
 	ld [$ffc5], a
 .asm_1e50
@@ -1416,7 +3966,7 @@ Func_1e1e:
 	jr z, .asm_1e5e
 	res 5, b
 .asm_1e5e
-	ld a, [$defa]
+	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_1e83
 	bit 5, b
@@ -1515,7 +4065,7 @@ Func_1e8c:
 	ld h, [hl]
 	ld l, a
 	ld a, $05
-	ld [$2000], a
+	ld [MBC5RomBank], a
 	ld a, [hli]
 	ld [$ff8a], a
 .asm_1f0a
@@ -1591,9 +4141,9 @@ Func_1e8c:
 	ld [hl], a
 	pop de
 	pop bc
-	call $2a8c
-	call $2ae9
-	call $2b07
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
 .asm_1f6e
 	pop de
 	pop bc
@@ -1619,7 +4169,7 @@ Func_1f73:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
@@ -1629,7 +4179,7 @@ Func_1f73:
 	ld a, [hli]
 	ld [hPlayerXPos], a
 	ld a, [hl]
-	ld [$ffc9], a
+	ld [hPlayerXPos + 1], a
 	sub a
 	ld [$ffc5], a
 .asm_1fa5
@@ -1691,7 +4241,7 @@ Func_1fe3:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
@@ -1701,7 +4251,7 @@ Func_1fe3:
 	ld a, [hli]
 	ld [hPlayerXPos], a
 	ld a, [hl]
-	ld [$ffc9], a
+	ld [hPlayerXPos + 1], a
 	sub a
 	ld [$ffc5], a
 .asm_2015
@@ -1714,7 +4264,7 @@ Func_1fe3:
 	jr z, .asm_2023
 	res 5, b
 .asm_2023
-	ld a, [$defa]
+	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_2042
 	bit 5, b
@@ -1743,7 +4293,7 @@ Func_2045:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	jr c, .asm_2064
@@ -1752,11 +4302,11 @@ Func_2045:
 	ld a, [hli]
 	ld [hPlayerXPos], a
 	ld a, [hl]
-	ld [$ffc9], a
+	ld [hPlayerXPos + 1], a
 	sub a
 	ld [$ffc5], a
 .asm_2064
-	ld a, [$defa]
+	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_207e
 	ld a, [$ff8a]
@@ -1789,7 +4339,7 @@ Func_2081:
 	cp [hl]
 	inc hl
 	jr nz, .asm_20ad
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	cp [hl]
 	jr nz, .asm_20ad
 	ld hl, $ff8a
@@ -1800,7 +4350,7 @@ Func_2081:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc hl
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	ld hl, hPlayerXPos
 	jr c, .asm_20c6
@@ -1831,7 +4381,7 @@ Func_2081:
 	cp [hl]
 	inc hl
 	jr nz, .asm_20ec
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	cp [hl]
 	jr nz, .asm_20ec
 	ld hl, $ff8a
@@ -1842,7 +4392,7 @@ Func_2081:
 	ld a, [hPlayerYPos]
 	sub [hl]
 	inc hl
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	sbc [hl]
 	ld hl, hPlayerYPos
 	jr c, .asm_2105
@@ -1913,7 +4463,7 @@ Func_2145:
 	ld a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
@@ -1923,7 +4473,7 @@ Func_2145:
 	ld a, [hli]
 	ld [hPlayerXPos], a
 	ld a, [hl]
-	ld [$ffc9], a
+	ld [hPlayerXPos + 1], a
 	sub a
 	ld [$ffc5], a
 .asm_2177
@@ -2000,7 +4550,7 @@ Func_2145:
 	ld h, a
 	ld a, [hPlayerYPos]
 	sub l
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	sbc h
 	ld a, $fd
 	jr c, .asm_21f4
@@ -2141,7 +4691,7 @@ Func_22c9:
 	ld [$ffc6], a
 	jr .asm_22f5
 .asm_22e0
-	ld a, [$defa]
+	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_22f5
 	ld a, $e0
@@ -2154,7 +4704,7 @@ Func_22c9:
 	push bc
 	push de
 	ld a, $05
-	ld [$2000], a
+	ld [MBC5RomBank], a
 	ld hl, $78ab
 	bit 4, b
 	jr nz, .asm_2314
@@ -2188,6 +4738,7 @@ Func_2326:
 Func_2329:
 	sub a
 	ld [$ffc5], a
+Func_232c:
 	sub a
 	ld [$ffc2], a
 	ld [$ffc3], a
@@ -2270,7 +4821,7 @@ Func_235e:
 	jr z, .asm_23b7
 	ld a, [hCameraXOffset]
 	ld l, a
-	ld a, [$ffa1]
+	ld a, [hCameraXOffset + 1]
 	ld h, a
 	ld a, l
 	cp c
@@ -2298,8 +4849,8 @@ Func_235e:
 	ld a, [hCameraXOffset]
 	add $90
 	ld l, a
-	ld a, [$ffa1]
-	adc $00
+	ld a, [hCameraXOffset + 1]
+	adc 0
 	ld h, a
 	jr .asm_23e2
 .asm_23d8
@@ -2307,7 +4858,7 @@ Func_235e:
 	sub $18
 	ld l, a
 	ld a, [$ff99]
-	sbc $00
+	sbc 0
 	ld h, a
 .asm_23e2
 	ld a, l
@@ -2453,7 +5004,7 @@ Func_235e:
 	ld a, [$ffad]
 	bit 4, a
 	jr z, .asm_2529
-	ld a, [$def9]
+	ld a, [wHeldKeys]
 	add a
 	jr nc, .asm_2529
 	ld a, [$ffaf]
@@ -2480,7 +5031,7 @@ Func_235e:
 	ld a, [$ffad]
 	bit 4, a
 	jr z, .asm_2529
-	ld a, [$def9]
+	ld a, [wHeldKeys]
 	add a
 	jr nc, .asm_2529
 	ld a, [$ffaf]
@@ -2523,8 +5074,8 @@ Func_235e:
 	jr nc, .asm_2571
 	bit 4, [hl]
 	jr z, .asm_255c
-	ld a, [$def9]
-	bit 6, a
+	ld a, [wHeldKeys]
+	bit PADB_UP, a
 	jr z, .asm_2571
 	ld a, [$ffaf]
 	bit 4, a
@@ -3777,7 +6328,86 @@ DrawWholeScreenMetatiles:
 	jr nz, .rowLoop
 	ret
 
-INCBIN "baserom.gbc", $2c2b, $2c9f - $2c2b
+Func_2c2b:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, [$de84]
+	and a
+	ret nz
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jr z, .asm_2c5d
+	ld a, [$ffad]
+	bit 2, a
+	ret nz
+	ld a, [hForcedSideScrollSpeed]
+	add a
+	jr nc, .asm_2c4c
+	ld a, [hCameraXOffset]
+	and a
+	jr nz, .asm_2c5d
+	ld a, [hCameraXOffset + 1]
+	and a
+	ret z
+.asm_2c4c
+	ld a, [hCameraXOffset]
+	add $b1
+	ld c, a
+	ld a, [hCameraXOffset + 1]
+	adc $00
+	ld b, a
+	ld a, [$ff98]
+	sub c
+	ld a, [$ff99]
+	sbc b
+	ret c
+.asm_2c5d
+	ld hl, $dec4
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [bc]
+	inc bc
+	ld d, a
+.asm_2c67
+	ld a, [bc]
+	inc bc
+	add [hl]
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	adc [hl]
+	ld [hli], a
+	dec d
+	jr nz, .asm_2c67
+	ret
+
+Func_2c73:
+	ld a, $06
+	ld [MBC5RomBank], a
+	ld de, $dec4
+	ld a, [hli]
+	ld c, a
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld b, a
+	ld [de], a
+	inc e
+	ld a, [bc]
+	add a
+	ld b, a
+	sub a
+.asm_2c87
+	ld [de], a
+	inc e
+	dec b
+	jr nz, .asm_2c87
+	ret
+
+INCBIN "baserom.gbc", $2c8d, $2c9f - $2c8d
 
 Func_2c9f:
 	ld a, [hPaused]
@@ -3953,7 +6583,259 @@ Func_2d73:
 	ld [hl], $74
 	ret
 
-INCBIN "baserom.gbc", $2d85, $31e1 - $2d85
+INCBIN "baserom.gbc", $2d85, $2f9e - $2d85
+
+Func_2f9e:
+	inc [hl]
+	cp [hl]
+	jr nz, .asm_2fa4
+	ld [hl], $00
+.asm_2fa4
+	ld l, [hl]
+	ld h, $00
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, de
+	ld sp, hl
+	ld h, b
+	ld l, c
+	ld d, $04
+.asm_2fb3
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	dec d
+	jr nz, .asm_2fb3
+	ld sp, $dffc
+	ret
+
+Func_2fe2:
+	ld a, $06
+	ld [MBC5RomBank], a
+	ld bc, $dda3
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld d, $08
+	sub a
+.asm_2ff3
+	ld [bc], a
+	inc c
+	dec d
+	jr nz, .asm_2ff3
+	sub a
+	ld [$dda1], a
+	ld [$dda2], a
+	ret
+
+INCBIN "baserom.gbc", $3000, $3086 - $3000
+
+Func_3086:
+	db $f2
+	and e
+	swap a
+	add b
+	ld [hli], a
+	db $f2
+	dec c
+	and d
+	add b
+	ld [hli], a
+	db $f2
+	and e
+	swap a
+	add b
+	ld [hli], a
+	db $f2
+	and d
+	add b
+	ld [hl], a
+	ret
+
+INCBIN "baserom.gbc", $309c, $3153 - $309c
+
+Func_3153:
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, d
+	cpl
+	and [hl]
+	inc l
+	ld e, a
+	ld a, [bc]
+	and d
+	or e
+	ld [bc], a
+	inc c
+	ld a, c
+	and $0f
+	jr nz, Func_3153
+	ret
+
+Func_31a9:
+	ld d, a
+	ld sp, hl
+	ld h, b
+	ld l, c
+	ld a, $04
+	ld [MBC5RomBank], a
+.asm_31b2
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	dec d
+	jr nz, .asm_31b2
+	ld sp, wStack - 2
+	ret
 
 Func_31e1:
 	ld a, $05
@@ -3999,7 +6881,7 @@ Func_31e1:
 	ld [$fffa], a
 	ld [$fffb], a
 	ld [$fffc], a
-	ld [$fffd], a
+	ld [hEXTRALetters], a
 	ret
 
 ResetPlayerData:
@@ -4409,8 +7291,15 @@ Func_39f1:
 	pop hl
 	ret
 
-INCBIN "baserom.gbc", $3a42, $3a4d - $3a42
-
+Func_3a42:
+	ld a, [wLanguageSetting]
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 Func_3a4d:
 	ld a, [hli]
 	ld e, a
@@ -4807,7 +7696,7 @@ Func_3bb4:
 	pop hl
 	ret
 
-ReadJoyPad_Home:
+ReadJoyPadHome:
 	ld a, Bank(ReadJoyPad)
 	ld [MBC5RomBank], a
 	jp ReadJoyPad
@@ -4831,8 +7720,27 @@ Func_3c72:
 	ld [hl], a
 	ret
 
-INCBIN "baserom.gbc", $3c7a, $3c98 - $3c7a
-
+Func_3c7a:
+	ld a, [$ffdb]
+	sub c
+	ld e, a
+	ld a, [$ffdc]
+	sbc d
+	jr nz, .asm_3c95
+	ld a, e
+	cp $d8
+	jr nc, .asm_3c95
+	ld a, [hCameraYOffset]
+	ld e, a
+	ld a, b
+	sub e
+	cp $98
+	jr c, Func_3c98
+	cp $e0
+	jr nc, Func_3c98
+.asm_3c95
+	ld a, $ff
+	ret
 Func_3c98:
 	ld a, [hCameraXOffset]
 	ld e, a
@@ -4857,7 +7765,235 @@ Func_3ca6:
 	ld d, $df
 	ret
 
-INCBIN "baserom.gbc", $3cb1, $3d96 - $3cb1
+Func_3cb1:
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add b
+	ld [de], a
+	inc e
+	ld a, [hli]
+	add c
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, [hli]
+	ld [de], a
+	inc e
+	ld a, e
+	ld [hActiveSprites], a
+	sub a
+	ret
 
 ClearOAMBufferHome:
 	ld a, Bank(ClearOAMBuffer)
@@ -5056,11 +8192,62 @@ SetInitialScreen:
 
 INCLUDE "home/load.asm"
 
-INCBIN "baserom.gbc", $3ff1, $4000 - $3ff1
-
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
-INCBIN "baserom.gbc", $4000, $7dfc - $4000
+INCBIN "baserom.gbc", $4000, $7b8a - $4000
+
+Func_7b8a:
+	ld hl, $ddd9
+	ld a, [hli]
+	ld c, a
+	ld a, [hld]
+	ld b, a
+	ld a, [bc]
+	inc bc
+	cp $ff
+	jr nz, .asm_7bb0
+	ld hl, $ddcd
+	set 5, [hl]
+	ld hl, $406e
+	call Func_3e71
+	ld hl, $ddde
+	ld a, [hli]
+	cp [hl]
+	ret nz
+	ld a, [hNumLives]
+	add 1
+	daa
+	ld [hNumLives], a
+	ret
+.asm_7bb0
+	add a
+	add a
+	ld e, a
+	ld d, $00
+	ld a, c
+	ld [hli], a
+	ld [hl], b
+	ld hl, $c030
+	add hl, de
+	ld bc, $ddd5
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [$dddd], a
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld hl, $ddde
+	inc [hl]
+	ret
+
+INCBIN "baserom.gbc", $7bd3, $7dfc - $7bd3
 
 ResetInitialData:
 	call WaitUntilSafeToAccessVRAM
@@ -5380,8 +8567,8 @@ Func_81de:
 	ld [hli], a
 	ld a, [bc]
 	ld [hl], a
-	call $48a2
-	call $4447
+	call Func_88a2
+	call Func_8447
 	ld l, $04
 	bit 3, [hl]
 	ret z
@@ -5455,7 +8642,73 @@ Func_81de:
 	ld [hl], a
 	jr .asm_8202
 
-INCBIN "baserom.gbc", $827f, $8522 - $827f
+INCBIN "baserom.gbc", $827f, $8447 - $827f
+
+Func_8447:
+	ld l, $34
+	ld a, [hl]
+	and $f0
+	jr z, .asm_8456
+	swap a
+	ld c, a
+	ld l, $09
+	ld a, [hl]
+	cp c
+	ret c
+.asm_8456
+	ld l, $04
+	bit 1, [hl]
+	ret z
+	bit 2, [hl]
+	ret nz
+	ld l, $0a
+	ld c, [hl]
+	ld l, $34
+	ld a, [hl]
+	and $0f
+	cp c
+	ret nz
+	ld a, [de]
+	cp $65
+	ret z
+	ld l, $35
+	ld a, h
+	cp $dd
+	jr z, .asm_8482
+	cp $de
+	jr z, .asm_8497
+	ld a, [hl]
+	ld l, $32
+	ld [hli], a
+	ld [hl], $01
+.asm_847d
+	ld l, $04
+	set 2, [hl]
+	ret
+.asm_8482
+	ld a, [hl]
+	and $0f
+	ld [$dd1b], a
+	ld [$dd1a], a
+	ld a, [hl]
+	and $f0
+	swap a
+	jr z, .asm_847d
+	ld [$dd08], a
+	jr .asm_847d
+.asm_8497
+	ld a, [hl]
+	and $0f
+	ld [$de1b], a
+	ld [$de1a], a
+	ld a, [hl]
+	and $f0
+	swap a
+	jr z, .asm_847d
+	ld [$de08], a
+	jr .asm_847d
+
+INCBIN "baserom.gbc", $84ac, $8522 - $84ac
 
 Func_8522:
 	ld a, $ff
@@ -5759,7 +9012,72 @@ Func_876e:
 	ld [rNR34], a
 	ret
 
-INCBIN "baserom.gbc", $87b7, $891a - $87b7
+INCBIN "baserom.gbc", $87b7, $88a2 - $87b7
+
+Func_88a2:
+	ld a, h
+	cp $dd
+	jr nc, .asm_88b7
+	ld l, $2a
+	ld a, [hl]
+	and a
+	ret z
+	dec [hl]
+	ret nz
+	ld l, $2b
+	ld a, [hl]
+	ld l, $32
+	ld [hli], a
+	ld [hl], $01
+	ret
+.asm_88b7
+	ld l, $11
+	ld a, [hl]
+	and a
+	jr z, .asm_88d4
+	ld l, $18
+	dec [hl]
+	ret nz
+	inc l
+	ld a, [hld]
+	ld [hl], a
+	ld l, $11
+	dec [hl]
+	inc l
+	ld a, [hl]
+	ld l, $08
+	add [hl]
+	cp $0f
+	jr c, .asm_88d2
+	ld a, $0f
+.asm_88d2
+	ld [hl], a
+	ret
+.asm_88d4
+	ld l, $14
+	ld a, [hl]
+	and a
+	ret z
+	ld l, $1a
+	dec [hl]
+	ret nz
+	inc l
+	ld a, [hld]
+	ld [hl], a
+	ld l, $14
+	dec [hl]
+	ld l, $08
+	ld a, [hl]
+	ld l, $15
+	sub [hl]
+	jr nc, .asm_88ec
+	xor a
+.asm_88ec
+	ld l, $08
+	ld [hl], a
+	ret
+
+INCBIN "baserom.gbc", $88f0, $891a - $88f0
 
 Func_891a:
 	jp Func_8098
@@ -5941,7 +9259,125 @@ INCBIN "baserom.gbc", $dde7, $f545 - $dde7
 WarnerBrosCopyrightAmpersandTiles:
 	INCBIN "gfx/warner_bros_copyright/ampersand.2bpp"
 
-INCBIN "baserom.gbc", $f585, $f610 - $f585
+Func_f585:
+	ld a, [hFrameCounter]
+	and 7
+	ret nz
+	ld hl, $dde0
+	ld a, [hli]
+	ld c, a
+	ld a, [hld]
+	ld b, a
+	ld a, [bc]
+	inc bc
+	cp $ff
+	jp z, Func_3ddc
+	ld d, a
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, d
+	and a
+	jr nz, .asm_f5fb
+	sub a
+	ld [hl], a
+	ld hl, $9840
+	ld bc, vBGMap
+	ld d, $06
+.asm_f5ab
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, l
+	add $0c
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, c
+	add $0c
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	dec d
+	jr nz, .asm_f5ab
+	ret
+.asm_f5fb
+	sub $40
+	add a
+	add $80
+	ld b, a
+	ld a, [hl]
+	inc [hl]
+	add $80
+	ld l, a
+	ld h, $98
+	ld [hl], b
+	inc b
+	ld a, l
+	add $20
+	ld l, a
+	ld [hl], b
+	ret
 
 Func_f610:
 	ld hl, $dde5
@@ -6022,7 +9458,247 @@ INCBIN "baserom.gbc", $14000, $16e8c - $14000
 
 INCLUDE "data/passwords.asm"
 
-INCBIN "baserom.gbc", $16eab, $17568 - $16eab
+INCBIN "baserom.gbc", $16eab, $173fa - $16eab
+
+Func_173fa:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, [$ddc3]
+	add a
+	add $3e
+	ld l, a
+	ld a, $75
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld d, $6b
+	ld e, $03
+	ld hl, $9b2d
+.asm_17414
+	call WaitHBlankStart
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	call WaitHBlankStart
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	call WaitHBlankStart
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, [bc]
+	inc c
+	sub d
+	ld [hli], a
+	ld a, l
+	add $0d
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	dec e
+	jr nz, .asm_17414
+	ld hl, $9b8d
+	call WaitHBlankStart
+	ld a, $b6
+	ld [hli], a
+	ld a, $b4
+	ld [hli], a
+	ld a, $b5
+	ld [hli], a
+	ld a, $b6
+	ld [hli], a
+	ld a, $b7
+	ld [hli], a
+	ld a, $b8
+	ld [hli], a
+	ld [hl], $b9
+	ld a, [$de82]
+	cp $38
+	jr nc, .asm_174cc
+	ld hl, $9b2d
+	ld bc, $19
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	ld d, $7a
+	jr nz, .asm_174a5
+	ld d, $b2
+.asm_174a5
+	call WaitHBlankStart
+	ld a, d
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	add hl, bc
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	add hl, bc
+	call WaitHBlankStart
+	ld a, d
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	add hl, bc
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+.asm_174cc
+	ld hl, $ddc3
+	ld a, [hFrameCounter]
+	sub $06
+	and $07
+	jr nz, .asm_174df
+	inc [hl]
+	ld a, [hl]
+	cp $03
+	jr c, .asm_174df
+	ld [hl], $00
+.asm_174df
+	ld a, [hl]
+	add a
+	add $44
+	ld l, a
+	ld a, $75
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	push hl
+	ld a, [$de82]
+	ld c, a
+	ld b, $48
+	call Func_3ca6
+	pop hl
+	ld a, [$de82]
+	cp $38
+	jr c, .asm_17509
+	ld a, [$de82]
+	sub $50
+	ld c, a
+	ld b, $48
+	call Func_3ca6
+.asm_17509
+	ld a, [$de82]
+	and a
+	ret z
+	ld hl, hCameraXOffset
+	ld a, [hli]
+	add $04
+	ld c, a
+	ld a, [hl]
+	adc $00
+	ld b, a
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc b
+	jr c, .asm_1753a
+	ld a, [$de82]
+	ld b, a
+	ld a, [hCameraXOffset]
+	add b
+	ld c, a
+	ld a, [hCameraXOffset + 1]
+	adc $00
+	ld b, a
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc b
+	ret nc
+	ld a, [hPlayerYPos]
+	cp $60
+	ret c
+.asm_1753a
+	call Func_1ae2
+	ret
+
+INCBIN "baserom.gbc", $1753e, $17568 - $1753e
 
 TryInitNextScreen:
 	ld a, [hPaused]
@@ -6388,7 +10064,110 @@ Func_17791:
 	ld d, a
 	ret
 
-INCBIN "baserom.gbc", $177a1, $17929 - $177a1
+Func_177a1:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, [$de81]
+	cp $90
+	jr nz, .asm_177c9
+	ld a, [$de82]
+	cp $94
+	jr nc, .asm_177c9
+	ld a, [hFrameCounter]
+	and $38
+	srl a
+	srl a
+	srl a
+	add $59
+	ld l, a
+	ld a, $78
+	adc $00
+	ld h, a
+	ld a, [hl]
+	ld [$de82], a
+.asm_177c9
+	ld hl, $de82
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld hl, $783f
+	call Func_3ca6
+	ld bc, $8283
+	ld a, [$ffb7]
+	add $1f
+	and $e0
+	swap a
+	srl a
+	ld d, a
+	call WaitHBlankStart
+	ld a, d
+	and a
+	ld a, b
+	jr z, .asm_177ed
+	ld a, c
+	dec d
+.asm_177ed
+	ld [$9be7], a
+	ld a, d
+	and a
+	ld a, b
+	jr z, .asm_177f7
+	ld a, c
+	dec d
+.asm_177f7
+	ld [$9be6], a
+	ld a, d
+	and a
+	ld a, b
+	jr z, .asm_17801
+	ld a, c
+	dec d
+.asm_17801
+	ld [$9bc7], a
+	call WaitHBlankStart
+	ld a, d
+	and a
+	ld a, b
+	jr z, .asm_1780e
+	ld a, c
+	dec d
+.asm_1780e
+	ld [$9bc6], a
+	ld a, d
+	and a
+	ld a, b
+	jr z, .asm_17818
+	ld a, c
+	dec d
+.asm_17818
+	ld [$9ba7], a
+	ld a, d
+	and a
+	ld a, b
+	jr z, .asm_17822
+	ld a, c
+	dec d
+.asm_17822
+	ld [$9ba6], a
+	ld a, [$de82]
+	sub $10
+	ld c, a
+	ld a, [hCameraXOffset]
+	add c
+	ld c, a
+	ld a, [hCameraXOffset + 1]
+	adc $00
+	ld b, a
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	ret c
+	call Func_1ae2
+	ret
+
+INCBIN "baserom.gbc", $1783f, $17929 - $1783f
 
 Func_17929:
 	ld a, [hPaused]
@@ -6729,7 +10508,425 @@ ReadJoyPad:
 	ld [wHeldKeys], a
 	ret
 
-INCBIN "baserom.gbc", $17b39, $17dd6 - $17b39
+INCBIN "baserom.gbc", $17b39, $17b59 - $17b39
+
+Func_17b59:
+	ld hl, $c52a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wLanguageSetting]
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld hl, $dde0
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld hl, vBGMap
+	ld bc, $2a0
+.asm_17b79
+	ld a, $80
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_17b79
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld a, $01
+	ld [$dec1], a
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_17ba5
+	ld a, 1
+	ld [rVBK], a
+	ld hl, vBGMap
+	ld bc, $2a0
+.asm_17b9b
+	sub a
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_17b9b
+	sub a
+	ld [rVBK], a
+.asm_17ba5
+	jp Func_1b9
+
+Func_17ba8:
+	ld hl, $7bce
+	ld bc, $8f20
+	ld a, $05
+	ld [$ff8a], a
+.asm_17bb2
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	push hl
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+.asm_17bba
+	ld a, [de]
+	inc de
+	ld [bc], a
+	inc bc
+	dec hl
+	ld a, l
+	or h
+	jr nz, .asm_17bba
+	pop hl
+	inc hl
+	inc hl
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_17bb2
+	ret
+
+INCBIN "baserom.gbc", $17bce, $17be2 - $17bce
+
+Func_17be2:
+	ld hl, $3d83
+	ld bc, $fff2
+	ld de, $c001
+.asm_17beb
+	ld a, l
+	ld [de], a
+	inc e
+	ld a, h
+	ld [de], a
+	inc e
+	inc e
+	add hl, bc
+	ld a, e
+	cp $31
+	jr nz, .asm_17beb
+	ret
+
+Func_17bf9:
+	ld hl, $72e0
+	ld bc, vBGWin
+	ld d, $03
+.asm_17c01
+	ld e, $14
+.asm_17c03
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	dec e
+	jr nz, .asm_17c03
+	ld a, c
+	add $0c
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	dec d
+	jr nz, .asm_17c01
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	sub a
+	ld [hCarrotMeter], a
+	ld [hNumCarrots], a
+	ld hl, $ddcc
+	ld a, $4a
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld a, $ff
+	ld [$ffb5], a
+	ld a, 120
+	ld [rWY], a
+	ld a, 7
+	ld [rWX], a
+	ret
+
+Func_17c3a:
+	ld hl, $9c49
+	ld a, [hNumLives]
+	and $f0
+	swap a
+	add $10
+	ld [hli], a
+	ld a, [hNumLives]
+	and $0f
+	add $10
+	ld [hl], a
+	ld hl, $9c4e
+	ld c, $f1
+	ld b, $10
+	ld de, $ff0
+	call Func_3086
+	ld hl, hNumCarrots
+	ld a, [hli]
+	cp [hl]
+	jr z, .asm_17c62
+	inc [hl]
+.asm_17c62
+	ld a, [hl]
+	and a
+	ret z
+	dec a
+	ld b, a
+	and $03
+	ld e, a
+	ld d, $00
+	ld hl, $324e
+	add hl, de
+	ld d, [hl]
+	ld a, b
+	and $fc
+	add a
+	add a
+	add a
+	cpl
+	inc a
+	add $e0
+	ld l, a
+	ld h, $40
+	ld c, a
+	ld b, $90
+	ret
+
+Func_17c82:
+	call Func_d67
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	sub a
+	ld [$dda2], a
+	ld a, $78
+	ld [$de80], a
+	ld hl, hNumCarrots
+	ld b, $00
+.asm_17c98
+	ld a, [hl]
+	and a
+	jr z, .asm_17ca4
+	dec [hl]
+	ld a, b
+	add 1
+	daa
+	ld b, a
+	jr .asm_17c98
+.asm_17ca4
+	ld [hl], b
+	ret
+
+Func_17ca6:
+	ld a, [hActiveSprites]
+	ld l, a
+	ld h, $df
+	ld bc, $7058
+	ld a, [$fff1]
+	swap a
+	call Func_17cea
+	ld a, [$fff1]
+	call Func_17cea
+	ld a, [hScore]
+	swap a
+	call Func_17cea
+	ld a, [hScore]
+	call Func_17cea
+	sub a
+	call Func_17cea
+	sub a
+	call Func_17cea
+	ld bc, $5858
+	ld a, [hNumCarrots]
+	swap a
+	call Func_17cea
+	ld a, [hNumCarrots]
+	call Func_17cea
+	ld a, l
+	ld [hActiveSprites], a
+	ld bc, $5440
+	ld hl, $7b39
+	call Func_3ca6
+	ret
+
+Func_17cea:
+	and $0f
+	add a
+	add $12
+	ld d, a
+	ld a, b
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	add $08
+	ld c, a
+	ld a, d
+	ld [hli], a
+	ld a, $01
+	ld [hli], a
+	ret
+
+Func_17cfd:
+	ld a, [$dee6]
+	ld c, a
+	ld b, $00
+	ld hl, $6e7d
+	add hl, bc
+	ld b, [hl]
+	ld hl, $6db3
+	ld c, $08
+	call Func_3ca6
+	ld hl, wPasswordCharacters + 2
+	ld de, $6e80
+	ld a, [wPasswordEntryCursor]
+	ld c, a
+	ld b, $03
+.asm_17d1c
+	ld a, c
+	cp b
+	jr nz, .asm_17d2b
+	ld a, [hFrameCounter]
+	bit 4, a
+	jr nz, .asm_17d2b
+	inc de
+	inc de
+	dec l
+	jr .asm_17d46
+.asm_17d2b
+	push bc
+	ld a, [de]
+	inc de
+	ld b, a
+	ld a, [de]
+	inc de
+	ld c, a
+	push de
+	ld a, [hld]
+	push hl
+	add a
+	ld l, a
+	ld h, $00
+	ld de, $6df1
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+	pop hl
+	pop de
+	pop bc
+.asm_17d46
+	dec b
+	jr nz, .asm_17d1c
+	ld hl, $6ddd
+	ld a, [$defe]
+	and a
+	jr z, .asm_17d55
+	ld hl, $6de7
+.asm_17d55
+	ld bc, $6848
+	call Func_3ca6
+	ld hl, $6dc1
+	ld a, [$deeb]
+	and a
+	jr z, .asm_17d67
+	ld hl, $6dcf
+.asm_17d67
+	ld bc, $7844
+	call Func_3ca6
+	ret
+
+Func_17d6e:
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, $ded2
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ld [hForcedSideScrollSpeed], a
+	ld [$de84], a
+	call Func_17db0
+	call ResetPlayerData
+	ld hl, wMetatileRowPointers
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wLanguageSetting]
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld bc, $98a0
+	ld de, $98c0
+.asm_17d9f
+	ld a, [hli]
+	sub $40
+	add a
+	add $85
+	ld [bc], a
+	inc c
+	inc a
+	ld [de], a
+	inc e
+	ld a, c
+	cp $b4
+	jr nz, .asm_17d9f
+	ret
+
+Func_17db0:
+	ld hl, $ded8
+	sub a
+	ld [hli], a
+	ld a, $01
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, $60
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, $06
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, $2e
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, $7e
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, $1d
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld [hl], $65
+	ret
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
