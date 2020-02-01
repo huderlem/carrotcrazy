@@ -502,9 +502,9 @@ Func_250:
 	call Func_373
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
-	ld a, $01
+	ld a, Bank(Func_795e)
 	ld [MBC5RomBank], a
-	call $795e
+	call Func_795e
 	call UpdateFrameCounter
 	jp .asm_2cc
 
@@ -1458,7 +1458,369 @@ Func_7c9:
 	call Func_3ddc
 	jp .asm_826
 
-INCBIN "baserom.gbc", $a33, $c7d - $a33
+Func_a33:
+	call Func_fb4
+	ld bc, $deb6
+	ld a, [bc]
+	and a
+	jp nz, InitNextScreen
+	cpl
+	ld [bc], a
+	call Func_3e51
+	call WriteDMACodeToHRAM
+	call Func_3dce
+	call Func_3c72
+	call ResetFrameCounter
+	ld hl, $c506
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wLanguageSetting]
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld hl, $deb7
+	ld a, $ff
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, $00
+	ld [hli], a
+	ld a, $98
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, $28
+	ld [hli], a
+	ld [hl], $00
+	ld hl, vBGMap
+	ld bc, $2a0
+.asm_a84
+	ld a, $80
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_a84
+	ld a, $05
+	ld [MBC5RomBank], a
+	ld hl, $7064
+	ld bc, $9b80
+	ld de, $9b90
+.asm_a9a
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [bc], a
+	inc bc
+	ld a, c
+	and $03
+	jr nz, .asm_a9a
+	ld a, c
+	add $1c
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	ld a, e
+	add $1c
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, b
+	cp $9c
+	jr nz, .asm_a9a
+	sub a
+	ld [rSCY], a
+	ld [rSCX], a
+	ld hl, $6a1a
+	call LoadCGBPalettesHome
+	ld hl, vBGMap
+	ld bc, $400
+	call Func_10e9
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_ae8
+	ld a, 1
+	ld [rVBK], a
+	ld hl, vBGMap
+	ld bc, $2a0
+.asm_ade
+	sub a
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_ade
+	sub a
+	ld [rVBK], a
+.asm_ae8
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+.asm_aec
+	ld a, [$defd]
+	ld c, a
+	ld b, $00
+	ld hl, $3def
+	add hl, bc
+	ld a, [hl]
+	and $0c
+	srl a
+	srl a
+	ld b, a
+	swap a
+	or b
+	ld b, a
+	ld a, [hl]
+	and $c0
+	or b
+	ld [rBGP], a
+	ld a, [$deb9]
+	ld [rSCY], a
+	ld hl, $d37
+	ld a, [$dec2]
+	add $24
+	ld c, a
+	ld b, $8e
+	call Func_cdf
+	ld hl, $d4f
+	ld a, [$dec2]
+	ld c, a
+	ld b, $8e
+	call Func_cdf
+	ld hl, $d37
+	call Func_cae
+.asm_b2d
+	ld a, [rLY]
+	cp 55
+	jr nz, .asm_b2d
+	call WaitHBlankStart
+	ld a, [$defd]
+	ld c, a
+	ld b, $00
+	ld hl, $3def
+	add hl, bc
+	ld a, [hli]
+	ld [rBGP], a
+	ld a, [hl]
+	ld [rOBP0], a
+	ld a, 112
+	ld [rSCY], a
+	ld hl, $d4f
+	call Func_cae
+	ld hl, $deb7
+	ld a, [hli]
+	and a
+	jr z, .asm_b5c
+	dec l
+	dec [hl]
+	jp .asm_c09
+.asm_b5c
+	ld a, [hl]
+	add a
+	jr c, .asm_b66
+	jr z, .asm_b72
+	dec [hl]
+	jp .asm_c09
+.asm_b66
+	ld a, [hFrameCounter]
+	rra
+	jp c, .asm_c09
+	inc [hl]
+	inc l
+	inc [hl]
+	jp .asm_c09
+.asm_b72
+	inc l
+	inc l
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ld a, [bc]
+	cp $ff
+	jr nz, .asm_b88
+	ld a, $7f
+	ld [$deb8], a
+	jp .asm_c09
+.asm_b88
+	and a
+	jr nz, .asm_bb2
+	ld a, d
+	cp $20
+	jr nz, .asm_ba1
+	inc l
+	ld a, [hl]
+	add $40
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hld], a
+	dec l
+	ld a, $f0
+	ld [$deb8], a
+	jr .asm_ba9
+.asm_ba1
+	add $10
+	ld [hl], a
+	ld a, $20
+	ld [$deb8], a
+.asm_ba9
+	sub a
+	dec l
+	ld [hld], a
+	inc bc
+	ld a, b
+	ld [hld], a
+	ld [hl], c
+	jr .asm_c09
+.asm_bb2
+	inc l
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, d
+	add a
+	add a
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, e
+	srl a
+	srl a
+	srl a
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	call WaitHBlankStart
+	ld a, [bc]
+	sub $40
+	add a
+	add $80
+	ld [hl], a
+	push af
+	ld a, l
+	add $20
+	ld l, a
+	pop af
+	inc a
+	ld [hl], a
+	ld a, e
+	and a
+	jr nz, .asm_be8
+.asm_be2
+	sub a
+	call Func_d0f
+	jr .asm_bf4
+.asm_be8
+	ld a, e
+	sub $08
+	ld e, a
+	dec bc
+	ld a, $11
+	call Func_d0f
+	jr .asm_be2
+.asm_bf4
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_c09
+	ld hl, $deba
+	ld a, [hl]
+	add $01
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hli], a
+	ld a, [hl]
+	add $08
+	ld [hl], a
+.asm_c09
+	ld hl, $dec0
+	ld a, [hFrameCounter]
+	and $07
+	jr nz, .asm_c13
+	inc [hl]
+.asm_c13
+	ld a, [hli]
+	cp $18
+	jr nc, .asm_c1c
+	ld [hl], $01
+	jr .asm_c4e
+.asm_c1c
+	cp $20
+	jr nc, .asm_c24
+	sub a
+	ld [hl], a
+	jr .asm_c4e
+.asm_c24
+	cp $a0
+	jr nc, .asm_c2c
+	ld [hl], $01
+	jr .asm_c4e
+.asm_c2c
+	cp $b4
+	jr c, .asm_c37
+	ld [hl], $01
+	call Func_3ddc
+	jr .asm_c4e
+.asm_c37
+	ld a, [$dec3]
+	inc a
+	cp $06
+	jr c, .asm_c41
+	sub a
+	inc [hl]
+.asm_c41
+	ld [$dec3], a
+	ld a, [hl]
+	cp $0a
+	jr c, .asm_c4c
+	ld a, $02
+	ld [hl], a
+.asm_c4c
+	inc l
+	inc [hl]
+.asm_c4e
+	call ClearOAMBufferHome
+	call TickMusicEngineHome
+	call ReadJoyPadHome
+	call WaitVBlank
+	call TryInitNextScreenHome
+	call UpdateFrameCounter
+	ld a, [$defc]
+	and a
+	jp nz, .asm_aec
+	ld a, $50
+	ld [rOBP0], a
+	ld a, $90
+	ld [rOBP1], a
+	ld a, [wNewKeys]
+	and PADF_START | PADF_A
+	jp z, .asm_aec
+	call Func_3ddc
+	jp .asm_aec
 
 Func_c7d:
 	ld a, [hli]
@@ -1735,8 +2097,8 @@ Func_d8b:
 	ld a, [$defc]
 	and a
 	jp nz, .asm_df2
-	ld a, [$defa]
-	and $09
+	ld a, [wNewKeys]
+	and PADF_START | PADF_A
 	jp z, .asm_df2
 	call Func_3ddc
 	jp .asm_df2
@@ -1910,7 +2272,7 @@ asm_e77:
 	rra
 	add [hl]
 	ld [rSCX], a
-	call $2e27
+	call Func_2e27
 	ld a, 192
 	ld [rSCY], a
 	ld hl, hCameraXOffset + 1
@@ -2074,7 +2436,7 @@ Func_103b:
 	call Func_173b
 	call Func_3252
 	call Func_2c9f
-	call $2e21
+	call Func_2e21
 	call UpdateFrameCounter
 	jr .asm_1097
 
@@ -2225,7 +2587,7 @@ Func_1103:
 	call Func_3939
 	call Func_3252
 	call Func_2c9f
-	call $2e21
+	call Func_2e21
 	call UpdateFrameCounter
 	jp .asm_1179
 
@@ -2367,7 +2729,7 @@ Func_122d:
 	ld a, [hCameraXOffset]
 	ld [rSCX], a
 	call Func_2c9f
-	call $2e21
+	call Func_2e21
 	call UpdateFrameCounter
 	jp .asm_12a3
 
@@ -2496,7 +2858,7 @@ Func_1331:
 	ld a, [hCameraXOffset]
 	ld [rSCX], a
 	call Func_2c9f
-	call $2e21
+	call Func_2e21
 	call UpdateFrameCounter
 	jp .asm_13df
 
@@ -2566,7 +2928,7 @@ Func_1442:
 	ld [rWY], a
 .asm_14d2
 	ld a, $90
-	ld [$ff49], a
+	ld [rOBP1], a
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
 	call TryTogglePause
@@ -2589,7 +2951,7 @@ Func_1442:
 	ld [rWX], a
 	call Func_3252
 	call Func_2c9f
-	call $2e21
+	call Func_2e21
 	call UpdateFrameCounter
 	jr .asm_14bb
 
@@ -2626,7 +2988,7 @@ Func_1518:
 	call Func_10e9
 	call Func_fb4
 	ld a, $14
-	ld [$2000], a
+	ld [MBC5RomBank], a
 	ld bc, $7100
 	ld de, $d9af
 	call Decompress
@@ -2704,7 +3066,7 @@ Func_1518:
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
 	call Func_2c9f
-	call $2e21
+	call Func_2e21
 	call UpdateFrameCounter
 	jp .asm_15ab
 
@@ -3272,7 +3634,7 @@ HandlePlayerInput:
 	ld e, a
 	ld a, [$ffb5]
 	and a
-	jp nz, $1a37
+	jp nz, Func_1a37
 	bit 2, b
 	jp nz, Func_1a73
 	ld a, [hl]
@@ -3351,7 +3713,38 @@ asm_19f2:
 .asm_1a35
 	jr Func_19e9
 
-INCBIN "baserom.gbc", $1a37, $1a73 - $1a37
+Func_1a37:
+	call Func_2324
+	sub a
+	ld [$ffb9], a
+	ld [$ffb7], a
+	ld hl, $ffb5
+	ld a, [hl]
+	inc [hl]
+	cp $01
+	jr nz, .asm_1a64
+	ld a, [$fff2]
+	cp $04
+	jr nz, .asm_1a55
+	res 5, b
+	ld hl, $2dc5
+	jr .asm_1a58
+.asm_1a55
+	ld hl, $2dad
+.asm_1a58
+	call Func_2d62
+	ld hl, $406e
+	call Func_3e71
+	jp Func_19e9
+.asm_1a64
+	cp $d0
+	jp c, Func_19e9
+	push bc
+	push de
+	call Func_3ddc
+	pop de
+	pop bc
+	jp Func_19e9
 
 Func_1a73:
 	sub a
@@ -6583,7 +6976,293 @@ Func_2d73:
 	ld [hl], $74
 	ret
 
-INCBIN "baserom.gbc", $2d85, $2f9e - $2d85
+INCBIN "baserom.gbc", $2d85, $2e11 - $2d85
+
+Func_2e11:
+	call WaitHBlankStart
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+	ld a, [hCameraXOffset]
+	ld [rSCX], a
+	ld a, [hCameraYOffset]
+	ld [rSCY], a
+	ret
+
+Func_2e21:
+	sub a
+	ld [$de85], a
+	jr Func_2e2e
+Func_2e27:
+	ld a, $ff
+	ld [$de85], a
+	jr Func_2e2e
+Func_2e2e:
+	ld a, [rLY]
+	cp 119
+	jr nz, Func_2e2e
+	call WaitHBlankStart
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jr z, .asm_2e49
+	ld a, 112
+	ld [rSCY], a
+	sub a
+	ld [rSCX], a
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJOFF | LCDCF_BGON
+	ld [rLCDC], a
+	jr .asm_2e4d
+.asm_2e49
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJOFF | LCDCF_BGON
+	ld [rLCDC], a
+.asm_2e4d
+	ld a, [hPaused]
+	and a
+	jp nz, .asm_2eeb
+	ld a, [hFrameCounter]
+	rra
+	jp c, Func_3340
+	ld hl, $ffd8
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [hli]
+	and $e0
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, vTilesOB
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, .asm_2e85
+	sub a
+	ld [rHDMA3], a
+	ld [rHDMA4], a
+	ld hl, sp+$00
+	ld a, l
+	ld [rHDMA2], a
+	ld a, h
+	ld [rHDMA1], a
+	ld a, $93
+	ld [rHDMA5], a
+	jr .asm_2ee8
+.asm_2e85
+	ld a, $16
+	ld [$ff8a], a
+.asm_2e89
+	pop bc
+	pop de
+.waitCurrentHBlankFinish
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .waitCurrentHBlankFinish
+.waitHBlankStart
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .waitHBlankStart
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld [hl], b
+	inc hl
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_2e89
+	pop bc
+	pop de
+.waitCurrentHBlankFinish2
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .waitCurrentHBlankFinish2
+.waitHBlankStart2
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .waitHBlankStart2
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	pop bc
+	ld a, c
+	ld [hli], a
+	ld [hl], b
+.asm_2ee8
+	ld sp, wStack - 2
+.asm_2eeb
+	ld a, [rLY]
+	cp 143
+	jr nz, .asm_2eeb
+	ld a, [$de85]
+	and a
+	jp nz, Func_2e11
+	ld a, $05
+	ld [MBC5RomBank], a
+	call WaitHBlankStart
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
+	ld a, [hCameraXOffset]
+	ld [rSCX], a
+	ld a, [hCameraYOffset]
+	ld [rSCY], a
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld a, [hFrameCounter]
+	bit 1, a
+	jr nz, .asm_2f34
+	ld hl, $dda1
+	ld bc, $8440
+	ld de, $4000
+	ld a, $0a
+	call Func_2f9e
+	ld hl, $dda2
+	ld bc, $8400
+	ld de, $4280
+	ld a, $12
+	call Func_2f9e
+	jr .asm_2f98
+.asm_2f34
+	ld hl, $dda3
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld bc, $dda5
+	bit 7, [hl]
+	jr z, .asm_2f47
+	ld a, [hFrameCounter]
+	bit 2, a
+	jr z, .asm_2f4a
+.asm_2f47
+	ld a, [bc]
+	inc a
+	ld [bc], a
+.asm_2f4a
+	ld a, [hl]
+	and a
+	jr z, .asm_2f98
+	ld a, [hli]
+	and $7f
+	ld e, a
+	ld a, [bc]
+	cp e
+	jr nz, .asm_2f58
+	sub a
+	ld [bc], a
+.asm_2f58
+	ld a, [bc]
+	add a
+	ld e, a
+	ld d, $00
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+.asm_2f66
+	ld a, [bc]
+	inc bc
+	ld l, a
+	ld a, [bc]
+	inc bc
+	ld h, a
+	and a
+	jr z, .asm_2f98
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	pop de
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	jr .asm_2f66
+.asm_2f98
+	ld sp, wStack - 2
+	jp Func_3000
 
 Func_2f9e:
 	inc [hl]
@@ -6672,31 +7351,241 @@ Func_2fe2:
 	ld [$dda2], a
 	ret
 
-INCBIN "baserom.gbc", $3000, $3086 - $3000
+Func_3000:
+	ld hl, $ffec
+	inc [hl]
+	ld a, [hl]
+	cp $0a
+	jr c, .asm_300b
+	sub a
+	ld [hl], a
+.asm_300b
+	ld c, a
+	add a
+	add c
+	ld c, a
+	ld b, $00
+	ld hl, .jumpTable
+	add hl, bc
+	ld bc, vBGWin
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	jr z, .asm_3020
+	ld bc, $9ba0
+.asm_3020
+	jp hl
+.jumpTable
+	jp Func_303f
+	jp Func_3057
+	jp Func_307b
+	jp Func_309c
+	jp Func_30ac
+	jp Func_30bf
+	jp Func_30d2
+	jp Func_30e3
+	jp Func_30f8
+	jp Func_30fd
 
+Func_303f:
+	ld h, b
+	ld l, c
+	ld a, [hCurHealth]
+	ld b, a
+	ld a, [hMaxHealth]
+	ld c, a
+.asm_3047
+	ld a, b
+	and a
+	jr z, .asm_3050
+	dec b
+	ld [hl], $8f
+	jr .asm_3052
+.asm_3050
+	ld [hl], $b1
+.asm_3052
+	inc l
+	dec c
+	jr nz, .asm_3047
+	ret
+
+Func_3057:
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	ld hl, $4b
+	jr z, .asm_3069
+	ld hl, $49
+	cp $fe
+	jr nz, .asm_3069
+	ld hl, $4b
+.asm_3069
+	add hl, bc
+	ld a, [hNumLives]
+	and $f0
+	swap a
+	add $84
+	ld [hli], a
+	ld a, [hNumLives]
+	and $0f
+	add $84
+	ld [hl], a
+	ret
+
+Func_307b:
+	ld hl, $4e
+	add hl, bc
+	ld c, $f1
+	ld b, $84
+	ld de, $ff0
 Func_3086:
-	db $f2
+	ld a, [$ff00+c]
 	and e
 	swap a
 	add b
 	ld [hli], a
-	db $f2
+	ld a, [$ff00+c]
 	dec c
 	and d
 	add b
 	ld [hli], a
-	db $f2
+	ld a, [$ff00+c]
 	and e
 	swap a
 	add b
 	ld [hli], a
-	db $f2
+	ld a, [$ff00+c]
 	and d
 	add b
 	ld [hl], a
 	ret
 
-INCBIN "baserom.gbc", $309c, $3153 - $309c
+Func_309c:
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	ret nz
+	ld hl, $47
+	add hl, bc
+	ld a, [$fff2]
+	and $0f
+	add $84
+	ld [hl], a
+	ret
+
+Func_30ac:
+	ld a, [$ffad]
+	add a
+	ld hl, $4436
+	jr nc, .asm_30b7
+	ld hl, $4496
+.asm_30b7
+	ld a, $03
+	ld bc, $8900
+	jp Func_31a9
+
+Func_30bf:
+	ld a, [$ffad]
+	add a
+	ld hl, $4466
+	jr nc, .asm_30ca
+	ld hl, $44c6
+.asm_30ca
+	ld a, $03
+	ld bc, $8930
+	jp Func_31a9
+
+Func_30d2:
+	ld hl, $fff5
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	or h
+	ret z
+	ld a, $02
+	jp Func_31a9
+
+Func_30e3:
+	ld a, [hForcedSideScrollSpeed]
+	and a
+	ret nz
+	ld hl, $fff9
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	or h
+	ret z
+	ld a, $01
+	jp Func_31a9
+
+Func_30f8:
+	sub a
+	ld [$ff8a], a
+	jr Func_3101
+Func_30fd:
+	ld a, $10
+	ld [$ff8a], a
+Func_3101:
+	ld hl, hNumCarrots
+	ld a, [hli]
+	cp [hl]
+	jr z, .asm_310e
+	ld a, [$ff8a]
+	and a
+	jr nz, .asm_310e
+	inc [hl]
+.asm_310e
+	ld a, [hl]
+	and a
+	ret z
+	dec a
+	ld b, a
+	and $03
+	ld e, a
+	ld d, $00
+	ld hl, $324e
+	add hl, de
+	ld d, [hl]
+	ld a, b
+	and $fc
+	add a
+	add a
+	add a
+	cpl
+	inc a
+	add $e0
+	ld l, a
+	ld h, $40
+	ld c, a
+	ld b, $8a
+	ld a, [$ff8a]
+	add c
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	ld a, [$ff8a]
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, $04
+	ld [MBC5RomBank], a
+	ld a, [hGameBoyColorDetection]
+	cp GBC_MODE
+	jr nz, Func_3153
+	ld a, $01
+	ld [$ff4f], a
+	call Func_3153
+	sub a
+	ld [$ff4f], a
+	ret
 
 Func_3153:
 	ld a, d
@@ -7090,7 +7979,1326 @@ Func_3335:
 	jr nz, .asm_333b
 	ret
 
-INCBIN "baserom.gbc", $3340, $392e - $3340
+Func_3340:
+	ld hl, $de86
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8140
+	ld a, $02
+	ld [$ff8a], a
+.asm_3352
+	pop bc
+	pop de
+.asm_3354
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3354
+.asm_335a
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_335a
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_3352
+	pop bc
+	pop de
+.asm_338a
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_338a
+.asm_3390
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_3390
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld hl, $de89
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8160
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, $02
+	ld [$ff8a], a
+.asm_33be
+	pop bc
+	pop de
+.asm_33c0
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_33c0
+.asm_33c6
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_33c6
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_33be
+	ld hl, $de8c
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8180
+	ld a, $02
+	ld [$ff8a], a
+.asm_3406
+	pop bc
+	pop de
+.asm_3408
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3408
+.asm_340e
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_340e
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_3406
+	pop bc
+	pop de
+.asm_343e
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_343e
+.asm_3444
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_3444
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld hl, $de8f
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $81a0
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, $02
+	ld [$ff8a], a
+.asm_3472
+	pop bc
+	pop de
+.asm_3474
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3474
+.asm_347a
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_347a
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_3472
+	ld hl, $de92
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $81c0
+	ld a, $02
+	ld [$ff8a], a
+.asm_34ba
+	pop bc
+	pop de
+.asm_34bc
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_34bc
+.asm_34c2
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_34c2
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_34ba
+	pop bc
+	pop de
+.asm_34f2
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_34f2
+.asm_34f8
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_34f8
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld hl, $de95
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $81e0
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	pop de
+.asm_3524
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3524
+.asm_352a
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_352a
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	pop de
+.asm_3553
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3553
+.asm_3559
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_3559
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $de98
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8200
+	ld a, $02
+	ld [$ff8a], a
+.asm_358c
+	pop bc
+	pop de
+.asm_358e
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_358e
+.asm_3594
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_3594
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_358c
+	pop bc
+	pop de
+.asm_35c4
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_35c4
+.asm_35ca
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_35ca
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld hl, $de9b
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8220
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, $02
+	ld [$ff8a], a
+.asm_35f8
+	pop bc
+	pop de
+.asm_35fa
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_35fa
+.asm_3600
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_3600
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_35f8
+	ld hl, $de9e
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8240
+	ld a, $02
+	ld [$ff8a], a
+.asm_3640
+	pop bc
+	pop de
+.asm_3642
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3642
+.asm_3648
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_3648
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_3640
+	pop bc
+	pop de
+.asm_3678
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr z, .asm_3678
+.asm_367e
+	ld a, [rSTAT]
+	and STATF_LCD
+	jr nz, .asm_367e
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld hl, $dea1
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8260
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+.asm_36a7
+	ld a, [rSTAT]
+	and $03
+	cp $01
+	jr nz, .asm_36a7
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $dea4
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8280
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $dea7
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $82a0
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $deaa
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $82c0
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $dead
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $82e0
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $deb0
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8300
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld hl, $deb3
+	ld a, [hli]
+	ld [MBC5RomBank], a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld sp, hl
+	ld hl, $8320
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	inc l
+	pop bc
+	ld [hl], c
+	inc l
+	ld [hl], b
+	ld sp, $dffe
+	ld a, $e7
+	ld [$ff40], a
+	ld a, [hCameraXOffset]
+	ld [$ff43], a
+	ld a, [hCameraYOffset]
+	ld [$ff42], a
+	ret
 
 Func_392e:
 	ld hl, $de86
@@ -8194,8 +10402,375 @@ INCLUDE "home/load.asm"
 
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
-INCBIN "baserom.gbc", $4000, $7b8a - $4000
+INCBIN "baserom.gbc", $4000, $795e - $4000
 
+Func_795e:
+	ld a, [hPaused]
+	and a
+	ret nz
+	ld hl, $ddcc
+	ld a, [hli]
+	ld c, a
+	ld b, $88
+	bit 7, [hl]
+	ld hl, $c1e8
+	jr z, .asm_7973
+	ld hl, $c222
+.asm_7973
+	call Func_3ca6
+	ld a, [$ddcd]
+	bit 6, a
+	jr nz, .asm_7998
+	ld a, [hFrameCounter]
+	bit 4, a
+	jr z, .asm_798c
+	ld bc, $3844
+	ld hl, $c25c
+	call Func_3ca6
+.asm_798c
+	ld a, [wNewKeys]
+	bit PADB_B, a
+	ret z
+	ld hl, $ddcd
+	set 6, [hl]
+	ret
+.asm_7998
+	ld a, [$ddcd]
+	bit 5, a
+	jr z, .asm_79bb
+	ld hl, $ffb5
+	dec [hl]
+	jp z, InitNextScreen
+	ld hl, $ddde
+	ld a, [hli]
+	cp [hl]
+	ret nz
+	ld a, [hFrameCounter]
+	bit 4, a
+	ret z
+	ld bc, $3844
+	ld hl, $c272
+	call Func_3ca6
+	ret
+.asm_79bb
+	ld hl, $ddce
+	ld a, [hl]
+	and a
+	jr z, .asm_79c9
+	dec [hl]
+	jp nz, .asm_7a69
+	dec l
+	res 7, [hl]
+.asm_79c9
+	ld a, [wHeldKeys]
+	bit PADB_A, a
+	jr z, .asm_79e7
+	ld hl, $ddd3
+	ld a, [hli]
+	or [hl]
+	jr nz, .asm_79e7
+	ld a, [hFrameCounter]
+	rra
+	jr c, .asm_7a48
+	ld a, [hNumCarrots]
+	cp 32
+	jr z, .asm_7a48
+	inc a
+	ld [hNumCarrots], a
+	jr .asm_7a48
+.asm_79e7
+	ld a, [hNumCarrots]
+	and a
+	jr z, .asm_7a48
+	ld hl, $ddcc
+	ld a, [hli]
+	add $10
+	ld b, a
+	set 7, [hl]
+	inc l
+	ld a, $1e
+	ld [hli], a
+	inc l
+	inc l
+	inc l
+	ld a, b
+	ld [hli], a
+	ld a, [hNumCarrots]
+	ld b, $ff
+.asm_7a02
+	inc b
+	sub $0b
+	jr nc, .asm_7a02
+	ld a, b
+	add a
+	add $c8
+	ld c, a
+	ld a, $c2
+	adc $00
+	ld b, a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	ld [hl], a
+	sub a
+	ld [hNumCarrots], a
+	ld [hCarrotMeter], a
+	ld hl, $9300
+	ld bc, vTilesBG
+	ld d, $20
+.asm_7a23
+	call WaitHBlankStart
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	ld a, [hli]
+	ld [bc], a
+	inc c
+	dec d
+	jr nz, .asm_7a23
+	ld a, $0e
+	call Func_3e1b
+	jr .asm_7a69
+.asm_7a48
+	ld hl, $ddcc
+	ld a, [wHeldKeys]
+	bit PADB_LEFT, a
+	jr z, .asm_7a55
+	dec [hl]
+	jr .asm_7a5a
+.asm_7a55
+	bit PADB_RIGHT, a
+	jr z, .asm_7a5a
+	inc [hl]
+.asm_7a5a
+	ld a, [hl]
+	cp $08
+	jr nc, .asm_7a63
+	ld [hl], $08
+	jr .asm_7a69
+.asm_7a63
+	cp $88
+	jr c, .asm_7a69
+	ld [hl], $88
+.asm_7a69
+	ld hl, $ddcf
+	ld a, [hl]
+	and a
+	jr z, .asm_7a95
+	cp $28
+	jr c, .asm_7a78
+	ld [hl], $00
+	jr .asm_7a95
+.asm_7a78
+	inc [hl]
+	and $f8
+	srl a
+	srl a
+	add $84
+	ld l, a
+	ld a, $c1
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [$ddd0]
+	ld c, a
+	ld a, [$ddd1]
+	ld b, a
+	call Func_3ca6
+.asm_7a95
+	ld hl, $ddd2
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hld]
+	ld d, a
+	or e
+	jr z, .asm_7ad0
+	ld a, [de]
+	cp $ff
+	jr nz, .asm_7aba
+	sub a
+	ld [hli], a
+	ld [hld], a
+	dec l
+	dec l
+	dec de
+	dec de
+	ld a, [de]
+	ld [hld], a
+	ld a, c
+	ld [hld], a
+	ld [hl], $01
+	ld a, $0d
+	call Func_3e1b
+	jr .asm_7ad0
+.asm_7aba
+	inc de
+	ld b, a
+	ld a, [de]
+	inc de
+	ld [hl], e
+	inc l
+	ld [hl], d
+	add a
+	add $88
+	ld l, a
+	ld a, $c2
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+.asm_7ad0
+	ld hl, $ddd5
+	ld a, [hli]
+	ld d, a
+	add a
+	jr nc, .asm_7b01
+	inc [hl]
+	ld a, [hl]
+	cp $2d
+	jr c, .asm_7ae8
+	cp $5a
+	jp nc, Func_7b8a
+	ld a, [hFrameCounter]
+	bit 3, a
+	ret z
+.asm_7ae8
+	inc l
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld a, d
+	and $07
+	add a
+	add $0c
+	add $60
+	ld l, a
+	ld a, $c0
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+	ret
+.asm_7b01
+	inc l
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	ld a, d
+	and $07
+	add a
+	add $60
+	ld l, a
+	ld a, $c0
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3ca6
+	ld hl, $ddd5
+	ld a, [hli]
+	add a
+	add a
+	jr nc, .asm_7b31
+	dec [hl]
+	jr nz, .asm_7b56
+	dec l
+	res 6, [hl]
+	set 4, [hl]
+	ld a, [hl]
+	xor $20
+	ld [hli], a
+	ld a, [$dddd]
+	ld [hl], a
+	jr .asm_7b56
+.asm_7b31
+	dec [hl]
+	jr nz, .asm_7b42
+	dec l
+	bit 4, [hl]
+	jr nz, Func_7b8a
+	set 6, [hl]
+	inc l
+	ld a, [$dddc]
+	ld [hl], a
+	jr .asm_7b56
+.asm_7b42
+	inc l
+	add a
+	jr c, .asm_7b4d
+	ld a, [$dddb]
+	add [hl]
+	ld [hl], a
+	jr .asm_7b56
+.asm_7b4d
+	ld a, [$dddb]
+	cpl
+	inc a
+	add [hl]
+	ld [hl], a
+	jr .asm_7b56
+.asm_7b56
+	ld hl, $ddcf
+	ld a, [hli]
+	and a
+	ret z
+	ld a, [hli]
+	add $10
+	ld c, a
+	ld b, [hl]
+	ld hl, $ddd7
+	ld a, [hli]
+	cp $08
+	ret c
+	cp $98
+	ret nc
+	sub c
+	ret nc
+	cp $e0
+	ret c
+	ld a, [hli]
+	sub $10
+	sub b
+	cp $06
+	ret nc
+	ld hl, $ddd5
+	set 7, [hl]
+	inc l
+	sub a
+	ld [hl], a
+	ld hl, $dddf
+	inc [hl]
+	ld bc, 5
+	call AddScore
+	ret
 Func_7b8a:
 	ld hl, $ddd9
 	ld a, [hli]
@@ -10433,7 +13008,7 @@ Func_17929:
 Func_17aba:
 	ld b, a
 	ld d, $00
-	db $f2
+	ld a, [$ff00+c]
 	add a
 	jr nc, .asm_17ac3
 	ld d, $ff
