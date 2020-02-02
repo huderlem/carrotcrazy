@@ -259,7 +259,7 @@ Func_16a:
 	call Func_3dce
 	call Func_3c72
 	call ResetFrameCounter
-	ld hl, $6a1a
+	ld hl, Data_1aa1a
 	call LoadCGBPalettesHome
 	ld hl, vBGMap
 	ld bc, $400
@@ -418,7 +418,7 @@ Func_250:
 	ld a, Bank(Func_17bf9)
 	ld [MBC5RomBank], a
 	call Func_17bf9
-	ld hl, $6f32
+	ld hl, BonusScreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld c, $00
 	call Func_1023
@@ -545,7 +545,7 @@ Func_387:
 	ld h, [hl]
 	ld l, a
 	call Func_3a42
-	ld hl, $6924
+	ld hl, LevelSummaryScreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld a, Bank(Func_17c82)
 	ld [MBC5RomBank], a
@@ -659,7 +659,7 @@ Func_44c:
 	sub a
 	ld [rSCY], a
 	ld [rSCX], a
-	ld hl, $69e6
+	ld hl, Data_1a9e6
 	call LoadCGBPalettesHome
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -791,7 +791,7 @@ Func_587:
 	sub a
 	ld [rSCY], a
 	ld [rSCX], a
-	ld hl, $6b36
+	ld hl, Data_1ab36
 	call LoadCGBPalettesHome
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
@@ -910,7 +910,7 @@ Func_669:
 	sub a
 	ld [rSCY], a
 	ld [rSCX], a
-	ld hl, $69e6
+	ld hl, Data_1a9e6
 	call LoadCGBPalettesHome
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -1122,7 +1122,7 @@ Func_7c9:
 	ld a, e
 	or d
 	jr nz, .asm_7f4
-	ld hl, $6992
+	ld hl, TitlescreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld hl, vBGMap
 	ld bc, $400
@@ -1548,7 +1548,7 @@ Func_a33:
 	sub a
 	ld [rSCY], a
 	ld [rSCX], a
-	ld hl, $6a1a
+	ld hl, Data_1aa1a
 	call LoadCGBPalettesHome
 	ld hl, vBGMap
 	ld bc, $400
@@ -7580,11 +7580,11 @@ Func_3101:
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, Func_3153
-	ld a, $01
-	ld [$ff4f], a
+	ld a, 1
+	ld [rVBK], a
 	call Func_3153
 	sub a
-	ld [$ff4f], a
+	ld [rVBK], a
 	ret
 
 Func_3153:
@@ -9292,12 +9292,12 @@ Func_3340:
 	inc l
 	ld [hl], b
 	ld sp, $dffe
-	ld a, $e7
-	ld [$ff40], a
+	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
+	ld [rLCDC], a
 	ld a, [hCameraXOffset]
-	ld [$ff43], a
+	ld [rSCX], a
 	ld a, [hCameraYOffset]
-	ld [$ff42], a
+	ld [rSCY], a
 	ret
 
 Func_392e:
@@ -13621,7 +13621,24 @@ ReadAndLoadCGBpalettes:
 	ld l, a
 	jp LoadCGBPalettesHome
 
-INCBIN "baserom.gbc", $1a924, $1a93a - $1a924
+LevelSummaryScreenGBCPalettes:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB(31, 31, 31)
+	RGB(17, 0, 28)
+	RGB(8, 0, 13)
+	RGB(2, 0, 7)
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(17, 0, 28)
+	RGB(8, 0, 13)
+	RGB(2, 0, 7)
+
+	; OBJ Palette 1
+	RGB(31, 31, 31)
+	RGB(31, 0, 31)
+	RGB(0, 0, 0)
 
 InfogramesCopyrightScreenGBCPalettes:
 	db 8 ; num background palettes
@@ -13694,27 +13711,270 @@ WarnerBrosCopyrightScreenGBCPalettes:
 	RGB(23, 8, 0)
 	RGB(4, 4, 15)
 
-INCBIN "baserom.gbc", $1a992, $1aa68 - $1a992
+TitlescreenGBCPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(10, 17, 31)
+	RGB(31, 31, 31)
+	RGB(16, 16, 16)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(10, 17, 31)
+	RGB(30, 30, 14)
+	RGB(9, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(30, 30, 14)
+	RGB(17, 15, 5)
+	RGB(9, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(9, 31, 4)
+	RGB(17, 15, 5)
+	RGB(9, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(9, 31, 4)
+	RGB(31, 17, 0)
+	RGB(18, 5, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(10, 17, 31)
+	RGB(31, 22, 18)
+	RGB(22, 10, 7)
+	RGB(13, 3, 1)
+
+	; BG Palette 6
+	RGB(10, 17, 31)
+	RGB(22, 10, 7)
+	RGB(13, 3, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(31, 22, 18)
+	RGB(22, 10, 7)
+	RGB(13, 3, 1)
+	RGB(0, 0, 0)
+
+	db 3 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(16, 16, 16)
+	RGB(9, 9, 9)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(19, 19, 16)
+	RGB(12, 12, 9)
+	RGB(3, 2, 0)
+
+	; OBJ Palette 2
+	RGB(31, 18, 0)
+	RGB(15, 4, 0)
+	RGB(0, 0, 0)
+
+Data_1a9e6:
+	db 1 ; num background palettes
+	; BG Palettes 0
+	RGB(31, 31, 31)
+	RGB(0, 0, 31)
+	RGB(0, 0, 15)
+	RGB(0, 0, 7)
+
+	db 7 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(0, 0, 31)
+	RGB(0, 0, 15)
+	RGB(0, 0, 7)
+
+	; OBJ Palette 1
+	RGB(31, 31, 31)
+	RGB(0, 0, 15)
+	RGB(0, 0, 7)
+
+	; OBJ Palette 2
+	RGB(31, 21, 0)
+	RGB(20, 8, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(30, 24, 20)
+	RGB(24, 9, 2)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(28, 25, 12)
+	RGB(14, 11, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 5
+	RGB(29, 29, 18)
+	RGB(4, 18, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 6
+	RGB(29, 18, 18)
+	RGB(19, 9, 0)
+	RGB(0, 0, 0)
+
+Data_1aa1a:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(10, 17, 31)
+	RGB(31, 31, 31)
+	RGB(16, 16, 16)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(10, 17, 31)
+	RGB(30, 30, 14)
+	RGB(9, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(30, 30, 14)
+	RGB(17, 15, 5)
+	RGB(9, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(9, 31, 4)
+	RGB(17, 15, 5)
+	RGB(9, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(9, 31, 4)
+	RGB(31, 17, 0)
+	RGB(18, 5, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(10, 17, 31)
+	RGB(31, 22, 18)
+	RGB(22, 10, 7)
+	RGB(13, 3, 1)
+
+	; BG Palette 6
+	RGB(10, 17, 31)
+	RGB(22, 10, 7)
+	RGB(13, 3, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(31, 22, 18)
+	RGB(22, 10, 7)
+	RGB(13, 3, 1)
+	RGB(0, 0, 0)
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(17, 21, 31)
+	RGB(12, 17, 26)
+	RGB(7, 11, 21)
+
+	; OBJ Palette 1
+	RGB(24, 25, 31)
+	RGB(14, 16, 21)
+	RGB(3, 6, 11)
 
 StudioScreenGBCPalettes:
 	db 8 ; num background palettes
-	db $F7, $6B, $CC, $36, $65, $19, $00, $00
-	db $7F, $2B, $52, $0E, $E8, $00, $00, $00
-	db $FF, $7F, $91, $4D, $88, $2C, $00, $00
-	db $88, $7E, $3C, $2A, $90, $00, $00, $00
-	db $FF, $7F, $AF, $7F, $88, $7E, $22, $66
-	db $88, $7E, $EB, $0F, $EF, $08, $00, $00
-	db $F7, $6B, $31, $46, $08, $21, $00, $00
-	db $F7, $6B, $3C, $2A, $EF, $08, $00, $00
+	; BG Palette 0
+	RGB(23, 31, 26)
+	RGB(12, 22, 13)
+	RGB(5, 11, 6)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(31, 27, 10)
+	RGB(18, 18, 3)
+	RGB(8, 7, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(31, 31, 31)
+	RGB(17, 12, 19)
+	RGB(8, 4, 11)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(8, 20, 31)
+	RGB(28, 17, 10)
+	RGB(16, 4, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(31, 31, 31)
+	RGB(15, 29, 31)
+	RGB(8, 20, 31)
+	RGB(2, 17, 25)
+
+	; BG Palette 5
+	RGB(8, 20, 31)
+	RGB(11, 31, 3)
+	RGB(15, 7, 2)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(23, 31, 26)
+	RGB(17, 17, 17)
+	RGB(8, 8, 8)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(23, 31, 26)
+	RGB(28, 17, 10)
+	RGB(15, 7, 2)
+	RGB(0, 0, 0)
 
 	db 5 ; num sprite palettes
-	db $1E, $53, $38, $09, $00, $00
-	db $BF, $02, $14, $01, $00, $00
-	db $3C, $33, $6E, $01, $00, $00
-	db $BD, $4B, $44, $02, $00, $00
-	db $5D, $4A, $33, $01, $00, $00
+	; OBJ Palette 0
+	RGB(30, 24, 20)
+	RGB(24, 9, 2)
+	RGB(0, 0, 0)
 
-INCBIN "baserom.gbc", $1aac8, $1af18 - $1aac8
+	; OBJ Palette 1
+	RGB(31, 21, 0)
+	RGB(20, 8, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(28, 25, 12)
+	RGB(14, 11, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(29, 29, 18)
+	RGB(4, 18, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(29, 18, 18)
+	RGB(19, 9, 0)
+	RGB(0, 0, 0)
+
+INCBIN "baserom.gbc", $1aac8, $1ab36 - $1aac8
+
+Data_1ab36:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB(31, 31, 31)
+	RGB(20, 15, 23)
+	RGB(14, 7, 15)
+	RGB(6, 2, 5)
+
+	db 1 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(20, 15, 23)
+	RGB(14, 7, 15)
+	RGB(6, 2, 5)
+
+INCBIN "baserom.gbc", $1ab46, $1af18 - $1ab46
 
 ; This only holds colors 1-3. The first transparent color is hardcoded
 ; in LoadCGBPalettes.
@@ -13734,7 +13994,86 @@ CommonSpritePalettes:
 	RGB(31, 8, 0)
 	RGB(0, 0, 0)
 
-INCBIN "baserom.gbc", $1af2a, $1af94 - $1af2a
+INCBIN "baserom.gbc", $1af2a, $1af32 - $1af2a
+
+BonusScreenGBCPalettes:
+	db 6 ; num background palettes
+	; BG Palette 0
+	RGB(31, 21, 17)
+	RGB(22, 12, 9)
+	RGB(14, 5, 3)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(31, 18, 18)
+	RGB(31, 0, 0)
+	RGB(13, 18, 31)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(31, 18, 18)
+	RGB(31, 31, 31)
+	RGB(13, 18, 31)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(21, 19, 17)
+	RGB(14, 12, 8)
+	RGB(8, 6, 4)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(13, 18, 31)
+	RGB(31, 31, 31)
+	RGB(22, 14, 5)
+	RGB(21, 21, 21)
+
+	; BG Palette 5
+	RGB(13, 18, 31)
+	RGB(31, 22, 10)
+	RGB(22, 11, 1)
+	RGB(10, 4, 0)
+
+	db 8 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(31, 27, 0)
+	RGB(19, 7, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(31, 31, 31)
+	RGB(14, 14, 14)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(31, 21, 0)
+	RGB(20, 8, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(30, 24, 20)
+	RGB(24, 9, 2)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(28, 25, 12)
+	RGB(14, 11, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 5
+	RGB(29, 29, 18)
+	RGB(4, 18, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 6
+	RGB(29, 18, 18)
+	RGB(19, 9, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 7
+	RGB(31, 31, 31)
+	RGB(14, 14, 14)
+	RGB(0, 0, 0)
 
 Data_1af94:
 	dw $ffff
