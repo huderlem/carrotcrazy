@@ -891,7 +891,7 @@ Func_5f4:
 	call Func_3ddc
 	jp Func_5f4
 
-Func_669:
+RunOptionsScreen:
 	call LoadWarnerBrosBannerQuadrants
 	call Func_3e51
 	call WriteDMACodeToHRAM
@@ -11813,10 +11813,13 @@ WarnerBrosCopyrightTrademarkTiles:
 WarnerBrosCopyrightLolaBunnyTiles:
 	INCBIN "gfx/warner_bros_copyright/lola_bunny.2bpp.lz"
 
-LanguageSelectFontTiles:
-	INCBIN "gfx/language_select/font.2bpp.lz"
+MenuFontTiles:
+	INCBIN "gfx/menu_font.2bpp.lz"
 
-INCBIN "baserom.gbc", $c944, $ccff - $c944
+PasswordCharacterHeadTiles:
+	INCBIN "gfx/options/password_character_heads.interleave.2bpp.lz"
+OptionTextTiles:
+	INCBIN "gfx/options/option_texts.interleave.2bpp.lz"
 
 FarmSceneTiles:
 	INCBIN "gfx/titlescreen/background.2bpp.lz"
@@ -14086,7 +14089,7 @@ Data_1af94:
 	dw WarnerBrosCopyright_ScreenData  ; SCREEN_COPYRIGHT_WARNER_BROS
 	dw LanguageSelect_ScreenData       ; SCREEN_LANGUAGE_SELECT
 	dw Titlescreen_ScreenData          ; SCREEN_TITLESCREEN
-	dw $7147 ; SCREEN_OPTIONS
+	dw Options_ScreenData              ; SCREEN_OPTIONS
 	dw $7194 ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData ; SCREEN_STUDIO_TREASURE_ISLAND
 	dw $71fc ; SCREEN_TREASURE_ISLAND_1_INTRO
@@ -14166,7 +14169,7 @@ Data_1b030:
 	dw WarnerBrosCopyright_ScreenData    ; SCREEN_COPYRIGHT_WARNER_BROS
 	dw LanguageSelect_ScreenData         ; SCREEN_LANGUAGE_SELECT
 	dw Titlescreen_ScreenDataGBC         ; SCREEN_TITLESCREEN
-	dw $7147 ; SCREEN_OPTIONS
+	dw Options_ScreenData                ; SCREEN_OPTIONS
 	dw $7c8d ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData   ; SCREEN_STUDIO_TREASURE_ISLAND
 	dw $71fc ; SCREEN_TREASURE_ISLAND_1_INTRO
@@ -14247,8 +14250,8 @@ InfogramesCopyright_ScreenData:
 	dw RunInfogramesCopyrightScreen
 
 WarnerBrosCopyright_ScreenData:
-	compressed_data WarnerBrosCopyrightTiles, $8830
-	compressed_data WarnerBrosCopyrightEdgeTiles, $8000
+	compressed_data WarnerBrosBackgroundTiles, $8830
+	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
 	uncompressed_data WarnerBrosCopyrightUnderLicenseByTiles, $c000, $80
 	uncompressed_data WarnerBrosCopyrightInteractiveEntertainmentTiles, $c080, $c0
 	compressed_data WarnerBrosCopyrightTrademarkTiles, $c200
@@ -14262,15 +14265,28 @@ WarnerBrosCopyright_ScreenData:
 INCBIN "baserom.gbc", $1b10f, $1b129 - $1b10f
 
 LanguageSelect_ScreenData:
-	compressed_data WarnerBrosCopyrightTiles, $8830
-	compressed_data WarnerBrosCopyrightEdgeTiles, $8000
-	compressed_data LanguageSelectCarrotTiles, $81c0
-	compressed_data LanguageSelectFontTiles, $c000
+	compressed_data WarnerBrosBackgroundTiles, $8830
+	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
+	compressed_data CarrotCursorTiles, $81c0
+	compressed_data MenuFontTiles, $c000
 	compressed_data GameText, $c500
 	db $ff
 	dw Func_5ca
 
-INCBIN "baserom.gbc", $1b145, $1b16f - $1b145
+INCBIN "baserom.gbc", $1b145, $1b147 - $1b145
+
+Options_ScreenData:
+	compressed_data WarnerBrosBackgroundTiles, $8830
+	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
+	compressed_data CarrotCursorTiles, $81C0
+	compressed_data PasswordCharacterHeadTiles, $8220
+	compressed_data OptionTextTiles, $85E0
+	compressed_data MenuFontTiles, $C000
+	compressed_data GameText, $C500
+	db $ff
+	dw RunOptionsScreen
+
+INCBIN "baserom.gbc", $1b16d, $1b16f - $1b16d
 
 Titlescreen_ScreenData:
 	compressed_data FarmSceneTiles, $8CB0
@@ -14355,8 +14371,8 @@ SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
 INCBIN "baserom.gbc", $24000, $27c51 - $24000
 
-WarnerBrosCopyrightEdgeTiles:
-	INCBIN "gfx/warner_bros_copyright/edge.2bpp.lz"
+WarnerBrosBackgroundEdgeTiles:
+	INCBIN "gfx/warner_bros_edge.2bpp.lz"
 
 INCBIN "baserom.gbc", $27ced, $28000 - $27ced
 
@@ -14367,8 +14383,8 @@ INCBIN "baserom.gbc", $28000, $2bf2a - $28000
 WarnerBrosCopyrightUnderLicenseByTiles:
 	INCBIN "gfx/warner_bros_copyright/under_license_by.2bpp"
 
-LanguageSelectCarrotTiles:
-	INCBIN "gfx/language_select/carrot.interleave.2bpp.lz"
+CarrotCursorTiles:
+	INCBIN "gfx/carrot_cursor.interleave.2bpp.lz"
 
 SECTION "ROM Bank $0B", ROMX[$4000], BANK[$B]
 
@@ -14401,8 +14417,8 @@ SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
 INCBIN "baserom.gbc", $3C000, $3fceb - $3C000
 
-WarnerBrosCopyrightTiles:
-	INCBIN "gfx/warner_bros_copyright/background.2bpp.lz"
+WarnerBrosBackgroundTiles:
+	INCBIN "gfx/warner_bros_background.2bpp.lz"
 
 StudioCollisionAttributes:
 	INCBIN "data/levels/studio_collision_attrs.bin.lz"
