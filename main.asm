@@ -1098,7 +1098,7 @@ Func_669:
 	call Func_3e1b
 	jp .asm_69c
 
-Func_7c9:
+RunTitlescreen:
 	call Func_fb4
 	call Func_3e51
 	call Func_2c73
@@ -2125,11 +2125,11 @@ RunStudioScreen:
 	ld [wInCreditsScene], a
 asm_e77:
 	push hl
-	ld hl, StudioScreenData
+	ld hl, Studio_ScreenData
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .load
-	ld hl, StudioScreenData_GBC
+	ld hl, Studio_ScreenDataGBC
 .load
 	call LoadData
 	call Func_3e51
@@ -11821,7 +11821,12 @@ INCBIN "baserom.gbc", $c944, $ccff - $c944
 FarmSceneTiles:
 	INCBIN "gfx/titlescreen/background.2bpp.lz"
 
-INCBIN "baserom.gbc", $d674, $da76 - $d674
+TitlescreenBugsBunnyFramesTiles:
+	INCBIN "gfx/titlescreen/bugs_bunny_frames.2bpp.lz"
+TitlescreenCloudsTextAnvilTiles:
+	INCBIN "gfx/titlescreen/clouds_text_anvil.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $d9cf, $da76 - $d9cf
 
 InfogramesCopyrightTiles:
 	INCBIN "gfx/infogrames_copyright/background.2bpp.lz"
@@ -13510,8 +13515,8 @@ INCBIN "baserom.gbc", $18000, $1a5a3 - $18000
 WarnerBrosCopyrightInteractiveEntertainmentTiles:
 	INCBIN "gfx/warner_bros_copyright/interactive_entertainment.2bpp"
 
-StudioCreditsTextTiles:
-	INCBIN "gfx/studio/credits_text.interleave.2bpp.lz"
+FontTiles:
+	INCBIN "gfx/font.interleave.2bpp.lz"
 
 INCBIN "baserom.gbc", $1a84e, $1a89f - $1a84e
 
@@ -14080,7 +14085,7 @@ Data_1af94:
 	dw Data_1b0cc ; SCREEN_COPYRIGHT_INFOGRAMES
 	dw Data_1b0d9 ; SCREEN_COPYRIGHT_WARNER_BROS
 	dw Data_1b129 ; SCREEN_LANGUAGE_SELECT
-	dw $716f ; SCREEN_TITLESCREEN
+	dw Titlescreen_ScreenData ; SCREEN_TITLESCREEN
 	dw $7147 ; SCREEN_OPTIONS
 	dw $7194 ; SCREEN_INTRO_SCENE
 	dw Data_1b2ee ; SCREEN_STUDIO_ENTRANCE
@@ -14160,7 +14165,7 @@ Data_1b030:
 	dw Data_1bcb0 ; SCREEN_COPYRIGHT_INFOGRAMES
 	dw Data_1b0d9 ; SCREEN_COPYRIGHT_WARNER_BROS
 	dw Data_1b129 ; SCREEN_LANGUAGE_SELECT
-	dw $7c63 ; SCREEN_TITLESCREEN
+	dw Titlescreen_ScreenDataGBC ; SCREEN_TITLESCREEN
 	dw $7147 ; SCREEN_OPTIONS
 	dw $7c8d ; SCREEN_INTRO_SCENE
 	dw Data_1b2ee ; SCREEN_STUDIO_ENTRANCE
@@ -14265,9 +14270,21 @@ Data_1b129:
 	db $ff
 	dw Func_5ca
 
-INCBIN "baserom.gbc", $1b145, $1b2c8 - $1b145
+INCBIN "baserom.gbc", $1b145, $1b16f - $1b145
 
-StudioScreenData:
+Titlescreen_ScreenData:
+	compressed_data FarmSceneTiles, $8CB0
+	compressed_data TitlescreenBackgroundTilemap, $9800
+	compressed_data TitlescreenCloudsTextAnvilTiles, $8000
+	compressed_data TitlescreenBugsBunnyFramesTiles, $C000
+	compressed_data FontTiles, $8850
+	compressed_data GameText, $C500
+	db $ff
+	dw RunTitlescreen
+
+INCBIN "baserom.gbc", $1b190, $1b2c8 - $1b190
+
+Studio_ScreenData:
 	compressed_data StudioTiles, $8C80
 	compressed_data StudioMetatiles, wMetatiles
 	compressed_data StudioCollisionAttributes, wMetatileCollisionAttributes
@@ -14285,13 +14302,13 @@ Data_1b2ee:
 INCBIN "baserom.gbc", $1b2f1, $1b77d - $1b2f1
 
 Data_1b77d:
-	compressed_data StudioCreditsTextTiles, $8340
+	compressed_data FontTiles, $8340
 	db $ff
 	dw RunStudioCreditsScreen
 
 INCBIN "baserom.gbc", $1b785, $1bc33 - $1b785
 
-StudioScreenData_GBC:
+Studio_ScreenDataGBC:
 	compressed_data StudioTilesGBC, $8C80
 	compressed_data StudioMetatilesGBC, wMetatiles
 	compressed_data StudioCollisionAttributesGBC, wMetatileCollisionAttributes
@@ -14304,7 +14321,18 @@ StudioScreenData_GBC:
 	db $ff
 	dw $4065
 
-INCBIN "baserom.gbc", $1bc63, $1bcb0 - $1bc63
+Titlescreen_ScreenDataGBC:
+	compressed_data FarmSceneTilesGBC, $8CB0
+	compressed_data TitlescreenBackgroundTilemapGBC, $9800
+	compressed_data TitlescreenCloudsTextAnvilTiles, $8000
+	compressed_data TitlescreenBugsBunnyFramesTilesGBC, $C000
+	compressed_data FontTilesGBC, $8850
+	compressed_data GameText, $C500
+	compressed_data TitlescreenTileAttributesGBC, $D94B
+	db $ff
+	dw RunTitlescreen
+
+INCBIN "baserom.gbc", $1bc89, $1bcb0 - $1bc89
 
 Data_1bcb0:
 	compressed_data InfogramesCopyrightGBCTiles, $9550
@@ -14389,7 +14417,12 @@ INCBIN "baserom.gbc", $44000, $48000 - $44000
 
 SECTION "ROM Bank $12", ROMX[$4000], BANK[$12]
 
-INCBIN "baserom.gbc", $48000, $4C000 - $48000
+INCBIN "baserom.gbc", $48000, $4aec3 - $48000
+
+TitlescreenBackgroundTilemap:
+	INCBIN "gfx/titlescreen/background.tilemap.lz"
+
+INCBIN "baserom.gbc", $4afe6, $4C000 - $4afe6
 
 SECTION "ROM Bank $13", ROMX[$4000], BANK[$13]
 
@@ -14422,7 +14455,18 @@ StudioCeilingFloorTilemapGBC:
 StudioCeilingFloorTileAttributesGBC:
 	INCBIN "gfx/studio/ceiling_floor_tile_attributes_gbc.bin.lz"
 
-INCBIN "baserom.gbc", $58e87, $59d9d - $58e87
+FarmSceneTilesGBC:
+	INCBIN "gfx/titlescreen/background_gbc.2bpp.lz"
+TitlescreenBackgroundTilemapGBC:
+	INCBIN "gfx/titlescreen/background_gbc.tilemap.lz"
+TitlescreenTileAttributesGBC:
+	INCBIN "gfx/titlescreen/tile_attributes_gbc.bin.lz"
+TitlescreenBugsBunnyFramesTilesGBC:
+	INCBIN "gfx/titlescreen/bugs_bunny_frames_gbc.2bpp.lz"
+FontTilesGBC:
+	INCBIN "gfx/font_gbc.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $59cf8, $59d9d - $59cf8
 
 InfogramesCopyrightGBCTiles:
 	INCBIN "gfx/infogrames_copyright/background_gbc.2bpp.lz"

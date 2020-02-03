@@ -39,3 +39,4 @@ extras
 *.sh
 
 gbz80disasm_output.asm
+out.png
