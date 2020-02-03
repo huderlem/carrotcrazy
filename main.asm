@@ -1995,7 +1995,7 @@ Func_d67:
 	jr nz, .asm_d7f
 	ret
 
-Func_d8b:
+RunLevelIntroScreen:
 	push hl
 	ld hl, $71b2
 	call LoadData
@@ -13514,7 +13514,14 @@ Func_17db0:
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
-INCBIN "baserom.gbc", $18000, $1a5a3 - $18000
+INCBIN "baserom.gbc", $18000, $19308 - $18000
+
+YosemiteSamHeadTiles:
+	INCBIN "gfx/treasure_island/yosemite_sam_head.interleave.2bpp.lz"
+DaffyDuckHeadTiles:
+	INCBIN "gfx/crazy_town/daffy_duck_head.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $1974a, $1a5a3 - $1974a
 
 WarnerBrosCopyrightInteractiveEntertainmentTiles:
 	INCBIN "gfx/warner_bros_copyright/interactive_entertainment.2bpp"
@@ -14093,11 +14100,11 @@ Data_1af94:
 	dw Options_ScreenData              ; SCREEN_OPTIONS
 	dw IntroScene_ScreenData           ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData ; SCREEN_STUDIO_TREASURE_ISLAND
-	dw $71fc ; SCREEN_TREASURE_ISLAND_1_INTRO
+	dw TreasureIsland1Intro_ScreenData ; SCREEN_TREASURE_ISLAND_1_INTRO
 	dw $73b6 ; SCREEN_TREASURE_ISLAND_1
 	dw $7722 ; SCREEN_TREASURE_ISLAND_1_SUMMARY
 	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
-	dw $720d ; SCREEN_TREASURE_ISLAND_2_INTRO
+	dw TreasureIsland2Intro_ScreenData ; SCREEN_TREASURE_ISLAND_2_INTRO
 	dw $73ed ; SCREEN_TREASURE_ISLAND_2
 	dw $7722 ; SCREEN_TREASURE_ISLAND_2_SUMMARY
 	dw $779b ; SCREEN_TREASURE_ISLAND_2_BONUS
@@ -14107,7 +14114,7 @@ Data_1af94:
 	dw $77a2 ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
 	dw $7710 ; SCREEN_PASSWORD_1
 	dw $7300 ; SCREEN_STUDIO_CRAZY_TOWN
-	dw $71c9 ; SCREEN_CRAZY_TOWN_1_INTRO
+	dw CrazyTown1Intro_ScreenData      ; SCREEN_CRAZY_TOWN_1_INTRO
 	dw $7348 ; SCREEN_CRAZY_TOWN_1
 	dw $7722 ; SCREEN_CRAZY_TOWN_1_SUMMARY
 	dw $77a9 ; SCREEN_CRAZY_TOWN_1_BONUS
@@ -14173,11 +14180,11 @@ Data_1b030:
 	dw Options_ScreenData                ; SCREEN_OPTIONS
 	dw IntroScene_ScreenDataGBC          ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData   ; SCREEN_STUDIO_TREASURE_ISLAND
-	dw $71fc ; SCREEN_TREASURE_ISLAND_1_INTRO
+	dw TreasureIsland1Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_1_INTRO
 	dw $7891 ; SCREEN_TREASURE_ISLAND_1
 	dw $7722 ; SCREEN_TREASURE_ISLAND_1_SUMMARY
 	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
-	dw $720d ; SCREEN_TREASURE_ISLAND_2_INTRO
+	dw TreasureIsland2Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_2_INTRO
 	dw $78cd ; SCREEN_TREASURE_ISLAND_2
 	dw $7722 ; SCREEN_TREASURE_ISLAND_2_SUMMARY
 	dw $779b ; SCREEN_TREASURE_ISLAND_2_BONUS
@@ -14187,7 +14194,7 @@ Data_1b030:
 	dw $77a2 ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
 	dw $7710 ; SCREEN_PASSWORD_1
 	dw $7300 ; SCREEN_STUDIO_CRAZY_TOWN
-	dw $71c9 ; SCREEN_CRAZY_TOWN_1_INTRO
+	dw CrazyTown1Intro_ScreenData        ; SCREEN_CRAZY_TOWN_1_INTRO
 	dw $7819 ; SCREEN_CRAZY_TOWN_1
 	dw $7722 ; SCREEN_CRAZY_TOWN_1_SUMMARY
 	dw $77a9 ; SCREEN_CRAZY_TOWN_1_BONUS
@@ -14310,7 +14317,28 @@ IntroScene_ScreenData:
 	db $ff
 	dw RunIntroScene
 
-INCBIN "baserom.gbc", $1b1b0, $1b2c8 - $1b1b0
+INCBIN "baserom.gbc", $1b1b0, $1b1c9 - $1b1b0
+
+CrazyTown1Intro_ScreenData:
+	compressed_data DaffyDuckHeadTiles, $8440
+	db $ff
+	dw RunLevelIntroScreen
+
+INCBIN "baserom.gbc", $1b1d1, $1b1fc - $1b1d1
+
+TreasureIsland1Intro_ScreenData:
+	compressed_data YosemiteSamHeadTiles, $8440
+	db $ff
+	dw RunLevelIntroScreen
+
+INCBIN "baserom.gbc", $1b204, $1b20d - $1b204
+
+TreasureIsland2Intro_ScreenData:
+	compressed_data YosemiteSamHeadTiles, $8440
+	db $ff
+	dw RunLevelIntroScreen
+
+INCBIN "baserom.gbc", $1b215, $1b2c8 - $1b215
 
 Studio_ScreenData:
 	compressed_data StudioTiles, $8C80
