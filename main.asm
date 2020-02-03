@@ -812,7 +812,7 @@ Func_587:
 	call Func_3ddc
 	jr .asm_5a5
 
-Func_5ca:
+RunLanguageSelectScreen:
 	call LoadWarnerBrosBannerQuadrants
 	call Func_3e51
 	call WriteDMACodeToHRAM
@@ -831,7 +831,7 @@ Func_5ca:
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
-Func_5f4:
+.asm_5f4:
 	call TickMusicEngineHome
 	call WaitVBlank
 	ld a, $05
@@ -853,7 +853,7 @@ Func_5f4:
 	call Func_3ca6
 	ld a, [$defc]
 	and a
-	jp nz, Func_5f4
+	jp nz, .asm_5f4
 	ld hl, wLanguageSetting
 	ld a, [wNewKeys]
 	bit PADB_SELECT, a
@@ -885,11 +885,11 @@ Func_5f4:
 .ok
 	ld a, [wNewKeys]
 	and PADF_START | PADF_A
-	jp z, Func_5f4
+	jp z, .asm_5f4
 	ld a, $08
 	call Func_3e1b
 	call Func_3ddc
-	jp Func_5f4
+	jp .asm_5f4
 
 RunOptionsScreen:
 	call LoadWarnerBrosBannerQuadrants
@@ -1458,7 +1458,7 @@ RunTitlescreen:
 	call Func_3ddc
 	jp .asm_826
 
-Func_a33:
+RunIntroScene:
 	call Func_fb4
 	ld bc, $deb6
 	ld a, [bc]
@@ -11829,7 +11829,8 @@ TitlescreenBugsBunnyFramesTiles:
 TitlescreenCloudsTextAnvilTiles:
 	INCBIN "gfx/titlescreen/clouds_text_anvil.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $d9cf, $da76 - $d9cf
+IntroSceneEmptyCarrotHolesTiles:
+	INCBIN "gfx/intro_scene/empty_carrot_holes.2bpp.lz"
 
 InfogramesCopyrightTiles:
 	INCBIN "gfx/infogrames_copyright/background.2bpp.lz"
@@ -14090,7 +14091,7 @@ Data_1af94:
 	dw LanguageSelect_ScreenData       ; SCREEN_LANGUAGE_SELECT
 	dw Titlescreen_ScreenData          ; SCREEN_TITLESCREEN
 	dw Options_ScreenData              ; SCREEN_OPTIONS
-	dw $7194 ; SCREEN_INTRO_SCENE
+	dw IntroScene_ScreenData           ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData ; SCREEN_STUDIO_TREASURE_ISLAND
 	dw $71fc ; SCREEN_TREASURE_ISLAND_1_INTRO
 	dw $73b6 ; SCREEN_TREASURE_ISLAND_1
@@ -14170,7 +14171,7 @@ Data_1b030:
 	dw LanguageSelect_ScreenData         ; SCREEN_LANGUAGE_SELECT
 	dw Titlescreen_ScreenDataGBC         ; SCREEN_TITLESCREEN
 	dw Options_ScreenData                ; SCREEN_OPTIONS
-	dw $7c8d ; SCREEN_INTRO_SCENE
+	dw IntroScene_ScreenDataGBC          ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData   ; SCREEN_STUDIO_TREASURE_ISLAND
 	dw $71fc ; SCREEN_TREASURE_ISLAND_1_INTRO
 	dw $7891 ; SCREEN_TREASURE_ISLAND_1
@@ -14271,7 +14272,7 @@ LanguageSelect_ScreenData:
 	compressed_data MenuFontTiles, $c000
 	compressed_data GameText, $c500
 	db $ff
-	dw Func_5ca
+	dw RunLanguageSelectScreen
 
 INCBIN "baserom.gbc", $1b145, $1b147 - $1b145
 
@@ -14298,7 +14299,18 @@ Titlescreen_ScreenData:
 	db $ff
 	dw RunTitlescreen
 
-INCBIN "baserom.gbc", $1b190, $1b2c8 - $1b190
+INCBIN "baserom.gbc", $1b190, $1b194 - $1b190
+
+IntroScene_ScreenData:
+	compressed_data FarmSceneTiles, $8CB0
+	compressed_data TitlescreenBackgroundTilemap, $9800
+	compressed_data FontTiles, $8800
+	compressed_data IntroSceneEmptyCarrotHolesTiles, $95C0
+	compressed_data GameText, $C500
+	db $ff
+	dw RunIntroScene
+
+INCBIN "baserom.gbc", $1b1b0, $1b2c8 - $1b1b0
 
 Studio_ScreenData:
 	compressed_data StudioTiles, $8C80
@@ -14348,7 +14360,19 @@ Titlescreen_ScreenDataGBC:
 	db $ff
 	dw RunTitlescreen
 
-INCBIN "baserom.gbc", $1bc89, $1bcb0 - $1bc89
+INCBIN "baserom.gbc", $1bc89, $1bc8d - $1bc89
+
+IntroScene_ScreenDataGBC:
+	compressed_data FarmSceneTilesGBC, $8CB0
+	compressed_data TitlescreenBackgroundTilemapGBC, $9800
+	compressed_data FontTilesGBC, $8800
+	compressed_data IntroSceneEmptyCarrotHolesTilesGBC, $95C0
+	compressed_data GameText, $C500
+	compressed_data TitlescreenTileAttributesGBC, $D94B
+	db $ff
+	dw RunIntroScene
+
+INCBIN "baserom.gbc", $1bcae, $1bcb0 - $1bcae
 
 InfogramesCopyright_ScreenDataGBC:
 	compressed_data InfogramesCopyrightGBCTiles, $9550
@@ -14482,7 +14506,8 @@ TitlescreenBugsBunnyFramesTilesGBC:
 FontTilesGBC:
 	INCBIN "gfx/font_gbc.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $59cf8, $59d9d - $59cf8
+IntroSceneEmptyCarrotHolesTilesGBC:
+	INCBIN "gfx/intro_scene/empty_carrot_holes_gbc.2bpp.lz"
 
 InfogramesCopyrightGBCTiles:
 	INCBIN "gfx/infogrames_copyright/background_gbc.2bpp.lz"
