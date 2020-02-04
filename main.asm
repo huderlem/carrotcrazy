@@ -2322,9 +2322,9 @@ Func_fd9:
 	push hl
 	ld a, 1
 	ld [rVBK], a
-	ld a, $04
+	ld a, Bank(SharedLevelInterfaceTiles)
 	ld [MBC5RomBank], a
-	ld bc, $4100
+	ld bc, SharedLevelInterfaceTiles
 	ld de, $8340
 	call Decompress
 	sub a
@@ -2382,7 +2382,7 @@ Func_1023:
 	ld [rVBK], a
 	ret
 
-Func_103b:
+RunLevelScreen:
 	call Func_fb4
 	call Func_0
 	ld a, [$dde9]
@@ -12021,7 +12021,12 @@ INCBIN "baserom.gbc", $f656, $10000 - $f656
 
 SECTION "ROM Bank $04", ROMX[$4000], BANK[$4]
 
-INCBIN "baserom.gbc", $10000, $105d6 - $10000
+INCBIN "baserom.gbc", $10000, $10100 - $10000
+
+SharedLevelInterfaceTiles:
+	INCBIN "gfx/level_interface.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $10436, $105d6 - $10436
 
 StudioCeilingFloorTiles:
 	INCBIN "gfx/studio/ceiling_floor.2bpp.lz"
@@ -12030,7 +12035,7 @@ StudioCeilingFloorTilemap:
 StudioTiles:
 	INCBIN "gfx/studio/tiles.2bpp.lz"
 StudioMetatiles:
-	INCBIN "gfx/studio/metatiles.bin.lz"
+	INCBIN "data/levels/studio_metatiles.bin.lz"
 StudioMap:
 	INCBIN "data/levels/studio.vdmap.lz"
 
@@ -14101,7 +14106,7 @@ Data_1af94:
 	dw IntroScene_ScreenData           ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData ; SCREEN_STUDIO_TREASURE_ISLAND
 	dw TreasureIsland1Intro_ScreenData ; SCREEN_TREASURE_ISLAND_1_INTRO
-	dw $73b6 ; SCREEN_TREASURE_ISLAND_1
+	dw TreasureIsland1_ScreenData      ; SCREEN_TREASURE_ISLAND_1
 	dw $7722 ; SCREEN_TREASURE_ISLAND_1_SUMMARY
 	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
 	dw TreasureIsland2Intro_ScreenData ; SCREEN_TREASURE_ISLAND_2_INTRO
@@ -14181,7 +14186,7 @@ Data_1b030:
 	dw IntroScene_ScreenDataGBC          ; SCREEN_INTRO_SCENE
 	dw StudioTreasureIsland_ScreenData   ; SCREEN_STUDIO_TREASURE_ISLAND
 	dw TreasureIsland1Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_1_INTRO
-	dw $7891 ; SCREEN_TREASURE_ISLAND_1
+	dw TreasureIsland1_ScreenDataGBC     ; SCREEN_TREASURE_ISLAND_1
 	dw $7722 ; SCREEN_TREASURE_ISLAND_1_SUMMARY
 	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
 	dw TreasureIsland2Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_2_INTRO
@@ -14355,14 +14360,39 @@ StudioTreasureIsland_ScreenData:
 	db $ff
 	dw RunStudioScreen
 
-INCBIN "baserom.gbc", $1b2f1, $1b77d - $1b2f1
+INCBIN "baserom.gbc", $1b2f1, $1b3b6 - $1b2f1
+
+TreasureIsland1_ScreenData:
+	compressed_data TreasureIslandLevelTiles, $8B20
+	compressed_data TreasureIslandMetatiles, wMetatiles
+	compressed_data TreasureIslandCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data TreasureIsland1Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TreasureIslandLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b3d7, $1b77d - $1b3d7
 
 Data_1b77d:
 	compressed_data FontTiles, $8340
 	db $ff
 	dw RunStudioCreditsScreen
 
-INCBIN "baserom.gbc", $1b785, $1bc33 - $1b785
+INCBIN "baserom.gbc", $1b785, $1b891 - $1b785
+
+TreasureIsland1_ScreenDataGBC:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TreasureIslandLevelTilesGBC, $8A00
+	compressed_data TreasureIslandMetatilesGBC, wMetatiles
+	compressed_data TreasureIslandCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data TreasureIsland1MapGBC, wLevelMap
+	compressed_data TreasureIslandTileAttributesGBC, $da20
+	compressed_data TreasureIslandLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b8b7, $1bc33 - $1b8b7
 
 Studio_ScreenDataGBC:
 	compressed_data StudioTilesGBC, $8C80
@@ -14417,7 +14447,12 @@ INCBIN "baserom.gbc", $1C000, $20000 - $1C000
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
-INCBIN "baserom.gbc", $20000, $24000 - $20000
+INCBIN "baserom.gbc", $20000, $23d2e - $20000
+
+TreasureIslandLevelSpriteTiles:
+	INCBIN "gfx/treasure_island/level_sprites.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $23efd, $24000 - $23efd
 
 SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
@@ -14440,7 +14475,12 @@ CarrotCursorTiles:
 
 SECTION "ROM Bank $0B", ROMX[$4000], BANK[$B]
 
-INCBIN "baserom.gbc", $2C000, $30000 - $2C000
+INCBIN "baserom.gbc", $2C000, $2f1c8 - $2C000
+
+TreasureIsland1Map:
+	INCBIN "data/levels/treasure_island_1.vdmap.lz"
+
+INCBIN "baserom.gbc", $2fb7a, $30000 - $2fb7a
 
 SECTION "ROM Bank $0C", ROMX[$4000], BANK[$C]
 
@@ -14449,7 +14489,12 @@ INCBIN "baserom.gbc", $30000, $314b0 - $30000
 GameText:
 	INCBIN "data/game_text.bin.lz"
 
-INCBIN "baserom.gbc", $31ae0, $34000 - $31ae0
+INCBIN "baserom.gbc", $31ae0, $32720 - $31ae0
+
+TreasureIslandCollisionAttributes:
+	INCBIN "data/levels/treasure_island_collision_attrs.bin.lz"
+
+INCBIN "baserom.gbc", $32761, $34000 - $32761
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
@@ -14477,11 +14522,30 @@ StudioCollisionAttributes:
 
 SECTION "ROM Bank $10", ROMX[$4000], BANK[$10]
 
-INCBIN "baserom.gbc", $40000, $44000 - $40000
+INCBIN "baserom.gbc", $40000, $4308E - $40000
+
+TreasureIslandLevelTiles:
+	INCBIN "gfx/treasure_island/level_tiles.2bpp.lz"
+
+INCBIN "baserom.gbc", $43b1d, $44000 - $43b1d
 
 SECTION "ROM Bank $11", ROMX[$4000], BANK[$11]
 
-INCBIN "baserom.gbc", $44000, $48000 - $44000
+TreasureIsland1MapGBC:
+	INCBIN "data/levels/treasure_island_1_gbc.vdmap.lz"
+
+INCBIN "baserom.gbc", $449b7, $4538f - $449b7
+
+TreasureIslandCollisionAttributesGBC:
+	INCBIN "data/levels/treasure_island_collision_attrs_gbc.bin.lz"
+TreasureIslandMetatilesGBC:
+	INCBIN "data/levels/treasure_island_metatiles_gbc.bin.lz"
+TreasureIslandLevelTilesGBC:
+	INCBIN "gfx/treasure_island/level_tiles_gbc.2bpp.lz"
+TreasureIslandTileAttributesGBC:
+	INCBIN "gfx/treasure_island/tile_attributes_gbc.bin.lz"
+
+INCBIN "baserom.gbc", $462c0, $48000 - $462c0
 
 SECTION "ROM Bank $12", ROMX[$4000], BANK[$12]
 
@@ -14502,7 +14566,12 @@ INCBIN "baserom.gbc", $50000, $54000 - $50000
 
 SECTION "ROM Bank $15", ROMX[$4000], BANK[$15]
 
-INCBIN "baserom.gbc", $54000, $58000 - $54000
+INCBIN "baserom.gbc", $54000, $54dd6 - $54000
+
+TreasureIslandMetatiles:
+	INCBIN "data/levels/treasure_island_metatiles.bin.lz"
+
+INCBIN "baserom.gbc", $550dc, $58000 - $550dc
 
 SECTION "ROM Bank $16", ROMX[$4000], BANK[$16]
 
@@ -14511,7 +14580,7 @@ StudioTilesGBC:
 StudioCollisionAttributesGBC:
 	INCBIN "data/levels/studio_collision_attrs_gbc.bin.lz"
 StudioMetatilesGBC:
-	INCBIN "gfx/studio/metatiles_gbc.bin.lz"
+	INCBIN "data/levels/studio_metatiles_gbc.bin.lz"
 StudioMapGBC:
 	INCBIN "data/levels/studio_gbc.vdmap.lz"
 StudioTileAttributesGBC:
