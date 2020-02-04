@@ -14110,7 +14110,7 @@ Data_1af94:
 	dw $7722 ; SCREEN_TREASURE_ISLAND_1_SUMMARY
 	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
 	dw TreasureIsland2Intro_ScreenData ; SCREEN_TREASURE_ISLAND_2_INTRO
-	dw $73ed ; SCREEN_TREASURE_ISLAND_2
+	dw TreasureIsland2_ScreenData      ; SCREEN_TREASURE_ISLAND_2
 	dw $7722 ; SCREEN_TREASURE_ISLAND_2_SUMMARY
 	dw $779b ; SCREEN_TREASURE_ISLAND_2_BONUS
 	dw $721e ; SCREEN_TREASURE_ISLAND_BOSS_INTRO
@@ -14190,7 +14190,7 @@ Data_1b030:
 	dw $7722 ; SCREEN_TREASURE_ISLAND_1_SUMMARY
 	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
 	dw TreasureIsland2Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_2_INTRO
-	dw $78cd ; SCREEN_TREASURE_ISLAND_2
+	dw TreasureIsland2_ScreenDataGBC     ; SCREEN_TREASURE_ISLAND_2
 	dw $7722 ; SCREEN_TREASURE_ISLAND_2_SUMMARY
 	dw $779b ; SCREEN_TREASURE_ISLAND_2_BONUS
 	dw $721e ; SCREEN_TREASURE_ISLAND_BOSS_INTRO
@@ -14372,7 +14372,19 @@ TreasureIsland1_ScreenData:
 	db $ff
 	dw RunLevelScreen
 
-INCBIN "baserom.gbc", $1b3d7, $1b77d - $1b3d7
+INCBIN "baserom.gbc", $1b3d7, $1b3ed - $1b3d7
+
+TreasureIsland2_ScreenData:
+	compressed_data TreasureIslandLevelTiles, $8B20
+	compressed_data TreasureIslandMetatiles, wMetatiles
+	compressed_data TreasureIslandCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data TreasureIsland2Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TreasureIslandLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b40e, $1b77d - $1b40e
 
 Data_1b77d:
 	compressed_data FontTiles, $8340
@@ -14392,7 +14404,20 @@ TreasureIsland1_ScreenDataGBC:
 	db $ff
 	dw RunLevelScreen
 
-INCBIN "baserom.gbc", $1b8b7, $1bc33 - $1b8b7
+INCBIN "baserom.gbc", $1b8b7, $1b8cd - $1b8b7
+
+TreasureIsland2_ScreenDataGBC:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TreasureIslandLevelTilesGBC, $8A00
+	compressed_data TreasureIslandMetatilesGBC, wMetatiles
+	compressed_data TreasureIslandCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data TreasureIsland2MapGBC, wLevelMap
+	compressed_data TreasureIslandTileAttributesGBC, $DA20
+	compressed_data TreasureIslandLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b8f3, $1bc33 - $1b8f3
 
 Studio_ScreenDataGBC:
 	compressed_data StudioTilesGBC, $8C80
@@ -14522,7 +14547,12 @@ StudioCollisionAttributes:
 
 SECTION "ROM Bank $10", ROMX[$4000], BANK[$10]
 
-INCBIN "baserom.gbc", $40000, $4308E - $40000
+INCBIN "baserom.gbc", $40000, $40187 - $40000
+
+TreasureIsland2Map:
+	INCBIN "data/levels/treasure_island_2.vdmap.lz"
+
+INCBIN "baserom.gbc", $40b57, $4308E - $40b57
 
 TreasureIslandLevelTiles:
 	INCBIN "gfx/treasure_island/level_tiles.2bpp.lz"
@@ -14533,9 +14563,8 @@ SECTION "ROM Bank $11", ROMX[$4000], BANK[$11]
 
 TreasureIsland1MapGBC:
 	INCBIN "data/levels/treasure_island_1_gbc.vdmap.lz"
-
-INCBIN "baserom.gbc", $449b7, $4538f - $449b7
-
+TreasureIsland2MapGBC:
+	INCBIN "data/levels/treasure_island_2_gbc.vdmap.lz"
 TreasureIslandCollisionAttributesGBC:
 	INCBIN "data/levels/treasure_island_collision_attrs_gbc.bin.lz"
 TreasureIslandMetatilesGBC:
