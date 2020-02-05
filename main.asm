@@ -367,7 +367,7 @@ Func_233:
 	ld [rVBK], a
 	ret
 
-Func_250:
+RunLevelBonusScreen:
 	ld a, [hEXTRALetters]
 	cp 5 ; check if player obtained all 5 EXTRA letters
 	jp nz, InitNextScreen
@@ -2125,11 +2125,11 @@ RunStudioScreen:
 	ld [wInCreditsScene], a
 asm_e77:
 	push hl
-	ld hl, Studio_ScreenData
+	ld hl, ScreenData_Studio
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .load
-	ld hl, Studio_ScreenDataGBC
+	ld hl, ScreenDataGBC_Studio
 .load
 	call LoadData
 	call Func_3e51
@@ -2622,7 +2622,7 @@ Func_11fc:
 	ld [rVBK], a
 	ret
 
-Func_122d:
+RunTreasureIslandBossScreen:
 	call Func_fb4
 	call Func_11fc
 	call Func_2b6d
@@ -10866,7 +10866,10 @@ ClearData:
 	jr nz, ClearData
 	ret
 
-INCBIN "baserom.gbc", $7e45, $8000 - $7e45
+TreasureIslandBossShipTilemap:
+	INCBIN "gfx/treasure_island/boss_ship.tilemap.lz"
+
+INCBIN "baserom.gbc", $7ec5, $8000 - $7ec5
 
 SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
@@ -12017,7 +12020,10 @@ Func_f610:
 	ld [$dde6], a
 	ret
 
-INCBIN "baserom.gbc", $f656, $10000 - $f656
+INCBIN "baserom.gbc", $f656, $fd96 - $f656
+
+TreasureIslandBossSpriteTiles:
+	INCBIN "gfx/treasure_island/boss_sprites.interleave.2bpp.lz"
 
 SECTION "ROM Bank $04", ROMX[$4000], BANK[$4]
 
@@ -13519,7 +13525,14 @@ Func_17db0:
 
 SECTION "ROM Bank $06", ROMX[$4000], BANK[$6]
 
-INCBIN "baserom.gbc", $18000, $19308 - $18000
+INCBIN "baserom.gbc", $18000, $18454 - $18000
+
+TreasureIslandBossLevelTiles:
+	INCBIN "gfx/treasure_island/boss_level_tiles.2bpp.lz"
+TreasureIslandBossShipTiles:
+	INCBIN "gfx/treasure_island/boss_ship_tiles.2bpp.lz"
+
+INCBIN "baserom.gbc", $18d4d, $19308 - $18d4d
 
 YosemiteSamHeadTiles:
 	INCBIN "gfx/treasure_island/yosemite_sam_head.interleave.2bpp.lz"
@@ -14103,78 +14116,78 @@ BonusScreenGBCPalettes:
 
 Data_1af94:
 	dw $ffff
-	dw InfogramesCopyright_ScreenData  ; SCREEN_COPYRIGHT_INFOGRAMES
-	dw WarnerBrosCopyright_ScreenData  ; SCREEN_COPYRIGHT_WARNER_BROS
-	dw LanguageSelect_ScreenData       ; SCREEN_LANGUAGE_SELECT
-	dw Titlescreen_ScreenData          ; SCREEN_TITLESCREEN
-	dw Options_ScreenData              ; SCREEN_OPTIONS
-	dw IntroScene_ScreenData           ; SCREEN_INTRO_SCENE
-	dw StudioTreasureIsland_ScreenData ; SCREEN_STUDIO_TREASURE_ISLAND
-	dw TreasureIsland1Intro_ScreenData ; SCREEN_TREASURE_ISLAND_1_INTRO
-	dw TreasureIsland1_ScreenData      ; SCREEN_TREASURE_ISLAND_1
-	dw LevelSummary_ScreenData         ; SCREEN_TREASURE_ISLAND_1_SUMMARY
-	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
-	dw TreasureIsland2Intro_ScreenData ; SCREEN_TREASURE_ISLAND_2_INTRO
-	dw TreasureIsland2_ScreenData      ; SCREEN_TREASURE_ISLAND_2
-	dw LevelSummary_ScreenData         ; SCREEN_TREASURE_ISLAND_2_SUMMARY
-	dw $779b ; SCREEN_TREASURE_ISLAND_2_BONUS
-	dw $721e ; SCREEN_TREASURE_ISLAND_BOSS_INTRO
-	dw $7472 ; SCREEN_TREASURE_ISLAND_BOSS
-	dw LevelSummary_ScreenData         ; SCREEN_TREASURE_ISLAND_BOSS_SUMMARY
-	dw $77a2 ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
+	dw ScreenData_InfogramesCopyright     ; SCREEN_COPYRIGHT_INFOGRAMES
+	dw ScreenData_WarnerBrosCopyright     ; SCREEN_COPYRIGHT_WARNER_BROS
+	dw ScreenData_LanguageSelect          ; SCREEN_LANGUAGE_SELECT
+	dw ScreenData_Titlescreen             ; SCREEN_TITLESCREEN
+	dw ScreenData_Options                 ; SCREEN_OPTIONS
+	dw ScreenData_IntroScene              ; SCREEN_INTRO_SCENE
+	dw ScreenData_StudioTreasureIsland    ; SCREEN_STUDIO_TREASURE_ISLAND
+	dw ScreenData_TreasureIsland1Intro    ; SCREEN_TREASURE_ISLAND_1_INTRO
+	dw ScreenData_TreasureIsland1         ; SCREEN_TREASURE_ISLAND_1
+	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_1_SUMMARY
+	dw ScreenData_TreasureIsland1Bonus    ; SCREEN_TREASURE_ISLAND_1_BONUS
+	dw ScreenData_TreasureIsland2Intro    ; SCREEN_TREASURE_ISLAND_2_INTRO
+	dw ScreenData_TreasureIsland2         ; SCREEN_TREASURE_ISLAND_2
+	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_2_SUMMARY
+	dw ScreenData_TreasureIsland2Bonus    ; SCREEN_TREASURE_ISLAND_2_BONUS
+	dw ScreenData_TreasureIslandBossIntro ; SCREEN_TREASURE_ISLAND_BOSS_INTRO
+	dw ScreenData_TreasureIslandBoss      ; SCREEN_TREASURE_ISLAND_BOSS
+	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_BOSS_SUMMARY
+	dw ScreenData_TreasureIslandBossBonus ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
 	dw $7710 ; SCREEN_PASSWORD_1
 	dw $7300 ; SCREEN_STUDIO_CRAZY_TOWN
-	dw CrazyTown1Intro_ScreenData      ; SCREEN_CRAZY_TOWN_1_INTRO
+	dw ScreenData_CrazyTown1Intro         ; SCREEN_CRAZY_TOWN_1_INTRO
 	dw $7348 ; SCREEN_CRAZY_TOWN_1
-	dw LevelSummary_ScreenData         ; SCREEN_CRAZY_TOWN_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_1_SUMMARY
 	dw $77a9 ; SCREEN_CRAZY_TOWN_1_BONUS
 	dw $71da ; SCREEN_CRAZY_TOWN_2_INTRO
 	dw $737f ; SCREEN_CRAZY_TOWN_2
-	dw LevelSummary_ScreenData         ; SCREEN_CRAZY_TOWN_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_2_SUMMARY
 	dw $77b0 ; SCREEN_CRAZY_TOWN_2_BONUS
 	dw $71eb ; SCREEN_CRAZY_TOWN_BOSS_INTRO
 	dw $7424 ; SCREEN_CRAZY_TOWN_BOSS
-	dw LevelSummary_ScreenData         ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
 	dw $77b7 ; SCREEN_CRAZY_TOWN_BOSS_BONUS
 	dw $7312 ; SCREEN_STUDIO_TAZ_ZOO
 	dw $722f ; SCREEN_TAZ_ZOO_1_INTRO
 	dw $74c0 ; SCREEN_TAZ_ZOO_1
-	dw LevelSummary_ScreenData         ; SCREEN_TAZ_ZOO_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
 	dw $77be ; SCREEN_TAZ_ZOO_1_BONUS
 	dw $7240 ; SCREEN_TAZ_ZOO_2_INTRO
 	dw $74f7 ; SCREEN_TAZ_ZOO_2
-	dw LevelSummary_ScreenData         ; SCREEN_TAZ_ZOO_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_2_SUMMARY
 	dw $77c5 ; SCREEN_TAZ_ZOO_2_BONUS
 	dw $7251 ; SCREEN_TAZ_ZOO_BOSS_INTRO
 	dw $752e ; SCREEN_TAZ_ZOO_BOSS
-	dw LevelSummary_ScreenData         ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
 	dw $77cc ; SCREEN_TAZ_ZOO_BOSS_BONUS
 	dw $7719 ; SCREEN_PASSWORD_2
 	dw $7324 ; SCREEN_STUDIO_SPACE_STATION
 	dw $7262 ; SCREEN_SPACE_STATION_1_INTRO
 	dw $7588 ; SCREEN_SPACE_STATION_1
-	dw LevelSummary_ScreenData         ; SCREEN_SPACE_STATION_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
 	dw $77d3 ; SCREEN_SPACE_STATION_1_BONUS
 	dw $7273 ; SCREEN_SPACE_STATION_2_INTRO
 	dw $75bf ; SCREEN_SPACE_STATION_2
-	dw LevelSummary_ScreenData         ; SCREEN_SPACE_STATION_2_SUMMARY
+	dw ScreenData_LevelSummary         ; SCREEN_SPACE_STATION_2_SUMMARY
 	dw $77da ; SCREEN_SPACE_STATION_2_BONUS
 	dw $7284 ; SCREEN_SPACE_STATION_BOSS_INTRO
 	dw $75f6 ; SCREEN_SPACE_STATION_BOSS
-	dw LevelSummary_ScreenData         ; SCREEN_SPACE_STATION_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw $77e1 ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw $7336 ; SCREEN_STUDIO_FUDD_FOREST
 	dw $7295 ; SCREEN_FUDD_FOREST_1_INTRO
 	dw $7638 ; SCREEN_FUDD_FOREST_1
-	dw LevelSummary_ScreenData         ; SCREEN_FUDD_FOREST_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
 	dw $77e8 ; SCREEN_FUDD_FOREST_1_BONUS
 	dw $72a6 ; SCREEN_FUDD_FOREST_2_INTRO
 	dw $766f ; SCREEN_FUDD_FOREST_2
-	dw LevelSummary_ScreenData         ; SCREEN_FUDD_FOREST_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_2_SUMMARY
 	dw $77ef ; SCREEN_FUDD_FOREST_2_BONUS
 	dw $72b7 ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw $76a6 ; SCREEN_FUDD_FOREST_BOSS
-	dw LevelSummary_ScreenData         ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
 	dw $7764 ; SCREEN_PROLOGUE_SCENE
 	dw $777d ; SCREEN_CREDITS
 	dw $0000
@@ -14183,91 +14196,91 @@ Data_1af94:
 
 Data_1b030:
 	dw $ffff
-	dw InfogramesCopyright_ScreenDataGBC ; SCREEN_COPYRIGHT_INFOGRAMES
-	dw WarnerBrosCopyright_ScreenData    ; SCREEN_COPYRIGHT_WARNER_BROS
-	dw LanguageSelect_ScreenData         ; SCREEN_LANGUAGE_SELECT
-	dw Titlescreen_ScreenDataGBC         ; SCREEN_TITLESCREEN
-	dw Options_ScreenData                ; SCREEN_OPTIONS
-	dw IntroScene_ScreenDataGBC          ; SCREEN_INTRO_SCENE
-	dw StudioTreasureIsland_ScreenData   ; SCREEN_STUDIO_TREASURE_ISLAND
-	dw TreasureIsland1Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_1_INTRO
-	dw TreasureIsland1_ScreenDataGBC     ; SCREEN_TREASURE_ISLAND_1
-	dw LevelSummary_ScreenData           ; SCREEN_TREASURE_ISLAND_1_SUMMARY
-	dw $7794 ; SCREEN_TREASURE_ISLAND_1_BONUS
-	dw TreasureIsland2Intro_ScreenData   ; SCREEN_TREASURE_ISLAND_2_INTRO
-	dw TreasureIsland2_ScreenDataGBC     ; SCREEN_TREASURE_ISLAND_2
-	dw LevelSummary_ScreenData           ; SCREEN_TREASURE_ISLAND_2_SUMMARY
-	dw $779b ; SCREEN_TREASURE_ISLAND_2_BONUS
-	dw $721e ; SCREEN_TREASURE_ISLAND_BOSS_INTRO
-	dw $79d9 ; SCREEN_TREASURE_ISLAND_BOSS
-	dw LevelSummary_ScreenData           ; SCREEN_TREASURE_ISLAND_BOSS_SUMMARY
-	dw $77a2 ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
+	dw ScreenDataGBC_InfogramesCopyright  ; SCREEN_COPYRIGHT_INFOGRAMES
+	dw ScreenData_WarnerBrosCopyright     ; SCREEN_COPYRIGHT_WARNER_BROS
+	dw ScreenData_LanguageSelect          ; SCREEN_LANGUAGE_SELECT
+	dw ScreenDataGBC_Titlescreen          ; SCREEN_TITLESCREEN
+	dw ScreenData_Options                 ; SCREEN_OPTIONS
+	dw ScreenDataGBC_IntroScene           ; SCREEN_INTRO_SCENE
+	dw ScreenData_StudioTreasureIsland    ; SCREEN_STUDIO_TREASURE_ISLAND
+	dw ScreenData_TreasureIsland1Intro    ; SCREEN_TREASURE_ISLAND_1_INTRO
+	dw ScreenDataGBC_TreasureIsland1      ; SCREEN_TREASURE_ISLAND_1
+	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_1_SUMMARY
+	dw ScreenData_TreasureIsland1Bonus    ; SCREEN_TREASURE_ISLAND_1_BONUS
+	dw ScreenData_TreasureIsland2Intro    ; SCREEN_TREASURE_ISLAND_2_INTRO
+	dw ScreenDataGBC_TreasureIsland2      ; SCREEN_TREASURE_ISLAND_2
+	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_2_SUMMARY
+	dw ScreenData_TreasureIsland2Bonus    ; SCREEN_TREASURE_ISLAND_2_BONUS
+	dw ScreenData_TreasureIslandBossIntro ; SCREEN_TREASURE_ISLAND_BOSS_INTRO
+	dw ScreenDataGBC_TreasureIslandBoss   ; SCREEN_TREASURE_ISLAND_BOSS
+	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_BOSS_SUMMARY
+	dw ScreenData_TreasureIslandBossBonus ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
 	dw $7710 ; SCREEN_PASSWORD_1
 	dw $7300 ; SCREEN_STUDIO_CRAZY_TOWN
-	dw CrazyTown1Intro_ScreenData        ; SCREEN_CRAZY_TOWN_1_INTRO
+	dw ScreenData_CrazyTown1Intro         ; SCREEN_CRAZY_TOWN_1_INTRO
 	dw $7819 ; SCREEN_CRAZY_TOWN_1
-	dw LevelSummary_ScreenData           ; SCREEN_CRAZY_TOWN_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_1_SUMMARY
 	dw $77a9 ; SCREEN_CRAZY_TOWN_1_BONUS
 	dw $71da ; SCREEN_CRAZY_TOWN_2_INTRO
 	dw $7855 ; SCREEN_CRAZY_TOWN_2
-	dw LevelSummary_ScreenData           ; SCREEN_CRAZY_TOWN_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_2_SUMMARY
 	dw $77b0 ; SCREEN_CRAZY_TOWN_2_BONUS
 	dw $71eb ; SCREEN_CRAZY_TOWN_BOSS_INTRO
 	dw $7909 ; SCREEN_CRAZY_TOWN_BOSS
-	dw LevelSummary_ScreenData           ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
 	dw $77b7 ; SCREEN_CRAZY_TOWN_BOSS_BONUS
 	dw $7312 ; SCREEN_STUDIO_TAZ_ZOO
 	dw $722f ; SCREEN_TAZ_ZOO_1_INTRO
 	dw $7961 ; SCREEN_TAZ_ZOO_1
-	dw LevelSummary_ScreenData           ; SCREEN_TAZ_ZOO_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
 	dw $77be ; SCREEN_TAZ_ZOO_1_BONUS
 	dw $7240 ; SCREEN_TAZ_ZOO_2_INTRO
 	dw $799d ; SCREEN_TAZ_ZOO_2
-	dw LevelSummary_ScreenData           ; SCREEN_TAZ_ZOO_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_2_SUMMARY
 	dw $77c5 ; SCREEN_TAZ_ZOO_2_BONUS
 	dw $7251 ; SCREEN_TAZ_ZOO_BOSS_INTRO
 	dw $7bcd ; SCREEN_TAZ_ZOO_BOSS
-	dw LevelSummary_ScreenData           ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
 	dw $77cc ; SCREEN_TAZ_ZOO_BOSS_BONUS
 	dw $7719 ; SCREEN_PASSWORD_2
 	dw $7324 ; SCREEN_STUDIO_SPACE_STATION
 	dw $7262 ; SCREEN_SPACE_STATION_1_INTRO
 	dw $7a35 ; SCREEN_SPACE_STATION_1
-	dw LevelSummary_ScreenData           ; SCREEN_SPACE_STATION_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
 	dw $77d3 ; SCREEN_SPACE_STATION_1_BONUS
 	dw $7273 ; SCREEN_SPACE_STATION_2_INTRO
 	dw $7a71 ; SCREEN_SPACE_STATION_2
-	dw LevelSummary_ScreenData           ; SCREEN_SPACE_STATION_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_2_SUMMARY
 	dw $77da ; SCREEN_SPACE_STATION_2_BONUS
 	dw $7284 ; SCREEN_SPACE_STATION_BOSS_INTRO
 	dw $7aad ; SCREEN_SPACE_STATION_BOSS
-	dw LevelSummary_ScreenData           ; SCREEN_SPACE_STATION_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw $77e1 ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw $7336 ; SCREEN_STUDIO_FUDD_FOREST
 	dw $7295 ; SCREEN_FUDD_FOREST_1_INTRO
 	dw $7afb ; SCREEN_FUDD_FOREST_1
-	dw LevelSummary_ScreenData           ; SCREEN_FUDD_FOREST_1_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
 	dw $77e8 ; SCREEN_FUDD_FOREST_1_BONUS
 	dw $72a6 ; SCREEN_FUDD_FOREST_2_INTRO
 	dw $7b37 ; SCREEN_FUDD_FOREST_2
-	dw LevelSummary_ScreenData           ; SCREEN_FUDD_FOREST_2_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_2_SUMMARY
 	dw $77ef ; SCREEN_FUDD_FOREST_2_BONUS
 	dw $72b7 ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw $7b73 ; SCREEN_FUDD_FOREST_BOSS
-	dw LevelSummary_ScreenData           ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
+	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
 	dw $7cc2 ; SCREEN_PROLOGUE_SCENE
 	dw $777d ; SCREEN_CREDITS
 	dw $0000
 	dw $7113 ; SCREEN_GAME_OVER
 	dw $0000
 
-InfogramesCopyright_ScreenData:
+ScreenData_InfogramesCopyright:
 	compressed_data InfogramesCopyrightTiles, $9550
 	compressed_data InfogramesCopyrightTilemap, $9800
 	db $ff
 	dw RunInfogramesCopyrightScreen
 
-WarnerBrosCopyright_ScreenData:
+ScreenData_WarnerBrosCopyright:
 	compressed_data WarnerBrosBackgroundTiles, $8830
 	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
 	uncompressed_data WarnerBrosCopyrightUnderLicenseByTiles, $c000, $80
@@ -14282,7 +14295,7 @@ WarnerBrosCopyright_ScreenData:
 
 INCBIN "baserom.gbc", $1b10f, $1b129 - $1b10f
 
-LanguageSelect_ScreenData:
+ScreenData_LanguageSelect:
 	compressed_data WarnerBrosBackgroundTiles, $8830
 	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
 	compressed_data CarrotCursorTiles, $81c0
@@ -14293,7 +14306,7 @@ LanguageSelect_ScreenData:
 
 INCBIN "baserom.gbc", $1b145, $1b147 - $1b145
 
-Options_ScreenData:
+ScreenData_Options:
 	compressed_data WarnerBrosBackgroundTiles, $8830
 	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
 	compressed_data CarrotCursorTiles, $81C0
@@ -14306,7 +14319,7 @@ Options_ScreenData:
 
 INCBIN "baserom.gbc", $1b16d, $1b16f - $1b16d
 
-Titlescreen_ScreenData:
+ScreenData_Titlescreen:
 	compressed_data FarmSceneTiles, $8CB0
 	compressed_data TitlescreenBackgroundTilemap, $9800
 	compressed_data TitlescreenCloudsTextAnvilTiles, $8000
@@ -14318,7 +14331,7 @@ Titlescreen_ScreenData:
 
 INCBIN "baserom.gbc", $1b190, $1b194 - $1b190
 
-IntroScene_ScreenData:
+ScreenData_IntroScene:
 	compressed_data FarmSceneTiles, $8CB0
 	compressed_data TitlescreenBackgroundTilemap, $9800
 	compressed_data FontTiles, $8800
@@ -14329,28 +14342,35 @@ IntroScene_ScreenData:
 
 INCBIN "baserom.gbc", $1b1b0, $1b1c9 - $1b1b0
 
-CrazyTown1Intro_ScreenData:
+ScreenData_CrazyTown1Intro:
 	compressed_data DaffyDuckHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
 
 INCBIN "baserom.gbc", $1b1d1, $1b1fc - $1b1d1
 
-TreasureIsland1Intro_ScreenData:
+ScreenData_TreasureIsland1Intro:
 	compressed_data YosemiteSamHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
 
 INCBIN "baserom.gbc", $1b204, $1b20d - $1b204
 
-TreasureIsland2Intro_ScreenData:
+ScreenData_TreasureIsland2Intro:
 	compressed_data YosemiteSamHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
 
-INCBIN "baserom.gbc", $1b215, $1b2c8 - $1b215
+INCBIN "baserom.gbc", $1b215, $1b21e - $1b215
 
-Studio_ScreenData:
+ScreenData_TreasureIslandBossIntro:
+	compressed_data YosemiteSamHeadTiles, $8440
+	db $ff
+	dw RunLevelIntroScreen
+
+INCBIN "baserom.gbc", $1b226, $1b2c8 - $1b226
+
+ScreenData_Studio:
 	compressed_data StudioTiles, $8C80
 	compressed_data StudioMetatiles, wMetatiles
 	compressed_data StudioCollisionAttributes, wMetatileCollisionAttributes
@@ -14361,13 +14381,13 @@ Studio_ScreenData:
 	db $ff
 	dw $4065
 
-StudioTreasureIsland_ScreenData:
+ScreenData_StudioTreasureIsland:
 	db $ff
 	dw RunStudioScreen
 
 INCBIN "baserom.gbc", $1b2f1, $1b3b6 - $1b2f1
 
-TreasureIsland1_ScreenData:
+ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
 	compressed_data TreasureIslandMetatiles, wMetatiles
 	compressed_data TreasureIslandCollisionAttributes, wMetatileCollisionAttributes
@@ -14379,7 +14399,7 @@ TreasureIsland1_ScreenData:
 
 INCBIN "baserom.gbc", $1b3d7, $1b3ed - $1b3d7
 
-TreasureIsland2_ScreenData:
+ScreenData_TreasureIsland2:
 	compressed_data TreasureIslandLevelTiles, $8B20
 	compressed_data TreasureIslandMetatiles, wMetatiles
 	compressed_data TreasureIslandCollisionAttributes, wMetatileCollisionAttributes
@@ -14389,9 +14409,25 @@ TreasureIsland2_ScreenData:
 	db $ff
 	dw RunLevelScreen
 
-INCBIN "baserom.gbc", $1b40e, $1b722 - $1b40e
+INCBIN "baserom.gbc", $1b40e, $1b472 - $1b40e
 
-LevelSummary_ScreenData          :
+ScreenData_TreasureIslandBoss:
+	compressed_data TreasureIslandBossWaterLogTiles, $9680
+	compressed_data TreasureIslandBossMetatiles, wMetatiles
+	compressed_data TreasureIslandBossCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data TreasureIslandBossMap, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TreasureIslandBossLevelTiles, $8FA0
+	compressed_data TreasureIslandBossBackgroundTilemap, $9A00
+	compressed_data TreasureIslandBossShipTiles, $8B60
+	compressed_data TreasureIslandBossShipTilemap, $9C00
+	compressed_data TreasureIslandBossSpriteTiles, $8560
+	db $ff
+	dw RunTreasureIslandBossScreen
+
+INCBIN "baserom.gbc", $1b4a7, $1b722 - $1b4a7
+
+ScreenData_LevelSummary:
 	compressed_data WarnerBrosBackgroundTiles, $8830
 	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
 	compressed_data MenuFontTiles, $C000
@@ -14407,9 +14443,27 @@ Data_1b77d:
 	db $ff
 	dw RunStudioCreditsScreen
 
-INCBIN "baserom.gbc", $1b785, $1b891 - $1b785
+INCBIN "baserom.gbc", $1b785, $1b794 - $1b785
 
-TreasureIsland1_ScreenDataGBC:
+ScreenData_TreasureIsland1Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b797, $1b79b - $1b797
+
+ScreenData_TreasureIsland2Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b79e, $1b7a2 - $1b79e
+
+ScreenData_TreasureIslandBossBonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7a5, $1b891 - $1b7a5
+
+ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
 	compressed_data TreasureIslandLevelTilesGBC, $8A00
 	compressed_data TreasureIslandMetatilesGBC, wMetatiles
@@ -14422,7 +14476,7 @@ TreasureIsland1_ScreenDataGBC:
 
 INCBIN "baserom.gbc", $1b8b7, $1b8cd - $1b8b7
 
-TreasureIsland2_ScreenDataGBC:
+ScreenDataGBC_TreasureIsland2:
 	compressed_data SharedLevelInterfaceTiles, $8340
 	compressed_data TreasureIslandLevelTilesGBC, $8A00
 	compressed_data TreasureIslandMetatilesGBC, wMetatiles
@@ -14433,9 +14487,27 @@ TreasureIsland2_ScreenDataGBC:
 	db $ff
 	dw RunLevelScreen
 
-INCBIN "baserom.gbc", $1b8f3, $1bc33 - $1b8f3
+INCBIN "baserom.gbc", $1b8f3, $1b9d9 - $1b8f3
 
-Studio_ScreenDataGBC:
+ScreenDataGBC_TreasureIslandBoss:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	uncompressed_data TreasureIslandBossWaterLogTilesGBC, $9680, $180
+	compressed_data TreasureIslandBossMetatilesGBC, wMetatiles
+	compressed_data TreasureIslandBossCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data TreasureIslandBossMapGBC, wLevelMap
+	compressed_data TreasureIslandBossLevelTilesGBC, $8ff0
+	compressed_data TreasureIslandBossBackgroundTilemapGBC, $9a00
+	compressed_data TreasureIslandBossShipTilesGBC, $8bb0
+	compressed_data TreasureIslandBossShipTilemapGBC, $9c00
+	compressed_data TreasureIslandBossSpriteTiles, $8560
+	uncompressed_data TreasureIslandBossWaterTileAttributesGBC, $dae8, $18
+	compressed_data TreasureIslandBossTileAttributesGBC, $d997
+	db $ff
+	dw RunTreasureIslandBossScreen
+
+INCBIN "baserom.gbc", $1ba1c, $1bc33 - $1ba1c
+
+ScreenDataGBC_Studio:
 	compressed_data StudioTilesGBC, $8C80
 	compressed_data StudioMetatilesGBC, wMetatiles
 	compressed_data StudioCollisionAttributesGBC, wMetatileCollisionAttributes
@@ -14448,7 +14520,7 @@ Studio_ScreenDataGBC:
 	db $ff
 	dw $4065
 
-Titlescreen_ScreenDataGBC:
+ScreenDataGBC_Titlescreen:
 	compressed_data FarmSceneTilesGBC, $8CB0
 	compressed_data TitlescreenBackgroundTilemapGBC, $9800
 	compressed_data TitlescreenCloudsTextAnvilTiles, $8000
@@ -14461,7 +14533,7 @@ Titlescreen_ScreenDataGBC:
 
 INCBIN "baserom.gbc", $1bc89, $1bc8d - $1bc89
 
-IntroScene_ScreenDataGBC:
+ScreenDataGBC_IntroScene:
 	compressed_data FarmSceneTilesGBC, $8CB0
 	compressed_data TitlescreenBackgroundTilemapGBC, $9800
 	compressed_data FontTilesGBC, $8800
@@ -14473,7 +14545,7 @@ IntroScene_ScreenDataGBC:
 
 INCBIN "baserom.gbc", $1bcae, $1bcb0 - $1bcae
 
-InfogramesCopyright_ScreenDataGBC:
+ScreenDataGBC_InfogramesCopyright:
 	compressed_data InfogramesCopyrightGBCTiles, $9550
 	compressed_data InfogramesCopyrightGBCTilemap, $9800
 	compressed_data InfogramesCopyrightGBCAttributesTilemap, $d9d5
@@ -14521,7 +14593,12 @@ INCBIN "baserom.gbc", $2C000, $2f1c8 - $2C000
 TreasureIsland1Map:
 	INCBIN "data/levels/treasure_island_1.vdmap.lz"
 
-INCBIN "baserom.gbc", $2fb7a, $30000 - $2fb7a
+INCBIN "baserom.gbc", $2fb7a, $2ffa3 - $2fb7a
+
+TreasureIslandBossMetatiles:
+	INCBIN "data/levels/treasure_island_boss_metatiles.bin.lz"
+TreasureIslandBossCollisionAttributes:
+	INCBIN "data/levels/treasure_island_boss_collision_attrs.bin.lz"
 
 SECTION "ROM Bank $0C", ROMX[$4000], BANK[$C]
 
@@ -14539,11 +14616,19 @@ INCBIN "baserom.gbc", $32761, $34000 - $32761
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
-INCBIN "baserom.gbc", $34000, $38000 - $34000
+INCBIN "baserom.gbc", $34000, $37f23 - $34000
+
+TreasureIslandBossBackgroundTilemap:
+	INCBIN "gfx/treasure_island/boss_background.tilemap.lz"
 
 SECTION "ROM Bank $0E", ROMX[$4000], BANK[$E]
 
-INCBIN "baserom.gbc", $38000, $3bd22 - $38000
+INCBIN "baserom.gbc", $38000, $3b9ea - $38000
+
+TreasureIslandBossWaterLogTiles:
+	INCBIN "gfx/treasure_island/boss_water_log.2bpp.lz"
+
+INCBIN "baserom.gbc", $3bb52, $3bd22 - $3bb52
 
 WarnerBrosCopyrightBugsBunnyTiles:
 	INCBIN "gfx/warner_bros_copyright/bugs_bunny.2bpp.lz"
@@ -14553,7 +14638,10 @@ InfogramesCopyrightTilemap:
 
 SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
-INCBIN "baserom.gbc", $3C000, $3fceb - $3C000
+INCBIN "baserom.gbc", $3C000, $3fc5a - $3C000
+
+TreasureIslandBossMap:
+	INCBIN "data/levels/treasure_island_boss.vdmap.lz"
 
 WarnerBrosBackgroundTiles:
 	INCBIN "gfx/warner_bros_background.2bpp.lz"
@@ -14594,7 +14682,28 @@ INCBIN "baserom.gbc", $462c0, $48000 - $462c0
 
 SECTION "ROM Bank $12", ROMX[$4000], BANK[$12]
 
-INCBIN "baserom.gbc", $48000, $4aec3 - $48000
+INCBIN "baserom.gbc", $48000, $4a18e - $48000
+
+TreasureIslandBossWaterLogTilesGBC:
+	INCBIN "gfx/treasure_island/boss_water_log_gbc.2bpp"
+TreasureIslandBossCollisionAttributesGBC:
+	INCBIN "data/levels/treasure_island_boss_collision_attrs_gbc.bin.lz"
+TreasureIslandBossMetatilesGBC:
+	INCBIN "data/levels/treasure_island_boss_metatiles_gbc.bin.lz"
+TreasureIslandBossMapGBC:
+	INCBIN "data/levels/treasure_island_boss_gbc.vdmap.lz"
+TreasureIslandBossWaterTileAttributesGBC:
+	INCBIN "gfx/treasure_island/boss_water_tile_attributes_gbc.bin"
+TreasureIslandBossLevelTilesGBC:
+	INCBIN "gfx/treasure_island/boss_level_tiles_gbc.2bpp.lz"
+TreasureIslandBossBackgroundTilemapGBC:
+	INCBIN "gfx/treasure_island/boss_background_gbc.tilemap.lz"
+TreasureIslandBossTileAttributesGBC:
+	INCBIN "gfx/treasure_island/boss_tile_attributes_gbc.bin.lz"
+TreasureIslandBossShipTilesGBC:
+	INCBIN "gfx/treasure_island/boss_ship_tiles_gbc.2bpp.lz"
+TreasureIslandBossShipTilemapGBC:
+	INCBIN "gfx/treasure_island/boss_ship_gbc.tilemap.lz"
 
 TitlescreenBackgroundTilemap:
 	INCBIN "gfx/titlescreen/background.tilemap.lz"
