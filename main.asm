@@ -622,7 +622,7 @@ Func_433:
 	call Func_2f9e
 	ret
 
-Func_44c:
+RunPasswordScreen:
 	push hl
 	ld hl, $76f4
 	call LoadData
@@ -14135,56 +14135,56 @@ Data_1af94:
 	dw ScreenData_TreasureIslandBoss      ; SCREEN_TREASURE_ISLAND_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_BOSS_SUMMARY
 	dw ScreenData_TreasureIslandBossBonus ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
-	dw $7710 ; SCREEN_PASSWORD_1
-	dw $7300 ; SCREEN_STUDIO_CRAZY_TOWN
+	dw ScreenData_Password1               ; SCREEN_PASSWORD_1
+	dw ScreenData_StudioCrazyTown         ; SCREEN_STUDIO_CRAZY_TOWN
 	dw ScreenData_CrazyTown1Intro         ; SCREEN_CRAZY_TOWN_1_INTRO
 	dw $7348 ; SCREEN_CRAZY_TOWN_1
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_1_SUMMARY
-	dw $77a9 ; SCREEN_CRAZY_TOWN_1_BONUS
+	dw ScreenData_CrazyTown1Bonus         ; SCREEN_CRAZY_TOWN_1_BONUS
 	dw $71da ; SCREEN_CRAZY_TOWN_2_INTRO
 	dw $737f ; SCREEN_CRAZY_TOWN_2
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_2_SUMMARY
-	dw $77b0 ; SCREEN_CRAZY_TOWN_2_BONUS
+	dw ScreenData_CrazyTown2Bonus         ; SCREEN_CRAZY_TOWN_2_BONUS
 	dw $71eb ; SCREEN_CRAZY_TOWN_BOSS_INTRO
 	dw $7424 ; SCREEN_CRAZY_TOWN_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
-	dw $77b7 ; SCREEN_CRAZY_TOWN_BOSS_BONUS
+	dw ScreenData_CrazyTownBossBonus      ; SCREEN_CRAZY_TOWN_BOSS_BONUS
 	dw $7312 ; SCREEN_STUDIO_TAZ_ZOO
 	dw $722f ; SCREEN_TAZ_ZOO_1_INTRO
 	dw $74c0 ; SCREEN_TAZ_ZOO_1
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
-	dw $77be ; SCREEN_TAZ_ZOO_1_BONUS
+	dw ScreenData_TazZoo1Bonus            ; SCREEN_TAZ_ZOO_1_BONUS
 	dw $7240 ; SCREEN_TAZ_ZOO_2_INTRO
 	dw $74f7 ; SCREEN_TAZ_ZOO_2
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_2_SUMMARY
-	dw $77c5 ; SCREEN_TAZ_ZOO_2_BONUS
+	dw ScreenData_TazZoo2Bonus            ; SCREEN_TAZ_ZOO_2_BONUS
 	dw $7251 ; SCREEN_TAZ_ZOO_BOSS_INTRO
 	dw $752e ; SCREEN_TAZ_ZOO_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
-	dw $77cc ; SCREEN_TAZ_ZOO_BOSS_BONUS
+	dw ScreenData_TazZooBossBonus         ; SCREEN_TAZ_ZOO_BOSS_BONUS
 	dw $7719 ; SCREEN_PASSWORD_2
 	dw $7324 ; SCREEN_STUDIO_SPACE_STATION
 	dw $7262 ; SCREEN_SPACE_STATION_1_INTRO
 	dw $7588 ; SCREEN_SPACE_STATION_1
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
-	dw $77d3 ; SCREEN_SPACE_STATION_1_BONUS
+	dw ScreenData_SpaceStation1Bonus      ; SCREEN_SPACE_STATION_1_BONUS
 	dw $7273 ; SCREEN_SPACE_STATION_2_INTRO
 	dw $75bf ; SCREEN_SPACE_STATION_2
-	dw ScreenData_LevelSummary         ; SCREEN_SPACE_STATION_2_SUMMARY
-	dw $77da ; SCREEN_SPACE_STATION_2_BONUS
+	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_2_SUMMARY
+	dw ScreenData_SpaceStation2Bonus      ; SCREEN_SPACE_STATION_2_BONUS
 	dw $7284 ; SCREEN_SPACE_STATION_BOSS_INTRO
 	dw $75f6 ; SCREEN_SPACE_STATION_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
-	dw $77e1 ; SCREEN_SPACE_STATION_BOSS_BONUS
+	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw $7336 ; SCREEN_STUDIO_FUDD_FOREST
 	dw $7295 ; SCREEN_FUDD_FOREST_1_INTRO
 	dw $7638 ; SCREEN_FUDD_FOREST_1
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
-	dw $77e8 ; SCREEN_FUDD_FOREST_1_BONUS
+	dw ScreenData_FuddForeset1Bonus       ; SCREEN_FUDD_FOREST_1_BONUS
 	dw $72a6 ; SCREEN_FUDD_FOREST_2_INTRO
 	dw $766f ; SCREEN_FUDD_FOREST_2
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_2_SUMMARY
-	dw $77ef ; SCREEN_FUDD_FOREST_2_BONUS
+	dw ScreenData_FuddForeset2Bonus       ; SCREEN_FUDD_FOREST_2_BONUS
 	dw $72b7 ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw $76a6 ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
@@ -14215,56 +14215,56 @@ Data_1b030:
 	dw ScreenDataGBC_TreasureIslandBoss   ; SCREEN_TREASURE_ISLAND_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TREASURE_ISLAND_BOSS_SUMMARY
 	dw ScreenData_TreasureIslandBossBonus ; SCREEN_TREASURE_ISLAND_BOSS_BONUS
-	dw $7710 ; SCREEN_PASSWORD_1
-	dw $7300 ; SCREEN_STUDIO_CRAZY_TOWN
+	dw ScreenData_Password1               ; SCREEN_PASSWORD_1
+	dw ScreenData_StudioCrazyTown         ; SCREEN_STUDIO_CRAZY_TOWN
 	dw ScreenData_CrazyTown1Intro         ; SCREEN_CRAZY_TOWN_1_INTRO
 	dw $7819 ; SCREEN_CRAZY_TOWN_1
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_1_SUMMARY
-	dw $77a9 ; SCREEN_CRAZY_TOWN_1_BONUS
+	dw ScreenData_CrazyTown1Bonus         ; SCREEN_CRAZY_TOWN_1_BONUS
 	dw $71da ; SCREEN_CRAZY_TOWN_2_INTRO
 	dw $7855 ; SCREEN_CRAZY_TOWN_2
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_2_SUMMARY
-	dw $77b0 ; SCREEN_CRAZY_TOWN_2_BONUS
+	dw ScreenData_CrazyTown2Bonus         ; SCREEN_CRAZY_TOWN_2_BONUS
 	dw $71eb ; SCREEN_CRAZY_TOWN_BOSS_INTRO
 	dw $7909 ; SCREEN_CRAZY_TOWN_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
-	dw $77b7 ; SCREEN_CRAZY_TOWN_BOSS_BONUS
+	dw ScreenData_CrazyTownBossBonus      ; SCREEN_CRAZY_TOWN_BOSS_BONUS
 	dw $7312 ; SCREEN_STUDIO_TAZ_ZOO
 	dw $722f ; SCREEN_TAZ_ZOO_1_INTRO
 	dw $7961 ; SCREEN_TAZ_ZOO_1
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
-	dw $77be ; SCREEN_TAZ_ZOO_1_BONUS
+	dw ScreenData_TazZoo1Bonus            ; SCREEN_TAZ_ZOO_1_BONUS
 	dw $7240 ; SCREEN_TAZ_ZOO_2_INTRO
 	dw $799d ; SCREEN_TAZ_ZOO_2
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_2_SUMMARY
-	dw $77c5 ; SCREEN_TAZ_ZOO_2_BONUS
+	dw ScreenData_TazZoo2Bonus            ; SCREEN_TAZ_ZOO_2_BONUS
 	dw $7251 ; SCREEN_TAZ_ZOO_BOSS_INTRO
 	dw $7bcd ; SCREEN_TAZ_ZOO_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
-	dw $77cc ; SCREEN_TAZ_ZOO_BOSS_BONUS
+	dw ScreenData_TazZooBossBonus         ; SCREEN_TAZ_ZOO_BOSS_BONUS
 	dw $7719 ; SCREEN_PASSWORD_2
 	dw $7324 ; SCREEN_STUDIO_SPACE_STATION
 	dw $7262 ; SCREEN_SPACE_STATION_1_INTRO
 	dw $7a35 ; SCREEN_SPACE_STATION_1
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
-	dw $77d3 ; SCREEN_SPACE_STATION_1_BONUS
+	dw ScreenData_SpaceStation1Bonus      ; SCREEN_SPACE_STATION_1_BONUS
 	dw $7273 ; SCREEN_SPACE_STATION_2_INTRO
 	dw $7a71 ; SCREEN_SPACE_STATION_2
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_2_SUMMARY
-	dw $77da ; SCREEN_SPACE_STATION_2_BONUS
+	dw ScreenData_SpaceStation2Bonus      ; SCREEN_SPACE_STATION_2_BONUS
 	dw $7284 ; SCREEN_SPACE_STATION_BOSS_INTRO
 	dw $7aad ; SCREEN_SPACE_STATION_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
-	dw $77e1 ; SCREEN_SPACE_STATION_BOSS_BONUS
+	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw $7336 ; SCREEN_STUDIO_FUDD_FOREST
 	dw $7295 ; SCREEN_FUDD_FOREST_1_INTRO
 	dw $7afb ; SCREEN_FUDD_FOREST_1
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
-	dw $77e8 ; SCREEN_FUDD_FOREST_1_BONUS
+	dw ScreenData_FuddForeset1Bonus       ; SCREEN_FUDD_FOREST_1_BONUS
 	dw $72a6 ; SCREEN_FUDD_FOREST_2_INTRO
 	dw $7b37 ; SCREEN_FUDD_FOREST_2
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_2_SUMMARY
-	dw $77ef ; SCREEN_FUDD_FOREST_2_BONUS
+	dw ScreenData_FuddForeset2Bonus       ; SCREEN_FUDD_FOREST_2_BONUS
 	dw $72b7 ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw $7b73 ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
@@ -14385,7 +14385,13 @@ ScreenData_StudioTreasureIsland:
 	db $ff
 	dw RunStudioScreen
 
-INCBIN "baserom.gbc", $1b2f1, $1b3b6 - $1b2f1
+INCBIN "baserom.gbc", $1b2f1, $1b300 - $1b2f1
+
+ScreenData_StudioCrazyTown:
+	db $ff
+	dw RunStudioScreen
+
+INCBIN "baserom.gbc", $1b303, $1b3b6 - $1b303
 
 ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -14425,7 +14431,13 @@ ScreenData_TreasureIslandBoss:
 	db $ff
 	dw RunTreasureIslandBossScreen
 
-INCBIN "baserom.gbc", $1b4a7, $1b722 - $1b4a7
+INCBIN "baserom.gbc", $1b4a7, $1b710 - $1b4a7
+
+ScreenData_Password1:
+	db $ff
+	dw RunPasswordScreen
+
+INCBIN "baserom.gbc", $1b713, $1b722 - $1b713
 
 ScreenData_LevelSummary:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -14461,7 +14473,73 @@ ScreenData_TreasureIslandBossBonus:
 	db $ff
 	dw RunLevelBonusScreen
 
-INCBIN "baserom.gbc", $1b7a5, $1b891 - $1b7a5
+INCBIN "baserom.gbc", $1b7a5, $1b7a9 - $1b7a5
+
+ScreenData_CrazyTown1Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7ac, $1b7b0 - $1b7ac
+
+ScreenData_CrazyTown2Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7b3, $1b7b7 - $1b7b3
+
+ScreenData_CrazyTownBossBonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7ba, $1b7be - $1b7ba
+
+ScreenData_TazZoo1Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7c1, $1b7c5 - $1b7c1
+
+ScreenData_TazZoo2Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7c8, $1b7cc - $1b7c8
+
+ScreenData_TazZooBossBonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7cf, $1b7d3 - $1b7cf
+
+ScreenData_SpaceStation1Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7d6, $1b7da - $1b7d6
+
+ScreenData_SpaceStation2Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7dd, $1b7e1 - $1b7dd
+
+ScreenData_SpaceStationBossBonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7e4, $1b7e8 - $1b7e4
+
+ScreenData_FuddForeset1Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7eb, $1b7ef - $1b7eb
+
+ScreenData_FuddForeset2Bonus:
+	db $ff
+	dw RunLevelBonusScreen
+
+INCBIN "baserom.gbc", $1b7f2, $1b891 - $1b7f2
 
 ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
