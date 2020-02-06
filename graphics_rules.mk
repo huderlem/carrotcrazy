@@ -52,3 +52,15 @@ gfx/crazy_town/boss_ground_tar_gbc.2bpp: %.2bpp: %.png
 
 gfx/crazy_town/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
 	rgbgfx -x 11 -o $@ $<
+
+gfx/taz_zoo/taz_head.interleave.2bpp: %.2bpp: %.png
+	rgbgfx -o $@ $<
+	tools/gfx --interleave --remove-whitespace --png $< -o $@ $@
+
+gfx/space_station/marvin_martian_head.interleave.2bpp: %.2bpp: %.png
+	rgbgfx -o $@ $<
+	tools/gfx --interleave --remove-whitespace --png $< -o $@ $@
+
+gfx/fudd_forest/elmer_fudd_head.interleave.2bpp: %.2bpp: %.png
+	rgbgfx -o $@ $<
+	tools/gfx --interleave --remove-whitespace --png $< -o $@ $@
