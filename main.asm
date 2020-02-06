@@ -2486,7 +2486,7 @@ Func_10e9:
 	ld [rVBK], a
 	ret
 
-Func_1103:
+RunCrazyTownBossScreen:
 	call Func_fb4
 	call Func_11fc
 	call Func_2b6d
@@ -12045,11 +12045,29 @@ StudioMetatiles:
 StudioMap:
 	INCBIN "data/levels/studio.vdmap.lz"
 
-INCBIN "baserom.gbc", $11387, $14000 - $11387
+INCBIN "baserom.gbc", $11387, $11422 - $11387
+
+CrazyTownLevelTiles:
+	INCBIN "gfx/crazy_town/level_tiles.2bpp.lz"
+CrazyTownMetatiles:
+	INCBIN "data/levels/crazy_town_metatiles.bin.lz"
+CrazyTownCollisionAttributes:
+	INCBIN "data/levels/crazy_town_collision_attrs.bin.lz"
+CrazyTown1Map:
+	INCBIN "data/levels/crazy_town_1.vdmap.lz"
+CrazyTown2Map:
+	INCBIN "data/levels/crazy_town_2.vdmap.lz"
+
+INCBIN "baserom.gbc", $1359c, $14000 - $1359c
 
 SECTION "ROM Bank $05", ROMX[$4000], BANK[$5]
 
-INCBIN "baserom.gbc", $14000, $16e8c - $14000
+INCBIN "baserom.gbc", $14000, $16d45 - $14000
+
+CrazyTownBossMap:
+	INCBIN "data/levels/crazy_town_boss.vdmap.lz"
+
+INCBIN "baserom.gbc", $16db3, $16e8c - $16db3
 
 INCLUDE "data/passwords.asm"
 
@@ -13552,7 +13570,8 @@ WarnerBrosCopyrightInteractiveEntertainmentTiles:
 FontTiles:
 	INCBIN "gfx/font.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $1a84e, $1a89f - $1a84e
+CrazyTownBossMetatiles:
+	INCBIN "data/levels/crazy_town_boss_metatiles.bin.lz"
 
 ; Loads common sprite palettes and the specified BG and
 ; sprite palettes. Also clears the BG map attributes.
@@ -14138,18 +14157,18 @@ Data_1af94:
 	dw ScreenData_Password1               ; SCREEN_PASSWORD_1
 	dw ScreenData_StudioCrazyTown         ; SCREEN_STUDIO_CRAZY_TOWN
 	dw ScreenData_CrazyTown1Intro         ; SCREEN_CRAZY_TOWN_1_INTRO
-	dw $7348 ; SCREEN_CRAZY_TOWN_1
+	dw ScreenData_CrazyTown1              ; SCREEN_CRAZY_TOWN_1
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_1_SUMMARY
 	dw ScreenData_CrazyTown1Bonus         ; SCREEN_CRAZY_TOWN_1_BONUS
-	dw $71da ; SCREEN_CRAZY_TOWN_2_INTRO
-	dw $737f ; SCREEN_CRAZY_TOWN_2
+	dw ScreenData_CrazyTown2Intro         ; SCREEN_CRAZY_TOWN_2_INTRO
+	dw ScreenData_CrazyTown2              ; SCREEN_CRAZY_TOWN_2
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_2_SUMMARY
 	dw ScreenData_CrazyTown2Bonus         ; SCREEN_CRAZY_TOWN_2_BONUS
-	dw $71eb ; SCREEN_CRAZY_TOWN_BOSS_INTRO
-	dw $7424 ; SCREEN_CRAZY_TOWN_BOSS
+	dw ScreenData_CrazyTownBossIntro      ; SCREEN_CRAZY_TOWN_BOSS_INTRO
+	dw ScreenData_CrazyTownBoss           ; SCREEN_CRAZY_TOWN_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
 	dw ScreenData_CrazyTownBossBonus      ; SCREEN_CRAZY_TOWN_BOSS_BONUS
-	dw $7312 ; SCREEN_STUDIO_TAZ_ZOO
+	dw ScreenData_StudioTazZoo            ; SCREEN_STUDIO_TAZ_ZOO
 	dw $722f ; SCREEN_TAZ_ZOO_1_INTRO
 	dw $74c0 ; SCREEN_TAZ_ZOO_1
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
@@ -14162,8 +14181,8 @@ Data_1af94:
 	dw $752e ; SCREEN_TAZ_ZOO_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
 	dw ScreenData_TazZooBossBonus         ; SCREEN_TAZ_ZOO_BOSS_BONUS
-	dw $7719 ; SCREEN_PASSWORD_2
-	dw $7324 ; SCREEN_STUDIO_SPACE_STATION
+	dw ScreenData_Password2               ; SCREEN_PASSWORD_2
+	dw ScreenData_StudioSpaceStation      ; SCREEN_STUDIO_SPACE_STATION
 	dw $7262 ; SCREEN_SPACE_STATION_1_INTRO
 	dw $7588 ; SCREEN_SPACE_STATION_1
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
@@ -14176,7 +14195,7 @@ Data_1af94:
 	dw $75f6 ; SCREEN_SPACE_STATION_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
-	dw $7336 ; SCREEN_STUDIO_FUDD_FOREST
+	dw ScreenData_StudioFuddForest        ; SCREEN_STUDIO_FUDD_FOREST
 	dw $7295 ; SCREEN_FUDD_FOREST_1_INTRO
 	dw $7638 ; SCREEN_FUDD_FOREST_1
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
@@ -14218,18 +14237,18 @@ Data_1b030:
 	dw ScreenData_Password1               ; SCREEN_PASSWORD_1
 	dw ScreenData_StudioCrazyTown         ; SCREEN_STUDIO_CRAZY_TOWN
 	dw ScreenData_CrazyTown1Intro         ; SCREEN_CRAZY_TOWN_1_INTRO
-	dw $7819 ; SCREEN_CRAZY_TOWN_1
+	dw ScreenDataGBC_CrazyTown1           ; SCREEN_CRAZY_TOWN_1
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_1_SUMMARY
 	dw ScreenData_CrazyTown1Bonus         ; SCREEN_CRAZY_TOWN_1_BONUS
-	dw $71da ; SCREEN_CRAZY_TOWN_2_INTRO
-	dw $7855 ; SCREEN_CRAZY_TOWN_2
+	dw ScreenData_CrazyTown2Intro         ; SCREEN_CRAZY_TOWN_2_INTRO
+	dw ScreenDataGBC_CrazyTown2           ; SCREEN_CRAZY_TOWN_2
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_2_SUMMARY
 	dw ScreenData_CrazyTown2Bonus         ; SCREEN_CRAZY_TOWN_2_BONUS
-	dw $71eb ; SCREEN_CRAZY_TOWN_BOSS_INTRO
-	dw $7909 ; SCREEN_CRAZY_TOWN_BOSS
+	dw ScreenData_CrazyTownBossIntro      ; SCREEN_CRAZY_TOWN_BOSS_INTRO
+	dw ScreenDataGBC_CrazyTownBoss        ; SCREEN_CRAZY_TOWN_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_CRAZY_TOWN_BOSS_SUMMARY
 	dw ScreenData_CrazyTownBossBonus      ; SCREEN_CRAZY_TOWN_BOSS_BONUS
-	dw $7312 ; SCREEN_STUDIO_TAZ_ZOO
+	dw ScreenData_StudioTazZoo            ; SCREEN_STUDIO_TAZ_ZOO
 	dw $722f ; SCREEN_TAZ_ZOO_1_INTRO
 	dw $7961 ; SCREEN_TAZ_ZOO_1
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
@@ -14242,8 +14261,8 @@ Data_1b030:
 	dw $7bcd ; SCREEN_TAZ_ZOO_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
 	dw ScreenData_TazZooBossBonus         ; SCREEN_TAZ_ZOO_BOSS_BONUS
-	dw $7719 ; SCREEN_PASSWORD_2
-	dw $7324 ; SCREEN_STUDIO_SPACE_STATION
+	dw ScreenData_Password2               ; SCREEN_PASSWORD_2
+	dw ScreenData_StudioSpaceStation      ; SCREEN_STUDIO_SPACE_STATION
 	dw $7262 ; SCREEN_SPACE_STATION_1_INTRO
 	dw $7a35 ; SCREEN_SPACE_STATION_1
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
@@ -14256,7 +14275,7 @@ Data_1b030:
 	dw $7aad ; SCREEN_SPACE_STATION_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
-	dw $7336 ; SCREEN_STUDIO_FUDD_FOREST
+	dw ScreenData_StudioFuddForest        ; SCREEN_STUDIO_FUDD_FOREST
 	dw $7295 ; SCREEN_FUDD_FOREST_1_INTRO
 	dw $7afb ; SCREEN_FUDD_FOREST_1
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
@@ -14347,7 +14366,21 @@ ScreenData_CrazyTown1Intro:
 	db $ff
 	dw RunLevelIntroScreen
 
-INCBIN "baserom.gbc", $1b1d1, $1b1fc - $1b1d1
+INCBIN "baserom.gbc", $1b1d1, $1b1da - $1b1d1
+
+ScreenData_CrazyTown2Intro:
+	compressed_data DaffyDuckHeadTiles, $8440
+	db $ff
+	dw RunLevelIntroScreen
+
+INCBIN "baserom.gbc", $1b1e2, $1b1eb - $1b1e2
+
+ScreenData_CrazyTownBossIntro:
+	compressed_data DaffyDuckHeadTiles, $8440
+	db $ff
+	dw RunLevelIntroScreen
+
+INCBIN "baserom.gbc", $1b1f3, $1b1fc - $1b1f3
 
 ScreenData_TreasureIsland1Intro:
 	compressed_data YosemiteSamHeadTiles, $8440
@@ -14391,7 +14424,49 @@ ScreenData_StudioCrazyTown:
 	db $ff
 	dw RunStudioScreen
 
-INCBIN "baserom.gbc", $1b303, $1b3b6 - $1b303
+INCBIN "baserom.gbc", $1b303, $1b312 - $1b303
+
+ScreenData_StudioTazZoo:
+	db $ff
+	dw RunStudioScreen
+
+INCBIN "baserom.gbc", $1b315, $1b324 - $1b315
+
+ScreenData_StudioSpaceStation:
+	db $ff
+	dw RunStudioScreen
+
+INCBIN "baserom.gbc", $1b327, $1b336 - $1b327
+
+ScreenData_StudioFuddForest:
+	db $ff
+	dw RunStudioScreen
+
+INCBIN "baserom.gbc", $1b339, $1b348 - $1b339
+
+ScreenData_CrazyTown1:
+	compressed_data CrazyTownLevelTiles, $8B20
+	compressed_data CrazyTownMetatiles, wMetatiles
+	compressed_data CrazyTownCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data CrazyTown1Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data CrazyTownLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b369, $1b37f - $1b369
+
+ScreenData_CrazyTown2:
+	compressed_data CrazyTownLevelTiles, $8B20
+	compressed_data CrazyTownMetatiles, wMetatiles
+	compressed_data CrazyTownCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data CrazyTown2Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data CrazyTownLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b3a0, $1b3b6 - $1b3a0
 
 ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -14415,7 +14490,23 @@ ScreenData_TreasureIsland2:
 	db $ff
 	dw RunLevelScreen
 
-INCBIN "baserom.gbc", $1b40e, $1b472 - $1b40e
+INCBIN "baserom.gbc", $1b40e, $1b424 - $1b40e
+
+ScreenData_CrazyTownBoss:
+	compressed_data CrazyTownBossGroundTarTiles, $9570
+	compressed_data CrazyTownBossMetatiles, wMetatiles
+	compressed_data CrazyTownBossCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data CrazyTownBossMap, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data CrazyTownBossLevelTiles, $8F90
+	compressed_data CrazyTownBossBackgroundTilemap, $9A00
+	compressed_data CrazyTownBossSteamrollerTiles, $8B30
+	compressed_data CrazyTownBossSteamrollerTilemap, $9C00
+	compressed_data CrazyTownBossSpriteTiles, $8560
+	db $ff
+	dw RunCrazyTownBossScreen
+
+INCBIN "baserom.gbc", $1b459, $1b472 - $1b459
 
 ScreenData_TreasureIslandBoss:
 	compressed_data TreasureIslandBossWaterLogTiles, $9680
@@ -14437,7 +14528,13 @@ ScreenData_Password1:
 	db $ff
 	dw RunPasswordScreen
 
-INCBIN "baserom.gbc", $1b713, $1b722 - $1b713
+INCBIN "baserom.gbc", $1b713, $1b719 - $1b713
+
+ScreenData_Password2:
+	db $ff
+	dw RunPasswordScreen
+
+INCBIN "baserom.gbc", $1b71c, $1b722 - $1b71c
 
 ScreenData_LevelSummary:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -14539,7 +14636,33 @@ ScreenData_FuddForeset2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
 
-INCBIN "baserom.gbc", $1b7f2, $1b891 - $1b7f2
+INCBIN "baserom.gbc", $1b7f2, $1b819 - $1b7f2
+
+ScreenDataGBC_CrazyTown1:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data CrazyTownLevelTilesGBC, $8AE0
+	compressed_data CrazyTownMetatilesGBC, wMetatiles
+	compressed_data CrazyTownCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data CrazyTown1MapGBC, wLevelMap
+	compressed_data CrazyTownTileAttributesGBC, $DA2E
+	compressed_data CrazyTownLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b83f, $1b855 - $1b83f
+
+ScreenDataGBC_CrazyTown2:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data CrazyTownLevelTilesGBC, $8AE0
+	compressed_data CrazyTownMetatilesGBC, wMetatiles
+	compressed_data CrazyTownCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data CrazyTown2MapGBC, wLevelMap
+	compressed_data CrazyTownTileAttributesGBC, $DA2E
+	compressed_data CrazyTownLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b87b, $1b891 - $1b87b	
 
 ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14565,7 +14688,25 @@ ScreenDataGBC_TreasureIsland2:
 	db $ff
 	dw RunLevelScreen
 
-INCBIN "baserom.gbc", $1b8f3, $1b9d9 - $1b8f3
+INCBIN "baserom.gbc", $1b8f3, $1b909 - $1b8f3
+
+ScreenDataGBC_CrazyTownBoss:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data CrazyTownBossGroundTarTilesGBC, $9570
+	compressed_data CrazyTownBossMetatilesGBC, wMetatiles
+	compressed_data CrazyTownBossCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data CrazyTownBossMapGBC, wLevelMap
+	compressed_data CrazyTownBossTileAtributesGBC, $DAD7
+	compressed_data CrazyTownBossLevelTilesGBC, $8F20
+	compressed_data CrazyTownBossBackgroundTilemapGBC, $9A00
+	compressed_data CrazyTownBossGroundTileAttributesGBC, $D99B
+	compressed_data CrazyTownBossSteamrollerTilesGBC, $8AC0
+	compressed_data CrazyTownBossSteamrollerTilemapGBC, $9C00
+	compressed_data CrazyTownBossSpriteTiles, $8560
+	db $ff
+	dw RunCrazyTownBossScreen
+
+INCBIN "baserom.gbc", $1b948, $1b9d9 - $1b948
 
 ScreenDataGBC_TreasureIslandBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14634,7 +14775,16 @@ INCBIN "baserom.gbc", $1bcc2, $1c000 - $1bcc2
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 
-INCBIN "baserom.gbc", $1C000, $20000 - $1C000
+INCBIN "baserom.gbc", $1C000, $1f8f1 - $1C000
+
+CrazyTownBossSteamrollerTilemap:
+	INCBIN "gfx/crazy_town/boss_steamroller.tilemap.lz"
+CrazyTownLevelSpriteTiles:
+	INCBIN "gfx/crazy_town/level_sprites.interleave.2bpp.lz"
+CrazyTownBossSteamrollerTiles:
+	INCBIN "gfx/crazy_town/boss_steamroller_tiles.2bpp.lz"
+
+INCBIN "baserom.gbc", $1fde5, $20000 - $1fde5
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
@@ -14671,7 +14821,8 @@ INCBIN "baserom.gbc", $2C000, $2f1c8 - $2C000
 TreasureIsland1Map:
 	INCBIN "data/levels/treasure_island_1.vdmap.lz"
 
-INCBIN "baserom.gbc", $2fb7a, $2ffa3 - $2fb7a
+CrazyTownBossLevelTiles:
+	INCBIN "gfx/crazy_town/boss_level_tiles.2bpp.lz"
 
 TreasureIslandBossMetatiles:
 	INCBIN "data/levels/treasure_island_boss_metatiles.bin.lz"
@@ -14685,7 +14836,10 @@ INCBIN "baserom.gbc", $30000, $314b0 - $30000
 GameText:
 	INCBIN "data/game_text.bin.lz"
 
-INCBIN "baserom.gbc", $31ae0, $32720 - $31ae0
+INCBIN "baserom.gbc", $31ae0, $32507 - $31ae0
+
+CrazyTownBossSpriteTiles:
+	INCBIN "gfx/crazy_town/boss_sprites.interleave.2bpp.lz"
 
 TreasureIslandCollisionAttributes:
 	INCBIN "data/levels/treasure_island_collision_attrs.bin.lz"
@@ -14694,7 +14848,10 @@ INCBIN "baserom.gbc", $32761, $34000 - $32761
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
-INCBIN "baserom.gbc", $34000, $37f23 - $34000
+INCBIN "baserom.gbc", $34000, $37d4c - $34000
+
+CrazyTownBossGroundTarTiles:
+	INCBIN "gfx/crazy_town/boss_ground_tar.2bpp.lz"
 
 TreasureIslandBossBackgroundTilemap:
 	INCBIN "gfx/treasure_island/boss_background.tilemap.lz"
@@ -14706,7 +14863,10 @@ INCBIN "baserom.gbc", $38000, $3b9ea - $38000
 TreasureIslandBossWaterLogTiles:
 	INCBIN "gfx/treasure_island/boss_water_log.2bpp.lz"
 
-INCBIN "baserom.gbc", $3bb52, $3bd22 - $3bb52
+INCBIN "baserom.gbc", $3bb52, $3bd04 - $3bb52
+
+CrazyTownBossCollisionAttributes:
+	INCBIN "data/levels/crazy_town_boss_collision_attrs.bin.lz"
 
 WarnerBrosCopyrightBugsBunnyTiles:
 	INCBIN "gfx/warner_bros_copyright/bugs_bunny.2bpp.lz"
@@ -14734,7 +14894,20 @@ INCBIN "baserom.gbc", $40000, $40187 - $40000
 TreasureIsland2Map:
 	INCBIN "data/levels/treasure_island_2.vdmap.lz"
 
-INCBIN "baserom.gbc", $40b57, $4308E - $40b57
+CrazyTown1MapGBC:
+	INCBIN "data/levels/crazy_town_1_gbc.vdmap.lz"
+CrazyTown2MapGBC:
+	INCBIN "data/levels/crazy_town_2_gbc.vdmap.lz"
+CrazyTownCollisionAttributesGBC:
+	INCBIN "data/levels/crazy_town_collision_attrs_gbc.bin.lz"
+CrazyTownMetatilesGBC:
+	INCBIN "data/levels/crazy_town_metatiles_gbc.bin.lz"
+CrazyTownLevelTilesGBC:
+	INCBIN "gfx/crazy_town/level_tiles_gbc.2bpp.lz"
+CrazyTownTileAttributesGBC:
+	INCBIN "gfx/crazy_town/tile_attributes_gbc.bin.lz"
+
+INCBIN "baserom.gbc", $42d4f, $4308E - $42d4f
 
 TreasureIslandLevelTiles:
 	INCBIN "gfx/treasure_island/level_tiles.2bpp.lz"
@@ -14756,7 +14929,28 @@ TreasureIslandLevelTilesGBC:
 TreasureIslandTileAttributesGBC:
 	INCBIN "gfx/treasure_island/tile_attributes_gbc.bin.lz"
 
-INCBIN "baserom.gbc", $462c0, $48000 - $462c0
+CrazyTownBossGroundTarTilesGBC:
+	INCBIN "gfx/crazy_town/boss_ground_tar_gbc.2bpp.lz"
+CrazyTownBossCollisionAttributesGBC:
+	INCBIN "data/levels/crazy_town_boss_collision_attrs_gbc.bin.lz"
+CrazyTownBossMetatilesGBC:
+	INCBIN "data/levels/crazy_town_boss_metatiles_gbc.bin.lz"
+CrazyTownBossMapGBC:
+	INCBIN "data/levels/crazy_town_boss_gbc.vdmap.lz"
+CrazyTownBossTileAtributesGBC:
+	INCBIN "gfx/crazy_town/boss_tile_attributes_gbc.bin.lz"
+CrazyTownBossSteamrollerTilesGBC:
+	INCBIN "gfx/crazy_town/boss_steamroller_tiles_gbc.2bpp.lz"
+CrazyTownBossSteamrollerTilemapGBC:
+	INCBIN "gfx/crazy_town/boss_steamroller_gbc.tilemap.lz"
+CrazyTownBossLevelTilesGBC:
+	INCBIN "gfx/crazy_town/boss_level_tiles_gbc.2bpp.lz"
+CrazyTownBossBackgroundTilemapGBC:
+	INCBIN "gfx/crazy_town/boss_background_gbc.tilemap.lz"
+CrazyTownBossGroundTileAttributesGBC:
+	INCBIN "gfx/crazy_town/boss_ground_tile_attributes_gbc.bin.lz"
+
+INCBIN "baserom.gbc", $46eac, $48000 - $46eac
 
 SECTION "ROM Bank $12", ROMX[$4000], BANK[$12]
 
@@ -14798,7 +14992,10 @@ INCBIN "baserom.gbc", $50000, $54000 - $50000
 
 SECTION "ROM Bank $15", ROMX[$4000], BANK[$15]
 
-INCBIN "baserom.gbc", $54000, $54dd6 - $54000
+INCBIN "baserom.gbc", $54000, $54d06 - $54000
+
+CrazyTownBossBackgroundTilemap:
+	INCBIN "gfx/crazy_town/boss_background.tilemap.lz"
 
 TreasureIslandMetatiles:
 	INCBIN "data/levels/treasure_island_metatiles.bin.lz"

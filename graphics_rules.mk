@@ -34,3 +34,21 @@ gfx/treasure_island/boss_ship_tiles_gbc.2bpp: %.2bpp: %.png
 
 gfx/treasure_island/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
 	rgbgfx -x 7 -o $@ $<
+
+gfx/crazy_town/level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<
+
+gfx/crazy_town/level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 14 -o $@ $<
+
+gfx/crazy_town/boss_ground_tar.2bpp: %.2bpp: %.png
+	rgbgfx -x 19 -o $@ $<
+
+gfx/crazy_town/boss_level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<
+
+gfx/crazy_town/boss_ground_tar_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 19 -o $@ $<
+
+gfx/crazy_town/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 11 -o $@ $<
