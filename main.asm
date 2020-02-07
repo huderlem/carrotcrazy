@@ -6,12 +6,12 @@ INCLUDE "constants.asm"
 
 SECTION "ROM Bank $00", ROM0[$00]
 
-Func_0:
+LoadLevelGBCpalettesHome:
 	ld de, MBC5RomBank
-	ld a, $06 ; TODO: Bank(?)
+	ld a, Bank(LoadLevelGBCpalettes)
 	ld [de], a
 	ld a, [hli]
-	ld [$dde9], a
+	ld [wHUDTileAttribute], a
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -20,9 +20,9 @@ Func_0:
 	cp GBC_MODE
 	ret nz
 	push hl
-	ld a, Bank(Func_1a902)
+	ld a, Bank(LoadLevelGBCpalettes)
 	ld [de], a
-	jp Func_1a902
+	jp LoadLevelGBCpalettes
 
 ; Adds a BCD value to the player's score.
 ; Input: c = value to add
@@ -420,8 +420,8 @@ RunLevelBonusScreen:
 	call Func_17bf9
 	ld hl, BonusScreenGBCPalettes
 	call LoadCGBPalettesHome
-	ld c, $00
-	call Func_1023
+	ld c, 0
+	call LoadHUDTileAttributes
 	call Func_fb4
 	call Func_233
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -2364,7 +2364,8 @@ Func_fd9:
 	jr nz, .asm_100a
 	ret
 
-Func_1023:
+; Input: c = tile attribute to fill in the HUD area.
+LoadHUDTileAttributes:
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
@@ -2384,10 +2385,10 @@ Func_1023:
 
 RunLevelScreen:
 	call Func_fb4
-	call Func_0
-	ld a, [$dde9]
+	call LoadLevelGBCpalettesHome
+	ld a, [wHUDTileAttribute]
 	ld c, a
-	call Func_1023
+	call LoadHUDTileAttributes
 	ld bc, $c602
 	ld a, [bc]
 	sub $40
@@ -2592,7 +2593,7 @@ RunCrazyTownBossScreen:
 	jp .asm_1179
 
 Func_11fc:
-	call Func_0
+	call LoadLevelGBCpalettesHome
 	ld a, [hli]
 	ld [$ddea], a
 	ld a, [hGameBoyColorDetection]
@@ -2613,7 +2614,7 @@ Func_11fc:
 	ld bc, $9ba0
 	ld d, $60
 .asm_1221
-	ld a, [$dde9]
+	ld a, [wHUDTileAttribute]
 	ld [bc], a
 	inc bc
 	dec d
@@ -2734,7 +2735,7 @@ RunTreasureIslandBossScreen:
 	jp .asm_12a3
 
 
-Func_1331:
+RunTazZooBossScreen:
 	call Func_fb4
 	call Func_11fc
 	call Func_2b6d
@@ -10869,7 +10870,10 @@ ClearData:
 TreasureIslandBossShipTilemap:
 	INCBIN "gfx/treasure_island/boss_ship.tilemap.lz"
 
-INCBIN "baserom.gbc", $7ec5, $8000 - $7ec5
+TazZooBossCollisionAttributes:
+	INCBIN "data/levels/taz_zoo_boss_collision_attrs.bin.lz"
+
+INCBIN "baserom.gbc", $7ee1, $8000 - $7ee1
 
 SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
@@ -11805,7 +11809,12 @@ Func_8a7f:
 	ld [$db5c], a
 	ret
 
-INCBIN "baserom.gbc", $8b23, $C000 - $8b23
+INCBIN "baserom.gbc", $8b23, $be1d - $8b23
+
+TazZooCollisionAttributes:
+	INCBIN "data/levels/taz_zoo_collision_attrs.bin.lz"
+TazZooBossGroundTiles:
+	INCBIN "gfx/taz_zoo/boss_ground.2bpp"
 
 SECTION "ROM Bank $03", ROMX[$4000], BANK[$3]
 
@@ -12058,7 +12067,10 @@ CrazyTown1Map:
 CrazyTown2Map:
 	INCBIN "data/levels/crazy_town_2.vdmap.lz"
 
-INCBIN "baserom.gbc", $1359c, $14000 - $1359c
+INCBIN "baserom.gbc", $1359c, $13eaf - $1359c
+
+TazZooLevelSpriteTiles:
+	INCBIN "gfx/taz_zoo/level_sprites.interleave.2bpp.lz"
 
 SECTION "ROM Bank $05", ROMX[$4000], BANK[$5]
 
@@ -13655,7 +13667,7 @@ LoadCGBPalettes:
 	ld [rVBK], a
 	ret
 
-Func_1a902:
+LoadLevelGBCpalettes:
 	ld h, b
 	ld l, c
 	ld a, $80
@@ -14176,15 +14188,15 @@ Data_1af94:
 	dw ScreenData_CrazyTownBossBonus      ; SCREEN_CRAZY_TOWN_BOSS_BONUS
 	dw ScreenData_StudioTazZoo            ; SCREEN_STUDIO_TAZ_ZOO
 	dw ScreenData_TazZoo1Intro            ; SCREEN_TAZ_ZOO_1_INTRO
-	dw $74c0 ; SCREEN_TAZ_ZOO_1
+	dw ScreenData_TazZoo1                 ; SCREEN_TAZ_ZOO_1
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
 	dw ScreenData_TazZoo1Bonus            ; SCREEN_TAZ_ZOO_1_BONUS
 	dw ScreenData_TazZoo2Intro            ; SCREEN_TAZ_ZOO_2_INTRO
-	dw $74f7 ; SCREEN_TAZ_ZOO_2
+	dw ScreenData_TazZoo2                 ; SCREEN_TAZ_ZOO_2
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_2_SUMMARY
 	dw ScreenData_TazZoo2Bonus            ; SCREEN_TAZ_ZOO_2_BONUS
 	dw ScreenData_TazZooBossIntro         ; SCREEN_TAZ_ZOO_BOSS_INTRO
-	dw $752e ; SCREEN_TAZ_ZOO_BOSS
+	dw ScreenData_TazZooBoss              ; SCREEN_TAZ_ZOO_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
 	dw ScreenData_TazZooBossBonus         ; SCREEN_TAZ_ZOO_BOSS_BONUS
 	dw ScreenData_Password2               ; SCREEN_PASSWORD_2
@@ -14256,15 +14268,15 @@ Data_1b030:
 	dw ScreenData_CrazyTownBossBonus      ; SCREEN_CRAZY_TOWN_BOSS_BONUS
 	dw ScreenData_StudioTazZoo            ; SCREEN_STUDIO_TAZ_ZOO
 	dw ScreenData_TazZoo1Intro            ; SCREEN_TAZ_ZOO_1_INTRO
-	dw $7961 ; SCREEN_TAZ_ZOO_1
+	dw ScreenDataGBC_TazZoo1              ; SCREEN_TAZ_ZOO_1
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_1_SUMMARY
 	dw ScreenData_TazZoo1Bonus            ; SCREEN_TAZ_ZOO_1_BONUS
 	dw ScreenData_TazZoo2Intro            ; SCREEN_TAZ_ZOO_2_INTRO
-	dw $799d ; SCREEN_TAZ_ZOO_2
+	dw ScreenDataGBC_TazZoo2              ; SCREEN_TAZ_ZOO_2
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_2_SUMMARY
 	dw ScreenData_TazZoo2Bonus            ; SCREEN_TAZ_ZOO_2_BONUS
 	dw ScreenData_TazZooBossIntro         ; SCREEN_TAZ_ZOO_BOSS_INTRO
-	dw $7bcd ; SCREEN_TAZ_ZOO_BOSS
+	dw ScreenDataGBC_TazZooBoss           ; SCREEN_TAZ_ZOO_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_TAZ_ZOO_BOSS_SUMMARY
 	dw ScreenData_TazZooBossBonus         ; SCREEN_TAZ_ZOO_BOSS_BONUS
 	dw ScreenData_Password2               ; SCREEN_PASSWORD_2
@@ -14546,8 +14558,16 @@ ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
-
-INCBIN "baserom.gbc", $1b3d7, $1b3ed - $1b3d7
+	db 0 ; HUD background palette num
+	dw $6b46
+	dw $0000, $0080 ; initial camera offset
+	dw $0040, $00DF ; initial player x/y coords
+	db $05 ; bank for word after the next ???
+	dw $5d58 ; entities triggers [left][right][pointer to entity's data]
+	dw $5ec6 ; entity data
+	dw $407d ; music
+	dw $5c92 ; animated tiles
+	dw $7174 ; ???
 
 ScreenData_TreasureIsland2:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -14591,7 +14611,49 @@ ScreenData_TreasureIslandBoss:
 	db $ff
 	dw RunTreasureIslandBossScreen
 
-INCBIN "baserom.gbc", $1b4a7, $1b710 - $1b4a7
+INCBIN "baserom.gbc", $1b4a7, $1b4c0 - $1b4a7
+
+ScreenData_TazZoo1:
+	compressed_data TazZooLevelTiles, $8B20
+	compressed_data TazZooMetatiles, wMetatiles
+	compressed_data TazZooCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data TazZoo1Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TazZooLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b4e1, $1b4f7 - $1b4e1
+
+ScreenData_TazZoo2:
+	compressed_data TazZooLevelTiles, $8B20
+	compressed_data TazZooMetatiles, wMetatiles
+	compressed_data TazZooCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data TazZoo2Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TazZooLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b518, $1b52e - $1b518
+
+ScreenData_TazZooBoss:
+	uncompressed_data TazZooBossGroundTiles, $9770, $90
+	compressed_data TazZooBossMetatiles, wMetatiles
+	compressed_data TazZooBossCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data TazZooBossMap, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TazZooBossLevelTiles, $9150
+	compressed_data TazZooBossBackgroundTilemap, $9A00
+	compressed_data TazZooBossStampedeTiles, $8BC0
+	compressed_data TazZooBossStampedeTilemap, $D455
+	compressed_data TazZooBossGroundDustTiles, $8B30
+	compressed_data TazZooBossStampedeInitialTilemap, $9B20
+	compressed_data TazZooBossSpriteTiles, $8560
+	db $ff
+	dw RunTazZooBossScreen
+
+INCBIN "baserom.gbc", $1b56f, $1b710 - $1b56f
 
 ScreenData_Password1:
 	db $ff
@@ -14775,7 +14837,33 @@ ScreenDataGBC_CrazyTownBoss:
 	db $ff
 	dw RunCrazyTownBossScreen
 
-INCBIN "baserom.gbc", $1b948, $1b9d9 - $1b948
+INCBIN "baserom.gbc", $1b948, $1b961 - $1b948
+
+ScreenDataGBC_TazZoo1:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TazZooLevelTilesGBC, $8B20
+	compressed_data TazZooMetatilesGBC, wMetatiles
+	compressed_data TazZooCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data TazZoo1MapGBC, wLevelMap
+	compressed_data TazZooLevelSpriteTiles, $8560
+	compressed_data TazZooTileAttributesGBC, $DA32
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b987, $1b99d - $1b987
+
+ScreenDataGBC_TazZoo2:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data TazZooLevelTilesGBC, $8B20
+	compressed_data TazZooMetatilesGBC, wMetatiles
+	compressed_data TazZooCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data TazZoo2MapGBC, wLevelMap
+	compressed_data TazZooLevelSpriteTiles, $8560
+	compressed_data TazZooTileAttributesGBC, $DA32
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b9c3, $1b9d9 - $1b9c3
 
 ScreenDataGBC_TreasureIslandBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14793,7 +14881,27 @@ ScreenDataGBC_TreasureIslandBoss:
 	db $ff
 	dw RunTreasureIslandBossScreen
 
-INCBIN "baserom.gbc", $1ba1c, $1bc33 - $1ba1c
+INCBIN "baserom.gbc", $1ba1c, $1bbcd - $1ba1c
+
+ScreenDataGBC_TazZooBoss:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	uncompressed_data TazZooBossGroundTilesGBC, $9770, $90
+	compressed_data TazZooBossMetatilesGBC, wMetatiles
+	compressed_data TazZooBossCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data TazZooBossMapGBC, wLevelMap
+	compressed_data TazZooBossLevelTilesGBC, $91C0
+	compressed_data TazZooBossBackgroundTilemapGBC, $9A00
+	compressed_data TazZooBossStampedeTilesGBC, $8BB0
+	compressed_data TazZooBossStampedeTilemapGBC, $D455
+	compressed_data TazZooBossGroundDustTilesGBC, $8B20
+	compressed_data TazZooBossStampedeInitialTilemapGBC, $9B20
+	compressed_data TazZooBossSpriteTiles, $8560
+	uncompressed_data TazZooBossGroundTileAttributesGBC, $DAF7, $9
+	compressed_data TazZooBossTileAttributesGBC, $D9A5
+	db $ff
+	dw RunTazZooBossScreen
+
+INCBIN "baserom.gbc", $1bc1a, $1bc33 - $1bc1a
 
 ScreenDataGBC_Studio:
 	compressed_data StudioTilesGBC, $8C80
@@ -14844,7 +14952,29 @@ INCBIN "baserom.gbc", $1bcc2, $1c000 - $1bcc2
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 
-INCBIN "baserom.gbc", $1C000, $1f8f1 - $1C000
+TazZooLevelTiles:
+	INCBIN "gfx/taz_zoo/level_tiles.2bpp.lz"
+TazZooMetatiles:
+	INCBIN "data/levels/taz_zoo_metatiles.bin.lz"
+TazZoo1Map:
+	INCBIN "data/levels/taz_zoo_1.vdmap.lz"
+TazZoo2Map:
+	INCBIN "data/levels/taz_zoo_2.vdmap.lz"
+
+INCBIN "baserom.gbc", $1e0ad, $1e921 - $1e0ad
+
+TazZooBossLevelTiles:
+	INCBIN "gfx/taz_zoo/boss_level_tiles.2bpp.lz"
+TazZooBossBackgroundTilemap:
+	INCBIN "gfx/taz_zoo/boss_background.tilemap.lz"
+TazZooBossStampedeTiles:
+	INCBIN "gfx/taz_zoo/boss_stampede_tiles.2bpp.lz"
+TazZooBossStampedeInitialTilemap: ; unclear why this exists. it just gets overwritten right away.
+	INCBIN "gfx/taz_zoo/boss_stampede_initial.tilemap.lz"
+TazZooBossSpriteTiles:
+	INCBIN "gfx/taz_zoo/boss_sprites.interleave.2bpp.lz"
+
+INCBIN "baserom.gbc", $1f4f0, $1f8f1 - $1f4f0
 
 CrazyTownBossSteamrollerTilemap:
 	INCBIN "gfx/crazy_town/boss_steamroller.tilemap.lz"
@@ -14853,7 +14983,10 @@ CrazyTownLevelSpriteTiles:
 CrazyTownBossSteamrollerTiles:
 	INCBIN "gfx/crazy_town/boss_steamroller_tiles.2bpp.lz"
 
-INCBIN "baserom.gbc", $1fde5, $20000 - $1fde5
+INCBIN "baserom.gbc", $1fde5, $1ffba - $1fde5
+
+TazZooBossMetatiles:
+	INCBIN "data/levels/taz_zoo_boss_metatiles.bin.lz"
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
@@ -14862,7 +14995,10 @@ INCBIN "baserom.gbc", $20000, $23d2e - $20000
 TreasureIslandLevelSpriteTiles:
 	INCBIN "gfx/treasure_island/level_sprites.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $23efd, $24000 - $23efd
+TazZooBossGroundDustTiles:
+	INCBIN "gfx/taz_zoo/boss_ground_dust.2bpp.lz"
+TazZooBossStampedeTilemap:
+	INCBIN "gfx/taz_zoo/boss_stampede.tilemap.lz"
 
 SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
@@ -14913,7 +15049,10 @@ CrazyTownBossSpriteTiles:
 TreasureIslandCollisionAttributes:
 	INCBIN "data/levels/treasure_island_collision_attrs.bin.lz"
 
-INCBIN "baserom.gbc", $32761, $34000 - $32761
+TazZooBossMap:
+	INCBIN "data/levels/taz_zoo_boss.vdmap.lz"
+
+INCBIN "baserom.gbc", $32823, $34000 - $32823
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
@@ -15023,7 +15162,18 @@ INCBIN "baserom.gbc", $46eac, $48000 - $46eac
 
 SECTION "ROM Bank $12", ROMX[$4000], BANK[$12]
 
-INCBIN "baserom.gbc", $48000, $4a18e - $48000
+TazZoo1MapGBC:
+	INCBIN "data/levels/taz_zoo_1_gbc.vdmap.lz"
+TazZoo2MapGBC:
+	INCBIN "data/levels/taz_zoo_2_gbc.vdmap.lz"
+TazZooCollisionAttributesGBC:
+	INCBIN "data/levels/taz_zoo_collision_attrs_gbc.bin.lz"
+TazZooMetatilesGBC:
+	INCBIN "data/levels/taz_zoo_metatiles_gbc.bin.lz"
+TazZooLevelTilesGBC:
+	INCBIN "gfx/taz_zoo/level_tiles_gbc.2bpp.lz"
+TazZooTileAttributesGBC:
+	INCBIN "gfx/taz_zoo/tile_attributes_gbc.bin.lz"
 
 TreasureIslandBossWaterLogTilesGBC:
 	INCBIN "gfx/treasure_island/boss_water_log_gbc.2bpp"
@@ -15061,7 +15211,30 @@ INCBIN "baserom.gbc", $50000, $54000 - $50000
 
 SECTION "ROM Bank $15", ROMX[$4000], BANK[$15]
 
-INCBIN "baserom.gbc", $54000, $54d06 - $54000
+TazZooBossMapGBC:
+	INCBIN "data/levels/taz_zoo_boss_gbc.vdmap.lz"
+TazZooBossCollisionAttributesGBC:
+	INCBIN "data/levels/taz_zoo_boss_collision_attrs_gbc.bin.lz"
+TazZooBossMetatilesGBC:
+	INCBIN "data/levels/taz_zoo_boss_metatiles_gbc.bin.lz"
+TazZooBossGroundTilesGBC:
+	INCBIN "gfx/taz_zoo/boss_ground_gbc.2bpp"
+TazZooBossGroundTileAttributesGBC:
+	INCBIN "gfx/taz_zoo/boss_ground_tile_attributes_gbc.bin"
+TazZooBossLevelTilesGBC:
+	INCBIN "gfx/taz_zoo/boss_level_tiles_gbc.2bpp.lz"
+TazZooBossBackgroundTilemapGBC:
+	INCBIN "gfx/taz_zoo/boss_background_gbc.tilemap.lz"
+TazZooBossTileAttributesGBC:
+	INCBIN "gfx/taz_zoo/boss_tile_attributes_gbc.bin.lz"
+TazZooBossStampedeTilesGBC:
+	INCBIN "gfx/taz_zoo/boss_stampede_tiles_gbc.2bpp.lz"
+TazZooBossStampedeTilemapGBC:
+	INCBIN "gfx/taz_zoo/boss_stampede_gbc.tilemap.lz"
+TazZooBossGroundDustTilesGBC:
+	INCBIN "gfx/taz_zoo/boss_ground_dust_gbc.2bpp.lz"
+TazZooBossStampedeInitialTilemapGBC:
+	INCBIN "gfx/taz_zoo/boss_stampede_initial_gbc.tilemap.lz"
 
 CrazyTownBossBackgroundTilemap:
 	INCBIN "gfx/crazy_town/boss_background.tilemap.lz"

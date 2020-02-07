@@ -64,3 +64,18 @@ gfx/space_station/marvin_martian_head.interleave.2bpp: %.2bpp: %.png
 gfx/fudd_forest/elmer_fudd_head.interleave.2bpp: %.2bpp: %.png
 	rgbgfx -o $@ $<
 	tools/gfx --interleave --remove-whitespace --png $< -o $@ $@
+
+gfx/taz_zoo/level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<
+
+gfx/taz_zoo/level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<
+
+gfx/taz_zoo/boss_level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 14 -o $@ $<
+
+gfx/taz_zoo/boss_stampede_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 1 -o $@ $<
+
+gfx/taz_zoo/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 5 -o $@ $<

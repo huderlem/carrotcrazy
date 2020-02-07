@@ -37,7 +37,12 @@ wInCreditsScene:: ; $dde2
 wEnableLevelSkip:: ; $dde8
 	ds 1
 
-	ds $fe
+; This holds the tile attribute (just the palette, really) for all the tiles in the
+; HUD area during normal level gameplay.
+wHUDTileAttribute:: ; $dde9
+	ds 1
+
+	ds $fd
 
 wPasswordEntryCursor:: ; $dee7
 	ds 1
