@@ -10374,12 +10374,12 @@ InitNextScreen:
 	ld b, $00
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
-	ld hl, Data_1af94
+	ld hl, ScreenDataPointers
 	jr nz, .load
-	ld hl, Data_1b030
+	ld hl, ScreenDataPointers_GBC
 .load
 	add hl, bc
-	ld a, Bank(Data_1af94)
+	ld a, Bank(ScreenDataPointers)
 	ld [MBC5RomBank], a
 	ld a, [hli]
 	ld h, [hl]
@@ -14166,7 +14166,7 @@ BonusScreenGBCPalettes:
 	RGB(14, 14, 14)
 	RGB(0, 0, 0)
 
-Data_1af94:
+ScreenDataPointers:
 	dw $ffff
 	dw ScreenData_InfogramesCopyright     ; SCREEN_COPYRIGHT_INFOGRAMES
 	dw ScreenData_WarnerBrosCopyright     ; SCREEN_COPYRIGHT_WARNER_BROS
@@ -14246,7 +14246,7 @@ Data_1af94:
 	dw ScreenData_GameOver                ; SCREEN_GAME_OVER
 	dw $0000
 
-Data_1b030:
+ScreenDataPointers_GBC:
 	dw $ffff
 	dw ScreenDataGBC_InfogramesCopyright  ; SCREEN_COPYRIGHT_INFOGRAMES
 	dw ScreenData_WarnerBrosCopyright     ; SCREEN_COPYRIGHT_WARNER_BROS
