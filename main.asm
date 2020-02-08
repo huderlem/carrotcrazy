@@ -2863,7 +2863,7 @@ RunTazZooBossScreen:
 	call UpdateFrameCounter
 	jp .asm_13df
 
-Func_1442:
+RunSpaceStationBossScreen:
 	call Func_fb4
 	call Func_11fc
 	call Func_2b6d
@@ -12029,7 +12029,10 @@ Func_f610:
 	ld [$dde6], a
 	ret
 
-INCBIN "baserom.gbc", $f656, $fd96 - $f656
+INCBIN "baserom.gbc", $f656, $fb10 - $f656
+
+SpaceStationMetatiles:
+	INCBIN "data/levels/space_station_metatiles.bin.lz"
 
 TreasureIslandBossSpriteTiles:
 	INCBIN "gfx/treasure_island/boss_sprites.interleave.2bpp.lz"
@@ -14202,15 +14205,15 @@ Data_1af94:
 	dw ScreenData_Password2               ; SCREEN_PASSWORD_2
 	dw ScreenData_StudioSpaceStation      ; SCREEN_STUDIO_SPACE_STATION
 	dw ScreenData_SpaceStation1Intro      ; SCREEN_SPACE_STATION_1_INTRO
-	dw $7588 ; SCREEN_SPACE_STATION_1
+	dw ScreenData_SpaceStation1           ; SCREEN_SPACE_STATION_1
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
 	dw ScreenData_SpaceStation1Bonus      ; SCREEN_SPACE_STATION_1_BONUS
 	dw ScreenData_SpaceStation2Intro      ; SCREEN_SPACE_STATION_2_INTRO
-	dw $75bf ; SCREEN_SPACE_STATION_2
+	dw ScreenData_SpaceStation2           ; SCREEN_SPACE_STATION_2
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_2_SUMMARY
 	dw ScreenData_SpaceStation2Bonus      ; SCREEN_SPACE_STATION_2_BONUS
 	dw ScreenData_SpaceStationBossIntro   ; SCREEN_SPACE_STATION_BOSS_INTRO
-	dw $75f6 ; SCREEN_SPACE_STATION_BOSS
+	dw ScreenData_SpaceStationBoss        ; SCREEN_SPACE_STATION_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw ScreenData_StudioFuddForest        ; SCREEN_STUDIO_FUDD_FOREST
@@ -14282,15 +14285,15 @@ Data_1b030:
 	dw ScreenData_Password2               ; SCREEN_PASSWORD_2
 	dw ScreenData_StudioSpaceStation      ; SCREEN_STUDIO_SPACE_STATION
 	dw ScreenData_SpaceStation1Intro      ; SCREEN_SPACE_STATION_1_INTRO
-	dw $7a35 ; SCREEN_SPACE_STATION_1
+	dw ScreenDataGBC_SpaceStation1        ; SCREEN_SPACE_STATION_1
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_1_SUMMARY
 	dw ScreenData_SpaceStation1Bonus      ; SCREEN_SPACE_STATION_1_BONUS
 	dw ScreenData_SpaceStation2Intro      ; SCREEN_SPACE_STATION_2_INTRO
-	dw $7a71 ; SCREEN_SPACE_STATION_2
+	dw ScreenDataGBC_SpaceStation2        ; SCREEN_SPACE_STATION_2
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_2_SUMMARY
 	dw ScreenData_SpaceStation2Bonus      ; SCREEN_SPACE_STATION_2_BONUS
 	dw ScreenData_SpaceStationBossIntro   ; SCREEN_SPACE_STATION_BOSS_INTRO
-	dw $7aad ; SCREEN_SPACE_STATION_BOSS
+	dw ScreenDataGBC_SpaceStationBoss     ; SCREEN_SPACE_STATION_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw ScreenData_StudioFuddForest        ; SCREEN_STUDIO_FUDD_FOREST
@@ -14653,7 +14656,45 @@ ScreenData_TazZooBoss:
 	db $ff
 	dw RunTazZooBossScreen
 
-INCBIN "baserom.gbc", $1b56f, $1b710 - $1b56f
+INCBIN "baserom.gbc", $1b56f, $1b588 - $1b56f
+
+ScreenData_SpaceStation1:
+	compressed_data SpaceStationLevelTiles, $8BF0
+	compressed_data SpaceStationMetatiles, wMetatiles
+	compressed_data SpaceStationCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data SpaceStation1Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data SpaceStationLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b5a9, $1b5bf - $1b5a9
+
+ScreenData_SpaceStation2:
+	compressed_data SpaceStationLevelTiles, $8BF0
+	compressed_data SpaceStationMetatiles, wMetatiles
+	compressed_data SpaceStationCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data SpaceStation2Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data SpaceStationLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b5e0, $1b5f6 - $1b5e0
+
+ScreenData_SpaceStationBoss:
+	compressed_data SpaceStationBossLevelTiles, $8DE0
+	compressed_data SpaceStationBossMetatiles, wMetatiles
+	compressed_data SpaceStationBossCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data SpaceStationBossMap, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data SpaceStationBossShipTilemap, $9C00
+	compressed_data SpaceStationBossShipTiles, $8C60
+	compressed_data SpaceStationBossSpriteTiles, $8560
+	db $ff
+	dw RunSpaceStationBossScreen
+
+INCBIN "baserom.gbc", $1b621, $1b710 - $1b621	
 
 ScreenData_Password1:
 	db $ff
@@ -14881,7 +14922,49 @@ ScreenDataGBC_TreasureIslandBoss:
 	db $ff
 	dw RunTreasureIslandBossScreen
 
-INCBIN "baserom.gbc", $1ba1c, $1bbcd - $1ba1c
+INCBIN "baserom.gbc", $1ba1c, $1ba35 - $1ba1c
+
+ScreenDataGBC_SpaceStation1:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data SpaceStationLevelTilesGBC, $8A00
+	compressed_data SpaceStationMetatilesGBC, wMetatiles
+	compressed_data SpaceStationCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data SpaceStation1MapGBC, wLevelMap
+	compressed_data SpaceStationLevelSpriteTiles, $8560
+	compressed_data SpaceStationTileAttributesGBC, $DA20
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1ba5b, $1ba71 - $1ba5b
+
+ScreenDataGBC_SpaceStation2:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data SpaceStationLevelTilesGBC, $8A00
+	compressed_data SpaceStationMetatilesGBC, wMetatiles
+	compressed_data SpaceStationCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data SpaceStation2MapGBC, wLevelMap
+	compressed_data SpaceStationLevelSpriteTiles, $8560
+	compressed_data SpaceStationTileAttributesGBC, $DA20
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1ba97, $1baad - $1ba97
+
+ScreenDataGBC_SpaceStationBoss:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data SpaceStationBossLevelTilesGBC, $8DE0
+	compressed_data SpaceStationBossMetatilesGBC, wMetatiles
+	compressed_data SpaceStationBossCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data SpaceStationBossMapGBC, wLevelMap
+	compressed_data SpaceStationBossShipTilemapGBC, $9C00
+	compressed_data SpaceStationBossShipTilesGBC, $8C60
+	compressed_data SpaceStationBossSpriteTiles, $8560
+	compressed_data SpaceStationBossTileAttributesGBC, $DA5E
+	uncompressed_data SpaceStationBossShipTileAttributesGBC, $D9E8, $18
+	db $ff
+	dw RunSpaceStationBossScreen
+
+INCBIN "baserom.gbc", $1bae4, $1bbcd - $1bae4
 
 ScreenDataGBC_TazZooBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14983,14 +15066,24 @@ CrazyTownLevelSpriteTiles:
 CrazyTownBossSteamrollerTiles:
 	INCBIN "gfx/crazy_town/boss_steamroller_tiles.2bpp.lz"
 
-INCBIN "baserom.gbc", $1fde5, $1ffba - $1fde5
+SpaceStationBossSpriteTiles:
+	INCBIN "gfx/space_station/boss_sprites.interleave.2bpp.lz"
 
 TazZooBossMetatiles:
 	INCBIN "data/levels/taz_zoo_boss_metatiles.bin.lz"
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
-INCBIN "baserom.gbc", $20000, $23d2e - $20000
+INCBIN "baserom.gbc", $20000, $20d60 - $20000
+
+SpaceStationLevelTiles:
+	INCBIN "gfx/space_station/level_tiles.2bpp.lz"
+SpaceStation1Map:
+	INCBIN "data/levels/space_station_1.vdmap.lz"
+SpaceStation2Map:
+	INCBIN "data/levels/space_station_2.vdmap.lz"
+
+INCBIN "baserom.gbc", $229ce, $23d2e - $229ce
 
 TreasureIslandLevelSpriteTiles:
 	INCBIN "gfx/treasure_island/level_sprites.interleave.2bpp.lz"
@@ -15002,7 +15095,10 @@ TazZooBossStampedeTilemap:
 
 SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
-INCBIN "baserom.gbc", $24000, $27c51 - $24000
+INCBIN "baserom.gbc", $24000, $27c00 - $24000
+
+SpaceStationCollisionAttributes:
+	INCBIN "data/levels/space_station_collision_attrs.bin.lz"
 
 WarnerBrosBackgroundEdgeTiles:
 	INCBIN "gfx/warner_bros_edge.2bpp.lz"
@@ -15021,7 +15117,22 @@ CarrotCursorTiles:
 
 SECTION "ROM Bank $0B", ROMX[$4000], BANK[$B]
 
-INCBIN "baserom.gbc", $2C000, $2f1c8 - $2C000
+INCBIN "baserom.gbc", $2C000, $2dae0 - $2C000
+
+SpaceStationBossShipTiles:
+	INCBIN "gfx/space_station/boss_ship_tiles.2bpp.lz"
+SpaceStationBossShipTilemap:
+	INCBIN "gfx/space_station/boss_ship.tilemap.lz"
+SpaceStationBossLevelTiles:
+	INCBIN "gfx/space_station/boss_level_tiles.2bpp.lz"
+SpaceStationBossMetatiles:
+	INCBIN "data/levels/space_station_boss_metatiles.bin.lz"
+SpaceStationBossCollisionAttributes:
+	INCBIN "data/levels/space_station_boss_collision_attrs.bin.lz"
+SpaceStationBossMap:
+	INCBIN "data/levels/space_station_boss.vdmap.lz"
+
+INCBIN "baserom.gbc", $2ec05, $2f1c8 - $2ec05
 
 TreasureIsland1Map:
 	INCBIN "data/levels/treasure_island_1.vdmap.lz"
@@ -15071,7 +15182,8 @@ INCBIN "baserom.gbc", $38000, $3b9ea - $38000
 TreasureIslandBossWaterLogTiles:
 	INCBIN "gfx/treasure_island/boss_water_log.2bpp.lz"
 
-INCBIN "baserom.gbc", $3bb52, $3bd04 - $3bb52
+SpaceStationLevelSpriteTiles:
+	INCBIN "gfx/space_station/level_sprites.interleave.2bpp.lz"
 
 CrazyTownBossCollisionAttributes:
 	INCBIN "data/levels/crazy_town_boss_collision_attrs.bin.lz"
@@ -15203,7 +15315,35 @@ INCBIN "baserom.gbc", $4afe6, $4C000 - $4afe6
 
 SECTION "ROM Bank $13", ROMX[$4000], BANK[$13]
 
-INCBIN "baserom.gbc", $4C000, $50000 - $4C000
+SpaceStation1MapGBC:
+	INCBIN "data/levels/space_station_1_gbc.vdmap.lz"
+SpaceStation2MapGBC:
+	INCBIN "data/levels/space_station_2_gbc.vdmap.lz"
+SpaceStationCollisionAttributesGBC:
+	INCBIN "data/levels/space_station_collision_attrs_gbc.bin.lz"
+SpaceStationMetatilesGBC:
+	INCBIN "data/levels/space_station_metatiles_gbc.bin.lz"
+SpaceStationLevelTilesGBC:
+	INCBIN "gfx/space_station/level_tiles_gbc.2bpp.lz"
+SpaceStationTileAttributesGBC:
+	INCBIN "gfx/space_station/tile_attributes_gbc.bin.lz"
+
+SpaceStationBossLevelTilesGBC:
+	INCBIN "gfx/space_station/boss_level_tiles_gbc.2bpp.lz"
+SpaceStationBossCollisionAttributesGBC:
+	INCBIN "data/levels/space_station_boss_collision_attrs_gbc.bin.lz"
+SpaceStationBossMetatilesGBC:
+	INCBIN "data/levels/space_station_boss_metatiles_gbc.bin.lz"
+SpaceStationBossMapGBC:
+	INCBIN "data/levels/space_station_boss_gbc.vdmap.lz"
+SpaceStationBossTileAttributesGBC:
+	INCBIN "gfx/space_station/boss_tile_attributes_gbc.bin.lz"
+SpaceStationBossShipTilesGBC:
+	INCBIN "gfx/space_station/boss_ship_tiles_gbc.2bpp.lz"
+SpaceStationBossShipTilemapGBC:
+	INCBIN "gfx/space_station/boss_ship_gbc.tilemap.lz"
+SpaceStationBossShipTileAttributesGBC:
+	INCBIN "gfx/space_station/boss_ship_tile_attributes_gbc.bin"
 
 SECTION "ROM Bank $14", ROMX[$4000], BANK[$14]
 

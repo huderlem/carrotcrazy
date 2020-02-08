@@ -79,3 +79,12 @@ gfx/taz_zoo/boss_stampede_tiles.2bpp: %.2bpp: %.png
 
 gfx/taz_zoo/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
 	rgbgfx -x 5 -o $@ $<
+
+gfx/space_station/level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 15 -o $@ $<
+
+gfx/space_station/boss_level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 14 -o $@ $<
+
+gfx/space_station/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 14 -o $@ $<
