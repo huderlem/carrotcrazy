@@ -241,7 +241,7 @@ Start_:
 	call SetInitialScreen
 	jp InitNextScreen
 
-Func_16a:
+RunPrologueSceneScreen:
 	ld bc, $da00
 	ld de, $da80
 .asm_170
@@ -782,7 +782,7 @@ RunWarnerBrosCopyrightScreen:
 	jr .asm_54e
 
 
-Func_587:
+RunGameOverScreen:
 	call LoadWarnerBrosBannerQuadrants
 	call Func_3e51
 	call Func_3bb4
@@ -2181,7 +2181,7 @@ asm_e77:
 	ld a, [wInCreditsScene]
 	and a
 	jr z, .initLCDC
-	ld hl, Data_1b77d
+	ld hl, ScreenData_Credits
 	call LoadData
 .initLCDC
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -14240,10 +14240,10 @@ Data_1af94:
 	dw ScreenData_FuddForestBossIntro     ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw ScreenData_FuddForestBoss          ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
-	dw $7764 ; SCREEN_PROLOGUE_SCENE
-	dw $777d ; SCREEN_CREDITS
+	dw ScreenData_PrologueScene           ; SCREEN_PROLOGUE_SCENE
+	dw ScreenData_Credits                 ; SCREEN_CREDITS
 	dw $0000
-	dw $7113 ; SCREEN_GAME_OVER
+	dw ScreenData_GameOver                ; SCREEN_GAME_OVER
 	dw $0000
 
 Data_1b030:
@@ -14320,10 +14320,10 @@ Data_1b030:
 	dw ScreenData_FuddForestBossIntro     ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw ScreenDataGBC_FuddForestBoss       ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
-	dw $7cc2 ; SCREEN_PROLOGUE_SCENE
-	dw $777d ; SCREEN_CREDITS
+	dw ScreenDataGBC_PrologueScene        ; SCREEN_PROLOGUE_SCENE
+	dw ScreenData_Credits                 ; SCREEN_CREDITS
 	dw $0000
-	dw $7113 ; SCREEN_GAME_OVER
+	dw ScreenData_GameOver                ; SCREEN_GAME_OVER
 	dw $0000
 
 ScreenData_InfogramesCopyright:
@@ -14345,7 +14345,16 @@ ScreenData_WarnerBrosCopyright:
 	db $ff
 	dw RunWarnerBrosCopyrightScreen
 
-INCBIN "baserom.gbc", $1b10f, $1b129 - $1b10f
+INCBIN "baserom.gbc", $1b10f, $1b113 - $1b10f
+
+ScreenData_GameOver:
+	compressed_data WarnerBrosBackgroundTiles, $8830
+	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
+	compressed_data WarnerBrosGameOverTiles, $C000
+	db $ff
+	dw RunGameOverScreen
+
+INCBIN "baserom.gbc", $1b125, $1b129 - $1b125
 
 ScreenData_LanguageSelect:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -14769,9 +14778,19 @@ ScreenData_LevelSummary:
 	db $ff
 	dw Func_387
 
-INCBIN "baserom.gbc", $1b73e, $1b77d - $1b73e
+INCBIN "baserom.gbc", $1b73e, $1b764 - $1b73e
 
-Data_1b77d:
+ScreenData_PrologueScene:
+	compressed_data FarmSceneTiles, $8CB0
+	compressed_data TitlescreenBackgroundTilemap, $9800
+	compressed_data FontTiles, $8800
+	compressed_data GameText, $C500
+	db $ff
+	dw RunPrologueSceneScreen
+
+INCBIN "baserom.gbc", $1b77b, $1b77d - $1b77b
+
+ScreenData_Credits:
 	compressed_data FontTiles, $8340
 	db $ff
 	dw RunStudioCreditsScreen
@@ -15127,7 +15146,16 @@ ScreenDataGBC_InfogramesCopyright:
 	db $ff
 	dw RunInfogramesCopyrightScreen
 
-INCBIN "baserom.gbc", $1bcc2, $1c000 - $1bcc2
+ScreenDataGBC_PrologueScene:
+	compressed_data FarmSceneTilesGBC, $8CB0
+	compressed_data TitlescreenBackgroundTilemapGBC, $9800
+	compressed_data FontTilesGBC, $8800
+	compressed_data GameText, $C500
+	compressed_data TitlescreenTileAttributesGBC, $DA4B
+	db $ff
+	dw RunPrologueSceneScreen
+
+INCBIN "baserom.gbc", $1bcde, $1bce0 - $1bcde
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 
@@ -15201,8 +15229,8 @@ SpaceStationCollisionAttributes:
 
 WarnerBrosBackgroundEdgeTiles:
 	INCBIN "gfx/warner_bros_edge.2bpp.lz"
-
-INCBIN "baserom.gbc", $27ced, $28000 - $27ced
+WarnerBrosGameOverTiles:
+	INCBIN "gfx/game_over.2bpp.lz"
 
 SECTION "ROM Bank $0A", ROMX[$4000], BANK[$A]
 
