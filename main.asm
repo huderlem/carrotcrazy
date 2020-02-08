@@ -2956,7 +2956,7 @@ RunSpaceStationBossScreen:
 	call UpdateFrameCounter
 	jr .asm_14bb
 
-Func_1518:
+RunFuddForestBossScreen:
 	call Func_fb4
 	call Func_11fc
 	call Func_2b6d
@@ -11809,7 +11809,10 @@ Func_8a7f:
 	ld [$db5c], a
 	ret
 
-INCBIN "baserom.gbc", $8b23, $be1d - $8b23
+INCBIN "baserom.gbc", $8b23, $bc00 - $8b23
+
+FuddForestLevelSpriteTiles:
+	INCBIN "gfx/fudd_forest/level_sprites.interleave.2bpp.lz"
 
 TazZooCollisionAttributes:
 	INCBIN "data/levels/taz_zoo_collision_attrs.bin.lz"
@@ -11850,7 +11853,12 @@ InfogramesCopyrightTiles:
 StudioCameraArrowTiles:
 	INCBIN "gfx/studio/camera_arrow.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $dde7, $f545 - $dde7
+INCBIN "baserom.gbc", $dde7, $e027 - $dde7
+
+FuddForestLevelTiles:
+	INCBIN "gfx/fudd_forest/level_tiles.2bpp.lz"
+
+INCBIN "baserom.gbc", $eb60, $f545 - $eb60
 
 WarnerBrosCopyrightAmpersandTiles:
 	INCBIN "gfx/warner_bros_copyright/ampersand.2bpp"
@@ -12070,7 +12078,10 @@ CrazyTown1Map:
 CrazyTown2Map:
 	INCBIN "data/levels/crazy_town_2.vdmap.lz"
 
-INCBIN "baserom.gbc", $1359c, $13eaf - $1359c
+INCBIN "baserom.gbc", $1359c, $13daf - $1359c
+
+FuddForestBossBackgroundTilemap:
+	INCBIN "gfx/fudd_forest/boss_background.tilemap.lz"
 
 TazZooLevelSpriteTiles:
 	INCBIN "gfx/taz_zoo/level_sprites.interleave.2bpp.lz"
@@ -13578,7 +13589,8 @@ MarvinMartianHeadTiles:
 ElmerFuddHeadTiles:
 	INCBIN "gfx/fudd_forest/elmer_fudd_head.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $19e2b, $1a156 - $19e2b
+FuddForestBossTrainTiles:
+	INCBIN "gfx/fudd_forest/boss_train_tiles.2bpp.lz"
 
 LevelSummaryIconTiles:
 	INCBIN "gfx/level_summary/icons.interleave.2bpp.lz"
@@ -14217,16 +14229,16 @@ Data_1af94:
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw ScreenData_StudioFuddForest        ; SCREEN_STUDIO_FUDD_FOREST
-	dw ScreenData_FuddForeset1Intro       ; SCREEN_FUDD_FOREST_1_INTRO
-	dw $7638 ; SCREEN_FUDD_FOREST_1
+	dw ScreenData_FuddForest1Intro        ; SCREEN_FUDD_FOREST_1_INTRO
+	dw ScreenData_FuddForest1             ; SCREEN_FUDD_FOREST_1
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
-	dw ScreenData_FuddForeset1Bonus       ; SCREEN_FUDD_FOREST_1_BONUS
-	dw ScreenData_FuddForeset2Intro       ; SCREEN_FUDD_FOREST_2_INTRO
-	dw $766f ; SCREEN_FUDD_FOREST_2
+	dw ScreenData_FuddForest1Bonus        ; SCREEN_FUDD_FOREST_1_BONUS
+	dw ScreenData_FuddForest2Intro        ; SCREEN_FUDD_FOREST_2_INTRO
+	dw ScreenData_FuddForest2             ; SCREEN_FUDD_FOREST_2
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_2_SUMMARY
-	dw ScreenData_FuddForeset2Bonus       ; SCREEN_FUDD_FOREST_2_BONUS
-	dw ScreenData_FuddForesetBossIntro    ; SCREEN_FUDD_FOREST_BOSS_INTRO
-	dw $76a6 ; SCREEN_FUDD_FOREST_BOSS
+	dw ScreenData_FuddForest2Bonus        ; SCREEN_FUDD_FOREST_2_BONUS
+	dw ScreenData_FuddForestBossIntro     ; SCREEN_FUDD_FOREST_BOSS_INTRO
+	dw ScreenData_FuddForestBoss          ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
 	dw $7764 ; SCREEN_PROLOGUE_SCENE
 	dw $777d ; SCREEN_CREDITS
@@ -14297,16 +14309,16 @@ Data_1b030:
 	dw ScreenData_LevelSummary            ; SCREEN_SPACE_STATION_BOSS_SUMMARY
 	dw ScreenData_SpaceStationBossBonus   ; SCREEN_SPACE_STATION_BOSS_BONUS
 	dw ScreenData_StudioFuddForest        ; SCREEN_STUDIO_FUDD_FOREST
-	dw ScreenData_FuddForeset1Intro       ; SCREEN_FUDD_FOREST_1_INTRO
-	dw $7afb ; SCREEN_FUDD_FOREST_1
+	dw ScreenData_FuddForest1Intro        ; SCREEN_FUDD_FOREST_1_INTRO
+	dw ScreenDataGBC_FuddForest1          ; SCREEN_FUDD_FOREST_1
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_1_SUMMARY
-	dw ScreenData_FuddForeset1Bonus       ; SCREEN_FUDD_FOREST_1_BONUS
-	dw ScreenData_FuddForeset2Intro       ; SCREEN_FUDD_FOREST_2_INTRO
-	dw $7b37 ; SCREEN_FUDD_FOREST_2
+	dw ScreenData_FuddForest1Bonus        ; SCREEN_FUDD_FOREST_1_BONUS
+	dw ScreenData_FuddForest2Intro        ; SCREEN_FUDD_FOREST_2_INTRO
+	dw ScreenDataGBC_FuddForest2          ; SCREEN_FUDD_FOREST_2
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_2_SUMMARY
-	dw ScreenData_FuddForeset2Bonus       ; SCREEN_FUDD_FOREST_2_BONUS
-	dw ScreenData_FuddForesetBossIntro    ; SCREEN_FUDD_FOREST_BOSS_INTRO
-	dw $7b73 ; SCREEN_FUDD_FOREST_BOSS
+	dw ScreenData_FuddForest2Bonus        ; SCREEN_FUDD_FOREST_2_BONUS
+	dw ScreenData_FuddForestBossIntro     ; SCREEN_FUDD_FOREST_BOSS_INTRO
+	dw ScreenDataGBC_FuddForestBoss       ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
 	dw $7cc2 ; SCREEN_PROLOGUE_SCENE
 	dw $777d ; SCREEN_CREDITS
@@ -14466,21 +14478,21 @@ ScreenData_SpaceStationBossIntro:
 
 INCBIN "baserom.gbc", $1b28c, $1b295 - $1b28c
 
-ScreenData_FuddForeset1Intro:
+ScreenData_FuddForest1Intro:
 	compressed_data ElmerFuddHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
 
 INCBIN "baserom.gbc", $1b29d, $1b2a6 - $1b29d
 
-ScreenData_FuddForeset2Intro:
+ScreenData_FuddForest2Intro:
 	compressed_data ElmerFuddHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
 
 INCBIN "baserom.gbc", $1b2ae, $1b2b7 - $1b2ae
 
-ScreenData_FuddForesetBossIntro:
+ScreenData_FuddForestBossIntro:
 	compressed_data ElmerFuddHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
@@ -14694,7 +14706,47 @@ ScreenData_SpaceStationBoss:
 	db $ff
 	dw RunSpaceStationBossScreen
 
-INCBIN "baserom.gbc", $1b621, $1b710 - $1b621	
+INCBIN "baserom.gbc", $1b621, $1b638 - $1b621
+
+ScreenData_FuddForest1:
+	compressed_data FuddForestLevelTiles, $8B20
+	compressed_data FuddForestMetatiles, wMetatiles
+	compressed_data FuddForestCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data FuddForest1Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data FuddForestLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b659, $1b66f - $1b659
+
+ScreenData_FuddForest2:
+	compressed_data FuddForestLevelTiles, $8B20
+	compressed_data FuddForestMetatiles, wMetatiles
+	compressed_data FuddForestCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data FuddForest2Map, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data FuddForestLevelSpriteTiles, $8560
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1b690, $1b6a6 - $1b690
+
+ScreenData_FuddForestBoss:
+	compressed_data FuddForestBossGroundTrackTiles, $9750
+	compressed_data FuddForestBossMetatiles, wMetatiles
+	compressed_data FuddForestBossCollisionAttributes, wMetatileCollisionAttributes
+	compressed_data FuddForestBossMap, wLevelMap
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data FuddForestBossBackgroundTilemap, $9A00
+	compressed_data FuddForestBossLevelTiles, $9040
+	compressed_data FuddForestBossTrainTilemap, $9C00
+	compressed_data FuddForestBossTrainTiles, $8B40
+	compressed_data FuddForestBossSpriteTiles, $8560
+	db $ff
+	dw RunFuddForestBossScreen
+
+INCBIN "baserom.gbc", $1b6db, $1b710 - $1b6db
 
 ScreenData_Password1:
 	db $ff
@@ -14798,13 +14850,13 @@ ScreenData_SpaceStationBossBonus:
 
 INCBIN "baserom.gbc", $1b7e4, $1b7e8 - $1b7e4
 
-ScreenData_FuddForeset1Bonus:
+ScreenData_FuddForest1Bonus:
 	db $ff
 	dw RunLevelBonusScreen
 
 INCBIN "baserom.gbc", $1b7eb, $1b7ef - $1b7eb
 
-ScreenData_FuddForeset2Bonus:
+ScreenData_FuddForest2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
 
@@ -14964,7 +15016,51 @@ ScreenDataGBC_SpaceStationBoss:
 	db $ff
 	dw RunSpaceStationBossScreen
 
-INCBIN "baserom.gbc", $1bae4, $1bbcd - $1bae4
+INCBIN "baserom.gbc", $1bae4, $1bafb - $1bae4
+
+ScreenDataGBC_FuddForest1:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data FuddForestLevelTilesGBC, $8A40
+	compressed_data FuddForestMetatilesGBC, wMetatiles
+	compressed_data FuddForestCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data FuddForest1MapGBC, wLevelMap
+	compressed_data FuddForestLevelSpriteTiles, $8560
+	compressed_data FuddForestTileAttributesGBC, $DA24
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1bb21, $1bb37 - $1bb21
+
+ScreenDataGBC_FuddForest2:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data FuddForestLevelTilesGBC, $8A40
+	compressed_data FuddForestMetatilesGBC, wMetatiles
+	compressed_data FuddForestCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data FuddForest2MapGBC, wLevelMap
+	compressed_data FuddForestLevelSpriteTiles, $8560
+	compressed_data FuddForestTileAttributesGBC, $DA24
+	db $ff
+	dw RunLevelScreen
+
+INCBIN "baserom.gbc", $1bb5d, $1bb73 - $1bb5d
+
+ScreenDataGBC_FuddForestBoss:
+	compressed_data SharedLevelInterfaceTiles, $8340
+	compressed_data FuddForestBossGroundTrackTilesGBC, $9740
+	compressed_data FuddForestBossMetatilesGBC, wMetatiles
+	compressed_data FuddForestBossCollisionAttributesGBC, wMetatileCollisionAttributes
+	compressed_data FuddForestBossMapGBC, wLevelMap
+	compressed_data FuddForestBossBackgroundTilemapGBC, $9A00
+	compressed_data FuddForestBossLevelTilesGBC, $9020
+	compressed_data FuddForestBossTrainTilemapGBC, $9C00
+	compressed_data FuddForestBossTrainTilesGBC, $8B10
+	compressed_data FuddForestBossSpriteTiles, $8560
+	uncompressed_data FuddForestBossGroundTrackTileAttributesGBC, $DAF4, $C
+	compressed_data FuddForestBossTileAttributesGBC, $D98E
+	db $ff
+	dw RunFuddForestBossScreen
+
+INCBIN "baserom.gbc", $1bbb4, $1bbcd - $1bbb4
 
 ScreenDataGBC_TazZooBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15083,7 +15179,10 @@ SpaceStation1Map:
 SpaceStation2Map:
 	INCBIN "data/levels/space_station_2.vdmap.lz"
 
-INCBIN "baserom.gbc", $229ce, $23d2e - $229ce
+INCBIN "baserom.gbc", $229ce, $2337e - $229ce
+
+FuddForest1Map:
+	INCBIN "data/levels/fudd_forest_1.vdmap.lz"
 
 TreasureIslandLevelSpriteTiles:
 	INCBIN "gfx/treasure_island/level_sprites.interleave.2bpp.lz"
@@ -15107,7 +15206,10 @@ INCBIN "baserom.gbc", $27ced, $28000 - $27ced
 
 SECTION "ROM Bank $0A", ROMX[$4000], BANK[$A]
 
-INCBIN "baserom.gbc", $28000, $2bf2a - $28000
+INCBIN "baserom.gbc", $28000, $2bee0 - $28000
+
+FuddForestCollisionAttributes:
+	INCBIN "data/levels/fudd_forest_collision_attrs.bin.lz"
 
 WarnerBrosCopyrightUnderLicenseByTiles:
 	INCBIN "gfx/warner_bros_copyright/under_license_by.2bpp"
@@ -15152,7 +15254,8 @@ INCBIN "baserom.gbc", $30000, $314b0 - $30000
 GameText:
 	INCBIN "data/game_text.bin.lz"
 
-INCBIN "baserom.gbc", $31ae0, $32507 - $31ae0
+FuddForest2Map:
+	INCBIN "data/levels/fudd_forest_2.vdmap.lz"
 
 CrazyTownBossSpriteTiles:
 	INCBIN "gfx/crazy_town/boss_sprites.interleave.2bpp.lz"
@@ -15167,7 +15270,10 @@ INCBIN "baserom.gbc", $32823, $34000 - $32823
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
-INCBIN "baserom.gbc", $34000, $37d4c - $34000
+INCBIN "baserom.gbc", $34000, $37a60 - $34000
+
+FuddForestMetatiles:
+	INCBIN "data/levels/fudd_forest_metatiles.bin.lz"
 
 CrazyTownBossGroundTarTiles:
 	INCBIN "gfx/crazy_town/boss_ground_tar.2bpp.lz"
@@ -15196,7 +15302,22 @@ InfogramesCopyrightTilemap:
 
 SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
-INCBIN "baserom.gbc", $3C000, $3fc5a - $3C000
+INCBIN "baserom.gbc", $3C000, $3eec7 - $3C000
+
+FuddForestBossLevelTiles:
+	INCBIN "gfx/fudd_forest/boss_level_tiles.2bpp.lz"
+FuddForestBossTrainTilemap:
+	INCBIN "gfx/fudd_forest/boss_train.tilemap.lz"
+FuddForestBossGroundTrackTiles:
+	INCBIN "gfx/fudd_forest/boss_ground_tracks.2bpp.lz"
+FuddForestBossMap:
+	INCBIN "data/levels/fudd_forest_boss.vdmap.lz"
+FuddForestBossCollisionAttributes:
+	INCBIN "data/levels/fudd_forest_boss_collision_attrs.bin.lz"
+FuddForestBossMetatiles:
+	INCBIN "data/levels/fudd_forest_boss_metatiles.bin.lz"
+
+INCBIN "baserom.gbc", $3f773, $3fc5a - $3f773
 
 TreasureIslandBossMap:
 	INCBIN "data/levels/treasure_island_boss.vdmap.lz"
@@ -15209,7 +15330,8 @@ StudioCollisionAttributes:
 
 SECTION "ROM Bank $10", ROMX[$4000], BANK[$10]
 
-INCBIN "baserom.gbc", $40000, $40187 - $40000
+FuddForestBossSpriteTiles:
+	INCBIN "gfx/fudd_forest/boss_sprites.interleave.2bpp.lz"
 
 TreasureIsland2Map:
 	INCBIN "data/levels/treasure_island_2.vdmap.lz"
@@ -15347,7 +15469,41 @@ SpaceStationBossShipTileAttributesGBC:
 
 SECTION "ROM Bank $14", ROMX[$4000], BANK[$14]
 
-INCBIN "baserom.gbc", $50000, $54000 - $50000
+FuddForest1MapGBC:
+	INCBIN "data/levels/fudd_forest_1_gbc.vdmap.lz"
+FuddForest2MapGBC:
+	INCBIN "data/levels/fudd_forest_2_gbc.vdmap.lz"
+FuddForestCollisionAttributesGBC:
+	INCBIN "data/levels/fudd_forest_collision_attrs_gbc.bin.lz"
+FuddForestMetatilesGBC:
+	INCBIN "data/levels/fudd_forest_metatiles_gbc.bin.lz"
+FuddForestLevelTilesGBC:
+	INCBIN "gfx/fudd_forest/level_tiles_gbc.2bpp.lz"
+FuddForestTileAttributesGBC:
+	INCBIN "gfx/fudd_forest/tile_attributes_gbc.bin.lz"
+
+FuddForestBossMapGBC:
+	INCBIN "data/levels/fudd_forest_boss_gbc.vdmap.lz"
+FuddForestBossCollisionAttributesGBC:
+	INCBIN "data/levels/fudd_forest_boss_collision_attrs_gbc.bin.lz"
+FuddForestBossMetatilesGBC:
+	INCBIN "data/levels/fudd_forest_boss_metatiles_gbc.bin.lz"
+FuddForestBossGroundTrackTilesGBC:
+	INCBIN "gfx/fudd_forest/boss_ground_tracks_gbc.2bpp.lz"
+FuddForestBossGroundTrackTileAttributesGBC:
+	INCBIN "gfx/fudd_forest/boss_ground_tracks_tile_attributes_gbc.bin"
+FuddForestBossLevelTilesGBC:
+	INCBIN "gfx/fudd_forest/boss_level_tiles_gbc.2bpp.lz"
+FuddForestBossBackgroundTilemapGBC:
+	INCBIN "gfx/fudd_forest/boss_background_gbc.tilemap.lz"
+FuddForestBossTileAttributesGBC:
+	INCBIN "gfx/fudd_forest/boss_tile_attributes_gbc.bin.lz"
+FuddForestBossTrainTilesGBC:
+	INCBIN "gfx/fudd_forest/boss_train_tiles_gbc.2bpp.lz"
+FuddForestBossTrainTilemapGBC:
+	INCBIN "gfx/fudd_forest/boss_train_gbc.tilemap.lz"
+
+INCBIN "baserom.gbc", $53100, $54000 - $53100
 
 SECTION "ROM Bank $15", ROMX[$4000], BANK[$15]
 

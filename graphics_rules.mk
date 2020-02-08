@@ -88,3 +88,19 @@ gfx/space_station/boss_level_tiles.2bpp: %.2bpp: %.png
 
 gfx/space_station/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
 	rgbgfx -x 14 -o $@ $<
+
+gfx/fudd_forest/level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 2 -o $@ $<
+
+gfx/fudd_forest/level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 4 -o $@ $<
+
+gfx/fudd_forest/boss_level_tiles.2bpp: %.2bpp: %.png
+	rgbgfx -x 15 -o $@ $<
+
+gfx/fudd_forest/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 14 -o $@ $<
+
+gfx/fudd_forest/boss_train_tiles_gbc.2bpp: %.2bpp: %.png
+	rgbgfx -x 9 -o $@ $<
+
