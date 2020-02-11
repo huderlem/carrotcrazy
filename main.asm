@@ -16344,8 +16344,6 @@ LevelBonusTileAttributesGBC:
 TreasureIslandLevelTiles:
 	INCBIN "gfx/treasure_island/level_tiles.2bpp.lz"
 
-INCBIN "baserom.gbc", $43b1d, $44000 - $43b1d
-
 SECTION "ROM Bank $11", ROMX[$4000], BANK[$11]
 
 TreasureIsland1MapGBC:
@@ -16381,8 +16379,6 @@ CrazyTownBossBackgroundTilemapGBC:
 	INCBIN "gfx/crazy_town/boss_background_gbc.tilemap.lz"
 CrazyTownBossGroundTileAttributesGBC:
 	INCBIN "gfx/crazy_town/boss_ground_tile_attributes_gbc.bin.lz"
-
-INCBIN "baserom.gbc", $46eac, $48000 - $46eac
 
 SECTION "ROM Bank $12", ROMX[$4000], BANK[$12]
 
@@ -16422,8 +16418,6 @@ TreasureIslandBossShipTilemapGBC:
 
 TitlescreenBackgroundTilemap:
 	INCBIN "gfx/titlescreen/background.tilemap.lz"
-
-INCBIN "baserom.gbc", $4afe6, $4C000 - $4afe6
 
 SECTION "ROM Bank $13", ROMX[$4000], BANK[$13]
 
@@ -16492,8 +16486,8 @@ FuddForestBossTrainTilesGBC:
 	INCBIN "gfx/fudd_forest/boss_train_tiles_gbc.2bpp.lz"
 FuddForestBossTrainTilemapGBC:
 	INCBIN "gfx/fudd_forest/boss_train_gbc.tilemap.lz"
-
-INCBIN "baserom.gbc", $53100, $54000 - $53100
+FuddForestBossTrainTileAttributesGBC:
+	INCBIN "gfx/fudd_forest/boss_train_tile_attributes_gbc.bin.lz"
 
 SECTION "ROM Bank $15", ROMX[$4000], BANK[$15]
 
@@ -16527,8 +16521,6 @@ CrazyTownBossBackgroundTilemap:
 
 TreasureIslandMetatiles:
 	INCBIN "data/levels/treasure_island_metatiles.bin.lz"
-
-INCBIN "baserom.gbc", $550dc, $58000 - $550dc
 
 SECTION "ROM Bank $16", ROMX[$4000], BANK[$16]
 
