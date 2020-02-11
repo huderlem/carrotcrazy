@@ -14065,7 +14065,805 @@ Data_1ab36:
 	RGB(14, 7, 15)
 	RGB(6, 2, 5)
 
-INCBIN "baserom.gbc", $1ab46, $1af18 - $1ab46
+TreasureIslandPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(31, 31, 0)
+	RGB(27, 18, 14)
+	RGB(15, 4, 3)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(7, 22, 31)
+	RGB(27, 18, 14)
+	RGB(15, 4, 3)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(7, 22, 31)
+	RGB(14, 28, 5)
+	RGB(5, 15, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(31, 25, 14)
+	RGB(20, 13, 3)
+	RGB(12, 5, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(8, 21, 31)
+	RGB(29, 23, 12)
+	RGB(16, 9, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(31, 31, 31)
+	RGB(18, 31, 31)
+	RGB(7, 22, 31)
+	RGB(0, 12, 29)
+
+	; BG Palette 6
+	RGB(7, 22, 31)
+	RGB(31, 31, 0)
+	RGB(24, 21, 0)
+	RGB(18, 14, 0)
+
+	; BG Palette 7
+	RGB(29, 20, 16)
+	RGB(22, 9, 8)
+	RGB(15, 4, 3)
+	RGB(0, 0, 0)
+
+	dw TreasureIslandOBJPalettes
+
+TreasureIslandOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(30, 20, 18)
+	RGB(19, 7, 3)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(17, 17, 16)
+	RGB(10, 10, 9)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(25, 25, 0)
+	RGB(17, 6, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(31, 14, 14)
+	RGB(10, 10, 10)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(28, 31, 26)
+	RGB(6, 17, 4)
+	RGB(0, 0, 0)
+
+TreasureIslandBossPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(31, 31, 31)
+	RGB(31, 21, 30)
+	RGB(31, 13, 29)
+	RGB(31, 6, 29)
+
+	; BG Palette 1
+	RGB(10, 18, 31)
+	RGB(5, 12, 27)
+	RGB(0, 5, 15)
+	RGB(0, 1, 6)
+
+	; BG Palette 2
+	RGB(28, 17, 5)
+	RGB(17, 9, 2)
+	RGB(10, 3, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(24, 6, 27)
+	RGB(18, 6, 24)
+	RGB(12, 5, 21)
+	RGB(6, 5, 18)
+
+	; BG Palette 4
+	RGB(31, 6, 29)
+	RGB(13, 25, 3)
+	RGB(3, 13, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(31, 6, 29)
+	RGB(31, 13, 12)
+	RGB(15, 7, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(31, 28, 5)
+	RGB(22, 14, 2)
+	RGB(12, 4, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(5, 12, 27)
+	RGB(31, 28, 5)
+	RGB(15, 7, 0)
+	RGB(0, 0, 0)
+
+	dw TreasureIslandBossOBJPalettes
+
+TreasureIslandBossOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(31, 24, 22)
+	RGB(19, 7, 3)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(17, 9, 2)
+	RGB(10, 3, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(5, 12, 27)
+	RGB(0, 5, 15)
+	RGB(0, 1, 6)
+
+	; OBJ Palette 3
+	RGB(31, 15, 15)
+	RGB(31, 0, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(24, 31, 22)
+	RGB(6, 17, 4)
+	RGB(0, 0, 0)
+
+CrazyTownPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(30, 27, 17)
+	RGB(17, 14, 4)
+	RGB(10, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(10, 18, 31)
+	RGB(15, 23, 31)
+	RGB(25, 27, 31)
+	RGB(31, 31, 31)
+
+	; BG Palette 2
+	RGB(19, 31, 23)
+	RGB(12, 22, 17)
+	RGB(6, 16, 11)
+	RGB(0, 4, 3)
+
+	; BG Palette 3
+	RGB(10, 18, 31)
+	RGB(27, 14, 7)
+	RGB(18, 5, 0)
+	RGB(6, 1, 0)
+
+	; BG Palette 4
+	RGB(21, 24, 26)
+	RGB(10, 15, 20)
+	RGB(5, 8, 11)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(17, 14, 4)
+	RGB(27, 14, 7)
+	RGB(18, 5, 0)
+	RGB(6, 1, 0)
+
+	; BG Palette 6
+	RGB(17, 14, 4)
+	RGB(23, 21, 21)
+	RGB(10, 9, 9)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(17, 14, 4)
+	RGB(31, 11, 19)
+	RGB(14, 3, 6)
+	RGB(0, 0, 0)
+
+	dw CrazyTownOBJPalettes
+
+CrazyTownOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(25, 20, 16)
+	RGB(18, 10, 1)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(31, 18, 0)
+	RGB(15, 4, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(31, 5, 5)
+	RGB(15, 2, 2)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(31, 31, 10)
+	RGB(27, 11, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(6, 20, 31)
+	RGB(3, 8, 16)
+	RGB(0, 0, 0)
+
+CrazyTownBossPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(31, 31, 31)
+	RGB(8, 16, 31)
+	RGB(0, 0, 31)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(31, 31, 31)
+	RGB(31, 23, 0)
+	RGB(15, 8, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(29, 20, 30)
+	RGB(17, 11, 19)
+	RGB(8, 3, 9)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(31, 22, 18)
+	RGB(22, 12, 7)
+	RGB(12, 5, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(8, 16, 31)
+	RGB(2, 11, 14)
+	RGB(31, 31, 31)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(20, 30, 17)
+	RGB(14, 21, 11)
+	RGB(5, 11, 4)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(31, 24, 21)
+	RGB(21, 14, 10)
+	RGB(11, 8, 3)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(30, 27, 24)
+	RGB(20, 16, 14)
+	RGB(11, 8, 6)
+	RGB(0, 0, 0)
+
+	dw CrazyTownBossOBJPalettes
+
+CrazyTownBossOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(25, 14, 13)
+	RGB(16, 10, 4)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(31, 18, 0)
+	RGB(15, 4, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(15, 25, 10)
+	RGB(3, 17, 3)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(31, 31, 31)
+	RGB(31, 23, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(31, 18, 0)
+	RGB(15, 4, 0)
+	RGB(0, 0, 0)
+
+TazZooPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(31, 26, 29)
+	RGB(21, 17, 19)
+	RGB(11, 8, 6)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(11, 20, 31)
+	RGB(18, 28, 10)
+	RGB(8, 23, 2)
+	RGB(1, 10, 0)
+
+	; BG Palette 2
+	RGB(31, 31, 31)
+	RGB(20, 27, 31)
+	RGB(11, 20, 31)
+	RGB(6, 12, 23)
+
+	; BG Palette 3
+	RGB(11, 20, 31)
+	RGB(31, 25, 20)
+	RGB(23, 11, 9)
+	RGB(13, 3, 3)
+
+	; BG Palette 4
+	RGB(31, 25, 20)
+	RGB(23, 11, 9)
+	RGB(8, 23, 2)
+	RGB(1, 10, 0)
+
+	; BG Palette 5
+	RGB(29, 25, 10)
+	RGB(20, 15, 2)
+	RGB(9, 6, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(29, 25, 10)
+	RGB(20, 15, 2)
+	RGB(9, 6, 0)
+	RGB(8, 23, 2)
+
+	; BG Palette 7
+	RGB(29, 12, 10)
+	RGB(22, 8, 1)
+	RGB(13, 0, 0)
+	RGB(0, 0, 0)
+
+	dw TazZooOBJPalettes
+
+TazZooOBJPalettes:
+	db 0 ; num background palettes
+
+	db 4 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(31, 25, 20)
+	RGB(23, 11, 9)
+	RGB(13, 3, 3)
+
+	; OBJ Palette 1
+	RGB(28, 24, 17)
+	RGB(21, 9, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(28, 25, 12)
+	RGB(17, 10, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(10, 20, 31)
+	RGB(0, 12, 31)
+	RGB(2, 5, 0)
+
+TazZooBossPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(21, 21, 23)
+	RGB(11, 11, 13)
+	RGB(5, 5, 7)
+	RGB(18, 13, 11)
+
+	; BG Palette 1
+	RGB(30, 26, 10)
+	RGB(18, 13, 11)
+	RGB(22, 8, 2)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(26, 23, 19)
+	RGB(18, 13, 11)
+	RGB(9, 7, 5)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(13, 6, 2)
+	RGB(15, 26, 3)
+	RGB(6, 14, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(22, 13, 6)
+	RGB(13, 6, 2)
+	RGB(15, 26, 3)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(10, 15, 31)
+	RGB(13, 24, 8)
+	RGB(6, 13, 3)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(31, 24, 17)
+	RGB(22, 13, 6)
+	RGB(13, 6, 2)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(10, 15, 31)
+	RGB(31, 24, 17)
+	RGB(22, 13, 6)
+	RGB(13, 6, 2)
+
+	dw TazZooBossOBJPalettes
+
+TazZooBossOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(31, 28, 15)
+	RGB(22, 14, 4)
+	RGB(3, 0, 0)
+
+	; OBJ Palette 1
+	RGB(18, 31, 20)
+	RGB(8, 28, 9)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(28, 25, 12)
+	RGB(17, 10, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(18, 13, 11)
+	RGB(11, 11, 13)
+	RGB(5, 5, 7)
+
+	; OBJ Palette 4
+	RGB(23, 22, 17)
+	RGB(15, 15, 15)
+	RGB(0, 0, 0)
+
+SpaceStationPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(23, 10, 23)
+	RGB(15, 2, 15)
+	RGB(8, 0, 8)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(21, 31, 10)
+	RGB(11, 23, 2)
+	RGB(3, 13, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(26, 23, 20)
+	RGB(17, 16, 13)
+	RGB(9, 8, 7)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(31, 31, 31)
+	RGB(31, 31, 0)
+	RGB(15, 2, 15)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(31, 25, 18)
+	RGB(27, 17, 5)
+	RGB(17, 9, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(15, 2, 15)
+	RGB(23, 5, 4)
+	RGB(14, 1, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(31, 31, 0)
+	RGB(28, 15, 4)
+	RGB(22, 4, 14)
+	RGB(15, 2, 15)
+
+	; BG Palette 7
+	RGB(17, 16, 31)
+	RGB(10, 8, 24)
+	RGB(5, 3, 17)
+	RGB(0, 0, 0)
+
+	dw SpaceStationOBJPalettes
+
+SpaceStationOBJPalettes:
+	db 0 ; num background palettes
+
+	db 4 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(31, 31, 31)
+	RGB(9, 18, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(23, 26, 27)
+	RGB(9, 14, 20)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(31, 31, 31)
+	RGB(6, 22, 2)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(29, 29, 18)
+	RGB(4, 18, 0)
+	RGB(0, 0, 0)
+
+SpaceStationBossPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(26, 19, 9)
+	RGB(20, 10, 3)
+	RGB(11, 4, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(23, 21, 15)
+	RGB(14, 12, 7)
+	RGB(8, 6, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(21, 21, 21)
+	RGB(14, 14, 14)
+	RGB(7, 7, 7)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(15, 30, 14)
+	RGB(5, 19, 4)
+	RGB(2, 8, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(22, 12, 28)
+	RGB(14, 6, 22)
+	RGB(7, 1, 12)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(31, 31, 0)
+	RGB(20, 20, 0)
+	RGB(10, 10, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(17, 25, 31)
+	RGB(6, 15, 18)
+	RGB(3, 8, 11)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(31, 31, 0)
+	RGB(6, 15, 18)
+	RGB(3, 8, 11)
+	RGB(0, 0, 0)
+
+	dw SpaceStationBossOBJPalettes
+
+SpaceStationBossOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(17, 25, 31)
+	RGB(6, 15, 18)
+	RGB(3, 8, 11)
+
+	; OBJ Palette 1
+	RGB(17, 31, 17)
+	RGB(7, 21, 7)
+	RGB(2, 4, 2)
+
+	; OBJ Palette 2
+	RGB(31, 31, 31)
+	RGB(6, 22, 2)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(29, 29, 18)
+	RGB(4, 18, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(23, 20, 17)
+	RGB(16, 11, 9)
+	RGB(8, 4, 1)
+
+FuddForestPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(31, 21, 19)
+	RGB(22, 10, 6)
+	RGB(13, 4, 2)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(15, 18, 31)
+	RGB(12, 25, 3)
+	RGB(5, 13, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(15, 18, 31)
+	RGB(18, 26, 11)
+	RGB(11, 10, 1)
+	RGB(28, 20, 14)
+
+	; BG Palette 3
+	RGB(31, 23, 14)
+	RGB(22, 13, 2)
+	RGB(12, 6, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 4
+	RGB(12, 25, 3)
+	RGB(5, 13, 1)
+	RGB(18, 26, 11)
+	RGB(28, 20, 14)
+
+	; BG Palette 5
+	RGB(31, 28, 4)
+	RGB(17, 16, 0)
+	RGB(9, 8, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(15, 18, 31)
+	RGB(22, 20, 17)
+	RGB(12, 9, 8)
+	RGB(0, 0, 0)
+
+	; BG Palette 7
+	RGB(12, 25, 3)
+	RGB(5, 13, 1)
+	RGB(17, 16, 0)
+	RGB(0, 0, 0)
+
+	dw FuddForestOBJPalettes
+
+FuddForestOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(31, 28, 10)
+	RGB(18, 14, 5)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(23, 23, 18)
+	RGB(15, 15, 9)
+	RGB(6, 5, 0)
+
+	; OBJ Palette 2
+	RGB(26, 17, 8)
+	RGB(18, 9, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 3
+	RGB(0, 0, 0)
+	RGB(0, 0, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(29, 18, 18)
+	RGB(20, 8, 0)
+	RGB(0, 0, 0)
+
+FuddForestBossPalettes:
+	db 8 ; num background palettes
+	; BG Palette 0
+	RGB(31, 22, 12)
+	RGB(22, 9, 1)
+	RGB(12, 4, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 1
+	RGB(18, 31, 10)
+	RGB(7, 27, 2)
+	RGB(1, 12, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 2
+	RGB(6, 19, 31)
+	RGB(7, 27, 2)
+	RGB(1, 12, 0)
+	RGB(0, 0, 0)
+
+	; BG Palette 3
+	RGB(6, 19, 31)
+	RGB(18, 31, 10)
+	RGB(7, 27, 2)
+	RGB(1, 12, 0)
+
+	; BG Palette 4
+	RGB(7, 27, 2)
+	RGB(1, 12, 0)
+	RGB(22, 9, 1)
+	RGB(0, 0, 0)
+
+	; BG Palette 5
+	RGB(26, 23, 17)
+	RGB(17, 14, 9)
+	RGB(10, 7, 4)
+	RGB(0, 0, 0)
+
+	; BG Palette 6
+	RGB(23, 23, 23)
+	RGB(12, 12, 12)
+	RGB(6, 6, 6)
+	RGB(26, 23, 17)
+
+	; BG Palette 7
+	RGB(31, 8, 31)
+	RGB(22, 9, 1)
+	RGB(12, 4, 0)
+	RGB(0, 0, 0)
+
+	dw FuddForestBossOBJPalettes
+
+FuddForestBossOBJPalettes:
+	db 0 ; num background palettes
+
+	db 5 ; num sprite palettes
+	; OBJ Palette 0
+	RGB(22, 9, 1)
+	RGB(12, 5, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 1
+	RGB(6, 27, 31)
+	RGB(2, 8, 19)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 2
+	RGB(26, 23, 17)
+	RGB(12, 12, 12)
+	RGB(6, 6, 6)
+
+	; OBJ Palette 3
+	RGB(31, 31, 10)
+	RGB(27, 11, 0)
+	RGB(0, 0, 0)
+
+	; OBJ Palette 4
+	RGB(29, 18, 18)
+	RGB(19, 9, 0)
+	RGB(0, 0, 0)
 
 ; This only holds colors 1-3. The first transparent color is hardcoded
 ; in LoadCGBPalettes.
@@ -14558,8 +15356,10 @@ ScreenData_CrazyTown1:
 	compressed_data CrazyTownLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw CrazyTownPalettes
 
-INCBIN "baserom.gbc", $1b369, $1b37f - $1b369
+INCBIN "baserom.gbc", $1b36c, $1b37f - $1b36c
 
 ScreenData_CrazyTown2:
 	compressed_data CrazyTownLevelTiles, $8B20
@@ -14570,8 +15370,10 @@ ScreenData_CrazyTown2:
 	compressed_data CrazyTownLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw CrazyTownPalettes
 
-INCBIN "baserom.gbc", $1b3a0, $1b3b6 - $1b3a0
+INCBIN "baserom.gbc", $1b3a3, $1b3b6 - $1b3a3
 
 ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -14583,7 +15385,7 @@ ScreenData_TreasureIsland1:
 	db $ff
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
-	dw $6b46
+	dw TreasureIslandPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0040, $00DF ; initial player x/y coords
 	db $05 ; bank for word after the next ???
@@ -14602,8 +15404,10 @@ ScreenData_TreasureIsland2:
 	compressed_data TreasureIslandLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw TreasureIslandPalettes
 
-INCBIN "baserom.gbc", $1b40e, $1b424 - $1b40e
+INCBIN "baserom.gbc", $1b411, $1b424 - $1b411
 
 ScreenData_CrazyTownBoss:
 	compressed_data CrazyTownBossGroundTarTiles, $9570
@@ -14618,8 +15422,10 @@ ScreenData_CrazyTownBoss:
 	compressed_data CrazyTownBossSpriteTiles, $8560
 	db $ff
 	dw RunCrazyTownBossScreen
+	db 0 ; HUD background palette num
+	dw CrazyTownBossPalettes
 
-INCBIN "baserom.gbc", $1b459, $1b472 - $1b459
+INCBIN "baserom.gbc", $1b45c, $1b472 - $1b45c
 
 ScreenData_TreasureIslandBoss:
 	compressed_data TreasureIslandBossWaterLogTiles, $9680
@@ -14634,8 +15440,10 @@ ScreenData_TreasureIslandBoss:
 	compressed_data TreasureIslandBossSpriteTiles, $8560
 	db $ff
 	dw RunTreasureIslandBossScreen
+	db 0 ; HUD background palette num
+	dw TreasureIslandBossPalettes
 
-INCBIN "baserom.gbc", $1b4a7, $1b4c0 - $1b4a7
+INCBIN "baserom.gbc", $1b4aa, $1b4c0 - $1b4aa
 
 ScreenData_TazZoo1:
 	compressed_data TazZooLevelTiles, $8B20
@@ -14646,8 +15454,10 @@ ScreenData_TazZoo1:
 	compressed_data TazZooLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw TazZooPalettes
 
-INCBIN "baserom.gbc", $1b4e1, $1b4f7 - $1b4e1
+INCBIN "baserom.gbc", $1b4e4, $1b4f7 - $1b4e4
 
 ScreenData_TazZoo2:
 	compressed_data TazZooLevelTiles, $8B20
@@ -14658,8 +15468,10 @@ ScreenData_TazZoo2:
 	compressed_data TazZooLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw TazZooPalettes
 
-INCBIN "baserom.gbc", $1b518, $1b52e - $1b518
+INCBIN "baserom.gbc", $1b51b, $1b52e - $1b51b
 
 ScreenData_TazZooBoss:
 	uncompressed_data TazZooBossGroundTiles, $9770, $90
@@ -14676,8 +15488,10 @@ ScreenData_TazZooBoss:
 	compressed_data TazZooBossSpriteTiles, $8560
 	db $ff
 	dw RunTazZooBossScreen
+	db 0 ; HUD background palette num
+	dw TazZooBossPalettes
 
-INCBIN "baserom.gbc", $1b56f, $1b588 - $1b56f
+INCBIN "baserom.gbc", $1b572, $1b588 - $1b572
 
 ScreenData_SpaceStation1:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -14688,8 +15502,10 @@ ScreenData_SpaceStation1:
 	compressed_data SpaceStationLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw SpaceStationPalettes
 
-INCBIN "baserom.gbc", $1b5a9, $1b5bf - $1b5a9
+INCBIN "baserom.gbc", $1b5ac, $1b5bf - $1b5ac
 
 ScreenData_SpaceStation2:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -14700,8 +15516,10 @@ ScreenData_SpaceStation2:
 	compressed_data SpaceStationLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw SpaceStationPalettes
 
-INCBIN "baserom.gbc", $1b5e0, $1b5f6 - $1b5e0
+INCBIN "baserom.gbc", $1b5e3, $1b5f6 - $1b5e3
 
 ScreenData_SpaceStationBoss:
 	compressed_data SpaceStationBossLevelTiles, $8DE0
@@ -14714,8 +15532,10 @@ ScreenData_SpaceStationBoss:
 	compressed_data SpaceStationBossSpriteTiles, $8560
 	db $ff
 	dw RunSpaceStationBossScreen
+	db 0 ; HUD background palette num
+	dw SpaceStationBossPalettes
 
-INCBIN "baserom.gbc", $1b621, $1b638 - $1b621
+INCBIN "baserom.gbc", $1b624, $1b638 - $1b624
 
 ScreenData_FuddForest1:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -14726,8 +15546,10 @@ ScreenData_FuddForest1:
 	compressed_data FuddForestLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw FuddForestPalettes
 
-INCBIN "baserom.gbc", $1b659, $1b66f - $1b659
+INCBIN "baserom.gbc", $1b65c, $1b66f - $1b65c
 
 ScreenData_FuddForest2:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -14738,8 +15560,10 @@ ScreenData_FuddForest2:
 	compressed_data FuddForestLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw FuddForestPalettes
 
-INCBIN "baserom.gbc", $1b690, $1b6a6 - $1b690
+INCBIN "baserom.gbc", $1b693, $1b6a6 - $1b693
 
 ScreenData_FuddForestBoss:
 	compressed_data FuddForestBossGroundTrackTiles, $9750
@@ -14754,8 +15578,10 @@ ScreenData_FuddForestBoss:
 	compressed_data FuddForestBossSpriteTiles, $8560
 	db $ff
 	dw RunFuddForestBossScreen
+	db 0 ; HUD background palette num
+	dw FuddForestBossPalettes
 
-INCBIN "baserom.gbc", $1b6db, $1b710 - $1b6db
+INCBIN "baserom.gbc", $1b6de, $1b710 - $1b6de
 
 ScreenData_Password1:
 	db $ff
@@ -14891,8 +15717,10 @@ ScreenDataGBC_CrazyTown1:
 	compressed_data CrazyTownLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw CrazyTownPalettes
 
-INCBIN "baserom.gbc", $1b83f, $1b855 - $1b83f
+INCBIN "baserom.gbc", $1b842, $1b855 - $1b842
 
 ScreenDataGBC_CrazyTown2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14904,8 +15732,10 @@ ScreenDataGBC_CrazyTown2:
 	compressed_data CrazyTownLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw CrazyTownPalettes
 
-INCBIN "baserom.gbc", $1b87b, $1b891 - $1b87b
+INCBIN "baserom.gbc", $1b87e, $1b891 - $1b87e
 
 ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14917,8 +15747,10 @@ ScreenDataGBC_TreasureIsland1:
 	compressed_data TreasureIslandLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 7 ; HUD background palette num
+	dw TreasureIslandPalettes
 
-INCBIN "baserom.gbc", $1b8b7, $1b8cd - $1b8b7
+INCBIN "baserom.gbc", $1b8ba, $1b8cd - $1b8ba
 
 ScreenDataGBC_TreasureIsland2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14930,8 +15762,10 @@ ScreenDataGBC_TreasureIsland2:
 	compressed_data TreasureIslandLevelSpriteTiles, $8560
 	db $ff
 	dw RunLevelScreen
+	db 7 ; HUD background palette num
+	dw TreasureIslandPalettes
 
-INCBIN "baserom.gbc", $1b8f3, $1b909 - $1b8f3
+INCBIN "baserom.gbc", $1b8f6, $1b909 - $1b8f6
 
 ScreenDataGBC_CrazyTownBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14948,8 +15782,10 @@ ScreenDataGBC_CrazyTownBoss:
 	compressed_data CrazyTownBossSpriteTiles, $8560
 	db $ff
 	dw RunCrazyTownBossScreen
+	db 3 ; HUD background palette num
+	dw CrazyTownBossPalettes
 
-INCBIN "baserom.gbc", $1b948, $1b961 - $1b948
+INCBIN "baserom.gbc", $1b94b, $1b961 - $1b94b
 
 ScreenDataGBC_TazZoo1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14961,8 +15797,10 @@ ScreenDataGBC_TazZoo1:
 	compressed_data TazZooTileAttributesGBC, $DA32
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw TazZooPalettes
 
-INCBIN "baserom.gbc", $1b987, $1b99d - $1b987
+INCBIN "baserom.gbc", $1b98a, $1b99d - $1b98a
 
 ScreenDataGBC_TazZoo2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14974,8 +15812,10 @@ ScreenDataGBC_TazZoo2:
 	compressed_data TazZooTileAttributesGBC, $DA32
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw TazZooPalettes
 
-INCBIN "baserom.gbc", $1b9c3, $1b9d9 - $1b9c3
+INCBIN "baserom.gbc", $1b9c6, $1b9d9 - $1b9c6
 
 ScreenDataGBC_TreasureIslandBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -14992,8 +15832,10 @@ ScreenDataGBC_TreasureIslandBoss:
 	compressed_data TreasureIslandBossTileAttributesGBC, $d997
 	db $ff
 	dw RunTreasureIslandBossScreen
+	db 6 ; HUD background palette num
+	dw TreasureIslandBossPalettes
 
-INCBIN "baserom.gbc", $1ba1c, $1ba35 - $1ba1c
+INCBIN "baserom.gbc", $1ba1f, $1ba35 - $1ba1f
 
 ScreenDataGBC_SpaceStation1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15005,8 +15847,10 @@ ScreenDataGBC_SpaceStation1:
 	compressed_data SpaceStationTileAttributesGBC, $DA20
 	db $ff
 	dw RunLevelScreen
+	db 4 ; HUD background palette num
+	dw SpaceStationPalettes
 
-INCBIN "baserom.gbc", $1ba5b, $1ba71 - $1ba5b
+INCBIN "baserom.gbc", $1ba5e, $1ba71 - $1ba5e
 
 ScreenDataGBC_SpaceStation2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15018,8 +15862,10 @@ ScreenDataGBC_SpaceStation2:
 	compressed_data SpaceStationTileAttributesGBC, $DA20
 	db $ff
 	dw RunLevelScreen
+	db 4 ; HUD background palette num
+	dw SpaceStationPalettes
 
-INCBIN "baserom.gbc", $1ba97, $1baad - $1ba97
+INCBIN "baserom.gbc", $1ba9a, $1baad - $1ba9a
 
 ScreenDataGBC_SpaceStationBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15034,8 +15880,10 @@ ScreenDataGBC_SpaceStationBoss:
 	uncompressed_data SpaceStationBossShipTileAttributesGBC, $D9E8, $18
 	db $ff
 	dw RunSpaceStationBossScreen
+	db 5 ; HUD background palette num
+	dw SpaceStationBossPalettes
 
-INCBIN "baserom.gbc", $1bae4, $1bafb - $1bae4
+INCBIN "baserom.gbc", $1bae7, $1bafb - $1bae7
 
 ScreenDataGBC_FuddForest1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15047,8 +15895,10 @@ ScreenDataGBC_FuddForest1:
 	compressed_data FuddForestTileAttributesGBC, $DA24
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw FuddForestPalettes
 
-INCBIN "baserom.gbc", $1bb21, $1bb37 - $1bb21
+INCBIN "baserom.gbc", $1bb24, $1bb37 - $1bb24
 
 ScreenDataGBC_FuddForest2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15060,8 +15910,10 @@ ScreenDataGBC_FuddForest2:
 	compressed_data FuddForestTileAttributesGBC, $DA24
 	db $ff
 	dw RunLevelScreen
+	db 0 ; HUD background palette num
+	dw FuddForestPalettes
 
-INCBIN "baserom.gbc", $1bb5d, $1bb73 - $1bb5d
+INCBIN "baserom.gbc", $1bb60, $1bb73 - $1bb60
 
 ScreenDataGBC_FuddForestBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15078,8 +15930,10 @@ ScreenDataGBC_FuddForestBoss:
 	compressed_data FuddForestBossTileAttributesGBC, $D98E
 	db $ff
 	dw RunFuddForestBossScreen
+	db 0 ; HUD background palette num
+	dw FuddForestBossPalettes
 
-INCBIN "baserom.gbc", $1bbb4, $1bbcd - $1bbb4
+INCBIN "baserom.gbc", $1bbb7, $1bbcd - $1bbb7
 
 ScreenDataGBC_TazZooBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15098,8 +15952,10 @@ ScreenDataGBC_TazZooBoss:
 	compressed_data TazZooBossTileAttributesGBC, $D9A5
 	db $ff
 	dw RunTazZooBossScreen
+	db 6 ; HUD background palette num
+	dw TazZooBossPalettes
 
-INCBIN "baserom.gbc", $1bc1a, $1bc33 - $1bc1a
+INCBIN "baserom.gbc", $1bc1d, $1bc33 - $1bc1d
 
 ScreenDataGBC_Studio:
 	compressed_data StudioTilesGBC, $8C80
