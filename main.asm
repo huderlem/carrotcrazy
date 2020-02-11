@@ -15358,8 +15358,10 @@ ScreenData_CrazyTown1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw CrazyTownPalettes
+	dw $0000, $0100 ; initial camera offset
+	dw $0020, $016F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b36c, $1b37f - $1b36c
+INCBIN "baserom.gbc", $1b374, $1b37f - $1b374
 
 ScreenData_CrazyTown2:
 	compressed_data CrazyTownLevelTiles, $8B20
@@ -15372,8 +15374,10 @@ ScreenData_CrazyTown2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw CrazyTownPalettes
+	dw $0000, $0140 ; initial camera offset
+	dw $0010, $01AF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b3a3, $1b3b6 - $1b3a3
+INCBIN "baserom.gbc", $1b3ab, $1b3b6 - $1b3ab
 
 ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -15406,8 +15410,10 @@ ScreenData_TreasureIsland2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw TreasureIslandPalettes
+	dw $0000, $0080 ; initial camera offset
+	dw $0030, $00DF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b411, $1b424 - $1b411
+INCBIN "baserom.gbc", $1b419, $1b424 - $1b419
 
 ScreenData_CrazyTownBoss:
 	compressed_data CrazyTownBossGroundTarTiles, $9570
@@ -15424,8 +15430,11 @@ ScreenData_CrazyTownBoss:
 	dw RunCrazyTownBossScreen
 	db 0 ; HUD background palette num
 	dw CrazyTownBossPalettes
+	db 0 ; Boss window palette
+	dw $0F20, $0008 ; initial camera offset
+	dw $0F30, $0077 ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b45c, $1b472 - $1b45c
+INCBIN "baserom.gbc", $1b465, $1b472 - $1b465
 
 ScreenData_TreasureIslandBoss:
 	compressed_data TreasureIslandBossWaterLogTiles, $9680
@@ -15442,8 +15451,11 @@ ScreenData_TreasureIslandBoss:
 	dw RunTreasureIslandBossScreen
 	db 0 ; HUD background palette num
 	dw TreasureIslandBossPalettes
+	db 0 ; Boss window palette
+	dw $0F20, $0008 ; initial camera offset
+	dw $0F30, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b4aa, $1b4c0 - $1b4aa
+INCBIN "baserom.gbc", $1b4b3, $1b4c0 - $1b4b3
 
 ScreenData_TazZoo1:
 	compressed_data TazZooLevelTiles, $8B20
@@ -15456,8 +15468,10 @@ ScreenData_TazZoo1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw TazZooPalettes
+	dw $0000, $0080 ; initial camera offset
+	dw $0020, $00EF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b4e4, $1b4f7 - $1b4e4
+INCBIN "baserom.gbc", $1b4ec, $1b4f7 - $1b4ec
 
 ScreenData_TazZoo2:
 	compressed_data TazZooLevelTiles, $8B20
@@ -15470,8 +15484,10 @@ ScreenData_TazZoo2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw TazZooPalettes
+	dw $0000, $00C0 ; initial camera offset
+	dw $0020, $011F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b51b, $1b52e - $1b51b
+INCBIN "baserom.gbc", $1b523, $1b52e - $1b523
 
 ScreenData_TazZooBoss:
 	uncompressed_data TazZooBossGroundTiles, $9770, $90
@@ -15490,8 +15506,11 @@ ScreenData_TazZooBoss:
 	dw RunTazZooBossScreen
 	db 0 ; HUD background palette num
 	dw TazZooBossPalettes
+	db 0 ; Boss window palette
+	dw $0000, $0008 ; initial camera offset
+	dw $0060, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b572, $1b588 - $1b572
+INCBIN "baserom.gbc", $1b57b, $1b588 - $1b57b
 
 ScreenData_SpaceStation1:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -15504,8 +15523,10 @@ ScreenData_SpaceStation1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw SpaceStationPalettes
+	dw $0000, $0100 ; initial camera offset
+	dw $0010, $015F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b5ac, $1b5bf - $1b5ac
+INCBIN "baserom.gbc", $1b5b4, $1b5bf - $1b5b4
 
 ScreenData_SpaceStation2:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -15518,8 +15539,10 @@ ScreenData_SpaceStation2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw SpaceStationPalettes
+	dw $0000, $01D0 ; initial camera offset
+	dw $0040, $022F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b5e3, $1b5f6 - $1b5e3
+INCBIN "baserom.gbc", $1b5eb, $1b5f6 - $1b5eb
 
 ScreenData_SpaceStationBoss:
 	compressed_data SpaceStationBossLevelTiles, $8DE0
@@ -15534,8 +15557,11 @@ ScreenData_SpaceStationBoss:
 	dw RunSpaceStationBossScreen
 	db 0 ; HUD background palette num
 	dw SpaceStationBossPalettes
+	db 0 ; Boss window palette
+	dw $1DE0, $0008 ; initial camera offset
+	dw $1E00, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b624, $1b638 - $1b624
+INCBIN "baserom.gbc", $1b62d, $1b638 - $1b62d
 
 ScreenData_FuddForest1:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -15548,8 +15574,10 @@ ScreenData_FuddForest1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw FuddForestPalettes
+	dw $0000, $0090 ; initial camera offset
+	dw $0010, $00EF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b65c, $1b66f - $1b65c
+INCBIN "baserom.gbc", $1b664, $1b66f - $1b664
 
 ScreenData_FuddForest2:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -15562,8 +15590,10 @@ ScreenData_FuddForest2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw FuddForestPalettes
+	dw $0000, $00C0 ; initial camera offset
+	dw $0010, $011F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b693, $1b6a6 - $1b693
+INCBIN "baserom.gbc", $1b69b, $1b6a6 - $1b69b
 
 ScreenData_FuddForestBoss:
 	compressed_data FuddForestBossGroundTrackTiles, $9750
@@ -15580,8 +15610,11 @@ ScreenData_FuddForestBoss:
 	dw RunFuddForestBossScreen
 	db 0 ; HUD background palette num
 	dw FuddForestBossPalettes
+	db 0 ; Boss window palette
+	dw $0F20, $0008 ; initial camera offset
+	dw $0F30, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b6de, $1b710 - $1b6de
+INCBIN "baserom.gbc", $1b6e7, $1b710 - $1b6e7
 
 ScreenData_Password1:
 	db $ff
@@ -15719,8 +15752,10 @@ ScreenDataGBC_CrazyTown1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw CrazyTownPalettes
+	dw $0000, $0100 ; initial camera offset
+	dw $0020, $016F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b842, $1b855 - $1b842
+INCBIN "baserom.gbc", $1b84a, $1b855 - $1b84a
 
 ScreenDataGBC_CrazyTown2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15734,8 +15769,10 @@ ScreenDataGBC_CrazyTown2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw CrazyTownPalettes
+	dw $0000, $0140 ; initial camera offset
+	dw $0010, $01AF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b87e, $1b891 - $1b87e
+INCBIN "baserom.gbc", $1b886, $1b891 - $1b886
 
 ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15749,8 +15786,10 @@ ScreenDataGBC_TreasureIsland1:
 	dw RunLevelScreen
 	db 7 ; HUD background palette num
 	dw TreasureIslandPalettes
+	dw $0000, $0080 ; initial camera offset
+	dw $0040, $00DF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b8ba, $1b8cd - $1b8ba
+INCBIN "baserom.gbc", $1b8c2, $1b8cd - $1b8c2
 
 ScreenDataGBC_TreasureIsland2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15764,8 +15803,10 @@ ScreenDataGBC_TreasureIsland2:
 	dw RunLevelScreen
 	db 7 ; HUD background palette num
 	dw TreasureIslandPalettes
+	dw $0000, $0080 ; initial camera offset
+	dw $0030, $00DF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b8f6, $1b909 - $1b8f6
+INCBIN "baserom.gbc", $1b8fe, $1b909 - $1b8fe
 
 ScreenDataGBC_CrazyTownBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15784,8 +15825,11 @@ ScreenDataGBC_CrazyTownBoss:
 	dw RunCrazyTownBossScreen
 	db 3 ; HUD background palette num
 	dw CrazyTownBossPalettes
+	db 1 ; Boss window palette
+	dw $0F20, $0008 ; initial camera offset
+	dw $0F30, $0077 ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b94b, $1b961 - $1b94b
+INCBIN "baserom.gbc", $1b954, $1b961 - $1b954
 
 ScreenDataGBC_TazZoo1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15799,8 +15843,10 @@ ScreenDataGBC_TazZoo1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw TazZooPalettes
+	dw $0000, $0080 ; initial camera offset
+	dw $0020, $00EF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b98a, $1b99d - $1b98a
+INCBIN "baserom.gbc", $1b992, $1b99d - $1b992
 
 ScreenDataGBC_TazZoo2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15814,8 +15860,10 @@ ScreenDataGBC_TazZoo2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw TazZooPalettes
+	dw $0000, $00C0 ; initial camera offset
+	dw $0020, $011F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1b9c6, $1b9d9 - $1b9c6
+INCBIN "baserom.gbc", $1b9ce, $1b9d9 - $1b9ce
 
 ScreenDataGBC_TreasureIslandBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15834,8 +15882,11 @@ ScreenDataGBC_TreasureIslandBoss:
 	dw RunTreasureIslandBossScreen
 	db 6 ; HUD background palette num
 	dw TreasureIslandBossPalettes
+	db 2 ; Boss window palette
+	dw $0F20, $0008 ; initial camera offset
+	dw $0F30, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1ba1f, $1ba35 - $1ba1f
+INCBIN "baserom.gbc", $1ba28, $1ba35 - $1ba28
 
 ScreenDataGBC_SpaceStation1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15849,8 +15900,10 @@ ScreenDataGBC_SpaceStation1:
 	dw RunLevelScreen
 	db 4 ; HUD background palette num
 	dw SpaceStationPalettes
+	dw $0000, $0100 ; initial camera offset
+	dw $0010, $015F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1ba5e, $1ba71 - $1ba5e
+INCBIN "baserom.gbc", $1ba66, $1ba71 - $1ba66
 
 ScreenDataGBC_SpaceStation2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15864,8 +15917,10 @@ ScreenDataGBC_SpaceStation2:
 	dw RunLevelScreen
 	db 4 ; HUD background palette num
 	dw SpaceStationPalettes
+	dw $0000, $01D0 ; initial camera offset
+	dw $0040, $022F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1ba9a, $1baad - $1ba9a
+INCBIN "baserom.gbc", $1baa2, $1baad - $1baa2
 
 ScreenDataGBC_SpaceStationBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15882,8 +15937,11 @@ ScreenDataGBC_SpaceStationBoss:
 	dw RunSpaceStationBossScreen
 	db 5 ; HUD background palette num
 	dw SpaceStationBossPalettes
+	db 0 ; Boss window palette
+	dw $1DE0, $0008 ; initial camera offset
+	dw $1E00, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1bae7, $1bafb - $1bae7
+INCBIN "baserom.gbc", $1baf0, $1bafb - $1baf0
 
 ScreenDataGBC_FuddForest1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15897,8 +15955,10 @@ ScreenDataGBC_FuddForest1:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw FuddForestPalettes
+	dw $0000, $0090 ; initial camera offset
+	dw $0010, $00EF ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1bb24, $1bb37 - $1bb24
+INCBIN "baserom.gbc", $1bb2c, $1bb37 - $1bb2c
 
 ScreenDataGBC_FuddForest2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15912,8 +15972,10 @@ ScreenDataGBC_FuddForest2:
 	dw RunLevelScreen
 	db 0 ; HUD background palette num
 	dw FuddForestPalettes
+	dw $0000, $00C0 ; initial camera offset
+	dw $0010, $011F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1bb60, $1bb73 - $1bb60
+INCBIN "baserom.gbc", $1bb68, $1bb73 - $1bb68
 
 ScreenDataGBC_FuddForestBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15932,8 +15994,11 @@ ScreenDataGBC_FuddForestBoss:
 	dw RunFuddForestBossScreen
 	db 0 ; HUD background palette num
 	dw FuddForestBossPalettes
+	db 0 ; Boss window palette
+	dw $0F20, $0008 ; initial camera offset
+	dw $0F30, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1bbb7, $1bbcd - $1bbb7
+INCBIN "baserom.gbc", $1bbc0, $1bbcd - $1bbc0
 
 ScreenDataGBC_TazZooBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -15954,8 +16019,11 @@ ScreenDataGBC_TazZooBoss:
 	dw RunTazZooBossScreen
 	db 6 ; HUD background palette num
 	dw TazZooBossPalettes
+	db 0 ; Boss window palette
+	dw $0000, $0008 ; initial camera offset
+	dw $0060, $006F ; initial player x/y coords
 
-INCBIN "baserom.gbc", $1bc1d, $1bc33 - $1bc1d
+INCBIN "baserom.gbc", $1bc26, $1bc33 - $1bc26
 
 ScreenDataGBC_Studio:
 	compressed_data StudioTilesGBC, $8C80
