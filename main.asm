@@ -374,16 +374,16 @@ RunLevelBonusScreen:
 	push hl
 	ld a, [hGameBoyColorDetection]
 	cp GBC_MODE
-	ld hl, $7740
+	ld hl, ScreenData_LevelBonus
 	jr nz, .asm_264
-	ld hl, $77f6
+	ld hl, ScreenDataGBC_LevelBonus
 .asm_264
 	call LoadData
 	call Func_3e51
 	ld a, Bank(Func_17ba8)
 	ld [MBC5RomBank], a
 	call Func_17ba8
-	ld hl, $775e
+	ld hl, Data_1b75e
 	call LoadData
 	ld a, Bank(Func_17be2)
 	ld [MBC5RomBank], a
@@ -11858,7 +11858,8 @@ INCBIN "baserom.gbc", $dde7, $e027 - $dde7
 FuddForestLevelTiles:
 	INCBIN "gfx/fudd_forest/level_tiles.2bpp.lz"
 
-INCBIN "baserom.gbc", $eb60, $f545 - $eb60
+LevelBonusSpriteTiles:
+	INCBIN "gfx/level_bonus/sprites.interleave.2bpp.lz"
 
 WarnerBrosCopyrightAmpersandTiles:
 	INCBIN "gfx/warner_bros_copyright/ampersand.2bpp"
@@ -12052,7 +12053,12 @@ INCBIN "baserom.gbc", $10000, $10100 - $10000
 SharedLevelInterfaceTiles:
 	INCBIN "gfx/level_interface.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $10436, $105d6 - $10436
+INCBIN "baserom.gbc", $10436, $104f6 - $10436
+
+LevelBonusExtraTiles:
+	INCBIN "gfx/level_bonus/extra.interleave.2bpp"
+
+INCBIN "baserom.gbc", $10596, $105d6 - $10596
 
 StudioCeilingFloorTiles:
 	INCBIN "gfx/studio/ceiling_floor.2bpp.lz"
@@ -13595,7 +13601,10 @@ FuddForestBossTrainTiles:
 LevelSummaryIconTiles:
 	INCBIN "gfx/level_summary/icons.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $1a28f, $1a5a3 - $1a28f
+LevelBonusBackgroundTiles:
+	INCBIN "gfx/level_bonus/background_tiles.2bpp.lz"
+LevelBonusBackgroundTilemap:
+	INCBIN "gfx/level_bonus/background.tilemap.lz"
 
 WarnerBrosCopyrightInteractiveEntertainmentTiles:
 	INCBIN "gfx/warner_bros_copyright/interactive_entertainment.2bpp"
@@ -15637,7 +15646,21 @@ ScreenData_LevelSummary:
 	db $ff
 	dw Func_387
 
-INCBIN "baserom.gbc", $1b73e, $1b764 - $1b73e
+INCBIN "baserom.gbc", $1b73e, $1b740 - $1b73e
+
+ScreenData_LevelBonus:
+	compressed_data LevelBonusBackgroundTiles, $9500
+	compressed_data LevelBonusBackgroundTilemap, $9800
+	compressed_data LevelBonusSpriteTiles, $8000
+	compressed_data SharedLevelInterfaceTiles, $C000
+	uncompressed_data LevelBonusExtraTiles, $C620, $00A0
+	db $ff
+	dw $4080 ; TODO: ??
+
+Data_1b75e:
+	db $03
+	dw $778F, $C000
+	db $ff
 
 ScreenData_PrologueScene:
 	compressed_data FarmSceneTiles, $8CB0
@@ -15738,7 +15761,17 @@ ScreenData_FuddForest2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
 
-INCBIN "baserom.gbc", $1b7f2, $1b819 - $1b7f2
+INCBIN "baserom.gbc", $1b7f2, $1b7f6 - $1b7f2
+
+ScreenDataGBC_LevelBonus:
+	compressed_data LevelBonusBackgroundTilesGBC, $9500
+	compressed_data LevelBonusBackgroundTilemapGBC, $9800
+	compressed_data LevelBonusSpriteTiles, $8000
+	compressed_data SharedLevelInterfaceTiles, $C000
+	uncompressed_data LevelBonusExtraTiles, $C620, $00A0
+	compressed_data LevelBonusTileAttributesGBC, $DAD0
+	db $ff
+	dw $4080 ; TODO: ??
 
 ScreenDataGBC_CrazyTown1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -16301,7 +16334,12 @@ CrazyTownLevelTilesGBC:
 CrazyTownTileAttributesGBC:
 	INCBIN "gfx/crazy_town/tile_attributes_gbc.bin.lz"
 
-INCBIN "baserom.gbc", $42d4f, $4308E - $42d4f
+LevelBonusBackgroundTilesGBC:
+	INCBIN "gfx/level_bonus/background_tiles_gbc.2bpp.lz"
+LevelBonusBackgroundTilemapGBC:
+	INCBIN "gfx/level_bonus/background_gbc.tilemap.lz"
+LevelBonusTileAttributesGBC:
+	INCBIN "gfx/level_bonus/tile_attributes_gbc.bin.lz"
 
 TreasureIslandLevelTiles:
 	INCBIN "gfx/treasure_island/level_tiles.2bpp.lz"
