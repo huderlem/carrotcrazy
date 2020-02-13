@@ -533,7 +533,7 @@ Func_373:
 	call Func_3153
 	ret
 
-Func_387:
+RunLevelSummaryScreen:
 	call LoadWarnerBrosBannerQuadrants
 	call Func_3e51
 	call WriteDMACodeToHRAM
@@ -10903,7 +10903,59 @@ Func_805c:
 Func_805f:
 	jp Func_8957
 
-INCBIN "baserom.gbc", $8062, $8098 - $8062
+Func_8062:
+	jp Func_8b23
+
+Func_8065:
+	jp Func_913f
+
+Func_8068:
+	jp Func_9142
+
+Func_806b:
+	jp Func_941e
+
+Func_806e:
+	jp Func_9537
+
+Func_8071:
+	jp Func_95c9
+
+Func_8074:
+	jp Func_9867
+
+Func_8077:
+	jp Func_9b73
+
+Func_807a:
+	jp Func_9e6a
+
+Func_807d:
+	jp Func_a152
+
+Func_8080:
+	jp Func_a4c9
+
+Func_8083:
+	jp Func_a6df
+
+Func_8086:
+	jp Func_a792
+
+Func_8089:
+	jp Func_a816
+
+Func_808c:
+	jp Func_a904
+
+Func_808f:
+	jp Func_ac37
+
+Func_8092:
+	jp $6f8f
+
+Func_8095:
+	jp $6f8f
 
 Func_8098:
 	jp Func_891d
@@ -11326,15 +11378,15 @@ Func_853d:
 	ld a, $77
 	ld [rNR50], a
 	ld h, $db
-	call .asm_857b
+	call Func_857b
 	inc h
-	call .asm_857b
+	call Func_857b
 	inc h
-	call .asm_857b
+	call Func_857b
 	inc h
-	jr .asm_857b
+	jr Func_857b
 	pop af
-.asm_857b
+Func_857b:
 	ld a, h
 	cp $de
 	jr z, .asm_85aa
@@ -11659,7 +11711,35 @@ Func_88a2:
 	ld [hl], a
 	ret
 
-INCBIN "baserom.gbc", $88f0, $891a - $88f0
+Func_88f0:
+	ld h, $db
+	jr asm_8905
+Func_88f4:
+	ld h, $dc
+	jr asm_8905
+Func_88f8:
+	ld h, $dd
+	xor a
+	ld [$db65], a
+	ld [$db52], a
+	ld a, $77
+	ld [rNR50], a
+asm_8905:
+	call Func_857b
+	ld l, $27
+	ld [hl], $01
+	ld l, $02
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hl], a
+	ld l, $00
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ret
 
 Func_891a:
 	jp Func_8098
@@ -11809,7 +11889,231 @@ Func_8a7f:
 	ld [$db5c], a
 	ret
 
-INCBIN "baserom.gbc", $8b23, $bc00 - $8b23
+Func_8b23:
+	jp Func_8b26
+
+Func_8b26:
+	call Func_853d
+	ld de, $4b3b
+	call Func_88f8
+	ld de, $4b43
+	call Func_88f4
+	ld de, $4b4b
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $8b3b, $8cbd - $8b3b
+
+Func_8cbd:
+	call Func_853d
+	ld de, $4cd2
+	call Func_88f8
+	ld de, $4cee
+	call Func_88f4
+	ld de, $4d12
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $8cd2, $913f - $8cd2
+
+Func_913f:
+	jp Func_8cbd
+
+Func_9142:
+	call Func_853d
+	ld de, $5157
+	call Func_88f8
+	ld de, $5167
+	call Func_88f4
+	ld de, $5177
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $9157, $941e - $9157
+
+Func_941e:
+	call Func_853d
+	ld de, Data_9433
+	call Func_88f8
+	ld de, Data_9435
+	call Func_88f4
+	ld de, Data_9437
+	jp Func_88f0
+
+Data_9433:
+	dw Data_9439
+Data_9435:
+	dw $5483
+Data_9437:
+	dw $54f7
+
+Data_9439:
+	db $7A, $0C
+	db $CB, $F0
+	db $90, $19, $89, $25
+	db $90, $14, $89, $25, $80, $F0
+	db $90, $1B, $8A, $27
+	db $90, $16, $8A, $27, $80, $F0
+	db $90, $14, $89, $2C
+	db $90, $0F, $89, $2C, $80
+	db $90, $19, $18, $16, $14, $12, $11, $0F, $14, $F0
+	db $90, $0D, $89, $25
+	db $90, $14, $89, $25, $80, $F0
+	db $90, $12, $89, $2A
+	db $90, $19, $89, $2A, $80
+	db $90, $6B, $60, $14, $D7, $19
+	db $CB, $14, $6B, $3C, $19, $68
+
+INCBIN "baserom.gbc", $9483, $9537 - $9483
+
+Func_9537:
+	call Func_853d
+	ld de, $554c
+	call Func_88f8
+	ld de, $554e
+	call Func_88f4
+	ld de, $5550
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $954c, $95c9 - $954c
+
+Func_95c9:
+	call Func_853d
+	ld de, $55de
+	call Func_88f8
+	ld de, $55e8
+	call Func_88f4
+	ld de, $55f2
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $95de, $9867 - $95de
+
+Func_9867:
+	call Func_853d
+	ld a, $6f
+	ld [$db49], a
+	ld a, $93
+	ld [$db48], a
+	ld de, $5887
+	call Func_88f0
+	ld de, $58a7
+	call Func_88f8
+	ld de, $58c7
+	jp Func_88f4
+
+INCBIN "baserom.gbc", $9886, $9b73 - $9886
+
+Func_9b73:
+	call Func_853d
+	ld a, $6f
+	ld [$db49], a
+	ld a, $93
+	ld [$db48], a
+	ld de, $5b93
+	call Func_88f0
+	ld de, $5bab
+	call Func_88f4
+	ld de, $5bc3
+	jp Func_88f8
+
+INCBIN "baserom.gbc", $9b92, $9e6a - $9b92
+
+Func_9e6a:
+	call Func_853d
+	ld de, $5e7f
+	call Func_88f8
+	ld de, $5e9d
+	call Func_88f4
+	ld de, $5ebb
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $9e7f, $a152 - $9e7f
+
+Func_a152:
+	call Func_853d
+	ld a, $6f
+	ld [$db49], a
+	ld a, $93
+	ld [$db48], a
+	ld de, $6172
+	call Func_88f0
+	ld de, $6188
+	call Func_88f4
+	ld de, $619e
+	jp Func_88f8
+
+INCBIN "baserom.gbc", $a171, $a4c9 - $a171
+
+Func_a4c9:
+	call Func_853d
+	ld de, $64de
+	call Func_88f8
+	ld de, $64ec
+	call Func_88f4
+	ld de, $64fa
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $a4de, $a6df - $a4de
+
+Func_a6df:
+	call Func_853d
+	ld a, $6f
+	ld [$db49], a
+	ld a, $93
+	ld [$db48], a
+	ld de, $66fe
+	call Func_88f0
+	ld de, $6704
+	call Func_88f4
+	ld de, $670a
+	jp Func_88f8
+
+INCBIN "baserom.gbc", $a6fe, $a792 - $a6fe
+
+Func_a792:
+	call Func_853d
+	ld de, $67a7
+	call Func_88f8
+	ld de, $67ad
+	call Func_88f4
+	ld de, $67b3
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $a7a7, $a816 - $a7a7
+
+Func_a816:
+	call Func_853d
+	ld de, $682b
+	call Func_88f8
+	ld de, $6831
+	call Func_88f4
+	ld de, $6837
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $a82b, $a904 - $a82b
+
+Func_a904:
+	call Func_853d
+	ld de, $6919
+	call Func_88f8
+	ld de, $6937
+	call Func_88f4
+	ld de, $6955
+	jp Func_88f0
+
+INCBIN "baserom.gbc", $a919, $ac37 - $a919
+
+Func_ac37:
+	call Func_853d
+	ld a, $6f
+	ld [$db49], a
+	ld a, $93
+	ld [$db48], a
+	ld de, $6c56
+	call Func_88f0
+	ld de, $6c68
+	call Func_88f8
+	ld de, $6c7a
+	jp Func_88f4
+
+INCBIN "baserom.gbc", $ac56, $bc00 - $ac56
 
 FuddForestLevelSpriteTiles:
 	INCBIN "gfx/fudd_forest/level_sprites.interleave.2bpp.lz"
@@ -15151,8 +15455,9 @@ ScreenData_WarnerBrosCopyright:
 	compressed_data WarnerBrosCopyrightLogoTiles, $81c0
 	db $ff
 	dw RunWarnerBrosCopyrightScreen
+	dw Func_806b
 
-INCBIN "baserom.gbc", $1b10f, $1b113 - $1b10f
+INCBIN "baserom.gbc", $1b111, $1b113 - $1b111
 
 ScreenData_GameOver:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -15160,8 +15465,9 @@ ScreenData_GameOver:
 	compressed_data WarnerBrosGameOverTiles, $C000
 	db $ff
 	dw RunGameOverScreen
+	dw Func_806e
 
-INCBIN "baserom.gbc", $1b125, $1b129 - $1b125
+INCBIN "baserom.gbc", $1b127, $1b129 - $1b127
 
 ScreenData_LanguageSelect:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -15171,8 +15477,7 @@ ScreenData_LanguageSelect:
 	compressed_data GameText, $c500
 	db $ff
 	dw RunLanguageSelectScreen
-
-INCBIN "baserom.gbc", $1b145, $1b147 - $1b145
+	dw Func_8080
 
 ScreenData_Options:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -15184,8 +15489,7 @@ ScreenData_Options:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunOptionsScreen
-
-INCBIN "baserom.gbc", $1b16d, $1b16f - $1b16d
+	dw Func_8080
 
 ScreenData_Titlescreen:
 	compressed_data FarmSceneTiles, $8CB0
@@ -15196,8 +15500,9 @@ ScreenData_Titlescreen:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunTitlescreen
+	dw Func_8068
 
-INCBIN "baserom.gbc", $1b190, $1b194 - $1b190
+INCBIN "baserom.gbc", $1b192, $1b194 - $1b192
 
 ScreenData_IntroScene:
 	compressed_data FarmSceneTiles, $8CB0
@@ -15324,7 +15629,7 @@ ScreenData_Studio:
 	compressed_data StudioCeilingFloorTilemap, $9B00
 	compressed_data StudioCameraArrowTiles, $8560
 	db $ff
-	dw $4065
+	dw Func_8065
 
 ScreenData_StudioTreasureIsland:
 	db $ff
@@ -15644,7 +15949,7 @@ ScreenData_LevelSummary:
 	compressed_data GameText, $C500
 	compressed_data LevelSummaryIconTiles, $80E0
 	db $ff
-	dw Func_387
+	dw RunLevelSummaryScreen
 
 INCBIN "baserom.gbc", $1b73e, $1b740 - $1b73e
 
@@ -16069,7 +16374,7 @@ ScreenDataGBC_Studio:
 	compressed_data StudioTileAttributesGBC, $DA48
 	compressed_data StudioCeilingFloorTileAttributesGBC, $D9BC
 	db $ff
-	dw $4065
+	dw Func_8065
 
 ScreenDataGBC_Titlescreen:
 	compressed_data FarmSceneTilesGBC, $8CB0
@@ -16081,8 +16386,9 @@ ScreenDataGBC_Titlescreen:
 	compressed_data TitlescreenTileAttributesGBC, $D94B
 	db $ff
 	dw RunTitlescreen
+	dw Func_8068
 
-INCBIN "baserom.gbc", $1bc89, $1bc8d - $1bc89
+INCBIN "baserom.gbc", $1bc8b, $1bc8d - $1bc8b
 
 ScreenDataGBC_IntroScene:
 	compressed_data FarmSceneTilesGBC, $8CB0
