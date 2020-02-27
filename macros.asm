@@ -102,9 +102,20 @@ entity_barrel_boat: MACRO
 ; \3: minimum x coord when pushing
 ; \4: maximum x coord when pushing
 entity_pushable_chest: MACRO
-	dw HandlePushableChestEntity
+	dw HandlePushableObjectEntity
 	dw \2, \1
 	db $82
+	dw \3, \4
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when pushing
+; \4: maximum x coord when pushing
+entity_pushable_crate: MACRO
+	dw HandlePushableObjectEntity
+	dw \2, \1
+	db $00
 	dw \3, \4
 	ENDM
 
@@ -159,4 +170,47 @@ entity_rock_thrower: MACRO
 	dw HandleRockThrowerEntity
 	dw \2, \1
 	db $80, $01, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_fire_hydrant: MACRO
+	dw HandleFireHydrantEntity
+	dw \2, \1
+	db $00, $00, $2B, $75, $4A
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when skateboarding
+; \4: maximum x coord when skateboarding
+entity_skateboard: MACRO
+	dw HandleSkateboardEntity
+	dw \2, \1
+	db $00
+	dw \3, \4
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: bomb explosion y coord
+entity_sylvester: MACRO
+	dw HandleSylvesterEntity
+	dw \2, \1
+	db $00, $00, $00, $00, $00
+	dw \3
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when walking
+; \4: maximum x coord when walking
+entity_daffy_duck: MACRO
+	dw HandleDaffyDuckEntity
+	dw \2, \1
+	db $80, $01, $00
+	dw \1
+	db $00
+	dw \3, \4
+	db $00
 	ENDM
