@@ -174,10 +174,18 @@ entity_rock_thrower: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
+entity_brick_thrower: MACRO
+	dw HandleBrickThrowerEntity
+	dw \2, \1
+	db $80, $01, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
 entity_fire_hydrant: MACRO
 	dw HandleFireHydrantEntity
 	dw \2, \1
-	db $00, $00, $2B, $75, $4A
+	db $00, $00, $2B, $75, (\2 & $ff)
 	ENDM
 
 ; \1: x pixel coord
@@ -213,4 +221,14 @@ entity_daffy_duck: MACRO
 	db $00
 	dw \3, \4
 	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_ladder: MACRO
+	dw HandleLadderEntity
+	dw \2, \1
+	db $00, $00
+	dw \1
+	dw \2 - $10
 	ENDM

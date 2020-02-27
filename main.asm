@@ -11228,7 +11228,7 @@ HandleSkateboardEntity:
 	jr .asm_48be
 .asm_4878
 	dec hl
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	ld [hld], a
 	ld a, [hPlayerXPos]
 	ld [hli], a
@@ -11271,7 +11271,144 @@ HandleSkateboardEntity:
 .asm_48be
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $48c1, $4a02 - $48c1
+INCBIN "baserom.gbc", $48c1, $48d1 - $48c1
+
+HandleBrickThrowerEntity:
+	ld a, [hli]
+	inc hl
+	sub $1c
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add a
+	jr nc, .asm_48f4
+	dec [hl]
+	jp nz, .asm_499c
+	dec hl
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_48f0
+	ld a, $02
+.asm_48f0
+	ld [hl], a
+	jp .asm_499c
+.asm_48f4
+	add a
+	jr nc, .asm_491c
+	dec [hl]
+	jr nz, .asm_490a
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $ff
+	jr z, .asm_4904
+	ld a, $78
+.asm_4904
+	ld [hld], a
+	set 7, [hl]
+	jp .asm_499c
+.asm_490a
+	push hl
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	bit 3, [hl]
+	jp z, .asm_499c
+	ld bc, $6a2b
+	jr .asm_4998
+.asm_491c
+	add a
+	add a
+	jr nc, .asm_4947
+	dec [hl]
+	jr nz, .asm_4942
+	inc hl
+	dec [hl]
+	dec hl
+	jr nz, .asm_493a
+.asm_4928
+	ld a, $02
+	call PlaySoundEffectHome
+	ld a, $78
+	ld [hld], a
+	set 6, [hl]
+	ld bc, $10
+	call AddScore
+	jr .asm_499c
+.asm_493a
+	ld a, $28
+	ld [hld], a
+	res 4, [hl]
+	inc hl
+	jr .asm_4947
+.asm_4942
+	ld bc, $6a61
+	jr .asm_4998
+.asm_4947
+	inc [hl]
+	ld a, [hld]
+	cp $30
+	jr nz, .asm_4955
+	ld bc, $49c7
+	call Func_1868
+	jr .asm_4969
+.asm_4955
+	cp $a0
+	jr c, .asm_495d
+	inc hl
+	ld a, $18
+	ld [hld], a
+.asm_495d
+	res 5, [hl]
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc d
+	jr nc, .asm_4969
+	set 5, [hl]
+.asm_4969
+	ld bc, $1018
+	call Func_78ae
+	inc hl
+	and a
+	jr z, .asm_4984
+	cp $02
+	jr z, .asm_4928
+	ld a, $1e
+	ld [hld], a
+	set 4, [hl]
+	inc hl
+	ld a, $13
+	call PlaySoundEffectHome
+	jr .asm_4942
+.asm_4984
+	ld a, [hl]
+	and $f8
+	srl a
+	srl a
+	add $9f
+	ld e, a
+	ld a, $49
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+.asm_4998
+	dec hl
+	call Func_792d
+.asm_499c
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $499f, $4a02 - $499f
 
 HandleSylvesterEntity:
 	ld a, [hli]
@@ -11339,7 +11476,7 @@ HandleSylvesterEntity:
 	jr nz, .asm_4a8d
 	inc hl
 	inc [hl]
-	ld a, [$deeb]
+	ld a, [wDifficultySetting]
 	and a
 	ld a, $02
 	jr z, .asm_4a6c
@@ -11436,7 +11573,7 @@ HandleSylvesterEntity:
 	jr nc, .asm_4b18
 	ld a, [hPlayerYPos]
 	sub b
-	ld a, [$ffcb]
+	ld a, [hPlayerYPos + 1]
 	sbc e
 	jr z, .asm_4b06
 	inc a
@@ -12060,7 +12197,7 @@ HandleRockThrowerEntity:
 	res 5, [hl]
 	ld a, [hPlayerXPos]
 	sub c
-	ld a, [$ffc9]
+	ld a, [hPlayerXPos + 1]
 	sbc d
 	jr nc, .asm_5078
 	set 5, [hl]
@@ -13459,7 +13596,245 @@ Func_7b8a:
 	inc [hl]
 	ret
 
-INCBIN "baserom.gbc", $7bd3, $7dfc - $7bd3
+INCBIN "baserom.gbc", $7bd3, $7c71 - $7bd3
+
+HandleLadderEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jp nz, .asm_7dbf
+	push bc
+	push de
+	push hl
+	ld d, b
+	ld b, e
+	ld hl, $7dc2
+	call Func_3c7a
+	pop hl
+	pop de
+	pop bc
+	bit 6, [hl]
+	jp z, .asm_7d1b
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	ld a, e
+	add $02
+	ld e, a
+	ld [hli], a
+	ld a, d
+	adc $00
+	ld d, a
+	ld [hli], a
+	inc hl
+	inc hl
+	inc hl
+	dec [hl]
+	jp nz, .asm_7dbf
+	dec hl
+	set 7, [hl]
+	inc hl
+	inc hl
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ld a, $06
+	ld [$ff8a], a
+.asm_7cb6
+	push bc
+	push de
+	ld h, b
+	ld l, c
+	add hl, hl
+	add hl, hl
+	ld b, h
+	ld h, d
+	ld l, e
+	add hl, hl
+	add hl, hl
+	ld l, h
+	ld h, $c5
+	sla l
+	ld a, [hli]
+	ld h, [hl]
+	sla b
+	add b
+	ld l, a
+	jr nc, .asm_7ccf
+	inc h
+.asm_7ccf
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, e
+	and $30
+	rrca
+	rrca
+	add l
+	ld l, a
+	ld a, c
+	and $30
+	swap a
+	add l
+	ld l, a
+	ld a, $1c
+	ld [hli], a
+	inc a
+	ld [hl], a
+	pop de
+	pop bc
+	push bc
+	push de
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
+	pop de
+	pop bc
+	push bc
+	push de
+	ld a, c
+	add $10
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
+	pop de
+	pop bc
+	ld a, e
+	add $10
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_7cb6
+	jp .asm_7dbf
+.asm_7d1b:
+	bit 5, [hl]
+	jr z, .asm_7d49
+	push hl
+	ld hl, hPlayerXPos
+	ld a, c
+	add $06
+	ld [hli], a
+	ld a, b
+	adc $00
+	ld [hli], a
+	ld a, e
+	add $21
+	ld [hli], a
+	ld a, d
+	adc $00
+	ld [hl], a
+	pop hl
+	inc hl
+	dec [hl]
+	jp nz, .asm_7dbf
+	ld [hl], $20
+	dec hl
+	set 6, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	sub a
+	ld [$ffb0], a
+	jr .asm_7dbf
+.asm_7d49
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_7dbf
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_7dbf
+	ld a, e
+	add $20
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr z, .asm_7d70
+	inc a
+	jr nz, .asm_7dbf
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f0
+	jr c, .asm_7dbf
+	jr .asm_7d77
+.asm_7d70
+	ld a, [hPlayerYPos]
+	sub e
+	cp $10
+	jr nc, .asm_7dbf
+.asm_7d77
+	ld a, e
+	sub $20
+	ld e, a
+	ld a, d
+	sbc $00
+	ld d, a
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr z, .asm_7d93
+	inc a
+	jr nz, .asm_7dbf
+	ld a, [$ffdd]
+	sub c
+	cp $f0
+	jr c, .asm_7dbf
+	jr .asm_7d9a
+.asm_7d93
+	ld a, [$ffdd]
+	sub c
+	cp $18
+	jr nc, .asm_7dbf
+.asm_7d9a
+	set 5, [hl]
+	inc hl
+	ld [hl], $10
+	ld a, $18
+	ld [$ffb0], a
+	ld hl, $2ded
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	add $06
+	ld [hli], a
+	ld a, b
+	adc $00
+	ld [hli], a
+	ld a, e
+	add $21
+	ld [hli], a
+	ld a, d
+	adc $00
+	ld [hl], a
+	call Func_2326
+.asm_7dbf
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $7dc2, $7dfc - $7dc2
 
 ResetInitialData:
 	call WaitUntilSafeToAccessVRAM
@@ -15156,7 +15531,153 @@ CrazyTown1Entity60: entity_collectible CLAPBOARD_2, $8D0, $8F
 CrazyTown1Entity61: entity_collectible SUPER_CARROT, $880, $6F
 CrazyTown1Entity62: entity_collectible CARROT, $8B0, $3F
 
-INCBIN "baserom.gbc", $1395e, $13daf - $1395e
+CrazyTown2EntityTriggers:
+	dw $FFFF, $0000, $59EC
+	trigger  $00,  $90, 35, CrazyTown2
+	trigger  $00,  $60, 37, CrazyTown2
+	trigger  $00,  $80, 38, CrazyTown2
+	trigger  $00,  $78, 61, CrazyTown2
+	trigger  $10,  $C0, 36, CrazyTown2
+	trigger  $30, $140, 23, CrazyTown2
+	trigger  $40, $140,  4, CrazyTown2
+	trigger  $40, $150, 49, CrazyTown2
+	trigger  $A4, $15C,  5, CrazyTown2
+	trigger  $C0, $170,  6, CrazyTown2
+	trigger  $C0, $170, 52, CrazyTown2
+	trigger  $E0, $198, 60, CrazyTown2
+	trigger  $F0, $1A0,  7, CrazyTown2
+	trigger $120, $1D0, 53, CrazyTown2
+	trigger $140, $1F0, 68, CrazyTown2
+	trigger $1A0, $250, 54, CrazyTown2
+	trigger $1A0, $250, 55, CrazyTown2
+	trigger $1A0, $250, 56, CrazyTown2
+	trigger $1F0, $2A0, 41, CrazyTown2
+	trigger $200, $2B8,  9, CrazyTown2
+	trigger $220, $2D0, 40, CrazyTown2
+	trigger $220, $2D0, 69, CrazyTown2
+	trigger $228, $2D8,  8, CrazyTown2
+	trigger $250, $300, 39, CrazyTown2
+	trigger $264, $31C, 14, CrazyTown2
+	trigger $270, $320, 10, CrazyTown2
+	trigger $290, $340, 11, CrazyTown2
+	trigger $290, $340, 12, CrazyTown2
+	trigger $290, $340, 13, CrazyTown2
+	trigger $2C0, $420,  0, CrazyTown2
+	trigger $340, $3F0, 58, CrazyTown2
+	trigger $370, $420, 59, CrazyTown2
+	trigger $380, $430, 65, CrazyTown2
+	trigger $3B0, $460, 67, CrazyTown2
+	trigger $3C0, $478, 42, CrazyTown2
+	trigger $3C0, $4D0, 51, CrazyTown2
+	trigger $3E0, $498, 62, CrazyTown2
+	trigger $3F4, $4AC, 66, CrazyTown2
+	trigger $410, $4C0, 44, CrazyTown2
+	trigger $420, $4D0, 64, CrazyTown2
+	trigger $440, $4F0, 43, CrazyTown2
+	trigger $450, $500, 24, CrazyTown2
+	trigger $470, $530,  2, CrazyTown2
+	trigger $480, $530, 25, CrazyTown2
+	trigger $4B0, $560, 15, CrazyTown2
+	trigger $510, $5C0, 70, CrazyTown2
+	trigger $520, $5D0, 45, CrazyTown2
+	trigger $540, $6A0,  1, CrazyTown2
+	trigger $610, $6D0,  3, CrazyTown2
+	trigger $650, $700, 20, CrazyTown2
+	trigger $660, $710, 46, CrazyTown2
+	trigger $670, $728, 22, CrazyTown2
+	trigger $690, $740, 17, CrazyTown2
+	trigger $690, $740, 28, CrazyTown2
+	trigger $6A0, $750, 30, CrazyTown2
+	trigger $6C0, $7D0, 16, CrazyTown2
+	trigger $6C0, $770, 27, CrazyTown2
+	trigger $6E0, $790, 29, CrazyTown2
+	trigger $6E0, $790, 50, CrazyTown2
+	trigger $6E3, $79B, 18, CrazyTown2
+	trigger $710, $7C0, 26, CrazyTown2
+	trigger $720, $7D0, 48, CrazyTown2
+	trigger $730, $7E8, 63, CrazyTown2
+	trigger $746, $7FE, 34, CrazyTown2
+	trigger $760, $810, 47, CrazyTown2
+	trigger $770, $820, 19, CrazyTown2
+	trigger $7E6, $89E, 33, CrazyTown2
+	trigger $7F0, $8A0, 57, CrazyTown2
+	trigger $830, $8E0, 31, CrazyTown2
+	trigger $850, $900, 21, CrazyTown2
+	trigger $850, $900, 32, CrazyTown2
+	dw $7FFF, $0000, $59EC
+
+CrazyTown2Entities:
+CrazyTown2Entity0:  entity_skateboard $360, $1AF, $360, $400
+CrazyTown2Entity1:  entity_skateboard $5E0, $1AF, $5E0, $680
+CrazyTown2Entity2:  entity_fire_hydrant $510, $18A
+CrazyTown2Entity3:  entity_fire_hydrant $6B0, $18A
+CrazyTown2Entity4:  entity_pushable_crate $120, $120, $D8, $118
+CrazyTown2Entity5:  entity_sylvester $144, $F9, $141
+CrazyTown2Entity6:  entity_collectible SUPER_CARROT, $160, $5F
+CrazyTown2Entity7:  entity_collectible CARROT, $190, $5F
+CrazyTown2Entity8:  entity_collectible CLAPBOARD_1, $2C8, $9F
+CrazyTown2Entity9:  entity_brick_thrower $2A0, $7F
+CrazyTown2Entity10: entity_collectible TWEETY_HEART, $310, $6F
+CrazyTown2Entity11: entity_collectible CARROT, $330, $EF
+CrazyTown2Entity12: entity_collectible CARROT, $330, $BF
+CrazyTown2Entity13: entity_collectible CARROT, $330, $8F
+CrazyTown2Entity14: entity_sylvester $304, $169, $1B1
+CrazyTown2Entity15: entity_collectible CARROT, $550, $CF
+CrazyTown2Entity16: entity_daffy_duck $760, $14F, $760, $7B8
+CrazyTown2Entity17: entity_collectible CARROT, $730, $FF
+CrazyTown2Entity18: entity_sylvester $783, $99, $E1
+CrazyTown2Entity19: entity_collectible SUPER_CARROT, $810, $AF
+CrazyTown2Entity20: entity_collectible TWEETY_R, $6F0, $2F
+CrazyTown2Entity21: entity_collectible TWEETY_A, $8F0, $5F
+CrazyTown2Entity22: entity_brick_thrower $710, $6F
+CrazyTown2Entity23: entity_daffy_duck $D0, $8F, $D0, $128
+CrazyTown2Entity24: entity_collectible CARROT, $4F0, $AF
+CrazyTown2Entity25: entity_collectible CARROT, $520, $BF
+CrazyTown2Entity26: entity_collectible CARROT, $7B0, $AF
+CrazyTown2Entity27: entity_collectible CARROT, $760, $AF
+CrazyTown2Entity28: entity_collectible CLAPBOARD_2, $730, $AF
+CrazyTown2Entity29: entity_collectible CARROT, $780, $3F
+CrazyTown2Entity30: entity_collectible CARROT, $740, $2F
+CrazyTown2Entity31: entity_collectible CARROT, $8D0, $DF
+CrazyTown2Entity32: entity_collectible CARROT, $8F0, $DF
+CrazyTown2Entity33: entity_brick_thrower $886, $1B5
+CrazyTown2Entity34: entity_brick_thrower $7E6, $1BD
+CrazyTown2Entity35: entity_collectible CARROT, $80, $CF
+CrazyTown2Entity36: entity_collectible CARROT, $B0, $CF
+CrazyTown2Entity37: entity_collectible CARROT, $50, $4F
+CrazyTown2Entity38: entity_collectible CARROT, $70, $4F
+CrazyTown2Entity39: entity_collectible CARROT, $2F0, $17F
+CrazyTown2Entity40: entity_collectible CARROT, $2C0, $17F
+CrazyTown2Entity41: entity_collectible CARROT, $290, $17F
+CrazyTown2Entity42: entity_brick_thrower $460, $13F
+CrazyTown2Entity43: entity_collectible CARROT, $4E0, $10F
+CrazyTown2Entity44: entity_collectible CARROT, $4B0, $10F
+CrazyTown2Entity45: entity_collectible SUPER_CARROT, $5C0, $16F
+CrazyTown2Entity46: entity_collectible CARROT, $700, $FF
+CrazyTown2Entity47: entity_collectible CARROT, $800, $7F
+CrazyTown2Entity48: entity_collectible CARROT, $7C0, $4F
+CrazyTown2Entity49: entity_daffy_duck $E0, $1AF, $E0, $138
+CrazyTown2Entity50: entity_collectible CLAPBOARD_3, $780, $16F
+CrazyTown2Entity51: entity_daffy_duck $460, $1AF, $460, $4B8
+CrazyTown2Entity52: entity_collectible CLAPBOARD_0, $160, $3F
+CrazyTown2Entity53: entity_collectible CARROT, $1C0, $5F
+CrazyTown2Entity54: entity_collectible CARROT, $240, $7F
+CrazyTown2Entity55: entity_collectible CARROT, $240, $AF
+CrazyTown2Entity56: entity_collectible CARROT, $240, $DF
+CrazyTown2Entity57: entity_collectible SUPER_CARROT, $890, $16F
+CrazyTown2Entity58: entity_collectible CARROT, $3E0, $1F
+CrazyTown2Entity59: entity_collectible CARROT, $410, $1F
+CrazyTown2Entity60: entity_ladder $180, $160
+CrazyTown2Entity61: entity_ladder $60, $B0
+CrazyTown2Entity62: entity_ladder $480, $F0
+CrazyTown2Entity63: entity_ladder $7D0, $100
+CrazyTown2Entity64: entity_collectible SUPER_CARROT, $4C0, $9F
+CrazyTown2Entity65: entity_collectible SUPER_CARROT, $420, $9F
+CrazyTown2Entity66: entity_sylvester $494, $89, $D1
+CrazyTown2Entity67: entity_collectible TWEETY_1UP, $450, $3F
+CrazyTown2Entity68: entity_collectible TWEETY_E, $1E0, $18F
+CrazyTown2Entity69: entity_collectible TWEETY_X, $2C0, $FF
+CrazyTown2Entity70: entity_collectible TWEETY_T, $5B0, $DF
 
 FuddForestBossBackgroundTilemap:
 	INCBIN "gfx/fudd_forest/boss_background.tilemap.lz"
@@ -18702,8 +19223,12 @@ ScreenData_CrazyTown1:
 	dw CrazyTownPalettes
 	dw $0000, $0100 ; initial camera offset
 	dw $0020, $016F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b374, $1b37f - $1b374
+	db Bank(CrazyTown1EntityTriggers)
+	dw CrazyTown1EntityTriggers
+	dw CrazyTown1Entities
+	dw Func_808c
+	dw $5C01 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_CrazyTown2:
 	compressed_data CrazyTownLevelTiles, $8B20
@@ -18718,8 +19243,12 @@ ScreenData_CrazyTown2:
 	dw CrazyTownPalettes
 	dw $0000, $0140 ; initial camera offset
 	dw $0010, $01AF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b3ab, $1b3b6 - $1b3ab
+	db Bank(CrazyTown2EntityTriggers)
+	dw CrazyTown2EntityTriggers
+	dw CrazyTown2Entities
+	dw $408C
+	dw $5C01 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
