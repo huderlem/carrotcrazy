@@ -18,13 +18,20 @@ wLevelMap:: ; $c600
 SECTION "WRAM Bank 1", WRAMX
 	ds $500 ; wLevelMap continues until $d500
 
-wd500:
-	ds $500
+wLevelEntities:: ; $d500
+	ds $400
+
+	ds $100
 
 wGBCTileAttributes:: ; $da00
 	ds $100
 
-	ds $2e2
+	ds $2a3
+
+wAnimatedTilesPointer:: ; $dda3
+	ds 2
+
+	ds $3d
 
 ; $ff if in credits scene, $00 otherwise.
 wInCreditsScene:: ; $dde2
@@ -64,7 +71,10 @@ wHeldKeys:: ; $def9
 wNewKeys:: ; $defa
 	ds 1
 
-	ds 4
+	ds 3
+
+wDisableMusic:: ; $defe
+	ds 1
 
 wCurScreen:: ; $deff
 	ds 1

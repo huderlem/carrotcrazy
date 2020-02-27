@@ -254,7 +254,7 @@ RunPrologueSceneScreen:
 	ld [de], a
 	inc e
 	jr nz, .asm_170
-	call Func_3e51
+	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	call Func_3c72
@@ -379,7 +379,7 @@ RunLevelBonusScreen:
 	ld hl, ScreenDataGBC_LevelBonus
 .asm_264
 	call LoadData
-	call Func_3e51
+	call InitScreenMusic
 	ld a, Bank(Func_17ba8)
 	ld [MBC5RomBank], a
 	call Func_17ba8
@@ -535,7 +535,7 @@ Func_373:
 
 RunLevelSummaryScreen:
 	call LoadWarnerBrosBannerQuadrants
-	call Func_3e51
+	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	call Func_3c72
@@ -598,14 +598,14 @@ RunLevelSummaryScreen:
 	ld bc, $2
 	call AddScore
 	ld a, $0f
-	call Func_3e1b
+	call PlaySoundEffectHome
 	jp .asm_3b4
 .asm_420
 	ld a, [wNewKeys]
 	and PADF_START | PADF_A
 	jp z, .asm_3b4
 	ld a, $08
-	call Func_3e1b
+	call PlaySoundEffectHome
 	call Func_3ddc
 	jp .asm_3b4
 
@@ -626,7 +626,7 @@ RunPasswordScreen:
 	push hl
 	ld hl, $76f4
 	call LoadData
-	call Func_3e51
+	call InitScreenMusic
 	pop hl
 	call LoadWarnerBrosBannerQuadrants
 	ld a, $06
@@ -710,7 +710,7 @@ RunPasswordScreen:
 	and PADF_START | PADF_A
 	jp z, .asm_49a
 	ld a, $08
-	call Func_3e1b
+	call PlaySoundEffectHome
 	call Func_3ddc
 	jp .asm_49a
 
@@ -744,7 +744,7 @@ RunInfogramesCopyrightScreen:
 
 RunWarnerBrosCopyrightScreen:
 	call LoadWarnerBrosBannerQuadrants
-	call Func_3e51
+	call InitScreenMusic
 	call Func_3bb4
 	call WriteDMACodeToHRAM
 	call Func_3dce
@@ -784,7 +784,7 @@ RunWarnerBrosCopyrightScreen:
 
 RunGameOverScreen:
 	call LoadWarnerBrosBannerQuadrants
-	call Func_3e51
+	call InitScreenMusic
 	call Func_3bb4
 	call WriteDMACodeToHRAM
 	call Func_3dce
@@ -814,7 +814,7 @@ RunGameOverScreen:
 
 RunLanguageSelectScreen:
 	call LoadWarnerBrosBannerQuadrants
-	call Func_3e51
+	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	call Func_3c72
@@ -881,19 +881,19 @@ RunLanguageSelectScreen:
 	ld [hl], $00
 .redraw
 	ld a, $07
-	call Func_3e1b
+	call PlaySoundEffectHome
 .ok
 	ld a, [wNewKeys]
 	and PADF_START | PADF_A
 	jp z, .asm_5f4
 	ld a, $08
-	call Func_3e1b
+	call PlaySoundEffectHome
 	call Func_3ddc
 	jp .asm_5f4
 
 RunOptionsScreen:
 	call LoadWarnerBrosBannerQuadrants
-	call Func_3e51
+	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	call Func_3c72
@@ -995,7 +995,7 @@ RunOptionsScreen:
 	and PADF_START | PADF_B
 	jp z, .asm_69c
 	ld a, $08
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld a, Bank(Passwords)
 	ld [MBC5RomBank], a
 	ld hl, Passwords
@@ -1065,7 +1065,7 @@ RunOptionsScreen:
 	ld [hl], $00
 .asm_78f
 	ld a, $07
-	call Func_3e1b
+	call PlaySoundEffectHome
 .asm_794
 	ld a, [wNewKeys]
 	bit PADB_B, a
@@ -1087,20 +1087,20 @@ RunOptionsScreen:
 .asm_7b5
 	ld hl, wDifficultySetting
 	dec a
-	jr nz, .asm_7be
-	ld hl, $defe
-.asm_7be
+	jr nz, .toggleSetting
+	ld hl, wDisableMusic
+.toggleSetting
 	ld a, [hl]
 	cpl
 	ld [hl], a
 .asm_7c1
 	ld a, $08
-	call Func_3e1b
+	call PlaySoundEffectHome
 	jp .asm_69c
 
 RunTitlescreen:
 	call Func_fb4
-	call Func_3e51
+	call InitScreenMusic
 	call Func_2c73
 	call WriteDMACodeToHRAM
 	call Func_3dce
@@ -1440,13 +1440,13 @@ RunTitlescreen:
 	cpl
 	ld [hl], a
 	ld a, $07
-	call Func_3e1b
+	call PlaySoundEffectHome
 .asm_a12
 	ld a, [wNewKeys]
 	and PADF_START | PADF_A
 	jp z, .asm_826
 	ld a, $08
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld hl, $ded7
 	ld a, [hl]
 	and a
@@ -1466,7 +1466,7 @@ RunIntroScene:
 	jp nz, InitNextScreen
 	cpl
 	ld [bc], a
-	call Func_3e51
+	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	call Func_3c72
@@ -1999,7 +1999,7 @@ RunLevelIntroScreen:
 	push hl
 	ld hl, $71b2
 	call LoadData
-	call Func_3e51
+	call InitScreenMusic
 	pop hl
 	call LoadWarnerBrosBannerQuadrants
 	ld a, $06
@@ -2132,12 +2132,12 @@ asm_e77:
 	ld hl, ScreenDataGBC_Studio
 .load
 	call LoadData
-	call Func_3e51
+	call InitScreenMusic
 	call Func_fb4
 	ld hl, StudioScreenGBCPalettes
 	call LoadCGBPalettesHome
 	pop hl
-	call Func_2b6d
+	call InitCameraAndMap
 	ld bc, $ff9c
 	ld a, [bc]
 	sub $08
@@ -2146,8 +2146,8 @@ asm_e77:
 	ld a, [bc]
 	sbc 0
 	ld [bc], a
-	call Func_1965
-	call Func_39f1
+	call InitPlayerPosition
+	call InitLevelEntities
 	call Func_2342
 	call Func_3335
 	call Func_392e
@@ -2397,11 +2397,11 @@ RunLevelScreen:
 	ld a, [bc]
 	sbc $00
 	ld [bc], a
-	call Func_2b6d
-	call Func_1965
-	call Func_39f1
-	call Func_3e51
-	call Func_2fe2
+	call InitCameraAndMap
+	call InitPlayerPosition
+	call InitLevelEntities
+	call InitScreenMusic
+	call InitAnimatedTiles
 	call Func_2342
 	call Func_3335
 	call Func_392e
@@ -2490,11 +2490,11 @@ Func_10e9:
 RunCrazyTownBossScreen:
 	call Func_fb4
 	call Func_11fc
-	call Func_2b6d
-	call Func_1965
-	call Func_39f1
-	call Func_3e51
-	call Func_2fe2
+	call InitCameraAndMap
+	call InitPlayerPosition
+	call InitLevelEntities
+	call InitScreenMusic
+	call InitAnimatedTiles
 	call Func_2342
 	call Func_2c73
 	call Func_3335
@@ -2626,11 +2626,11 @@ Func_11fc:
 RunTreasureIslandBossScreen:
 	call Func_fb4
 	call Func_11fc
-	call Func_2b6d
-	call Func_1965
-	call Func_39f1
-	call Func_3e51
-	call Func_2fe2
+	call InitCameraAndMap
+	call InitPlayerPosition
+	call InitLevelEntities
+	call InitScreenMusic
+	call InitAnimatedTiles
 	call Func_2342
 	call Func_2c73
 	call Func_3335
@@ -2738,11 +2738,11 @@ RunTreasureIslandBossScreen:
 RunTazZooBossScreen:
 	call Func_fb4
 	call Func_11fc
-	call Func_2b6d
-	call Func_1965
-	call Func_39f1
-	call Func_3e51
-	call Func_2fe2
+	call InitCameraAndMap
+	call InitPlayerPosition
+	call InitLevelEntities
+	call InitScreenMusic
+	call InitAnimatedTiles
 	call Func_2342
 	call Func_2c73
 	call Func_3335
@@ -2866,11 +2866,11 @@ RunTazZooBossScreen:
 RunSpaceStationBossScreen:
 	call Func_fb4
 	call Func_11fc
-	call Func_2b6d
-	call Func_1965
-	call Func_39f1
-	call Func_3e51
-	call Func_2fe2
+	call InitCameraAndMap
+	call InitPlayerPosition
+	call InitLevelEntities
+	call InitScreenMusic
+	call InitAnimatedTiles
 	call Func_2342
 	call Func_3335
 	call Func_392e
@@ -2959,11 +2959,11 @@ RunSpaceStationBossScreen:
 RunFuddForestBossScreen:
 	call Func_fb4
 	call Func_11fc
-	call Func_2b6d
-	call Func_1965
-	call Func_39f1
-	call Func_3e51
-	call Func_2fe2
+	call InitCameraAndMap
+	call InitPlayerPosition
+	call InitLevelEntities
+	call InitScreenMusic
+	call InitAnimatedTiles
 	call Func_2342
 	call Func_2c73
 	call Func_3335
@@ -3541,7 +3541,7 @@ Func_1873:
 	ld [de], a
 	pop hl
 	ld a, $0e
-	call Func_3e1b
+	call PlaySoundEffectHome
 	sub a
 	ret
 
@@ -3576,10 +3576,10 @@ Func_1948:
 	set 6, a
 	ld [$ffad], a
 	ld a, $0c
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ret
 
-Func_1965:
+InitPlayerPosition:
 	ld c, $c2
 	ld b, $06
 	sub a
@@ -3694,7 +3694,7 @@ asm_19f2:
 	call Func_2d62
 .asm_1a15
 	ld a, $13
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld a, [hCurHealth]
 	sub $01
 	jr nc, .asm_1a29
@@ -3991,7 +3991,7 @@ Func_1bdc:
 	cp $1c
 	jr nz, .asm_1c0e
 	ld a, $0a
-	call Func_3e1b
+	call PlaySoundEffectHome
 .asm_1c0e
 	ld a, [hNumCarrots]
 	add $1c
@@ -4023,7 +4023,7 @@ Func_1bdc:
 	ld a, $06
 	ld [$ffb2], a
 	ld a, $0b
-	call Func_3e1b
+	call PlaySoundEffectHome
 	set 6, b
 	jr Func_1bdc
 .asm_1c49
@@ -4113,7 +4113,7 @@ Func_1c9f:
 	ld [$ffb3], a
 	ld [hl], $0e
 	ld a, $01
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld hl, $2da9
 	jp Func_2d62
 
@@ -4260,7 +4260,7 @@ Func_1d61:
 .asm_1db9
 	ld [$ffc5], a
 	ld a, $04
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld hl, $2dcd
 	call Func_2d62
 .asm_1dc6
@@ -4306,7 +4306,7 @@ Func_1dc9:
 	ld a, $06
 	ld [$ffb2], a
 	ld a, $0b
-	call Func_3e1b
+	call PlaySoundEffectHome
 	set 0, b
 	set 6, b
 .asm_1e14
@@ -4377,7 +4377,7 @@ Func_1e1e:
 .asm_1e76
 	ld [$ffc5], a
 	ld a, $04
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld hl, $2dd5
 	call Func_2d62
 .asm_1e83
@@ -4507,7 +4507,7 @@ Func_1e8c:
 	add hl, hl
 	add hl, hl
 	ld l, h
-	ld h, $c5
+	ld h, (wMetatileRowPointers >> 8)
 	sla l
 	ld a, [hli]
 	ld h, [hl]
@@ -4599,7 +4599,7 @@ Func_1f73:
 	and $0f
 	jr nz, .asm_1fcc
 	ld a, $05
-	call Func_3e1b
+	call PlaySoundEffectHome
 .asm_1fcc
 	jp Func_19e5
 
@@ -4675,7 +4675,7 @@ Func_1fe3:
 .asm_203b
 	ld [$ffc5], a
 	ld a, $04
-	call Func_3e1b
+	call PlaySoundEffectHome
 .asm_2042
 	jp Func_19e5
 
@@ -4709,7 +4709,7 @@ Func_2045:
 	ld a, $28
 	ld [$ffc5], a
 	ld a, $04
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld hl, $2df9
 	call Func_2d62
 .asm_207e
@@ -5002,7 +5002,7 @@ Func_2145:
 	and $0f
 	jr nz, .asm_2245
 	ld a, $05
-	call Func_3e1b
+	call PlaySoundEffectHome
 .asm_2245
 	jp Func_19e5
 
@@ -5091,7 +5091,7 @@ Func_22c9:
 	ld a, $e0
 	ld [$ffc6], a
 	ld a, $04
-	call Func_3e1b
+	call PlaySoundEffectHome
 	ld hl, $2e0d
 	call Func_2d62
 .asm_22f5
@@ -5563,7 +5563,7 @@ Func_25da:
 	ret c
 	ld d, h
 	ld e, l
-	jr asm_260d
+	jr Func_260d
 Func_25ef:
 	ld a, [$ffb0]
 	cp $09
@@ -5572,7 +5572,7 @@ Func_25ef:
 	or $0f
 	ld e, a
 	inc de
-	jr asm_260d
+	jr Func_260d
 Func_25fb:
 	ld a, [$ffb6]
 	and a
@@ -5584,7 +5584,7 @@ Func_25fb:
 	set 1, a
 	ld [$ffad], a
 	jr Func_25da
-asm_260d:
+Func_260d:
 	sub a
 	ld [$ffc6], a
 	ld [$ffcc], a
@@ -6581,7 +6581,7 @@ DrawMetatileGBCAttributes:
 	ld [rVBK], a
 	ret
 
-Func_2b6d:
+InitCameraAndMap:
 	ld a, $06
 	ld [MBC5RomBank], a
 	ld c, (hCameraXOffset & $ff)
@@ -7172,7 +7172,7 @@ Func_2e2e:
 	call Func_2f9e
 	jr .asm_2f98
 .asm_2f34
-	ld hl, $dda3
+	ld hl, wAnimatedTilesPointer
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -7330,10 +7330,10 @@ Func_2f9e:
 	ld sp, $dffc
 	ret
 
-Func_2fe2:
+InitAnimatedTiles:
 	ld a, $06
 	ld [MBC5RomBank], a
-	ld bc, $dda3
+	ld bc, wAnimatedTilesPointer
 	ld a, [hli]
 	ld [bc], a
 	inc c
@@ -9319,19 +9319,19 @@ Func_3939:
 	ld [$ffe8], a
 	ld hl, $ffdb
 	ld a, [hCameraXOffset]
-	add $a0
+	add SCRN_X
 	ld [hli], a
 	ld a, [hCameraXOffset + 1]
-	adc $00
+	adc 0
 	ld [hli], a
 	ld a, [hPlayerXPos]
-	add $08
+	add 8
 	ld [hli], a
 	ld a, [hPlayerXPos + 1]
-	adc $00
+	adc 0
 	ld [hli], a
 	ld a, [$ffaf]
-	ld b, $1e
+	ld b, 30 ; pixel height of player
 	rra
 	jr nc, .asm_3960
 	srl b
@@ -9401,6 +9401,7 @@ Func_3939:
 	adc $ff
 	ld d, a
 	inc bc
+Func_39b7:
 	ld a, [$ffe1]
 	ld [MBC5RomBank], a
 .asm_39bc
@@ -9445,9 +9446,15 @@ Func_3939:
 	inc hl
 	jr .asm_39bc
 
-INCBIN "baserom.gbc", $39ea, $39f1 - $39ea
+Func_39ea:
+	pop de
+	pop bc
+	pop hl
+	inc hl
+	inc hl
+	jr Func_39b7
 
-Func_39f1:
+InitLevelEntities:
 	ld a, $06
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -9463,24 +9470,24 @@ Func_39f1:
 	push hl
 	ld a, [$ffe1]
 	ld [MBC5RomBank], a
-	ld hl, $d500
+	ld hl, wLevelEntities
 	ld de, $400
-.asm_3a0f
+.copyLoop
 	ld a, [bc]
 	inc bc
 	ld [hli], a
 	dec de
 	ld a, e
 	or d
-	jr nz, .asm_3a0f
+	jr nz, .copyLoop
 	sub a
 	ld [$ffe8], a
 	ld hl, $ffdb
 	ld a, [hCameraXOffset]
-	add $a0
+	add SCRN_X
 	ld [hli], a
 	ld a, [hCameraXOffset + 1]
-	adc $00
+	adc 0
 	ld [hli], a
 	ld a, [hPlayerXPos]
 	add $08
@@ -10284,8 +10291,7 @@ Func_3e13:
 	ld [MBC5RomBank], a
 	jp Func_8053
 
-Func_3e1b:
-; play sound effect?
+PlaySoundEffectHome:
 	push bc
 	push de
 	push hl
@@ -10303,7 +10309,7 @@ Func_3e1b:
 
 Func_3e31:
 	sub a
-	ld [$defe], a
+	ld [wDisableMusic], a
 	ld a, Bank(Func_8059)
 	ld [MBC5RomBank], a
 	jp Func_8059
@@ -10320,14 +10326,14 @@ Func_3e47:
 	ld a, $04
 	jp Func_805f
 
-Func_3e51:
-	ld a, [$defe]
+InitScreenMusic:
+	ld a, [wDisableMusic]
 	and a
-	jr z, .asm_3e5a
+	jr z, .musicEnabled
 	inc hl
 	inc hl
 	ret
-.asm_3e5a
+.musicEnabled
 	ld a, $06
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -10345,7 +10351,7 @@ Func_3e51:
 INCBIN "baserom.gbc", $3e6f, $3e71 - $3e6f
 
 Func_3e71:
-	ld a, [$defe]
+	ld a, [wDisableMusic]
 	and a
 	ret nz
 	push bc
@@ -10403,7 +10409,2087 @@ INCLUDE "home/load.asm"
 
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
-INCBIN "baserom.gbc", $4000, $795e - $4000
+INCBIN "baserom.gbc", $4000, $40b6 - $4000
+
+HandleCollectibleEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	or e
+	jp z, .asm_423b
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 4, [hl]
+	jr z, .asm_40cc
+	ld a, [hFrameCounter]
+	rra
+	jr c, .asm_40cc
+	dec de
+.asm_40cc
+	ld a, [hl]
+	and $0f
+	cp $07
+	jr c, .asm_410d
+	push hl
+	inc hl
+	inc hl
+	inc [hl]
+	ld a, [hl]
+	and $07
+	jr nz, .asm_40e4
+	bit 4, [hl]
+	jr nz, .asm_40e3
+	dec de
+	jr .asm_40e4
+.asm_40e3
+	inc de
+.asm_40e4
+	bit 7, d
+	jr z, .asm_40eb
+	ld de, $0
+.asm_40eb
+	push bc
+	push de
+	ld b, e
+	ld a, [hl]
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	ld [hl], d
+	dec hl
+	ld [hl], e
+	and $18
+	srl a
+	srl a
+	ld e, a
+	ld d, $00
+	ld hl, $4385
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3c98
+	pop de
+	pop bc
+	pop hl
+.asm_410d
+	ld a, [hli]
+	add a
+	jr nc, .asm_4124
+	dec [hl]
+	jr nz, .asm_411c
+	dec hl
+	ld a, [hl]
+	and $0f
+	ld [hl], a
+	jp .asm_423b
+.asm_411c
+	ld a, [hl]
+	cp $10
+	jp nc, .asm_423b
+	jr .asm_413e
+.asm_4124
+	add a
+	jr nc, .asm_414f
+	ld a, [hl]
+	cp $10
+	jr c, .asm_413d
+	dec hl
+	ld a, [hl]
+	and $0f
+	cp $02
+	jp nz, .asm_423b
+	set 7, a
+	ld [hli], a
+	ld [hl], $5a
+	jp .asm_423b
+.asm_413d
+	inc [hl]
+.asm_413e
+	ld hl, $4371
+	bit 2, a
+	jr z, .asm_4148
+	ld hl, $437b
+.asm_4148
+	ld b, e
+	call Func_3c98
+	jp .asm_423b
+.asm_414f
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_41c1
+	ld a, [$ffdd]
+	sub c
+	cp $18
+	jr nc, .asm_41c1
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr z, .asm_4172
+	inc a
+	jr nz, .asm_41c1
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f0
+	jr c, .asm_41c1
+	jr .asm_4179
+.asm_4172
+	ld a, [hPlayerYPos]
+	sub e
+	cp $22
+	jr nc, .asm_41c1
+.asm_4179
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_41c1
+	ld a, [$ffb0]
+	cp $21
+	jr z, .asm_41c1
+	sub a
+	ld [hld], a
+	set 6, [hl]
+	ld a, [hl]
+	and $0f
+	ld b, a
+	add a
+	add b
+	ld c, a
+	ld b, 0
+	ld hl, .jumpTable
+	add hl, bc
+	jp hl
+.jumpTable
+	jp .collectCarrot
+	jp .collectHabaneroCarrot
+	jp .collectSuperCarrot
+	jp .collectClapboard0
+	jp .collectClapboard1
+	jp .collectClapboard2
+	jp .collectClapboard3
+	jp .collectLetterE
+	jp .collectLetterX
+	jp .collectLetterT
+	jp .collectLetterR
+	jp .collectLetterA
+	jp .collectHeart
+	jp .collect1Up
+.asm_41c1
+	dec hl
+	ld a, [hl]
+	and $0f
+	cp $07
+	jr c, .asm_4200
+	push hl
+	ld hl, $48
+	add hl, bc
+	ld a, [hPlayerXPos]
+	sub l
+	ld l, a
+	ld a, [hPlayerXPos + 1]
+	sbc h
+	jr nc, .asm_41ff
+	inc a
+	jr nz, .asm_41ff
+	ld a, l
+	cp $78
+	jr c, .asm_41ff
+	ld hl, $2e
+	add hl, de
+	ld a, [hPlayerYPos]
+	sub l
+	ld l, a
+	ld a, [hPlayerYPos + 1]
+	sbc h
+	jr nc, .asm_41ff
+	inc a
+	jr nz, .asm_41ff
+	ld a, l
+	cp $92
+	jr c, .asm_41ff
+	pop hl
+	ld a, [$ffb0]
+	cp $21
+	jr z, .asm_4200
+	set 4, [hl]
+	jr .asm_4200
+.asm_41ff
+	pop hl
+.asm_4200
+	ld a, [hli]
+	and $0f
+	jr nz, .asm_420e
+	ld b, e
+	ld hl, $4367
+	call Func_3c98
+	jr .asm_423b
+.asm_420e
+	dec a
+	add a
+	add $15
+	ld c, a
+	ld a, $43
+	adc $00
+	ld b, a
+	ld a, [bc]
+	inc bc
+	ld e, a
+	ld a, [bc]
+	ld d, a
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_4224
+	inc [hl]
+.asm_4224
+	ld a, [de]
+	inc de
+	cp [hl]
+	jr nz, .asm_422b
+	ld [hl], $00
+.asm_422b
+	ld a, [hld]
+	add a
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_423b
+	jp Func_39ea
+.collectCarrot
+	ld a, $0f
+	call PlaySoundEffectHome
+	ld a, [hNumCarrots]
+	cp 32
+	jr z, .asm_423b
+	inc a
+	ld [hNumCarrots], a
+	ld bc, $5
+	call AddScore
+	jr .asm_423b
+.collectHabaneroCarrot
+	ld a, $10
+	call PlaySoundEffectHome
+	ld a, $f0
+	ld [$ffb6], a
+	ld a, [$ffaf]
+	res 2, a
+	ld [$ffaf], a
+	jr .asm_423b
+.collectSuperCarrot
+	ld a, $10
+	call PlaySoundEffectHome
+	ld a, $24
+	ld [$ffb7], a
+	ld a, $03
+	ld [$ffb0], a
+	ld hl, $2db1
+	call Func_2d62
+	jr .asm_423b
+.collectClapboard0
+	ld bc, $8800
+	ld de, $4596
+	jr .collectClapboardPiece
+.collectClapboard1
+	ld bc, $8810
+	ld de, $45a6
+	jr .collectClapboardPiece
+.collectClapboard2
+	ld bc, $8820
+	ld de, $45b6
+	jr .collectClapboardPiece
+.collectClapboard3
+	ld bc, $8830
+	ld de, $45c6
+	jr .collectClapboardPiece
+.collectClapboardPiece
+	ld a, $12
+	call PlaySoundEffectHome
+	ld hl, $fff2
+	inc [hl]
+	ld a, [hl]
+	cp $04
+	jr nz, .asm_42ac
+	ld a, $01
+	ld [$ffb5], a
+.asm_42ac
+	ld hl, $fff9
+	jr .asm_42e5
+.collectLetterE
+	ld bc, $8960
+	ld de, $44f6
+	jr .collectEXTRALetter
+.collectLetterX
+	ld bc, $8980
+	ld de, $4516
+	jr .collectEXTRALetter
+.collectLetterT
+	ld bc, $89a0
+	ld de, $4536
+	jr .collectEXTRALetter
+.collectLetterR
+	ld bc, $89c0
+	ld de, $4556
+	jr .collectEXTRALetter
+.collectLetterA
+	ld bc, $89e0
+	ld de, $4576
+	jr .collectEXTRALetter
+.collectEXTRALetter
+	ld a, $12
+	call PlaySoundEffectHome
+	ld hl, hEXTRALetters
+	inc [hl]
+	ld hl, $fff5
+.asm_42e5
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	jp .asm_423b
+.collectHeart
+	ld a, $11
+	call PlaySoundEffectHome
+	ld hl, hMaxHealth
+	ld a, [hld]
+	cp [hl]
+	jp z, .asm_423b
+	inc [hl]
+	jp .asm_423b
+.collect1Up
+	ld a, $11
+	call PlaySoundEffectHome
+	ld a, [hNumLives]
+	cp $99
+	jp z, .asm_423b
+	add 1
+	daa
+	ld [hNumLives], a
+	jp .asm_423b
+
+INCBIN "baserom.gbc", $4315, $43c3 - $4315
+
+HandlePushableChestEntity:
+	ld a, [$ffb0]
+	cp $21
+	jp z, Func_39ea
+	call Func_43d0
+	jp Func_39ea
+
+Func_43d0:
+	push hl
+	ld a, [hli]
+	inc hl
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hl]
+	ld e, a
+	and $0e
+	add $fd
+	ld l, a
+	ld a, $44
+	adc $00
+	ld h, a
+	bit 7, e
+	jr z, .asm_43f0
+	ld a, [hFrameCounter]
+	bit 4, a
+	jr z, .asm_43f0
+	inc hl
+	inc hl
+.asm_43f0
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [hli]
+	ld [$ff8a], a
+	ld a, [hli]
+	add $1e
+	ld [$ff8b], a
+	call Func_3c7a
+	pop hl
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hPlayerYPos]
+	sub c
+	ld e, a
+	ld a, [hPlayerYPos + 1]
+	sbc b
+	jp nz, .asm_44db
+	ld a, [$ff8b]
+	dec a
+	cp e
+	jp c, .asm_44db
+	ld a, [hli]
+	sub $08
+	ld c, a
+	ld a, [hli]
+	sbc $00
+	ld b, a
+	ld a, [hPlayerXPos]
+	sub c
+	ld e, a
+	ld a, [hPlayerXPos + 1]
+	sbc b
+	jp nz, .asm_44db
+	ld a, [$ff8a]
+	add $08
+	cp e
+	jp c, .asm_44db
+	ld a, [$ffcd]
+	sub c
+	ld e, a
+	ld a, [$ffce]
+	sbc b
+	jr nc, .asm_444c
+	ld de, $3
+	add hl, de
+	ld de, $1
+	call Func_44dc
+	ld de, $fffb
+	add hl, de
+	ld d, b
+	ld e, c
+	dec de
+	ld a, $f0
+	jr .asm_4469
+.asm_444c
+	ld a, [$ff8a]
+	add $08
+	cp e
+	jr nc, .asm_4486
+	inc hl
+	ld de, $ffff
+	call Func_44dc
+	ld de, hEXTRALetters
+	add hl, de
+	ld a, [$ff8a]
+	add $09
+	add c
+	ld e, a
+	ld a, b
+	adc $00
+	ld d, a
+	sub a
+.asm_4469
+	ld [$ffc7], a
+	sub a
+	ld [$ffc5], a
+	ld [$ffc4], a
+	ld a, [$ffad]
+	set 3, a
+	ld [$ffad], a
+	ld a, e
+	ld [hPlayerXPos], a
+	ld a, d
+	ld [hPlayerXPos + 1], a
+	ld a, c
+	add $08
+	ld [hli], a
+	ld a, b
+	adc $00
+	ld [hl], a
+	jr .asm_44db
+.asm_4486
+	push hl
+	ld de, $fffc
+	add hl, de
+	ld a, [hli]
+	add $28
+	ld e, a
+	ld a, [hl]
+	adc $00
+	ld d, a
+	pop hl
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr c, .asm_44af
+	ld de, $fffc
+	add hl, de
+	ld a, [hli]
+	add $3e
+	ld [hPlayerYPos], a
+	ld a, [hl]
+	adc $00
+	ld [hPlayerYPos + 1], a
+	call Func_260d
+	jr .asm_44db
+.asm_44af
+	bit 7, [hl]
+	ld de, $fffc
+	add hl, de
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	dec de
+	ld a, e
+	ld [hPlayerYPos], a
+	ld a, d
+	ld [hPlayerYPos + 1], a
+	jr z, .asm_44d8
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_44d8
+	ld a, [$ffc6]
+	cp $28
+	jr c, .asm_44cf
+	ld a, $28
+.asm_44cf
+	srl a
+	srl a
+	call Func_1948
+	jr .asm_44db
+.asm_44d8
+	call Func_28b7
+.asm_44db
+	ret
+
+Func_44dc:
+	ld a, [$ffb0]
+	and a
+	ret nz
+	ld a, [$ffad]
+	bit 4, a
+	ret z
+	add a
+	ret c
+	ld a, [hli]
+	cp c
+	jr nz, .asm_44ef
+	ld a, [hl]
+	cp b
+	jr z, .asm_44fb
+.asm_44ef
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_44fb
+	ld a, c
+	add e
+	ld c, a
+	ld a, b
+	adc d
+	ld b, a
+.asm_44fb
+	dec hl
+	ret
+
+INCBIN "baserom.gbc", $44fd, $4bab - $44fd
+
+HandleYosemiteSamEntity:
+	ld bc, $4efc
+	jp Func_4c17
+
+INCBIN "baserom.gbc", $4bb1, $4c17 - $4bb1
+
+Func_4c17:
+	sub a
+	ld [$dde7], a
+	ld a, c
+	ld [$ffe6], a
+	ld a, b
+	ld [$ffe7], a
+	ld a, [hli]
+	inc hl
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add a
+	jr nc, .asm_4c4c
+	dec [hl]
+	jp nz, .asm_4ea7
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_4c3a
+	ld a, $02
+.asm_4c3a
+	inc hl
+	ld [hli], a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hld]
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	ld [hld], a
+	ld a, b
+	ld [hld], a
+	ld [hl], c
+	jp .asm_4ea7
+.asm_4c4c
+	add a
+	jr nc, .asm_4c95
+	dec [hl]
+	jr nz, .asm_4c62
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $ff
+	jr z, .asm_4c5c
+	ld a, $78
+.asm_4c5c
+	ld [hld], a
+	set 7, [hl]
+	jp .asm_4ea7
+.asm_4c62
+	dec hl
+	bit 4, [hl]
+	inc hl
+	jr z, .asm_4c77
+	ld a, [hl]
+	cp $78
+	jr nc, .asm_4c72
+	bit 3, a
+	jp z, .asm_4ea7
+.asm_4c72
+	ld a, $28
+	jp .asm_4e94
+.asm_4c77
+	push hl
+	ld a, c
+	add $04
+	ld c, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, b
+	sub $16
+	ld b, a
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	bit 3, [hl]
+	jp z, .asm_4ea7
+	ld a, $22
+	jp .asm_4e94
+.asm_4c95
+	add a
+	add a
+	jr nc, .asm_4ce1
+	inc [hl]
+	ld a, [hl]
+	cp $64
+	jr c, .asm_4ca7
+	ld a, $b4
+	ld [hld], a
+	set 6, [hl]
+	jp .asm_4ea7
+.asm_4ca7
+	cp $1e
+	ld a, $24
+	jp c, .asm_4e94
+	ld a, [hl]
+	cp $3c
+	ld a, $26
+	jp c, .asm_4e94
+	ld a, $0d
+	call z, PlaySoundEffectHome
+	ld a, [hl]
+	sub $3c
+	and $f8
+	srl a
+	srl a
+	add $dc
+	ld l, a
+	ld a, $18
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, c
+	add $04
+	ld c, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, b
+	sub $08
+	ld b, a
+	call Func_3c7a
+	jp .asm_4ea7
+.asm_4ce1
+	add a
+	jr nc, .asm_4d0b
+	dec [hl]
+	jr nz, .asm_4d06
+	inc hl
+	dec [hl]
+	dec hl
+	jr nz, .asm_4cff
+.asm_4cec
+	ld a, $78
+	ld [hld], a
+	set 6, [hl]
+	ld a, $02
+	call PlaySoundEffectHome
+	ld bc, $10
+	call AddScore
+	jp .asm_4ea7
+.asm_4cff
+	dec hl
+	ld a, [hl]
+	and $20
+	ld [hli], a
+	ld [hl], $3f
+.asm_4d06
+	ld a, $20
+	jp .asm_4e94
+.asm_4d0b
+	ld b, d
+	add a
+	jp nc, .asm_4dc0
+	ld a, [$ffe6]
+	cp $3a
+	jr nz, .asm_4d53
+	push hl
+	push bc
+	push de
+	ld bc, $fffb
+	add hl, bc
+	ld a, [hli]
+	sub $18
+	ld e, a
+	ld a, [hli]
+	sbc $00
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [$ffdd]
+	sub c
+	ld c, a
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_4d50
+	ld a, c
+	cp $20
+	jr nc, .asm_4d50
+	ld a, [hPlayerYPos]
+	sub e
+	ld e, a
+	ld a, [$ffcb]
+	sbc d
+	jr nz, .asm_4d50
+	ld a, e
+	cp $36
+	jr nc, .asm_4d50
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_4d50
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_4d50
+	pop de
+	pop bc
+	pop hl
+.asm_4d53
+	ld a, [$ffe6]
+	cp $78
+	ld d, $30
+	jr nz, .asm_4d5d
+	ld d, $20
+.asm_4d5d
+	ld a, [hl]
+	inc a
+	cp d
+	jr c, .asm_4d63
+	sub a
+.asm_4d63
+	ld [hld], a
+	ld a, [hFrameCounter]
+	and $7f
+	jr nz, .asm_4d78
+	dec [hl]
+	ld a, [hl]
+	and $03
+	jr nz, .asm_4d78
+	ld a, [hl]
+	and $20
+	ld [hli], a
+	ld [hl], $10
+	jr .asm_4dc0
+.asm_4d78
+	ld a, [$ffe6]
+	sub $0a
+	ld e, a
+	ld a, [$ffe7]
+	sbc $00
+	ld d, a
+	ld a, [de]
+	ld e, a
+	ld a, [hFrameCounter]
+	and e
+	ld a, [hli]
+	jr z, .asm_4d92
+	bit 5, a
+	jr z, .asm_4d91
+	dec bc
+	jr .asm_4d92
+.asm_4d91
+	inc bc
+.asm_4d92
+	ld de, $5
+	add hl, de
+	ld a, [hli]
+	sub c
+	ld a, [hli]
+	sbc b
+	jr c, .asm_4da0
+	ld d, $00
+	jr .asm_4da8
+.asm_4da0
+	ld a, [hli]
+	sub c
+	ld a, [hld]
+	sbc b
+	jr nc, .asm_4db4
+	ld d, $20
+.asm_4da8
+	ld bc, $fff8
+	add hl, bc
+	ld a, [hl]
+	and $df
+	or d
+	ld [hli], a
+	jp .asm_4e5f
+.asm_4db4
+	ld de, $fff6
+	add hl, de
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	inc hl
+	jp .asm_4e5f
+.asm_4dc0
+	inc [hl]
+	ld a, [hl]
+	cp $10
+	jr c, .asm_4dd8
+	cp $28
+	jr nc, .asm_4dd0
+	dec hl
+	set 5, [hl]
+	inc hl
+	jr .asm_4dd8
+.asm_4dd0
+	cp $40
+	jr nc, .asm_4dd8
+	dec hl
+	res 5, [hl]
+	inc hl
+.asm_4dd8
+	cp $50
+	jr nz, .asm_4def
+	sub a
+	ld [hld], a
+	ld a, [wDifficultySetting]
+	and a
+	ld b, $07
+	jr z, .asm_4de8
+	ld b, $06
+.asm_4de8
+	ld a, [hl]
+	and $20
+	or b
+	ld [hli], a
+	jr .asm_4e5f
+.asm_4def
+	cp $30
+	jr nz, .asm_4e1b
+	ld bc, $9
+	add hl, bc
+	inc [hl]
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $02
+	jr z, .asm_4e02
+	ld a, $04
+.asm_4e02
+	cp [hl]
+	ld bc, $fff7
+	add hl, bc
+	jr nz, .asm_4e5f
+	sub a
+	ld [hld], a
+	set 4, [hl]
+	ld bc, $a
+	add hl, bc
+	ld [hl], $00
+	ld bc, $fff7
+	add hl, bc
+	ld a, $24
+	jr .asm_4e94
+.asm_4e1b
+	cp $40
+	jr z, .asm_4e27
+	jr c, .asm_4e4d
+	cp $44
+	jr c, .asm_4e7d
+	jr .asm_4e4d
+.asm_4e27
+	dec hl
+	res 5, [hl]
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc b
+	jr nc, .asm_4e34
+	set 5, [hl]
+.asm_4e34
+	ld a, [$dde7]
+	and a
+	ld c, $09
+	jr z, .asm_4e3e
+	ld c, $13
+.asm_4e3e
+	ld a, [$ffe6]
+	sub c
+	ld c, a
+	ld a, [$ffe7]
+	sbc $00
+	ld b, a
+	call Func_1868
+	inc hl
+	jr .asm_4e7d
+.asm_4e4d
+	cp $38
+	jr nz, .asm_4e5f
+	dec hl
+	res 5, [hl]
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc b
+	jr nc, .asm_4e5e
+	set 5, [hl]
+.asm_4e5e
+	inc hl
+.asm_4e5f
+	ld bc, $1818
+	dec hl
+	call Func_78ae
+	inc hl
+	and a
+	jr z, .asm_4e7d
+	cp $02
+	jp z, .asm_4cec
+	ld a, $1e
+	ld [hld], a
+	set 3, [hl]
+	inc hl
+	ld a, $13
+	call PlaySoundEffectHome
+	jp .asm_4d06
+.asm_4e7d
+	dec hl
+	ld a, [hli]
+	bit 2, a
+	ld a, [hl]
+	jr nz, .asm_4e8e
+	and $f8
+	srl a
+	srl a
+	add $0c
+	jr .asm_4e94
+.asm_4e8e
+	and $f8
+	srl a
+	srl a
+.asm_4e94
+	ld e, a
+	ld a, [$ffe6]
+	add e
+	ld e, a
+	ld a, [$ffe7]
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	dec hl
+	call Func_792d
+.asm_4ea7
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $4eaa, $4fe0 - $4eaa
+
+HandleRockThrowerEntity:
+	ld a, [hli]
+	inc hl
+	sub $1c
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add a
+	jr nc, .asm_5003
+	dec [hl]
+	jp nz, .asm_50ab
+	dec hl
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_4fff
+	ld a, $02
+.asm_4fff
+	ld [hl], a
+	jp .asm_50ab
+.asm_5003
+	add a
+	jr nc, .asm_502b
+	dec [hl]
+	jr nz, .asm_5019
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $ff
+	jr z, .asm_5013
+	ld a, $78
+.asm_5013
+	ld [hld], a
+	set 7, [hl]
+	jp .asm_50ab
+.asm_5019
+	push hl
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	bit 3, [hl]
+	jp z, .asm_50ab
+	ld bc, $6c0e
+	jr .asm_50a7
+.asm_502b
+	add a
+	add a
+	jr nc, .asm_5056
+	dec [hl]
+	jr nz, .asm_5051
+	inc hl
+	dec [hl]
+	dec hl
+	jr nz, .asm_5049
+.asm_5037
+	ld a, $02
+	call PlaySoundEffectHome
+	ld a, $78
+	ld [hld], a
+	set 6, [hl]
+	ld bc, $10
+	call AddScore
+	jr .asm_50ab
+.asm_5049
+	ld a, $28
+	ld [hld], a
+	res 4, [hl]
+	inc hl
+	jr .asm_5056
+.asm_5051
+	ld bc, $6c4a
+	jr .asm_50a7
+.asm_5056
+	inc [hl]
+	ld a, [hld]
+	cp $30
+	jr nz, .asm_5064
+	ld bc, $50d6
+	call Func_1868
+	jr .asm_5078
+.asm_5064
+	cp $a0
+	jr c, .asm_506c
+	inc hl
+	ld a, $18
+	ld [hld], a
+.asm_506c
+	res 5, [hl]
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [$ffc9]
+	sbc d
+	jr nc, .asm_5078
+	set 5, [hl]
+.asm_5078
+	ld bc, $1018
+	call Func_78ae
+	inc hl
+	and a
+	jr z, .asm_5093
+	cp $02
+	jr z, .asm_5037
+	ld a, $1e
+	ld [hld], a
+	set 4, [hl]
+	inc hl
+	ld a, $13
+	call PlaySoundEffectHome
+	jr .asm_5051
+.asm_5093
+	ld a, [hl]
+	and $f8
+	srl a
+	srl a
+	add $ae
+	ld e, a
+	ld a, $50
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+.asm_50a7
+	dec hl
+	call Func_792d
+.asm_50ab
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $50ae, $50df - $50ae
+
+HandleBarrelBoatEntity:
+	push hl
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	inc hl
+	inc hl
+	ld a, [hl]
+	inc a
+	and $1f
+	ld b, a
+	ld a, [hl]
+	and $e0
+	or b
+	ld [hl], a
+	and $1f
+	add a
+	ld c, a
+	ld b, $00
+	ld hl, $51d2
+	add hl, bc
+	ld a, [hli]
+	add e
+	ld e, a
+	ld a, [hl]
+	adc d
+	ld d, a
+	pop hl
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_517b
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_5173
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_5173
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, .asm_5173
+	cp $38
+	jr nc, .asm_5173
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	inc a
+	jr nz, .asm_5173
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f8
+	jr c, .asm_5173
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_5173
+	ld a, [$ffdd]
+	sub c
+	cp $20
+	jr nc, .asm_5173
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $0c
+	ld [$ffb0], a
+	push hl
+	inc hl
+	ld a, [hli]
+	ld [$ffba], a
+	ld a, [hli]
+	ld [$ffbb], a
+	ld a, [hli]
+	ld [$ffbc], a
+	ld a, [hl]
+	ld [$ffbd], a
+	ld hl, $2dd1
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	add $08
+	ld [hli], a
+	ld a, b
+	adc $00
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	call Func_2326
+	pop hl
+.asm_5173
+	ld bc, $6c59
+	call Func_792d
+	jr .asm_51cf
+.asm_517b
+	dec hl
+	dec hl
+	ld a, [hPlayerXPos]
+	sub $08
+	ld [hli], a
+	ld a, [hPlayerXPos + 1]
+	sbc 0
+	ld [hld], a
+	dec hl
+	ld a, [hld]
+	ld [hPlayerYPos + 1], a
+	ld a, [hli]
+	ld [hPlayerYPos], a
+	inc hl
+	inc hl
+	inc hl
+	ld a, [$ffad]
+	and $20
+	ld b, a
+	ld a, [hl]
+	and $df
+	or b
+	ld [hl], a
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_51b3
+	ld a, [$ffb0]
+	and a
+	jr z, .asm_51b3
+	ld a, [$def9]
+	bit 1, a
+	jr z, .asm_51c9
+	ld a, [$ffad]
+	bit 6, a
+	jr nz, .asm_51cf
+.asm_51b3
+	res 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	sub a
+	ld [$ffb0], a
+	ld a, $06
+	ld [$ffb2], a
+	ld a, $0b
+	call PlaySoundEffectHome
+	jr .asm_51cf
+.asm_51c9
+	ld a, [$ffad]
+	res 6, a
+	ld [$ffad], a
+.asm_51cf
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $51d2, $5212 - $51d2
+
+HandleCannonEntity:
+	push hl
+	ld bc, 4
+	add hl, bc
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_5235
+	ld a, [hl]
+	inc a
+	and $1f
+	ld b, a
+	ld a, [hl]
+	and $e0
+	or b
+	ld [hl], a
+	res 5, [hl]
+	and $1f
+	cp $0a
+	jr c, .asm_5235
+	cp $1a
+	jr nc, .asm_5235
+	set 5, [hl]
+.asm_5235
+	ld a, [hl]
+	and $1c
+	srl a
+	add $19
+	ld e, a
+	ld a, $53
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	pop hl
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add $08
+	ld c, a
+	ld a, [hli]
+	adc $00
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_52b6
+	ld a, [$ffb0]
+	and a
+	jp nz, .asm_5306
+	ld a, [$ffad]
+	bit 2, a
+	jp nz, .asm_5306
+	ld a, [$ffc6]
+	bit 7, a
+	jp nz, .asm_5306
+	cp $38
+	jp nc, .asm_5306
+	ld a, [hPlayerYPos]
+	cp e
+	jp nz, .asm_5306
+	ld a, [hPlayerYPos + 1]
+	cp d
+	jp nz, .asm_5306
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jp nz, .asm_5306
+	ld a, [$ffdd]
+	sub c
+	cp $10
+	jr nc, .asm_5306
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $0f
+	ld [$ffb0], a
+	ld hl, $2dd9
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	call Func_2326
+	ld a, $08
+	call PlaySoundEffectHome
+	jr .asm_5306
+.asm_52b6
+	ld a, c
+	ld [hPlayerXPos], a
+	ld a, b
+	ld [hPlayerXPos + 1], a
+	ld a, e
+	ld [hPlayerYPos], a
+	ld a, d
+	ld [hPlayerYPos + 1], a
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_52f9
+	ld a, [$ffb0]
+	and a
+	jr z, .asm_52f9
+	ld a, [wHeldKeys]
+	bit PADB_B, a
+	jr z, .asm_5300
+	ld a, [$ffad]
+	bit 6, a
+	jr nz, .asm_5306
+	ld a, [hl]
+	and $1c
+	srl a
+	add $09
+	ld c, a
+	ld a, $53
+	adc $00
+	ld b, a
+	ld a, $24
+	call Func_1948
+	ld a, [bc]
+	inc bc
+	ld [$ffc2], a
+	ld a, [bc]
+	ld b, a
+	ld a, [$ffad]
+	and $df
+	or b
+	ld [$ffad], a
+.asm_52f9
+	res 7, [hl]
+	sub a
+	ld [$ffb0], a
+	jr .asm_5306
+.asm_5300
+	ld a, [$ffad]
+	res 6, a
+	ld [$ffad], a
+.asm_5306
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $5309, $5329 - $5309
+
+HandleSeagullEntity:
+	ld bc, $559f
+	jr .asm_532e
+.asm_532e
+	ld a, c
+	ld [$ffe6], a
+	ld a, b
+	ld [$ffe7], a
+	push hl
+	ld a, [hli]
+	inc hl
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add a
+	jr nc, .asm_5358
+	dec [hl]
+	jp nz, .asm_550b
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_534e
+	ld a, $02
+.asm_534e
+	inc hl
+	ld [hld], a
+	dec hl
+	ld a, [hl]
+	and $20
+	ld [hl], a
+	jp .asm_550b
+.asm_5358
+	add a
+	jr nc, .asm_5389
+	dec [hl]
+	jr nz, .asm_536e
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $ff
+	jr z, .asm_5368
+	ld a, $78
+.asm_5368
+	ld [hld], a
+	set 7, [hl]
+	jp .asm_550b
+.asm_536e
+	ld a, [hl]
+	and $f8
+	srl a
+	srl a
+	add $c1
+	ld e, a
+	ld a, $55
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	dec hl
+	call Func_792d
+	jp .asm_550b
+.asm_5389
+	add a
+	add a
+	jr nc, .asm_53be
+	inc [hl]
+	ld a, [hl]
+	cp $28
+	jr c, .asm_539b
+	ld a, $7f
+	ld [hld], a
+	set 6, [hl]
+	jp .asm_550b
+.asm_539b
+	and $f8
+	srl a
+	srl a
+	add $dc
+	ld l, a
+	ld a, $18
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, c
+	add $08
+	ld c, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, b
+	sub $06
+	ld b, a
+	call Func_3c7a
+	jp .asm_550b
+.asm_53be
+	add a
+	jr nc, .asm_53f9
+	dec [hl]
+	jr nz, .asm_53e3
+	inc hl
+	dec [hl]
+	dec hl
+	jr nz, .asm_53dc
+.asm_53c9
+	ld a, $7f
+	ld [hld], a
+	set 6, [hl]
+	ld a, $02
+	call PlaySoundEffectHome
+	inc hl
+	ld bc, $10
+	call AddScore
+	jr .asm_53e3
+.asm_53dc
+	dec hl
+	ld a, [hl]
+	and $20
+	ld [hli], a
+	ld [hl], $38
+.asm_53e3
+	ld a, [$ffe6]
+	sub 2
+	ld e, a
+	ld a, [$ffe7]
+	sbc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	dec hl
+	call Func_792d
+	jp .asm_550b
+.asm_53f9
+	ld b, d
+	add a
+	jr nc, .asm_5452
+	ld a, [hl]
+	inc a
+	cp $20
+	jr c, .asm_5404
+	sub a
+.asm_5404
+	ld [hld], a
+	ld a, [hFrameCounter]
+	and $7f
+	jr nz, .asm_5419
+	dec [hl]
+	ld a, [hl]
+	and $03
+	jr nz, .asm_5419
+	ld a, [hl]
+	and $20
+	ld [hli], a
+	ld [hl], $28
+	jr .asm_5452
+.asm_5419
+	ld a, [hFrameCounter]
+	and $03
+	ld a, [hli]
+	jr z, .asm_5428
+	bit 5, a
+	jr z, .asm_5427
+	dec bc
+	jr .asm_5428
+.asm_5427
+	inc bc
+.asm_5428
+	inc hl
+	inc hl
+	ld a, [hli]
+	sub c
+	ld a, [hli]
+	sbc b
+	jr c, .asm_5434
+	ld d, $00
+	jr .asm_543c
+.asm_5434
+	ld a, [hli]
+	sub c
+	ld a, [hld]
+	sbc b
+	jr nc, .asm_5447
+	ld d, $20
+.asm_543c
+	ld bc, $fffb
+	add hl, bc
+	ld a, [hl]
+	and $df
+	or d
+	ld [hli], a
+	jr .asm_54c3
+.asm_5447
+	ld de, $fff9
+	add hl, de
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	inc hl
+	jr .asm_54c3
+.asm_5452
+	inc [hl]
+	ld a, [hl]
+	cp $27
+	jp c, .asm_54e1
+	jr nz, .asm_545e
+	ld a, $30
+	ld [hl], a
+.asm_545e
+	cp $68
+	jr nz, .asm_5475
+	sub a
+	ld [hld], a
+	ld a, [wDifficultySetting]
+	and a
+	ld b, $06
+	jr z, .asm_546e
+	ld b, $05
+.asm_546e
+	ld a, [hl]
+	and $20
+	or b
+	ld [hli], a
+	jr .asm_54c3
+.asm_5475
+	cp $48
+	jr nz, .asm_54c3
+	ld bc, $6
+	add hl, bc
+	inc [hl]
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $02
+	jr z, .asm_5488
+	ld a, $04
+.asm_5488
+	cp [hl]
+	jr nz, .asm_549c
+	ld [hl], $00
+	ld bc, $fffa
+	add hl, bc
+	sub a
+	ld [hld], a
+	set 4, [hl]
+	ld a, $0d
+	call PlaySoundEffectHome
+	jr .asm_550b
+.asm_549c
+	pop hl
+	push hl
+	ld a, [hli]
+	sub $04
+	ld e, a
+	ld a, [hli]
+	sbc $00
+	ld d, a
+	ld a, [hli]
+	add $08
+	ld c, a
+	ld a, [hli]
+	adc $00
+	ld b, a
+	push hl
+	ld a, l
+	add $08
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld [hl], $80
+	pop hl
+	inc hl
+.asm_54c3
+	ld bc, $1818
+	dec hl
+	call Func_78ae
+	inc hl
+	and a
+	jr z, .asm_54e1
+	cp $02
+	jp z, .asm_53c9
+	ld a, $1e
+	ld [hld], a
+	set 3, [hl]
+	inc hl
+	ld a, $13
+	call PlaySoundEffectHome
+	jp .asm_53e3
+.asm_54e1
+	dec hl
+	ld a, [hli]
+	bit 2, a
+	ld a, [hl]
+	jr nz, .asm_54f2
+	and $f8
+	srl a
+	srl a
+	add $08
+	jr .asm_54f8
+.asm_54f2
+	and $f8
+	srl a
+	srl a
+.asm_54f8
+	ld e, a
+	ld a, [$ffe6]
+	add e
+	ld e, a
+	ld a, [$ffe7]
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	dec hl
+	call Func_792d
+.asm_550b
+	pop hl
+	ld bc, $c
+	add hl, bc
+	ld a, [hli]
+	add $02
+	ld b, a
+	ld a, [hli]
+	adc $00
+	ld e, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	bit 7, [hl]
+	jr z, .asm_559a
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc d
+	jr nz, .asm_5555
+	ld a, [$ffdd]
+	sub c
+	cp $18
+	jr nc, .asm_5555
+	ld a, [hPlayerYPos]
+	sub b
+	ld a, [hPlayerYPos + 1]
+	sbc e
+	jr z, .asm_5543
+	inc a
+	jr nz, .asm_5555
+	ld a, [hPlayerYPos]
+	sub b
+	cp $f0
+	jr nc, .asm_554a
+	jr .asm_5555
+.asm_5543
+	ld a, [hPlayerYPos]
+	sub b
+	cp $1e
+	jr nc, .asm_5555
+.asm_554a
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_5555
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_5555
+	inc hl
+	ld a, [hli]
+	cp b
+	ld a, [hld]
+	dec hl
+	jr nz, .asm_558e
+	cp e
+	jr nz, .asm_558e
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_5571
+	inc [hl]
+	ld a, [hl]
+	and $0f
+	dec a
+	jr nz, .asm_5571
+	ld a, $0d
+	call PlaySoundEffectHome
+.asm_5571
+	ld a, [hl]
+	and $0f
+	cp $0a
+	jr c, .asm_557c
+	ld [hl], $00
+	jr .asm_559a
+.asm_557c
+	and $0e
+	add $dc
+	ld l, a
+	ld a, $18
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3c7a
+	jr .asm_559a
+.asm_558e
+	dec hl
+	dec hl
+	dec hl
+	ld a, e
+	ld [hld], a
+	ld [hl], b
+	ld hl, $55e1
+	call Func_3c7a
+.asm_559a
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $559d, $70d6 - $559d
+
+HandleActionHintEntity:
+	ld a, [wDifficultySetting]
+	and a
+	jp nz, Func_39ea
+	ld bc, $4
+	add hl, bc
+	push hl
+	ld bc, $76e8
+	call Func_792d
+	pop hl
+	ld a, [hFrameCounter]
+	bit 4, a
+	jr z, .asm_70fc
+	bit 7, [hl]
+	ld bc, $76fd
+	jr z, .asm_70f9
+	ld bc, $7709
+.asm_70f9
+	call Func_792d
+.asm_70fc
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $70ff, $78ae - $70ff
+
+Func_78ae:
+	push hl
+	ld de, $fffc
+	add hl, de
+	ld a, [hPlayerYPos]
+	ld e, a
+	ld a, [hPlayerYPos + 1]
+	ld d, a
+	ld a, [hli]
+	sub e
+	ld e, a
+	ld a, [hli]
+	sbc d
+	jr z, .asm_78ca
+	inc a
+	jr nz, .asm_792a
+	ld a, e
+	cp $d2
+	jr c, .asm_792a
+	jr .asm_78ce
+.asm_78ca
+	ld a, e
+	cp c
+	jr nc, .asm_792a
+.asm_78ce
+	ld a, [$ffb6]
+	and a
+	jr z, .asm_78e9
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ld a, [$ffdd]
+	sub e
+	ld e, a
+	ld a, [$ffde]
+	sbc d
+	jr nz, .asm_792a
+	ld a, b
+	add $08
+	sub e
+	jr c, .asm_792a
+	ld a, $02
+	jr .asm_792b
+.asm_78e9
+	ld a, [$ffb4]
+	and a
+	jr z, .asm_792a
+	cp $08
+	jr nc, .asm_792a
+	ld a, [$ffad]
+	bit 5, a
+	jr nz, .asm_7914
+	ld a, [$ffdd]
+	add $18
+	ld e, a
+	ld a, [$ffde]
+	adc $00
+	ld d, a
+	ld a, e
+	sub [hl]
+	inc hl
+	ld e, a
+	ld a, d
+	sbc [hl]
+	jr nz, .asm_792a
+	ld a, b
+	add $18
+	sub e
+	jr c, .asm_792a
+	ld a, $01
+	jr .asm_792b
+.asm_7914
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ld a, [hPlayerXPos]
+	sub e
+	ld e, a
+	ld a, [hPlayerXPos + 1]
+	sbc d
+	jr nz, .asm_792a
+	ld a, b
+	add $18
+	sub e
+	jr c, .asm_792a
+	ld a, $01
+	jr .asm_792b
+.asm_792a
+	sub a
+.asm_792b
+	pop hl
+	ret
+
+Func_792d:
+	ld a, [hFrameCounter]
+	rra
+	ret nc
+	dec hl
+	ld a, [hld]
+	ld d, a
+	ld e, [hl]
+	ld a, [$ffdb]
+	sub e
+	ld e, a
+	ld a, [$ffdc]
+	sbc d
+	ret nz
+	ld a, e
+	cp $d8
+	ret nc
+	dec hl
+	dec hl
+	ld d, h
+	ld e, l
+	ld hl, $dd80
+	ld a, [hl]
+	cp $08
+	ret z
+	inc [hl]
+	add a
+	add a
+	inc a
+	add l
+	ld l, a
+	ld a, h
+	adc 0
+	ld h, a
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld [hl], b
+	ret
 
 Func_795e:
 	ld a, [hPaused]
@@ -10549,7 +12635,7 @@ Func_795e:
 	dec d
 	jr nz, .asm_7a23
 	ld a, $0e
-	call Func_3e1b
+	call PlaySoundEffectHome
 	jr .asm_7a69
 .asm_7a48
 	ld hl, $ddcc
@@ -10625,7 +12711,7 @@ Func_795e:
 	ld [hld], a
 	ld [hl], $01
 	ld a, $0d
-	call Func_3e1b
+	call PlaySoundEffectHome
 	jr .asm_7ad0
 .asm_7aba
 	inc de
@@ -12398,7 +14484,267 @@ TazZooLevelSpriteTiles:
 
 SECTION "ROM Bank $05", ROMX[$4000], BANK[$5]
 
-INCBIN "baserom.gbc", $14000, $16d45 - $14000
+INCBIN "baserom.gbc", $14000, $15d58 - $14000
+
+TreasureIsland1EntityTriggers:
+	dw $ffff, $0000, $763a
+	trigger  $40,  $f0, 14, TreasureIsland1
+	trigger  $80, $130, 34, TreasureIsland1
+	trigger  $f0, $238, 13, TreasureIsland1
+	trigger $1c0, $278,  0, TreasureIsland1
+	trigger $1d0, $280, 23, TreasureIsland1
+	trigger $1e0, $290, 31, TreasureIsland1
+	trigger $230, $338, 56, TreasureIsland1
+	trigger $260, $310, 42, TreasureIsland1
+	trigger $290, $340, 16, TreasureIsland1
+	trigger $290, $340, 41, TreasureIsland1
+	trigger $2c0, $370, 40, TreasureIsland1
+	trigger $2f0, $3a0, 15, TreasureIsland1
+	trigger $370, $420, 43, TreasureIsland1
+	trigger $380, $430, 30, TreasureIsland1
+	trigger $3a0, $450, 48, TreasureIsland1
+	trigger $3d0, $480, 26, TreasureIsland1
+	trigger $3f0, $4a0, 28, TreasureIsland1
+	trigger $3f0, $4a0, 29, TreasureIsland1
+	trigger $400, $4b0, 47, TreasureIsland1
+	trigger $410, $4c0, 27, TreasureIsland1
+	trigger $450, $500, 44, TreasureIsland1
+	trigger $480, $530, 45, TreasureIsland1
+	trigger $4b0, $560, 46, TreasureIsland1
+	trigger $510, $5c0, 49, TreasureIsland1
+	trigger $540, $688, 10, TreasureIsland1
+	trigger $608, $710,  1, TreasureIsland1
+	trigger $680, $730, 35, TreasureIsland1
+	trigger $6b0, $760, 36, TreasureIsland1
+	trigger $6e0, $790, 37, TreasureIsland1
+	trigger $710, $7c0, 38, TreasureIsland1
+	trigger $740, $7f0, 39, TreasureIsland1
+	trigger $760, $868,  2, TreasureIsland1
+	trigger $7f0, $938, 11, TreasureIsland1
+	trigger $8c0, $978,  3, TreasureIsland1
+	trigger $8d0, $980, 24, TreasureIsland1
+	trigger $8e0, $990, 32, TreasureIsland1
+	trigger $910, $a10, 17, TreasureIsland1
+	trigger $980, $a30, 18, TreasureIsland1
+	trigger $9b0, $a60, 21, TreasureIsland1
+	trigger $9e0, $a90, 20, TreasureIsland1
+	trigger $a10, $ac0, 19, TreasureIsland1
+	trigger $a50, $b00, 53, TreasureIsland1
+	trigger $a68, $b70,  4, TreasureIsland1
+	trigger $b20, $bd0, 22, TreasureIsland1
+	trigger $b70, $cb8, 12, TreasureIsland1
+	trigger $b70, $c80, 55, TreasureIsland1
+	trigger $c80, $d38,  5, TreasureIsland1
+	trigger $c90, $d40, 25, TreasureIsland1
+	trigger $ca0, $d50, 33, TreasureIsland1
+	trigger $cf0, $da0, 57, TreasureIsland1
+	trigger $d40, $e48,  6, TreasureIsland1
+	trigger $d70, $e20,  9, TreasureIsland1
+	trigger $d90, $e40,  8, TreasureIsland1
+	trigger $db0, $e60,  7, TreasureIsland1
+	trigger $dc0, $e70, 58, TreasureIsland1
+	trigger $e00, $eb0, 51, TreasureIsland1
+	trigger $e00, $eb0, 52, TreasureIsland1
+	trigger $e00, $eb8, 54, TreasureIsland1
+	trigger $e50, $f00, 50, TreasureIsland1
+	dw $7fff, $0000, $763a
+
+TreasureIsland1Entities:
+TreasureIsland1Entity0:  entity_cannon $260, $DF
+TreasureIsland1Entity1:  entity_yosemite_sam $6F8, $Cf, $6A8, $6F8, $20
+TreasureIsland1Entity2:  entity_yosemite_sam $800, $CF, $800, $850, $00
+TreasureIsland1Entity3:  entity_cannon $960, $DF
+TreasureIsland1Entity4:  entity_yosemite_sam $B58, $DF, $B08, $B58, $20
+TreasureIsland1Entity5:  entity_cannon $D20, $9F
+TreasureIsland1Entity6:  entity_yosemite_sam $DE0, $5F, $DE0, $E30, $00
+TreasureIsland1Entity7:  entity_collectible CARROT, $E50, $AF
+TreasureIsland1Entity8:  entity_collectible CARROT, $E30, $AF
+TreasureIsland1Entity9:  entity_collectible CARROT, $E10, $AF
+TreasureIsland1Entity10: entity_barrel_boat $5E0, $EF, $5E0, $670
+TreasureIsland1Entity11: entity_barrel_boat $890, $EF, $890, $920
+TreasureIsland1Entity12: entity_barrel_boat $C10, $EF, $C10, $CA0
+TreasureIsland1Entity13: entity_barrel_boat $190, $EF, $190, $220
+TreasureIsland1Entity14: entity_collectible CARROT, $E0, $9F
+TreasureIsland1Entity15: entity_collectible TWEETY_HEART, $0390, $004F
+TreasureIsland1Entity16: entity_collectible CLAPBOARD_0, $0330, $003F
+TreasureIsland1Entity17: entity_pushable_chest $9B0, $60, $9A8, $9E8
+TreasureIsland1Entity18: entity_collectible CLAPBOARD_2, $0A20, $001F
+TreasureIsland1Entity19: entity_collectible CARROT, $AB0, $7F
+TreasureIsland1Entity20: entity_collectible CARROT, $A80, $4F
+TreasureIsland1Entity21: entity_collectible CARROT, $A50, $1F
+TreasureIsland1Entity22: entity_collectible TWEETY_T, $0BC0, $009F
+TreasureIsland1Entity23: entity_collectible CARROT, $270, $9F
+TreasureIsland1Entity24: entity_collectible CARROT, $970, $9F
+TreasureIsland1Entity25: entity_collectible CARROT, $D30, $5F
+TreasureIsland1Entity26: entity_collectible CARROT, $470, $7F
+TreasureIsland1Entity27: entity_collectible CARROT, $4B0, $7F
+TreasureIsland1Entity28: entity_collectible CARROT, $490, $6F
+TreasureIsland1Entity29: entity_collectible CARROT, $490, $8F
+TreasureIsland1Entity30: entity_collectible CARROT, $420, $3F
+TreasureIsland1Entity31: entity_collectible CARROT, $280, $6F
+TreasureIsland1Entity32: entity_collectible CARROT, $980, $6F
+TreasureIsland1Entity33: entity_collectible CARROT, $D40, $2F
+TreasureIsland1Entity34: entity_collectible CARROT, $120, $8F
+TreasureIsland1Entity35: entity_collectible CARROT, $720, $9F
+TreasureIsland1Entity36: entity_collectible CARROT, $750, $9F
+TreasureIsland1Entity37: entity_collectible CARROT, $780, $9F
+TreasureIsland1Entity38: entity_collectible CARROT, $7B0, $9F
+TreasureIsland1Entity39: entity_collectible CARROT, $7E0, $9F
+TreasureIsland1Entity40: entity_collectible TWEETY_E, $0360, $00CF
+TreasureIsland1Entity41: entity_collectible CARROT, $330, $CF
+TreasureIsland1Entity42: entity_collectible CARROT, $300, $CF
+TreasureIsland1Entity43: entity_collectible SUPER_CARROT, $0410, $005F
+TreasureIsland1Entity44: entity_collectible CARROT, $4F0, $1F
+TreasureIsland1Entity45: entity_collectible CARROT, $520, $3F
+TreasureIsland1Entity46: entity_collectible CARROT, $550, $5F
+TreasureIsland1Entity47: entity_collectible CLAPBOARD_1, $04A0, $001F
+TreasureIsland1Entity48: entity_collectible CARROT, $440, $1F
+TreasureIsland1Entity49: entity_collectible TWEETY_X, $05B0, $00CF
+TreasureIsland1Entity50: entity_collectible SUPER_CARROT, $0EF0, $009F
+TreasureIsland1Entity51: entity_collectible CARROT, $EA0, $7F
+TreasureIsland1Entity52: entity_collectible CARROT, $EA0, $AF
+TreasureIsland1Entity53: entity_collectible TWEETY_A, $0AF0, $00AF
+TreasureIsland1Entity54: entity_hint_umbrella $EA0, $2F
+TreasureIsland1Entity55: entity_seagull $C10, $B8, $C10, $C60, $F0
+TreasureIsland1Entity56: entity_yosemite_sam $2D0, $7F, $2D0, $320, $00
+TreasureIsland1Entity57: entity_collectible CLAPBOARD_3, $0D90, $00AF
+TreasureIsland1Entity58: entity_collectible TWEETY_R, $0E60, $003F
+
+TreasureIsland2EntityTriggers:
+	dw $FFFF, $0000, $728B
+	trigger   $0,  $A0, 29, TreasureIsland2
+	trigger  $20,  $D0, 30, TreasureIsland2
+	trigger  $80, $1C8,  0, TreasureIsland2
+	trigger $160, $218, 54, TreasureIsland2
+	trigger $180, $230, 33, TreasureIsland2
+	trigger $1E0, $290, 32, TreasureIsland2
+	trigger $200, $2B0, 31, TreasureIsland2
+	trigger $220, $2D0, 25, TreasureIsland2
+	trigger $240, $2F8, 22, TreasureIsland2
+	trigger $250, $300, 23, TreasureIsland2
+	trigger $260, $310, 24, TreasureIsland2
+	trigger $270, $380, 56, TreasureIsland2
+	trigger $2D0, $380, 39, TreasureIsland2
+	trigger $310, $3C0, 35, TreasureIsland2
+	trigger $340, $3F0, 34, TreasureIsland2
+	trigger $340, $3F8, 57, TreasureIsland2
+	trigger $360, $410, 51, TreasureIsland2
+	trigger $370, $430,  2, TreasureIsland2
+	trigger $380, $430, 41, TreasureIsland2
+	trigger $3E0, $490, 40, TreasureIsland2
+	trigger $400, $4B0, 38, TreasureIsland2
+	trigger $420, $4D0, 37, TreasureIsland2
+	trigger $450, $500, 59, TreasureIsland2
+	trigger $480, $5C8,  1, TreasureIsland2
+	trigger $570, $628, 26, TreasureIsland2
+	trigger $580, $630, 27, TreasureIsland2
+	trigger $590, $640, 28, TreasureIsland2
+	trigger $5D0, $6D0, 45, TreasureIsland2
+	trigger $5D8, $688, 58, TreasureIsland2
+	trigger $630, $6E0, 50, TreasureIsland2
+	trigger $640, $6F0, 36, TreasureIsland2
+	trigger $660, $710, 20, TreasureIsland2
+	trigger $660, $710, 47, TreasureIsland2
+	trigger $680, $730, 19, TreasureIsland2
+	trigger $680, $730, 46, TreasureIsland2
+	trigger $6A0, $760,  3, TreasureIsland2
+	trigger $6A0, $750, 18, TreasureIsland2
+	trigger $6D0, $790,  9, TreasureIsland2
+	trigger $708, $810,  8, TreasureIsland2
+	trigger $730, $7E0,  5, TreasureIsland2
+	trigger $780, $830, 21, TreasureIsland2
+	trigger $790, $850,  4, TreasureIsland2
+	trigger $7A0, $850, 60, TreasureIsland2
+	trigger $7D0, $880,  6, TreasureIsland2
+	trigger $7D0, $880, 17, TreasureIsland2
+	trigger $7F0, $8A0, 16, TreasureIsland2
+	trigger $800, $8B0,  7, TreasureIsland2
+	trigger $810, $8C0, 15, TreasureIsland2
+	trigger $870, $920, 49, TreasureIsland2
+	trigger $880, $930, 48, TreasureIsland2
+	trigger $880, $938, 55, TreasureIsland2
+	trigger $8A0, $950, 42, TreasureIsland2
+	trigger $8A0, $950, 43, TreasureIsland2
+	trigger $8A0, $950, 44, TreasureIsland2
+	trigger $8A0, $958, 52, TreasureIsland2
+	trigger $8C0, $970, 53, TreasureIsland2
+	trigger $8D0, $A18, 10, TreasureIsland2
+	trigger $920, $9D0, 62, TreasureIsland2
+	trigger $970, $A20, 63, TreasureIsland2
+	trigger $9B8, $AC0, 11, TreasureIsland2
+	trigger $A90, $B40, 12, TreasureIsland2
+	trigger $AB0, $B60, 13, TreasureIsland2
+	trigger $AD0, $B80, 14, TreasureIsland2
+	trigger $AF0, $BA0, 61, TreasureIsland2
+	dw $7FFF, $0000, $728B
+
+TreasureIsland2Entities:
+TreasureIsland2Entity0:  entity_barrel_boat $120, $12F, $120, $1B0
+TreasureIsland2Entity1:  entity_barrel_boat $520, $12F, $520, $5B0
+TreasureIsland2Entity2:  entity_rock_thrower $410, $7F
+TreasureIsland2Entity3:  entity_rock_thrower $740, $6F
+TreasureIsland2Entity4:  entity_rock_thrower $830, $5F
+TreasureIsland2Entity5:  entity_collectible TWEETY_HEART, $7D0, $5F
+TreasureIsland2Entity6:  entity_collectible CARROT, $870, $1F
+TreasureIsland2Entity7:  entity_collectible CARROT, $8A0, $1F
+TreasureIsland2Entity8:  entity_yosemite_sam $7F8, $11F, $7A8, $7F8, $20
+TreasureIsland2Entity9:  entity_rock_thrower $770, $10F
+TreasureIsland2Entity10: entity_barrel_boat $970, $12F, $970, $A00
+TreasureIsland2Entity11: entity_yosemite_sam $AA8, $FF, $A58, $AA8, $20
+TreasureIsland2Entity12: entity_collectible CARROT, $B30, $FF
+TreasureIsland2Entity13: entity_collectible CARROT, $B50, $FF
+TreasureIsland2Entity14: entity_collectible CARROT, $B70, $FF
+TreasureIsland2Entity15: entity_collectible CARROT, $8B0, $EF
+TreasureIsland2Entity16: entity_collectible CARROT, $890, $EF
+TreasureIsland2Entity17: entity_collectible CARROT, $870, $EF
+TreasureIsland2Entity18: entity_collectible CARROT, $740, $EF
+TreasureIsland2Entity19: entity_collectible CARROT, $720, $EF
+TreasureIsland2Entity20: entity_collectible CARROT, $700, $EF
+TreasureIsland2Entity21: entity_collectible CLAPBOARD_3, $820, $DF
+TreasureIsland2Entity22: entity_cannon $2E0, $DF
+TreasureIsland2Entity23: entity_collectible CARROT, $2F0, $9F
+TreasureIsland2Entity24: entity_collectible CARROT, $300, $6F
+TreasureIsland2Entity25: entity_collectible CARROT, $2C0, $8F
+TreasureIsland2Entity26: entity_cannon $610, $FF
+TreasureIsland2Entity27: entity_collectible CARROT, $620, $BF
+TreasureIsland2Entity28: entity_collectible CARROT, $630, $8F
+TreasureIsland2Entity29: entity_collectible CARROT, $090, $CF
+TreasureIsland2Entity30: entity_collectible CARROT, $0C0, $CF
+TreasureIsland2Entity31: entity_collectible CARROT, $2A0, $6F
+TreasureIsland2Entity32: entity_collectible CARROT, $280, $4F
+TreasureIsland2Entity33: entity_collectible TWEETY_1UP, $220, $9F
+TreasureIsland2Entity34: entity_collectible CARROT, $3E0, $5F
+TreasureIsland2Entity35: entity_collectible CARROT, $3B0, $3F
+TreasureIsland2Entity36: entity_collectible CARROT, $6E0, $1F
+TreasureIsland2Entity37: entity_collectible CARROT, $4C0, $EF
+TreasureIsland2Entity38: entity_collectible CARROT, $4A0, $CF
+TreasureIsland2Entity39: entity_collectible CLAPBOARD_0, $370, $CF
+TreasureIsland2Entity40: entity_collectible CARROT, $480, $AF
+TreasureIsland2Entity41: entity_collectible SUPER_CARROT, $420, $CF
+TreasureIsland2Entity42: entity_collectible CARROT, $940, $AF
+TreasureIsland2Entity43: entity_collectible CARROT, $940, $CF
+TreasureIsland2Entity44: entity_collectible CARROT, $940, $EF
+TreasureIsland2Entity45: entity_pushable_chest $670, $70, $668, $6A8
+TreasureIsland2Entity46: entity_collectible CARROT, $720, $3F
+TreasureIsland2Entity47: entity_collectible CARROT, $700, $2F
+TreasureIsland2Entity48: entity_collectible SUPER_CARROT, $920, $4F
+TreasureIsland2Entity49: entity_collectible TWEETY_A, $910, $8F
+TreasureIsland2Entity50: entity_collectible CLAPBOARD_1, $6D0, $FF
+TreasureIsland2Entity51: entity_collectible CARROT, $400, $CF
+TreasureIsland2Entity52: entity_hint_umbrella $940, $6F
+TreasureIsland2Entity53: entity_collectible SUPER_CARROT, $960, $DF
+TreasureIsland2Entity54: entity_hint_shovel $200, $CF
+TreasureIsland2Entity55: entity_hint_shovel $920, $DF
+TreasureIsland2Entity56: entity_seagull $310, $38, $310, $360, $70
+TreasureIsland2Entity57: entity_hint_shovel $3E0, $C4
+TreasureIsland2Entity58: entity_collectible TWEETY_X, $678, $2F
+TreasureIsland2Entity59: entity_collectible TWEETY_E, $4F0, $FF
+TreasureIsland2Entity60: entity_collectible TWEETY_R, $840, $FF
+TreasureIsland2Entity61: entity_collectible CLAPBOARD_2, $B90, $8F
+TreasureIsland2Entity62: entity_collectible TWEETY_T, $9C0, $FF
+TreasureIsland2Entity63: entity_collectible SUPER_CARROT, $A10, $DF
+
+INCBIN "baserom.gbc", $164a5, $16d45 - $164a5
 
 CrazyTownBossMap:
 	INCBIN "data/levels/crazy_town_boss.vdmap.lz"
@@ -13784,7 +16130,7 @@ Func_17cfd:
 	dec b
 	jr nz, .asm_17d1c
 	ld hl, $6ddd
-	ld a, [$defe]
+	ld a, [wDisableMusic]
 	and a
 	jr z, .asm_17d55
 	ld hl, $6de7
@@ -13792,7 +16138,7 @@ Func_17cfd:
 	ld bc, $6848
 	call Func_3ca6
 	ld hl, $6dc1
-	ld a, [$deeb]
+	ld a, [wDifficultySetting]
 	and a
 	jr z, .asm_17d67
 	ld hl, $6dcf
@@ -15706,12 +18052,12 @@ ScreenData_TreasureIsland1:
 	dw TreasureIslandPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0040, $00DF ; initial player x/y coords
-	db $05 ; bank for word after the next ???
-	dw $5d58 ; entities triggers [left][right][pointer to entity's data]
-	dw $5ec6 ; entity data
-	dw $407d ; music
+	db Bank(TreasureIsland1EntityTriggers)
+	dw TreasureIsland1EntityTriggers
+	dw TreasureIsland1Entities
+	dw Func_807d
 	dw $5c92 ; animated tiles
-	dw $7174 ; ???
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_TreasureIsland2:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -15726,8 +18072,12 @@ ScreenData_TreasureIsland2:
 	dw TreasureIslandPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0030, $00DF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b419, $1b424 - $1b419
+	db Bank(TreasureIsland2EntityTriggers)
+	dw TreasureIsland2EntityTriggers
+	dw TreasureIsland2Entities
+	dw Func_807d
+	dw $5C92 ; animated tiles
+	dw $7175 ; bugs bunny's digging metatile replacements
 
 ScreenData_CrazyTownBoss:
 	compressed_data CrazyTownBossGroundTarTiles, $9570
@@ -16126,8 +18476,12 @@ ScreenDataGBC_TreasureIsland1:
 	dw TreasureIslandPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0040, $00DF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b8c2, $1b8cd - $1b8c2
+	db Bank(TreasureIsland1EntityTriggers)
+	dw TreasureIsland1EntityTriggers
+	dw TreasureIsland1Entities
+	dw Func_807d
+	dw $5d37 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_TreasureIsland2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -16143,8 +18497,12 @@ ScreenDataGBC_TreasureIsland2:
 	dw TreasureIslandPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0030, $00DF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b8fe, $1b909 - $1b8fe
+	db Bank(TreasureIsland2EntityTriggers)
+	dw TreasureIsland2EntityTriggers
+	dw TreasureIsland2Entities
+	dw Func_807d
+	dw $5d37 ; animated tiles
+	dw $7175 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_CrazyTownBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340

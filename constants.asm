@@ -1,4 +1,5 @@
 INCLUDE "hram.asm"
+INCLUDE "constants/entities.asm"
 INCLUDE "constants/screens.asm"
 INCLUDE "constants/password.asm"
 

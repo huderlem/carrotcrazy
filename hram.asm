@@ -14,6 +14,8 @@ hForcedSideScrollSpeed EQU $ff95
 hCameraXOffset EQU $ffa0
 hCameraYOffset EQU $ffa2
 
+; $ffaf = player state (crouching, etc.)
+
 hLevelPixelWidth  EQU $ffa6
 hLevelPixelHeight EQU $ffa8
 
