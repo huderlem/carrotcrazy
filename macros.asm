@@ -232,3 +232,61 @@ entity_ladder: MACRO
 	dw \1
 	dw \2 - $10
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when walking
+; \4: maximum x coord when walking
+; \5: ???
+entity_taz: MACRO
+	dw HandleTazEntity
+	dw \2, \1
+	db $80, $01, $00
+	dw \1
+	db \5
+	dw \3, \4
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when riding
+; \4: maximum x coord when riding
+entity_hippo: MACRO
+	dw HandleHippoEntity
+	dw \2, \1
+	db $00
+	dw \3, \4
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_monkey: MACRO
+	dw HandleMonkeyEntity
+	dw \2, \1
+	db $80, $01, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_taz_female: MACRO
+	dw HandleTazFemaleEntity
+	dw \2, \1
+	db $80, $01, $00
+	ENDM
+
+; \1: x pixel coord of feeder
+; \2: y pixel coord of feeder
+; \3: minimum x coord when pushing feeder
+; \4: maximum x coord when pushing feeder
+; \5: x pixel coord of giraffe
+; \6: y pixel coord of giraffe - only lo byte is actually used
+entity_giraffe_feeder: MACRO
+	dw HandleGiraffeFeederEntity
+	dw \2, \1
+	db $06
+	dw \3, \4
+	db \6, $00
+	dw \5
+	db $00
+	ENDM

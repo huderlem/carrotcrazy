@@ -11645,7 +11645,13 @@ HandleSylvesterEntity:
 .asm_4b5d
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $4b60, $4bab - $4b60
+INCBIN "baserom.gbc", $4b60, $4ba0 - $4b60
+
+HandleTazEntity:
+	ld bc, $4f3a
+	jp Func_4c17
+
+INCBIN "baserom.gbc", $4ba6, $4bab - $4ba6
 
 HandleYosemiteSamEntity:
 	ld bc, $4efc
@@ -12983,7 +12989,570 @@ HandleSeagullEntity:
 .asm_559a
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $559d, $70d6 - $559d
+INCBIN "baserom.gbc", $559d, $605e - $559d
+
+HandleHippoEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_60df
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_60ce
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, .asm_60ce
+	cp $38
+	jr nc, .asm_60ce
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	inc a
+	jr nz, .asm_60ce
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f8
+	jr c, .asm_60ce
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_60ce
+	ld a, [$ffdd]
+	sub c
+	cp $40
+	jr nc, .asm_60ce
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $1b
+	ld [$ffb0], a
+	push hl
+	inc hl
+	ld a, [hli]
+	ld [$ffba], a
+	ld a, [hli]
+	ld [$ffbb], a
+	ld a, [hli]
+	ld [$ffbc], a
+	ld a, [hl]
+	ld [$ffbd], a
+	ld hl, $2df1
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	add $18
+	ld [hli], a
+	ld a, b
+	adc $00
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	call Func_2326
+	sub a
+	ld [$ffb7], a
+	pop hl
+.asm_60ce
+	ld bc, $70ac
+	ld a, [hFrameCounter]
+	bit 5, a
+	jr z, .asm_60da
+	ld bc, $70ac
+.asm_60da
+	call Func_792d
+	jr .asm_6129
+.asm_60df
+	dec hl
+	dec hl
+	ld a, [hPlayerXPos]
+	sub $18
+	ld [hli], a
+	ld a, [hPlayerXPos + 1]
+	sbc $00
+	ld [hli], a
+	ld a, [$ffad]
+	and $20
+	ld b, a
+	ld a, [hl]
+	and $df
+	or b
+	ld [hl], a
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_610d
+	ld a, [$ffb0]
+	and a
+	jr z, .asm_610d
+	ld a, [$def9]
+	bit 1, a
+	jr z, .asm_6123
+	ld a, [$ffad]
+	bit 6, a
+	jr nz, .asm_6129
+.asm_610d
+	res 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	sub a
+	ld [$ffb0], a
+	ld a, $06
+	ld [$ffb2], a
+	ld a, $0b
+	call PlaySoundEffectHome
+	jr .asm_6129
+.asm_6123
+	ld a, [$ffad]
+	res 6, a
+	ld [$ffad], a
+.asm_6129
+	jp Func_39ea
+
+HandleGiraffeFeederEntity:
+	push hl
+	call Func_43d0
+	pop hl
+	ld bc, $d
+	add hl, bc
+	bit 7, [hl]
+	jr z, .asm_6160
+	ld a, [hl]
+	and $1f
+	cp $1f
+	jr z, .asm_6185
+	inc [hl]
+	push hl
+	inc hl
+	ld a, $06
+	ld [$ff8a], a
+.asm_6147
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [bc]
+	inc bc
+	add [hl]
+	inc hl
+	ld e, a
+	ld a, [bc]
+	adc $00
+	ld d, a
+	ld a, [hli]
+	ld [de], a
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_6147
+	pop hl
+	jr .asm_6185
+.asm_6160
+	ld a, l
+	sub $0b
+	ld c, a
+	ld a, h
+	sbc $00
+	ld b, a
+	ld a, [bc]
+	inc bc
+	sub $08
+	ld e, a
+	ld a, [bc]
+	inc bc
+	sbc $00
+	ld d, a
+	inc bc
+	inc bc
+	inc bc
+	ld a, [bc]
+	inc bc
+	cp e
+	jr nz, .asm_6185
+	ld a, [bc]
+	cp d
+	jr nz, .asm_6185
+	set 7, [hl]
+	ld a, $08
+	call PlaySoundEffectHome
+.asm_6185
+	ld a, [hl]
+	and $18
+	srl a
+	srl a
+	add $9f
+	ld e, a
+	ld a, $61
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $619f, $61a7 - $619f
+
+HandleMonkeyEntity:
+	ld a, [hli]
+	inc hl
+	sub $1c
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add a
+	jr nc, .asm_61ca
+	dec [hl]
+	jp nz, .asm_6272
+	dec hl
+	sub a
+	ld [hli], a
+	ld [hli], a
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_61c6
+	ld a, $02
+.asm_61c6
+	ld [hl], a
+	jp .asm_6272
+.asm_61ca
+	add a
+	jr nc, .asm_61f2
+	dec [hl]
+	jr nz, .asm_61e0
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $ff
+	jr z, .asm_61da
+	ld a, $78
+.asm_61da
+	ld [hld], a
+	set 7, [hl]
+	jp .asm_6272
+.asm_61e0
+	push hl
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	bit 3, [hl]
+	jp z, .asm_6272
+	ld bc, $7178
+	jr .asm_626e
+.asm_61f2
+	add a
+	add a
+	jr nc, .asm_621d
+	dec [hl]
+	jr nz, .asm_6218
+	inc hl
+	dec [hl]
+	dec hl
+	jr nz, .asm_6210
+.asm_61fe
+	ld a, $02
+	call PlaySoundEffectHome
+	ld a, $78
+	ld [hld], a
+	set 6, [hl]
+	ld bc, $10
+	call AddScore
+	jr .asm_6272
+.asm_6210
+	ld a, $28
+	ld [hld], a
+	res 4, [hl]
+	inc hl
+	jr .asm_621d
+.asm_6218
+	ld bc, $71e1
+	jr .asm_626e
+.asm_621d
+	inc [hl]
+	ld a, [hld]
+	cp $30
+	jr nz, .asm_622b
+	ld bc, $6295
+	call Func_1868
+	jr .asm_623f
+.asm_622b
+	cp $80
+	jr c, .asm_6233
+	inc hl
+	ld a, $20
+	ld [hld], a
+.asm_6233
+	res 5, [hl]
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc d
+	jr nc, .asm_623f
+	set 5, [hl]
+.asm_623f
+	ld bc, $1820
+	call Func_78ae
+	inc hl
+	and a
+	jr z, .asm_625a
+	cp $02
+	jr z, .asm_61fe
+	ld a, $1e
+	ld [hld], a
+	set 4, [hl]
+	inc hl
+	ld a, $13
+	call PlaySoundEffectHome
+	jr .asm_6218
+.asm_625a
+	ld a, [hl]
+	and $f8
+	srl a
+	srl a
+	add $75
+	ld e, a
+	ld a, $62
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+.asm_626e
+	dec hl
+	call Func_792d
+.asm_6272
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $6275, $629e - $6275
+
+HandleTazFemaleEntity:
+	ld a, [hli]
+	inc hl
+	sub $1c
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	add a
+	jr nc, .asm_62c6
+	dec [hl]
+	jp nz, .asm_63d8
+	dec hl
+	ld a, [hl]
+	and $01
+	set 3, a
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_62c2
+	ld a, $02
+.asm_62c2
+	ld [hl], a
+	jp .asm_63d8
+.asm_62c6
+	add a
+	jr nc, .asm_62ef
+	dec [hl]
+	jr nz, .asm_62dc
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $ff
+	jr z, .asm_62d6
+	ld a, $78
+.asm_62d6
+	ld [hld], a
+	set 7, [hl]
+	jp .asm_63d8
+.asm_62dc
+	push hl
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	bit 3, [hl]
+	jp z, .asm_63d8
+	ld bc, $7280
+	jp .asm_63d4
+.asm_62ef
+	add a
+	add a
+	jr nc, .asm_631a
+	dec [hl]
+	jr nz, .asm_6314
+	inc hl
+	dec [hl]
+	dec hl
+	jr nz, .asm_630e
+.asm_62fb
+	ld a, $02
+	call PlaySoundEffectHome
+	ld a, $78
+	ld [hld], a
+	set 6, [hl]
+	ld bc, $10
+	call AddScore
+	jp .asm_63d8
+.asm_630e
+	sub a
+	ld [hld], a
+	ld a, [hl]
+	and $21
+	ld [hli], a
+.asm_6314
+	ld bc, $725c
+	jp .asm_63d4
+.asm_631a
+	inc [hl]
+	add a
+	jr nc, .asm_632f
+.asm_631e
+	ld de, $63eb
+	ld a, [hl]
+	cp $30
+	jp c, .asm_63c2
+	sub a
+	ld [hld], a
+	ld a, [hl]
+	and $21
+	ld [hli], a
+	jr .asm_637a
+.asm_632f
+	add a
+	jr nc, .asm_6347
+.asm_6332
+	ld de, $63f7
+	ld a, [hl]
+	cp $30
+	jp c, .asm_63c2
+	sub a
+	ld [hld], a
+	ld a, [hl]
+	and $21
+	set 1, a
+	xor $01
+	ld [hli], a
+	jr .asm_634a
+.asm_6347
+	add a
+	jr nc, .asm_637a
+.asm_634a
+	bit 1, [hl]
+	dec hl
+	jr z, .asm_6367
+	bit 0, [hl]
+	dec hl
+	dec hl
+	jr z, .asm_635f
+	ld a, [hl]
+	add $01
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hli], a
+	jr .asm_6367
+.asm_635f
+	ld a, [hl]
+	sub $01
+	ld [hli], a
+	ld a, [hl]
+	sbc $00
+	ld [hli], a
+.asm_6367
+	inc hl
+	ld de, $6403
+	ld a, [hl]
+	cp $80
+	jr c, .asm_63c2
+	sub a
+	ld [hld], a
+	ld a, [hl]
+	and $21
+	set 3, a
+	ld [hli], a
+	jr .asm_631e
+.asm_637a
+	ld a, [hld]
+	cp $20
+	jr nz, .asm_6387
+	ld bc, $6423
+	call Func_1868
+	jr .asm_63a2
+.asm_6387
+	cp $40
+	jr c, .asm_6396
+	inc hl
+	sub a
+	ld [hld], a
+	ld a, [hl]
+	and $21
+	set 2, a
+	ld [hli], a
+	jr .asm_6332
+.asm_6396
+	res 5, [hl]
+	ld a, [hPlayerXPos]
+	sub c
+	ld a, [hPlayerXPos + 1]
+	sbc d
+	jr nc, .asm_63a2
+	set 5, [hl]
+.asm_63a2
+	ld bc, $1820
+	call Func_78ae
+	inc hl
+	ld de, $63db
+	and a
+	jr z, .asm_63c2
+	cp $02
+	jp z, .asm_62fb
+	ld a, $1e
+	ld [hld], a
+	set 4, [hl]
+	inc hl
+	ld a, $13
+	call PlaySoundEffectHome
+	jp .asm_6314
+.asm_63c2
+	ld a, [hl]
+	and $f8
+	srl a
+	srl a
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+.asm_63d4
+	dec hl
+	call Func_792d
+.asm_63d8
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $63db, $70d6 - $63db
 
 HandleActionHintEntity:
 	ld a, [wDifficultySetting]
@@ -19345,8 +19914,12 @@ ScreenData_TazZoo1:
 	dw TazZooPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0020, $00EF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b4ec, $1b4f7 - $1b4ec
+	db Bank(TazZoo1EntityTriggers)
+	dw TazZoo1EntityTriggers
+	dw TazZoo1Entities
+	dw Func_8077
+	dw $5C00 ; animated tiles
+	dw $719A ; bugs bunny's digging metatile replacements
 
 ScreenData_TazZoo2:
 	compressed_data TazZooLevelTiles, $8B20
@@ -19674,8 +20247,12 @@ ScreenDataGBC_CrazyTown2:
 	dw CrazyTownPalettes
 	dw $0000, $0140 ; initial camera offset
 	dw $0010, $01AF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b886, $1b891 - $1b886
+	db Bank(CrazyTown2EntityTriggers)
+	dw CrazyTown2EntityTriggers
+	dw CrazyTown2Entities
+	dw $408C
+	dw $5C1E ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -19756,8 +20333,12 @@ ScreenDataGBC_TazZoo1:
 	dw TazZooPalettes
 	dw $0000, $0080 ; initial camera offset
 	dw $0020, $00EF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b992, $1b99d - $1b992
+	db Bank(TazZoo1EntityTriggers)
+	dw TazZoo1EntityTriggers
+	dw TazZoo1Entities
+	dw Func_8077
+	dw $5C00 ; animated tiles
+	dw $719A ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_TazZoo2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -20004,7 +20585,169 @@ TazZoo1Map:
 TazZoo2Map:
 	INCBIN "data/levels/taz_zoo_2.vdmap.lz"
 
-INCBIN "baserom.gbc", $1e0ad, $1e921 - $1e0ad
+TazZoo1EntityTriggers:
+	dw $FFFF, $0000, $72A9
+	trigger  $00,  $B0, 57, TazZoo1
+	trigger  $A0, $150,  9, TazZoo1
+	trigger  $B0, $1F8,  3, TazZoo1
+	trigger  $D0, $180, 21, TazZoo1
+	trigger $100, $1B0, 22, TazZoo1
+	trigger $130, $1E0, 10, TazZoo1
+	trigger $170, $220, 60, TazZoo1
+	trigger $190, $290, 58, TazZoo1
+	trigger $200, $2B0, 44, TazZoo1
+	trigger $250, $300, 29, TazZoo1
+	trigger $280, $330, 28, TazZoo1
+	trigger $2B0, $360, 27, TazZoo1
+	trigger $2B0, $360, 45, TazZoo1
+	trigger $2E0, $390, 26, TazZoo1
+	trigger $2F0, $410,  0, TazZoo1
+	trigger $310, $3C0, 25, TazZoo1
+	trigger $340, $3F0, 24, TazZoo1
+	trigger $370, $420, 23, TazZoo1
+	trigger $3A0, $450, 11, TazZoo1
+	trigger $3D0, $480, 12, TazZoo1
+	trigger $400, $4B0, 30, TazZoo1
+	trigger $450, $508,  6, TazZoo1
+	trigger $570, $620, 61, TazZoo1
+	trigger $590, $640, 13, TazZoo1
+	trigger $5A0, $6E8,  4, TazZoo1
+	trigger $5C0, $670, 31, TazZoo1
+	trigger $5D8, $688, 52, TazZoo1
+	trigger $5D8, $688, 53, TazZoo1
+	trigger $5D8, $688, 54, TazZoo1
+	trigger $5F0, $6A0, 32, TazZoo1
+	trigger $620, $6D0, 14, TazZoo1
+	trigger $680, $730, 34, TazZoo1
+	trigger $6B0, $7A8, 33, TazZoo1
+	trigger $750, $808,  7, TazZoo1
+	trigger $790, $840, 42, TazZoo1
+	trigger $7B0, $860, 43, TazZoo1
+	trigger $7D0, $8F0,  1, TazZoo1
+	trigger $850, $900, 59, TazZoo1
+	trigger $8D0, $9D0, 50, TazZoo1
+	trigger $930, $A28, 49, TazZoo1
+	trigger $990, $A40, 62, TazZoo1
+	trigger $9B0, $A60, 35, TazZoo1
+	trigger $9C0, $B08,  5, TazZoo1
+	trigger $9E0, $A90, 36, TazZoo1
+	trigger $A10, $AC0, 37, TazZoo1
+	trigger $A40, $AF0, 38, TazZoo1
+	trigger $A80, $B30, 15, TazZoo1
+	trigger $A80, $B30, 16, TazZoo1
+	trigger $A80, $B30, 17, TazZoo1
+	trigger $AC0, $B70, 56, TazZoo1
+	trigger $AE0, $B90, 55, TazZoo1
+	trigger $B00, $BB0, 39, TazZoo1
+	trigger $B40, $BF0, 40, TazZoo1
+	trigger $B70, $C68, 18, TazZoo1
+	trigger $BD0, $C80, 68, TazZoo1
+	trigger $BF0, $CA0, 41, TazZoo1
+	trigger $C20, $CD0, 63, TazZoo1
+	trigger $C70, $D20, 67, TazZoo1
+	trigger $C80, $D38,  8, TazZoo1
+	trigger $CF0, $DA0, 66, TazZoo1
+	trigger $D00, $E20,  2, TazZoo1
+	trigger $D70, $E20, 65, TazZoo1
+	trigger $DE0, $E90, 19, TazZoo1
+	trigger $DE0, $E90, 48, TazZoo1
+	trigger $E00, $EB0, 20, TazZoo1
+	trigger $E20, $ED0, 64, TazZoo1
+	trigger $E30, $EE0, 47, TazZoo1
+	trigger $E40, $F38, 51, TazZoo1
+	trigger $E80, $F30, 46, TazZoo1
+	dw $7FFF, $0000, $72A9
+
+TazZoo1Entities:
+TazZoo1Entity0: entity_giraffe_feeder $390, $B8, $388, $3C2, $3DA, $9F
+				db $9E, $C6, $0F, $00 ; changed metatiles to allow passing through the giraffe
+				db $18, $C7, $03, $00
+				db $18, $C7, $07, $00
+				db $18, $C7, $0B, $10
+				db $18, $C7, $0A, $0B
+				db $18, $C7, $0D, $0F
+TazZoo1Entity1: entity_giraffe_feeder $870, $D8, $868, $8A2, $8BA, $BF
+				db $40, $C7, $05, $00 ; changed metatiles to allow passing through the giraffe
+				db $40, $C7, $09, $00
+				db $40, $C7, $0D, $00
+				db $BA, $C7, $01, $10
+				db $BA, $C7, $00, $0B
+				db $B8, $C7, $07, $0C
+TazZoo1Entity2: entity_giraffe_feeder $DA0, $B8, $D98, $DD2, $DEA, $9F
+				db $F0, $C6, $0C, $00 ; changed metatiles to allow passing through the giraffe
+				db $6A, $C7, $00, $00
+				db $6A, $C7, $04, $00
+				db $6A, $C7, $08, $10
+				db $68, $C7, $0B, $0B
+				db $68, $C7, $0E, $0E
+TazZoo1Entity3: entity_hippo $150, $F8, $150, $1C0
+TazZoo1Entity4: entity_hippo $640, $F8, $640, $6B0
+TazZoo1Entity5: entity_hippo $A60, $F8, $A60, $AD0
+TazZoo1Entity6: entity_monkey $4F0, $CF
+TazZoo1Entity7: entity_monkey $7F0, $BF
+TazZoo1Entity8: entity_monkey $D20, $BF
+TazZoo1Entity9: entity_collectible CARROT, $140, $BF
+TazZoo1Entity10: entity_collectible CARROT, $1D0, $BF
+TazZoo1Entity11: entity_collectible SUPER_CARROT, $440, $6F
+TazZoo1Entity12: entity_collectible CARROT, $470, $9F
+TazZoo1Entity13: entity_collectible CARROT, $630, $BF
+TazZoo1Entity14: entity_collectible CARROT, $6C0, $BF
+TazZoo1Entity15: entity_collectible CARROT, $B20, $8F
+TazZoo1Entity16: entity_collectible CARROT, $B20, $5F
+TazZoo1Entity17: entity_collectible CLAPBOARD_2, $0B20, $002F
+TazZoo1Entity18: entity_taz_female $C10, $DF
+TazZoo1Entity19: entity_collectible CARROT, $E80, $9F
+TazZoo1Entity20: entity_collectible CARROT, $EA0, $AF
+TazZoo1Entity21: entity_collectible CARROT, $170, $DF
+TazZoo1Entity22: entity_collectible CARROT, $1A0, $DF
+TazZoo1Entity23: entity_collectible CARROT, $410, $4F
+TazZoo1Entity24: entity_collectible CARROT, $3E0, $2F
+TazZoo1Entity25: entity_collectible SUPER_CARROT, $3B0, $2F
+TazZoo1Entity26: entity_collectible CARROT, $380, $2F
+TazZoo1Entity27: entity_collectible CARROT, $350, $4F
+TazZoo1Entity28: entity_collectible CARROT, $320, $6F
+TazZoo1Entity29: entity_collectible CLAPBOARD_0, $2F0, $8F
+TazZoo1Entity30: entity_collectible CARROT, $4A0, $BF
+TazZoo1Entity31: entity_collectible CARROT, $660, $DF
+TazZoo1Entity32: entity_collectible CARROT, $690, $DF
+TazZoo1Entity33: entity_taz_female $750, $DF
+TazZoo1Entity34: entity_collectible TWEETY_HEART, $0720, $00CF
+TazZoo1Entity35: entity_collectible CARROT, $A50, $BF
+TazZoo1Entity36: entity_collectible CARROT, $A80, $DF
+TazZoo1Entity37: entity_collectible CARROT, $AB0, $DF
+TazZoo1Entity38: entity_collectible CARROT, $AE0, $BF
+TazZoo1Entity39: entity_collectible CARROT, $BA0, $BF
+TazZoo1Entity40: entity_collectible CARROT, $BE0, $AF
+TazZoo1Entity41: entity_collectible CARROT, $C90, $AF
+TazZoo1Entity42: entity_collectible CARROT, $830, $AF
+TazZoo1Entity43: entity_collectible CARROT, $850, $BF
+TazZoo1Entity44: entity_collectible CARROT, $2A0, $AF
+TazZoo1Entity45: entity_collectible CARROT, $350, $AF
+TazZoo1Entity46: entity_collectible SUPER_CARROT, $F20, $9F
+TazZoo1Entity47: entity_collectible SUPER_CARROT, $ED0, $5F
+TazZoo1Entity48: entity_collectible SUPER_CARROT, $E80, $1F
+TazZoo1Entity49: entity_taz_female $9D0, $EF
+TazZoo1Entity50: entity_taz $970, $EF, $970, $9C0, $00
+TazZoo1Entity51: entity_taz_female $EE0, $DF
+TazZoo1Entity52: entity_collectible SUPER_CARROT, $678, $AF
+TazZoo1Entity53: entity_collectible CLAPBOARD_1, $678, $4F
+TazZoo1Entity54: entity_collectible CARROT, $678, $7F
+TazZoo1Entity55: entity_collectible SUPER_CARROT, $B80, $BF
+TazZoo1Entity56: entity_collectible CARROT, $B60, $BF
+TazZoo1Entity57: entity_taz $A0, $EF, $50, $A0, $20
+TazZoo1Entity58: entity_taz $280, $EF, $230, $280, $20
+TazZoo1Entity59: entity_collectible HABANERO_CARROT, $8F0, $7F
+TazZoo1Entity60: entity_collectible TWEETY_E, $210, $CF
+TazZoo1Entity61: entity_collectible TWEETY_X, $610, $CF
+TazZoo1Entity62: entity_collectible TWEETY_T, $A30, $CF
+TazZoo1Entity63: entity_collectible TWEETY_R, $CC0, $CF
+TazZoo1Entity64: entity_collectible TWEETY_A, $EC0, $BF
+TazZoo1Entity65: entity_collectible SUPER_CARROT, $E10, $1F
+TazZoo1Entity66: entity_collectible SUPER_CARROT, $D90, $1F
+TazZoo1Entity67: entity_collectible SUPER_CARROT, $D10, $2F
+TazZoo1Entity68: entity_collectible CLAPBOARD_3, $C70, $4F
+
+INCBIN "baserom.gbc", $1e510, $1e921 - $1e510
 
 TazZooBossLevelTiles:
 	INCBIN "gfx/taz_zoo/boss_level_tiles.2bpp.lz"
