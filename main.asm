@@ -12989,7 +12989,207 @@ HandleSeagullEntity:
 .asm_559a
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $559d, $605e - $559d
+INCBIN "baserom.gbc", $559d, $5790 - $559d
+
+HandleBalloonsEntity:
+	ld bc, $58d5
+	jr .asm_579a
+	ld bc, $58bc
+	jr .asm_579a
+.asm_579a
+	push hl
+	push bc
+	ld a, c
+	ld [$ffe6], a
+	ld a, b
+	ld [$ffe7], a
+	dec bc
+	ld a, [bc]
+	ld [$ff8a], a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	call Func_74f9
+	ld d, b
+	ld b, e
+	ld a, [$ff8a]
+	ld e, a
+	inc [hl]
+	ld a, [hl]
+	and $3f
+	cp e
+	jr nz, .asm_57c1
+	ld a, [hl]
+	and $c0
+	ld [hl], a
+.asm_57c1
+	ld a, [$ffe5]
+	and a
+	ld a, [hl]
+	jr z, .asm_57c9
+	cpl
+	inc a
+.asm_57c9
+	pop hl
+	and $38
+	srl a
+	srl a
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3c7a
+	pop hl
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jp nz, .asm_586d
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_5869
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_5869
+	ld a, e
+	add $20
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr z, .asm_5811
+	inc a
+	jr nz, .asm_5869
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f0
+	jr c, .asm_5869
+	jr .asm_5818
+.asm_5811
+	ld a, [hPlayerYPos]
+	sub e
+	cp $10
+	jr nc, .asm_5869
+.asm_5818
+	ld a, e
+	sub $20
+	ld e, a
+	ld a, d
+	sbc $00
+	ld d, a
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr z, .asm_5834
+	inc a
+	jr nz, .asm_5869
+	ld a, [$ffdd]
+	sub c
+	cp $f8
+	jr c, .asm_5869
+	jr .asm_583b
+.asm_5834
+	ld a, [$ffdd]
+	sub c
+	cp $10
+	jr nc, .asm_5869
+.asm_583b
+	bit 6, [hl]
+	jr nz, .asm_58b8
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $18
+	ld [$ffb0], a
+	ld hl, $2ded
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	sub $04
+	ld [hli], a
+	ld a, b
+	sbc $00
+	ld [hli], a
+	ld a, e
+	add $27
+	ld [hli], a
+	ld a, d
+	adc $00
+	ld [hl], a
+	call Func_2326
+	jr .asm_58b8
+.asm_5869
+	res 6, [hl]
+	jr .asm_58b8
+.asm_586d
+	push hl
+	ld hl, hPlayerXPos
+	ld a, c
+	sub $04
+	ld [hli], a
+	ld a, b
+	sbc $00
+	ld [hli], a
+	ld a, e
+	add $27
+	ld [hli], a
+	ld a, d
+	adc $00
+	ld [hl], a
+	pop hl
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_589a
+	ld a, [$ffb0]
+	and a
+	jr z, .asm_589a
+	ld a, [$def9]
+	bit 1, a
+	jr z, .asm_58b2
+	ld a, [$ffad]
+	bit 6, a
+	jr nz, .asm_58b8
+.asm_589a
+	res 7, [hl]
+	set 6, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	sub a
+	ld [$ffb0], a
+	ld a, $06
+	ld [$ffb2], a
+	ld a, $0b
+	call PlaySoundEffectHome
+	jr .asm_58b8
+.asm_58b2
+	ld a, [$ffad]
+	res 6, a
+	ld [$ffad], a
+.asm_58b8
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $58bb, $605e - $58bb
 
 HandleHippoEntity:
 	ld a, [hli]
@@ -19934,8 +20134,12 @@ ScreenData_TazZoo2:
 	dw TazZooPalettes
 	dw $0000, $00C0 ; initial camera offset
 	dw $0020, $011F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b523, $1b52e - $1b523
+	db Bank(TazZoo2EntityTriggers)
+	dw TazZoo2EntityTriggers
+	dw TazZoo2Entities
+	dw Func_8077
+	dw $5C00
+	dw $71B7
 
 ScreenData_TazZooBoss:
 	uncompressed_data TazZooBossGroundTiles, $9770, $90
@@ -20354,8 +20558,12 @@ ScreenDataGBC_TazZoo2:
 	dw TazZooPalettes
 	dw $0000, $00C0 ; initial camera offset
 	dw $0020, $011F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b9ce, $1b9d9 - $1b9ce
+	db Bank(TazZoo2EntityTriggers)
+	dw TazZoo2EntityTriggers
+	dw TazZoo2Entities
+	dw Func_8077
+	dw $5C00
+	dw $71B7
 
 ScreenDataGBC_TreasureIslandBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -20747,7 +20955,155 @@ TazZoo1Entity66: entity_collectible SUPER_CARROT, $D90, $1F
 TazZoo1Entity67: entity_collectible SUPER_CARROT, $D10, $2F
 TazZoo1Entity68: entity_collectible CLAPBOARD_3, $C70, $4F
 
-INCBIN "baserom.gbc", $1e510, $1e921 - $1e510
+TazZoo2EntityTriggers:
+	dw $FFFF, $0000, $6E58
+	trigger  $00,  $A0,  4, TazZoo2
+	trigger  $00,  $70, 33, TazZoo2
+	trigger  $30,  $E8,  0, TazZoo2
+	trigger  $80, $130,  5, TazZoo2
+	trigger  $A0, $150, 56, TazZoo2
+	trigger  $C0, $170,  6, TazZoo2
+	trigger $110, $1D0, 37, TazZoo2
+	trigger $170, $270, 38, TazZoo2
+	trigger $1E0, $290, 46, TazZoo2
+	trigger $1F0, $2E8, 39, TazZoo2
+	trigger $210, $2C0, 44, TazZoo2
+	trigger $240, $2F0, 43, TazZoo2
+	trigger $270, $320, 40, TazZoo2
+	trigger $270, $320, 41, TazZoo2
+	trigger $270, $320, 42, TazZoo2
+	trigger $270, $320, 45, TazZoo2
+	trigger $300, $3B0, 57, TazZoo2
+	trigger $350, $400,  7, TazZoo2
+	trigger $360, $4A8, 35, TazZoo2
+	trigger $380, $430,  8, TazZoo2
+	trigger $3B0, $460,  9, TazZoo2
+	trigger $3E0, $490, 10, TazZoo2
+	trigger $430, $4E0, 11, TazZoo2
+	trigger $480, $5A0,  1, TazZoo2
+	trigger $560, $610, 58, TazZoo2
+	trigger $590, $640, 25, TazZoo2
+	trigger $5A0, $698, 26, TazZoo2
+	trigger $5B0, $660, 15, TazZoo2
+	trigger $5E0, $690, 14, TazZoo2
+	trigger $5F0, $6A0, 24, TazZoo2
+	trigger $610, $6C0, 13, TazZoo2
+	trigger $620, $6E0, 47, TazZoo2
+	trigger $640, $6F0, 12, TazZoo2
+	trigger $680, $730, 16, TazZoo2
+	trigger $6A0, $750, 17, TazZoo2
+	trigger $6C0, $770, 18, TazZoo2
+	trigger $6F0, $7A0, 27, TazZoo2
+	trigger $6F0, $7A0, 28, TazZoo2
+	trigger $710, $7C0, 29, TazZoo2
+	trigger $710, $7C0, 30, TazZoo2
+	trigger $710, $7C0, 31, TazZoo2
+	trigger $710, $808, 32, TazZoo2
+	trigger $760, $810, 48, TazZoo2
+	trigger $770, $820, 50, TazZoo2
+	trigger $7C0, $870, 49, TazZoo2
+	trigger $7E0, $8E0, 19, TazZoo2
+	trigger $860, $910, 20, TazZoo2
+	trigger $870, $9B8, 36, TazZoo2
+	trigger $890, $940, 21, TazZoo2
+	trigger $8A0, $950, 65, TazZoo2
+	trigger $8C0, $970, 22, TazZoo2
+	trigger $8F0, $9A0, 23, TazZoo2
+	trigger $920, $9D0, 59, TazZoo2
+	trigger $920, $9D0, 64, TazZoo2
+	trigger $950, $A70,  2, TazZoo2
+	trigger $9A0, $A50, 63, TazZoo2
+	trigger $A20, $AD0, 52, TazZoo2
+	trigger $A50, $B00, 51, TazZoo2
+	trigger $A60, $B10, 62, TazZoo2
+	trigger $A80, $B38,  3, TazZoo2
+	trigger $AC0, $B70, 53, TazZoo2
+	trigger $AE0, $B90, 34, TazZoo2
+	trigger $AF0, $BA0, 61, TazZoo2
+	trigger $B00, $BB0, 60, TazZoo2
+	trigger $B70, $C30, 54, TazZoo2
+	trigger $B80, $C30, 55, TazZoo2
+	dw $7FFF, $0000, $6E58
+
+TazZoo2Entities:
+TazZoo2Entity0: entity_monkey $D0, $10F
+TazZoo2Entity1: entity_giraffe_feeder $520, $F8, $518, $552, $56A, $DF
+				db $FA, $C6, $0C, $00
+				db $5E, $C7, $00, $00
+				db $5E, $C7, $04, $00
+				db $5E, $C7, $08, $F0
+				db $5C, $C7, $0B, $0B
+				db $5C, $C7, $0E, $0F
+TazZoo2Entity2: entity_giraffe_feeder $9F0, $118, $9E8, $A22, $A3A, $FF
+				db $84, $C7, $05, $00
+				db $84, $C7, $09, $00
+				db $84, $C7, $0D, $00
+				db $E8, $C7, $01, $F0
+				db $E8, $C7, $00, $0B
+				db $E6, $C7, $07, $0C
+TazZoo2Entity3:  entity_monkey $B20, $FF
+TazZoo2Entity4:  entity_collectible CARROT, $90, $FF
+TazZoo2Entity5:  entity_collectible CARROT, $120, $FF
+TazZoo2Entity6:  entity_collectible CARROT, $160, $FF
+TazZoo2Entity7:  entity_collectible CARROT, $3F0, $FF
+TazZoo2Entity8:  entity_collectible CARROT, $420, $11F
+TazZoo2Entity9:  entity_collectible CARROT, $450, $11F
+TazZoo2Entity10: entity_collectible CARROT, $480, $FF
+TazZoo2Entity11: entity_collectible TWEETY_HEART, $4D0, $10F
+TazZoo2Entity12: entity_collectible SUPER_CARROT, $6E0, $6F
+TazZoo2Entity13: entity_collectible CARROT, $6B0, $5F
+TazZoo2Entity14: entity_collectible CARROT, $680, $4F
+TazZoo2Entity15: entity_collectible CLAPBOARD_1, $650, $3F
+TazZoo2Entity16: entity_collectible CARROT, $720, $1F
+TazZoo2Entity17: entity_collectible CARROT, $740, $1F
+TazZoo2Entity18: entity_collectible CARROT, $760, $1F
+TazZoo2Entity19: entity_taz $8D0, $12F, $880, $8D0, $20
+TazZoo2Entity20: entity_collectible CARROT, $900, $FF
+TazZoo2Entity21: entity_collectible CARROT, $930, $11F
+TazZoo2Entity22: entity_collectible CARROT, $960, $11F
+TazZoo2Entity23: entity_collectible CARROT, $990, $FF
+TazZoo2Entity24: entity_collectible CARROT, $690, $FF
+TazZoo2Entity25: entity_collectible CARROT, $630, $FF
+TazZoo2Entity26: entity_taz_female $640, $12F
+TazZoo2Entity27: entity_collectible CARROT, $790, $5F
+TazZoo2Entity28: entity_collectible CARROT, $790, $7F
+TazZoo2Entity29: entity_collectible CARROT, $7B0, $AF
+TazZoo2Entity30: entity_collectible CARROT, $7B0, $CF
+TazZoo2Entity31: entity_collectible CARROT, $7B0, $EF
+TazZoo2Entity32: entity_taz_female $7B0, $12F
+TazZoo2Entity33: entity_collectible CARROT, $60, $EF
+TazZoo2Entity34: entity_collectible CARROT, $B80, $DF
+TazZoo2Entity35: entity_hippo $400, $138, $400, $470
+TazZoo2Entity36: entity_hippo $910, $138, $910, $980
+TazZoo2Entity37: entity_balloons $1B0, $FF
+TazZoo2Entity38: entity_taz $210, $12F, $210, $260, $00
+TazZoo2Entity39: entity_taz_female $290, $12F
+TazZoo2Entity40: entity_collectible SUPER_CARROT, $310, $FF
+TazZoo2Entity41: entity_collectible CARROT, $310, $CF
+TazZoo2Entity42: entity_collectible CARROT, $310, $9F
+TazZoo2Entity43: entity_collectible CARROT, $2E0, $4F
+TazZoo2Entity44: entity_collectible CARROT, $2B0, $3F
+TazZoo2Entity45: entity_collectible SUPER_CARROT, $310, $6F
+TazZoo2Entity46: entity_collectible CLAPBOARD_0, $280, $3F
+TazZoo2Entity47: entity_balloons $6C0, $E7
+TazZoo2Entity48: entity_collectible CLAPBOARD_2, $800, $FF
+TazZoo2Entity49: entity_collectible SUPER_CARROT, $860, $EF
+TazZoo2Entity50: entity_collectible SUPER_CARROT, $810, $9F
+TazZoo2Entity51: entity_collectible CARROT, $AF0, $EF
+TazZoo2Entity52: entity_collectible CARROT, $AC0, $FF
+TazZoo2Entity53: entity_collectible CARROT, $B60, $EF
+TazZoo2Entity54: entity_balloons $C10, $D7
+TazZoo2Entity55: entity_collectible SUPER_CARROT, $C20, $4F
+TazZoo2Entity56: entity_collectible TWEETY_E, $140, $10F
+TazZoo2Entity57: entity_collectible TWEETY_X, $3A0, $AF
+TazZoo2Entity58: entity_collectible TWEETY_T, $600, $CF
+TazZoo2Entity59: entity_collectible TWEETY_R, $9C0, $10F
+TazZoo2Entity60: entity_collectible TWEETY_A, $BA0, $9F
+TazZoo2Entity61: entity_collectible SUPER_CARROT, $B90, $2F
+TazZoo2Entity62: entity_collectible SUPER_CARROT, $B00, $1F
+TazZoo2Entity63: entity_collectible SUPER_CARROT, $A40, $7F
+TazZoo2Entity64: entity_collectible SUPER_CARROT, $9C0, $1F
+TazZoo2Entity65: entity_collectible CLAPBOARD_3, $940, $3F
 
 TazZooBossLevelTiles:
 	INCBIN "gfx/taz_zoo/boss_level_tiles.2bpp.lz"

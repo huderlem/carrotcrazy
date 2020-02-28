@@ -290,3 +290,12 @@ entity_giraffe_feeder: MACRO
 	dw \5
 	db $00
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_balloons: MACRO
+	dw HandleBalloonsEntity
+	dw \2, \1
+	db $00, $00
+	dw $76A2 ; TODO:
+	ENDM
