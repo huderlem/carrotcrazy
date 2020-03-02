@@ -11645,7 +11645,13 @@ HandleSylvesterEntity:
 .asm_4b5d
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $4b60, $4ba0 - $4b60
+INCBIN "baserom.gbc", $4b60, $4b95 - $4b60
+
+HandleMarvianMartianEntity:
+	ld bc, $4f78
+	jp Func_4c17
+
+INCBIN "baserom.gbc", $4b9b, $4ba0 - $4b9b
 
 HandleTazEntity:
 	ld bc, $4f3a
@@ -13752,7 +13758,839 @@ HandleTazFemaleEntity:
 .asm_63d8
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $63db, $70d6 - $63db
+INCBIN "baserom.gbc", $63db, $6990 - $63db
+
+HandleTeleporterEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_69ed
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_69ed
+	ld a, [hPlayerYPos]
+	cp e
+	jr nz, .asm_69e9
+	ld a, [hPlayerYPos + 1]
+	cp d
+	jr nz, .asm_69e9
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_69e9
+	ld a, [$ffdd]
+	sub c
+	cp $18
+	jr nc, .asm_69e9
+	bit 7, [hl]
+	jr nz, .asm_69ef
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $21
+	ld [$ffb0], a
+	inc hl
+	ld a, [hli]
+	ld [$ffba], a
+	ld a, [hli]
+	ld [$ffbb], a
+	ld a, [hli]
+	ld [$ffbc], a
+	ld a, [hl]
+	ld [$ffbd], a
+	ld hl, $2dfd
+	call Func_2d62
+	call Func_2326
+	ld a, $08
+	call PlaySoundEffectHome
+	jr .asm_69ef
+.asm_69e9
+	res 7, [hl]
+	jr .asm_69ef
+.asm_69ed
+	set 7, [hl]
+.asm_69ef
+	jp Func_39ea
+
+HandleBombHazardEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	call Func_74f9
+	bit 7, [hl]
+	jr z, .asm_6a26
+	ld a, [hl]
+	and $7f
+	cp $13
+	jp z, .asm_6a7d
+	ld a, [hFrameCounter]
+	rra
+	jr c, .asm_6a0f
+	inc [hl]
+.asm_6a0f
+	ld a, [hl]
+	and $1c
+	srl a
+	add $dc
+	ld l, a
+	ld a, $18
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld d, b
+	ld b, e
+	call Func_3c7a
+	jr .asm_6a7d
+.asm_6a26
+	push hl
+	ld hl, hScore
+	add hl, de
+	ld a, [hPlayerYPos]
+	sub l
+	ld a, [hPlayerYPos + 1]
+	sbc h
+	jr nz, .asm_6a5f
+	ld a, [hPlayerYPos]
+	sub l
+	cp $2e
+	jr nc, .asm_6a5f
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_6a5f
+	ld a, [$ffdd]
+	sub c
+	cp $18
+	jr nc, .asm_6a5f
+	ld a, [$ffb0]
+	cp $21
+	jr z, .asm_6a5f
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_6a5f
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+	pop hl
+	ld [hl], $80
+	jr .asm_6a7d
+.asm_6a5f
+	pop hl
+	inc [hl]
+	ld a, [hl]
+	cp $20
+	jr c, .asm_6a68
+	ld [hl], $00
+.asm_6a68
+	ld a, [hl]
+	and $fc
+	srl a
+	add $80
+	ld l, a
+	ld a, $6a
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld d, b
+	ld b, e
+	call Func_3c7a
+.asm_6a7d
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $6a80, $6ae0 - $6a80
+
+HandleInstantMartianEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	add a
+	jr nc, .asm_6b28
+	ld a, [hFrameCounter]
+	and $1f
+	jp nz, .asm_6c17
+	dec [hl]
+	ld a, [hl]
+	and $07
+	jp nz, .asm_6c17
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_6b04
+	ld a, $02
+.asm_6b04
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	ld [hli], a
+	ld b, h
+	ld c, l
+	ld de, $fff7
+	add hl, de
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, $40
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	ld [hl], a
+	jp .asm_6c17
+.asm_6b28
+	add a
+	jr nc, .asm_6b54
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_6b3e
+	inc [hl]
+	ld a, [hl]
+	and $07
+	cp $07
+	jr nz, .asm_6b3e
+	ld [hl], $00
+	jp .asm_6bc0
+.asm_6b3e
+	ld a, [hl]
+	and $06
+	add $2a
+	ld e, a
+	ld a, $6c
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	jp .asm_6c17
+.asm_6b54
+	add a
+	add a
+	jr nc, .asm_6b8b
+	ld a, [hFrameCounter]
+	and $07
+	jr nz, .asm_6b74
+	inc [hl]
+	ld a, [hl]
+	and $07
+	cp $05
+	jr c, .asm_6b74
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $87
+	jr z, .asm_6b70
+	ld a, $84
+.asm_6b70
+	ld [hl], a
+	jp .asm_6c17
+.asm_6b74
+	ld a, [hl]
+	and $07
+	add a
+	add $dc
+	ld l, a
+	ld a, $18
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld d, b
+	ld b, e
+	call Func_3c7a
+	jp .asm_6c17
+.asm_6b8b
+	add a
+	jr nc, .asm_6bc0
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_6bb8
+	dec [hl]
+	ld a, [hl]
+	and $07
+	jr nz, .asm_6bb8
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	dec [hl]
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	jr nz, .asm_6bb4
+.asm_6ba5
+	ld [hl], $10
+	ld a, $02
+	call PlaySoundEffectHome
+	ld bc, $10
+	call AddScore
+	jr .asm_6c17
+.asm_6bb4
+	ld a, [hl]
+	and $20
+	ld [hl], a
+.asm_6bb8
+	ld bc, $7526
+	call Func_792d
+	jr .asm_6c17
+.asm_6bc0
+	call Func_74f9
+	ld bc, $1818
+	call Func_78ae
+	and a
+	jr z, .asm_6bdd
+	cp $02
+	jr z, .asm_6ba5
+	ld a, [hl]
+	or $07
+	ld [hl], a
+	set 3, [hl]
+	ld a, $13
+	call PlaySoundEffectHome
+	jr .asm_6bb8
+.asm_6bdd
+	ld a, [$ffe4]
+	cp $5c
+	jr nz, .asm_6be9
+	ld bc, $6c32
+	call Func_1868
+.asm_6be9
+	ld a, [hFrameCounter]
+	rra
+	jr nc, .asm_6bf6
+	ld a, [$ffe5]
+	and $20
+	res 5, [hl]
+	or [hl]
+	ld [hl], a
+.asm_6bf6
+	ld de, $6c1a
+	ld a, [$ffe5]
+	rra
+	jr nc, .asm_6c01
+	ld de, $6c22
+.asm_6c01
+	ld a, [$ffe4]
+	and $18
+	srl a
+	srl a
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_6c17
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $6c1a, $6c40 - $6c1a
+
+HandleK9Entity:
+	ld bc, $6ded
+	jr .asm_6c45
+.asm_6c45
+	ld a, c
+	ld [$ffe6], a
+	ld a, b
+	ld [$ffe7], a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	add a
+	jr nc, .asm_6c8d
+	ld a, [hFrameCounter]
+	and $1f
+	jp nz, .asm_6de5
+	dec [hl]
+	ld a, [hl]
+	and $07
+	jp nz, .asm_6de5
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $01
+	jr z, .asm_6c6f
+	ld a, $02
+.asm_6c6f
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	ld [hli], a
+	ld b, h
+	ld c, l
+	ld de, $fff9
+	add hl, de
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, $40
+	ld [hli], a
+	sub a
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	ld [hl], a
+	jp .asm_6de5
+.asm_6c8d
+	add a
+	jr nc, .asm_6cbd
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_6ca3
+	inc [hl]
+	ld a, [hl]
+	and $07
+	cp $07
+	jr nz, .asm_6ca3
+	ld [hl], $00
+	jp .asm_6d54
+.asm_6ca3
+	ld a, [$ffe6]
+	ld e, a
+	ld a, [$ffe7]
+	ld d, a
+	ld a, [hl]
+	and $06
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	jp .asm_6de5
+.asm_6cbd
+	add a
+	add a
+	jr nc, .asm_6d0d
+	ld a, [hFrameCounter]
+	and $0f
+	jr nz, .asm_6cdd
+	inc [hl]
+	ld a, [hl]
+	and $07
+	cp $07
+	jr c, .asm_6cdd
+	ld a, [wDifficultySetting]
+	and a
+	ld a, $87
+	jr z, .asm_6cd9
+	ld a, $84
+.asm_6cd9
+	ld [hl], a
+	jp .asm_6de5
+.asm_6cdd
+	push hl
+	ld a, c
+	add $08
+	ld c, a
+	ld a, b
+	adc $00
+	ld d, a
+	ld a, e
+	sub $0e
+	ld b, a
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	ld a, [hFrameCounter]
+	bit 3, a
+	jp z, .asm_6de5
+	ld a, [$ffe6]
+	sub $02
+	ld e, a
+	ld a, [$ffe7]
+	sbc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	jp .asm_6de5
+.asm_6d0d
+	add a
+	jr nc, .asm_6d54
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_6d3f
+	dec [hl]
+	ld a, [hl]
+	and $07
+	jr nz, .asm_6d3f
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	dec [hl]
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	jr nz, .asm_6d3b
+.asm_6d27
+	ld a, [hl]
+	and $20
+	set 4, a
+	ld [hl], a
+	ld a, $02
+	call PlaySoundEffectHome
+	ld bc, $10
+	call AddScore
+	jp .asm_6de5
+.asm_6d3b
+	ld a, [hl]
+	and $20
+	ld [hl], a
+.asm_6d3f
+	ld a, [$ffe6]
+	sub $04
+	ld e, a
+	ld a, [$ffe7]
+	sbc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	jp .asm_6de5
+.asm_6d54
+	call Func_74f9
+	push hl
+	ld hl, $ffe8
+	add hl, de
+	ld a, [hPlayerYPos]
+	sub l
+	ld a, [hPlayerYPos + 1]
+	sbc h
+	jr nz, .asm_6d8b
+	ld a, [hPlayerYPos]
+	sub l
+	cp $36
+	jr nc, .asm_6d8b
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_6d8b
+	ld a, [$ffdd]
+	sub c
+	cp $20
+	jr nc, .asm_6d8b
+	ld a, [$ffb0]
+	cp $21
+	jr z, .asm_6d8b
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_6d8b
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_6d8b
+	pop hl
+	ld bc, $1818
+	call Func_78ae
+	and a
+	jr z, .asm_6da6
+	cp $02
+	jr z, .asm_6d27
+	ld a, [hl]
+	or $07
+	ld [hl], a
+	set 3, [hl]
+	ld a, $13
+	call PlaySoundEffectHome
+	jr .asm_6d3f
+.asm_6da6
+	ld a, [$ffe6]
+	sub $05
+	ld e, a
+	ld a, [$ffe7]
+	sbc $00
+	ld d, a
+	ld a, [de]
+	ld e, a
+	ld a, [hFrameCounter]
+	and e
+	jr nz, .asm_6dc3
+	inc [hl]
+	ld a, [hl]
+	and $07
+	cp $06
+	jr c, .asm_6dc3
+	ld a, [hl]
+	and $f8
+	ld [hl], a
+.asm_6dc3
+	ld a, [$ffe5]
+	res 5, [hl]
+	or [hl]
+	ld [hl], a
+	ld a, [$ffe6]
+	add $08
+	ld e, a
+	ld a, [$ffe7]
+	adc $00
+	ld d, a
+	ld a, [hl]
+	and $07
+	add a
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_6de5
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $6de8, $6ec8 - $6de8
+
+HandleHoverShipEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jp nz, .asm_6f94
+	push hl
+	ld a, l
+	add $07
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, [hli]
+	sub e
+	ld a, [hli]
+	sbc d
+	jr c, .asm_6ef3
+	ld bc, hNumCarrots
+	add hl, bc
+	ld a, [hl]
+	add $02
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hl], a
+	pop hl
+	jr .asm_6f60
+.asm_6ef3
+	pop hl
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_6f60
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_6f60
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, .asm_6f60
+	cp $38
+	jr nc, .asm_6f60
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	inc a
+	jr nz, .asm_6f60
+	ld a, [hPlayerYPos]
+	sub e
+	cp $fc
+	jr c, .asm_6f60
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_6f60
+	ld a, [$ffdd]
+	sub c
+	cp $20
+	jr nc, .asm_6f60
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $24
+	ld [$ffb0], a
+	ld a, $04
+	ld [$ffeb], a
+	ld a, [$ffad]
+	res 5, a
+	ld [$ffad], a
+	push hl
+	inc hl
+	ld a, [hli]
+	ld [$ffba], a
+	ld a, [hli]
+	ld [$ffbb], a
+	ld a, [hli]
+	ld [$ffbc], a
+	ld a, [hli]
+	ld [$ffbd], a
+	ld a, [hli]
+	ld [$ffbe], a
+	ld a, [hli]
+	ld [$ffbf], a
+	ld hl, hPlayerXPos
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	call Func_2326
+	pop hl
+.asm_6f60
+	ld bc, $7697
+	push hl
+	call Func_792d
+	pop hl
+	ld bc, $fffc
+	add hl, bc
+	ld a, [hli]
+	inc hl
+	add $04
+	ld b, a
+	ld a, [hFrameCounter]
+	bit 2, a
+	jr z, .asm_6f84
+	ld a, [hli]
+	sub $06
+	ld c, a
+	ld a, [hl]
+	sbc $00
+	ld d, a
+	ld hl, $51
+	jr .asm_6f8f
+.asm_6f84
+	ld a, [hli]
+	add $14
+	ld c, a
+	ld a, [hl]
+	adc $00
+	ld d, a
+	ld hl, $41
+.asm_6f8f
+	call Func_3c7a
+	jr .asm_6fd7
+.asm_6f94
+	push hl
+	dec hl
+	ld a, [hPlayerXPos + 1]
+	ld [hld], a
+	ld a, [hPlayerXPos]
+	ld [hld], a
+	ld a, [hPlayerYPos + 1]
+	ld [hld], a
+	ld a, [hPlayerYPos]
+	ld [hl], a
+	pop hl
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_6fbb
+	ld a, [$ffb0]
+	and a
+	jr z, .asm_6fbb
+	ld a, [$def9]
+	bit 1, a
+	jr z, .asm_6fd1
+	ld a, [$ffad]
+	bit 6, a
+	jr nz, .asm_6fd7
+.asm_6fbb
+	res 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	sub a
+	ld [$ffb0], a
+	ld a, $06
+	ld [$ffb2], a
+	ld a, $0b
+	call PlaySoundEffectHome
+	jr .asm_6fd7
+.asm_6fd1
+	ld a, [$ffad]
+	res 6, a
+	ld [$ffad], a
+.asm_6fd7
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $6fda, $70d6 - $6fda
 
 HandleActionHintEntity:
 	ld a, [wDifficultySetting]
@@ -20177,8 +21015,12 @@ ScreenData_SpaceStation1:
 	dw SpaceStationPalettes
 	dw $0000, $0100 ; initial camera offset
 	dw $0010, $015F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b5b4, $1b5bf - $1b5b4
+	db Bank(SpaceStation1EntityTriggers)
+	dw SpaceStation1EntityTriggers
+	dw SpaceStation1Entities
+	dw Func_8074
+	dw $5C58 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_SpaceStation2:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -20602,8 +21444,12 @@ ScreenDataGBC_SpaceStation1:
 	dw SpaceStationPalettes
 	dw $0000, $0100 ; initial camera offset
 	dw $0010, $015F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1ba66, $1ba71 - $1ba66
+	db Bank(SpaceStation1EntityTriggers)
+	dw SpaceStation1EntityTriggers
+	dw SpaceStation1Entities
+	dw Func_8074
+	dw $5C75 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_SpaceStation2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -21142,7 +21988,159 @@ SpaceStation1Map:
 SpaceStation2Map:
 	INCBIN "data/levels/space_station_2.vdmap.lz"
 
-INCBIN "baserom.gbc", $229ce, $2337e - $229ce
+SpaceStation1EntityTriggers:
+	dw $FFFF, $0000, $6970
+	trigger  $00,  $38,  6, SpaceStation1
+	trigger  $00,  $A0,  7, SpaceStation1
+	trigger  $00,  $A0, 14, SpaceStation1
+	trigger  $00,  $48, 17, SpaceStation1
+	trigger  $00,  $70, 26, SpaceStation1
+	trigger  $00,  $B0, 51, SpaceStation1
+	trigger  $00,  $A0, 52, SpaceStation1
+	trigger  $10, $110,  0, SpaceStation1
+	trigger  $10, $110,  5, SpaceStation1
+	trigger  $10,  $C0, 43, SpaceStation1
+	trigger  $30,  $E0, 15, SpaceStation1
+	trigger  $40,  $F0, 48, SpaceStation1
+	trigger  $50, $100, 66, SpaceStation1
+	trigger  $50, $100, 67, SpaceStation1
+	trigger  $60, $110,  1, SpaceStation1
+	trigger  $60, $150, 49, SpaceStation1
+	trigger  $60, $110, 63, SpaceStation1
+	trigger  $90, $140,  2, SpaceStation1
+	trigger  $90, $140, 16, SpaceStation1
+	trigger  $B0, $160, 72, SpaceStation1
+	trigger  $B8, $168,  8, SpaceStation1
+	trigger  $C0, $170,  4, SpaceStation1
+	trigger  $C0, $1C0, 13, SpaceStation1
+	trigger  $C0, $1C0, 32, SpaceStation1
+	trigger  $C0, $170, 50, SpaceStation1
+	trigger  $E0, $190,  3, SpaceStation1
+	trigger  $F0, $1A0, 61, SpaceStation1
+	trigger $110, $200, 30, SpaceStation1
+	trigger $110, $1C0, 70, SpaceStation1
+	trigger $120, $1D0, 22, SpaceStation1
+	trigger $130, $1E0, 62, SpaceStation1
+	trigger $148, $260, 27, SpaceStation1
+	trigger $150, $200, 23, SpaceStation1
+	trigger $160, $250, 31, SpaceStation1
+	trigger $170, $220, 12, SpaceStation1
+	trigger $170, $220, 64, SpaceStation1
+	trigger $170, $220, 65, SpaceStation1
+	trigger $180, $230, 35, SpaceStation1
+	trigger $190, $240, 34, SpaceStation1
+	trigger $1A0, $250, 24, SpaceStation1
+	trigger $1A0, $250, 33, SpaceStation1
+	trigger $1B8, $268, 11, SpaceStation1
+	trigger $1C0, $2C0, 55, SpaceStation1
+	trigger $1D0, $280, 25, SpaceStation1
+	trigger $1F0, $2A0, 57, SpaceStation1
+	trigger $200, $2B0, 69, SpaceStation1
+	trigger $220, $320,  9, SpaceStation1
+	trigger $220, $2D0, 47, SpaceStation1
+	trigger $230, $2E0, 46, SpaceStation1
+	trigger $240, $2F0, 45, SpaceStation1
+	trigger $250, $300, 44, SpaceStation1
+	trigger $260, $360, 20, SpaceStation1
+	trigger $260, $310, 42, SpaceStation1
+	trigger $270, $320, 58, SpaceStation1
+	trigger $270, $320, 71, SpaceStation1
+	trigger $280, $380, 56, SpaceStation1
+	trigger $2A0, $3A0, 19, SpaceStation1
+	trigger $2B0, $3C8, 29, SpaceStation1
+	trigger $2C0, $370, 38, SpaceStation1
+	trigger $2C0, $370, 53, SpaceStation1
+	trigger $2D0, $380, 37, SpaceStation1
+	trigger $2E0, $390, 36, SpaceStation1
+	trigger $2F0, $3A0, 54, SpaceStation1
+	trigger $300, $400, 21, SpaceStation1
+	trigger $300, $418, 28, SpaceStation1
+	trigger $310, $3C0, 41, SpaceStation1
+	trigger $310, $3C0, 59, SpaceStation1
+	trigger $320, $3D0, 40, SpaceStation1
+	trigger $320, $3D0, 68, SpaceStation1
+	trigger $330, $3E0, 39, SpaceStation1
+	trigger $338, $3E8, 10, SpaceStation1
+	trigger $338, $3E8, 18, SpaceStation1
+	trigger $340, $3F0, 60, SpaceStation1
+	dw $7FFF, $0000, $6970
+
+SpaceStation1Entities:
+SpaceStation1Entity0:  entity_marvin_martian $100, $15F, $B0, $100, $20
+SpaceStation1Entity1:  entity_collectible CARROT, $100, $10F
+SpaceStation1Entity2:  entity_collectible CARROT, $130, $10F
+SpaceStation1Entity3:  entity_collectible CARROT, $180, $8F
+SpaceStation1Entity4:  entity_collectible CARROT, $160, $AF
+SpaceStation1Entity5:  entity_marvin_martian $B0, $CF, $B0, $100, $00
+SpaceStation1Entity6:  entity_teleporter $20, $7F, $158, $1EF
+SpaceStation1Entity7:  entity_collectible CARROT, $90, $7F
+SpaceStation1Entity8:  entity_teleporter $150, $1EF, $28, $7F
+SpaceStation1Entity9:  entity_k9 $2C0, $21F
+SpaceStation1Entity10: entity_teleporter $3DC, $5F, $258, $2CF
+SpaceStation1Entity11: entity_teleporter $25C, $2CF, $3D8, $5F
+SpaceStation1Entity12: entity_collectible CARROT, $210, $2EF
+SpaceStation1Entity13: entity_marvin_martian $1B0, $35F, $160, $1B0, $20
+SpaceStation1Entity14: entity_k9 $40, $35F
+SpaceStation1Entity15: entity_collectible CARROT, $D0, $32F
+SpaceStation1Entity16: entity_collectible CARROT, $130, $32F
+SpaceStation1Entity17: entity_teleporter $30, $22F, $3D8, $25F
+SpaceStation1Entity18: entity_teleporter $3DC, $25F, $38, $22F
+SpaceStation1Entity19: entity_marvin_martian $390, $28F, $340, $390, $20
+SpaceStation1Entity20: entity_k9 $300, $35F
+SpaceStation1Entity21: entity_marvin_martian $3F0, $35F, $3A0, $3F0, $20
+SpaceStation1Entity22: entity_collectible CARROT, $1C0, $21F
+SpaceStation1Entity23: entity_collectible CARROT, $1F0, $21F
+SpaceStation1Entity24: entity_collectible CARROT, $240, $21F
+SpaceStation1Entity25: entity_collectible CARROT, $270, $21F
+SpaceStation1Entity26: entity_collectible CLAPBOARD_2, $60, $32F
+SpaceStation1Entity27: entity_hover_ship $218, $12C, $1E8, $248, $AC
+SpaceStation1Entity28: entity_hover_ship $3D0, $13C, $3A0, $400, $BC
+SpaceStation1Entity29: entity_hover_ship $380, $1DC, $350, $3B0, $15C
+SpaceStation1Entity30: entity_instant_martian $1E0, $7F
+SpaceStation1Entity31: entity_instant_martian $230, $1EF
+SpaceStation1Entity32: entity_pushable_computer $160, $140, $158, $198
+SpaceStation1Entity33: entity_collectible CARROT, $240, $9F
+SpaceStation1Entity34: entity_collectible CARROT, $230, $BF
+SpaceStation1Entity35: entity_collectible CARROT, $220, $DF
+SpaceStation1Entity36: entity_collectible CARROT, $380, $18F
+SpaceStation1Entity37: entity_collectible CARROT, $370, $16F
+SpaceStation1Entity38: entity_collectible CARROT, $360, $14F
+SpaceStation1Entity39: entity_collectible CARROT, $3D0, $EF
+SpaceStation1Entity40: entity_collectible CARROT, $3C0, $CF
+SpaceStation1Entity41: entity_collectible CARROT, $3B0, $AF
+SpaceStation1Entity42: entity_collectible SUPER_CARROT, $300, $1EF
+SpaceStation1Entity43: entity_collectible SUPER_CARROT, $B0, $28F
+SpaceStation1Entity44: entity_collectible CARROT, $2F0, $2CF
+SpaceStation1Entity45: entity_collectible CARROT, $2E0, $2FF
+SpaceStation1Entity46: entity_collectible CARROT, $2D0, $32F
+SpaceStation1Entity47: entity_collectible SUPER_CARROT, $2C0, $2FF
+SpaceStation1Entity48: entity_collectible CARROT, $E0, $28F
+SpaceStation1Entity49: entity_instant_martian $130, $2AF
+SpaceStation1Entity50: entity_collectible CARROT, $160, $28F
+SpaceStation1Entity51: entity_collectible CARROT, $A0, $26F
+SpaceStation1Entity52: entity_collectible CARROT, $90, $24F
+SpaceStation1Entity53: entity_collectible CARROT, $360, $32F
+SpaceStation1Entity54: entity_collectible CARROT, $390, $32F
+SpaceStation1Entity55: entity_marvin_martian $2B0, $FF, $260, $2B0, $20
+SpaceStation1Entity56: entity_marvin_martian $320, $BF, $320, $370, $00
+SpaceStation1Entity57: entity_collectible CLAPBOARD_0, $290, $8F
+SpaceStation1Entity58: entity_collectible SUPER_CARROT, $310, $6F
+SpaceStation1Entity59: entity_bomb_hazard $3B0, $1AF
+SpaceStation1Entity60: entity_collectible CLAPBOARD_1, $3E0, $17F
+SpaceStation1Entity61: entity_collectible SUPER_CARROT, $190, $2FF
+SpaceStation1Entity62: entity_collectible HABANERO_CARROT, $1D0, $32F
+SpaceStation1Entity63: entity_collectible TWEETY_T, $100, $32F
+SpaceStation1Entity64: entity_collectible CARROT, $210, $30F
+SpaceStation1Entity65: entity_collectible CARROT, $210, $32F
+SpaceStation1Entity66: entity_collectible SUPER_CARROT, $F0, $20F
+SpaceStation1Entity67: entity_collectible TWEETY_1UP, $F0, $1CF
+SpaceStation1Entity68: entity_collectible CLAPBOARD_3, $3C0, $30F
+SpaceStation1Entity69: entity_collectible TWEETY_X, $2A0, $1DF
+SpaceStation1Entity70: entity_collectible TWEETY_R, $1B0, $1DF
+SpaceStation1Entity71: entity_collectible TWEETY_A, $310, $28F
+SpaceStation1Entity72: entity_collectible TWEETY_E, $150, $13F
+
+INCBIN "baserom.gbc", $22e79, $2337e - $22e79
 
 FuddForest1Map:
 	INCBIN "data/levels/fudd_forest_1.vdmap.lz"

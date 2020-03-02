@@ -299,3 +299,82 @@ entity_balloons: MACRO
 	db $00, $00
 	dw $76A2 ; TODO:
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when walking
+; \4: maximum x coord when walking
+; \5: entrance type
+entity_marvin_martian: MACRO
+	dw HandleMarvianMartianEntity
+	dw \2, \1
+	db $80, $01, $00
+	dw \1
+	db \5
+	dw \3, \4
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when pushing
+; \4: maximum x coord when pushing
+entity_pushable_computer: MACRO
+	dw HandlePushableObjectEntity
+	dw \2, \1
+	db $08
+	dw \3, \4
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when hovering
+; \4: maximum x coord when pushing
+; \5: minimum y coord when pushing
+entity_hover_ship: MACRO
+	dw HandleHoverShipEntity
+	dw \2, \1
+	db $00
+	dw \3, \4
+	dw \5
+	dw \2
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_instant_martian: MACRO
+	dw HandleInstantMartianEntity
+	dw \2, \1
+	db $81, $00, $C2, $76, $00
+	dw \2, \1
+	db $C2, $76
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: destination x pixel coord
+; \4: destination y pixel coord
+entity_teleporter: MACRO
+	dw HandleTeleporterEntity
+	dw \2, \1
+	db $00
+	dw \3, \4
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_k9: MACRO
+	dw HandleK9Entity
+	dw \2, \1
+	db $81, $00, $F4, $77, $00
+	dw \1
+	db $F4, $77
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_bomb_hazard: MACRO
+	dw HandleBombHazardEntity
+	dw \2, \1
+	db $00, $00, $DE, $77
+	ENDM
