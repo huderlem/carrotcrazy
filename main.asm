@@ -14412,7 +14412,101 @@ HandleK9Entity:
 .asm_6de5
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $6de8, $6ec8 - $6de8
+INCBIN "baserom.gbc", $6de8, $6e1a - $6de8
+
+HandleLeverSpringEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_6e2e
+	ld a, e
+	sub $0c
+	ld e, a
+	ld a, d
+	sbc $00
+	ld d, a
+.asm_6e2e
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr nz, .asm_6e73
+	ld a, [hPlayerYPos]
+	sub e
+	cp $04
+	jr nc, .asm_6e73
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_6e73
+	ld a, [$ffdd]
+	sub c
+	cp $28
+	jr nc, .asm_6e73
+	ld a, [$ffc6]
+	add a
+	jr c, .asm_6e73
+	ld a, [$ffb0]
+	cp $21
+	jr z, .asm_6e73
+	call Func_28b7
+	dec de
+	ld a, e
+	ld [hPlayerYPos], a
+	ld a, d
+	ld [hPlayerYPos + 1], a
+	inc de
+	bit 7, [hl]
+	jr z, .asm_6e73
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_6e73
+	res 7, [hl]
+	ld a, $1c
+	call Func_1948
+.asm_6e73
+	push hl
+	ld bc, $7673
+	bit 7, [hl]
+	jr nz, .asm_6e7e
+	ld bc, $7682
+.asm_6e7e
+	call Func_792d
+	pop hl
+	bit 7, [hl]
+	inc hl
+	ld a, [hli]
+	inc hl
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	push hl
+	ld hl, $6eac
+	jr z, .asm_6e95
+	ld hl, $6eba
+.asm_6e95
+	call Func_3c7a
+	pop hl
+	ld bc, $810
+	call Func_78ae
+	cp $01
+	jr nz, .asm_6ea9
+	ld bc, $fffb
+	add hl, bc
+	set 7, [hl]
+.asm_6ea9
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $6eac, $6ec8 - $6eac
 
 HandleHoverShipEntity:
 	ld a, [hli]
@@ -21035,8 +21129,12 @@ ScreenData_SpaceStation2:
 	dw SpaceStationPalettes
 	dw $0000, $01D0 ; initial camera offset
 	dw $0040, $022F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b5eb, $1b5f6 - $1b5eb
+	db Bank(SpaceStation2EntityTriggers)
+	dw SpaceStation2EntityTriggers
+	dw SpaceStation2Entities
+	dw Func_8074
+	dw $5C58 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_SpaceStationBoss:
 	compressed_data SpaceStationBossLevelTiles, $8DE0
@@ -21465,8 +21563,12 @@ ScreenDataGBC_SpaceStation2:
 	dw SpaceStationPalettes
 	dw $0000, $01D0 ; initial camera offset
 	dw $0040, $022F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1baa2, $1baad - $1baa2
+	db Bank(SpaceStation2EntityTriggers)
+	dw SpaceStation2EntityTriggers
+	dw SpaceStation2Entities
+	dw Func_8074
+	dw $5C75 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_SpaceStationBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -22140,7 +22242,171 @@ SpaceStation1Entity70: entity_collectible TWEETY_R, $1B0, $1DF
 SpaceStation1Entity71: entity_collectible TWEETY_A, $310, $28F
 SpaceStation1Entity72: entity_collectible TWEETY_E, $150, $13F
 
-INCBIN "baserom.gbc", $22e79, $2337e - $22e79
+SpaceStation2EntityTriggers:
+	dw $FFFF, $0000, $649B
+	trigger  $00,  $B0,  9, SpaceStation2
+	trigger  $00,  $A0, 27, SpaceStation2
+	trigger  $00,  $70, 28, SpaceStation2
+	trigger  $00,  $80, 29, SpaceStation2
+	trigger  $00,  $B0, 45, SpaceStation2
+	trigger  $00,  $B0, 57, SpaceStation2
+	trigger  $00,  $B0, 64, SpaceStation2
+	trigger  $00,  $30, 65, SpaceStation2
+	trigger  $00,  $30, 66, SpaceStation2
+	trigger  $10,  $C0,  7, SpaceStation2
+	trigger  $10,  $C0, 14, SpaceStation2
+	trigger  $20,  $D0, 15, SpaceStation2
+	trigger  $20,  $D0, 44, SpaceStation2
+	trigger  $40,  $F0,  5, SpaceStation2
+	trigger  $40,  $F0, 58, SpaceStation2
+	trigger  $50, $100,  8, SpaceStation2
+	trigger  $50, $100, 13, SpaceStation2
+	trigger  $60, $150,  4, SpaceStation2
+	trigger  $80, $130, 46, SpaceStation2
+	trigger  $90, $180, 43, SpaceStation2
+	trigger  $B0, $1B0, 12, SpaceStation2
+	trigger  $B8, $168,  0, SpaceStation2
+	trigger  $C0, $170,  6, SpaceStation2
+	trigger  $C0, $170, 11, SpaceStation2
+	trigger  $D0, $180, 63, SpaceStation2
+	trigger $100, $1B0, 10, SpaceStation2
+	trigger $100, $1B0, 56, SpaceStation2
+	trigger $100, $1B0, 77, SpaceStation2
+	trigger $120, $1D0, 68, SpaceStation2
+	trigger $140, $240, 41, SpaceStation2
+	trigger $160, $278, 25, SpaceStation2
+	trigger $170, $220, 17, SpaceStation2
+	trigger $170, $220, 59, SpaceStation2
+	trigger $190, $240, 30, SpaceStation2
+	trigger $190, $240, 37, SpaceStation2
+	trigger $190, $240, 42, SpaceStation2
+	trigger $1A0, $250, 16, SpaceStation2
+	trigger $1A0, $250, 69, SpaceStation2
+	trigger $1C0, $2C0, 67, SpaceStation2
+	trigger $1D0, $280, 35, SpaceStation2
+	trigger $1F8, $2A8,  3, SpaceStation2
+	trigger $210, $2C0, 36, SpaceStation2
+	trigger $230, $320, 38, SpaceStation2
+	trigger $250, $340, 40, SpaceStation2
+	trigger $268, $318,  1, SpaceStation2
+	trigger $270, $320, 34, SpaceStation2
+	trigger $270, $320, 47, SpaceStation2
+	trigger $290, $340, 51, SpaceStation2
+	trigger $290, $340, 52, SpaceStation2
+	trigger $2C0, $3B0, 48, SpaceStation2
+	trigger $2E8, $400, 24, SpaceStation2
+	trigger $300, $3B0, 62, SpaceStation2
+	trigger $310, $3C0, 71, SpaceStation2
+	trigger $320, $3D0, 61, SpaceStation2
+	trigger $340, $3F0, 18, SpaceStation2
+	trigger $340, $440, 19, SpaceStation2
+	trigger $340, $3F0, 60, SpaceStation2
+	trigger $350, $400, 53, SpaceStation2
+	trigger $370, $420, 22, SpaceStation2
+	trigger $380, $430, 54, SpaceStation2
+	trigger $3B0, $460, 23, SpaceStation2
+	trigger $3C0, $470, 20, SpaceStation2
+	trigger $3C0, $470, 55, SpaceStation2
+	trigger $3E0, $4D0, 31, SpaceStation2
+	trigger $400, $4B0, 70, SpaceStation2
+	trigger $410, $510, 74, SpaceStation2
+	trigger $440, $4F0, 21, SpaceStation2
+	trigger $460, $510, 73, SpaceStation2
+	trigger $460, $510, 75, SpaceStation2
+	trigger $470, $560, 39, SpaceStation2
+	trigger $470, $520, 72, SpaceStation2
+	trigger $4B0, $560, 49, SpaceStation2
+	trigger $4B0, $560, 50, SpaceStation2
+	trigger $4B0, $560, 78, SpaceStation2
+	trigger $4E0, $590, 76, SpaceStation2
+	trigger $4F0, $5A0, 26, SpaceStation2
+	trigger $500, $5B0, 79, SpaceStation2
+	trigger $510, $5C0, 32, SpaceStation2
+	trigger $520, $5D0, 33, SpaceStation2
+	trigger $538, $5E8, 2,  SpaceStation2
+	dw $7FFF, $0000, $649B
+
+SpaceStation2Entities:
+SpaceStation2Entity0:  entity_teleporter $160, $7F, $308, $16F
+SpaceStation2Entity1:  entity_teleporter $310, $16F, $158, $7F
+SpaceStation2Entity2:  entity_teleporter $5E0, $7F, $298, $24F
+SpaceStation2Entity3:  entity_teleporter $290, $24F, $5D8, $7F
+SpaceStation2Entity4:  entity_instant_martian $130, $20F
+SpaceStation2Entity5:  entity_collectible CARROT, $E0, $1EF
+SpaceStation2Entity6:  entity_collectible CARROT, $160, $1EF
+SpaceStation2Entity7:  entity_collectible SUPER_CARROT, $B0, $1FF
+SpaceStation2Entity8:  entity_collectible SUPER_CARROT, $F0, $15F
+SpaceStation2Entity9:  entity_collectible CARROT, $A0, $11F
+SpaceStation2Entity10: entity_collectible CARROT, $1A0, $FF
+SpaceStation2Entity11: entity_collectible CARROT, $160, $FF
+SpaceStation2Entity12: entity_k9 $150, $12F
+SpaceStation2Entity13: entity_bomb_hazard $F0, $12F
+SpaceStation2Entity14: entity_collectible CARROT, $B0, $1CF
+SpaceStation2Entity15: entity_collectible CARROT, $C0, $19F
+SpaceStation2Entity16: entity_collectible CARROT, $240, $CF
+SpaceStation2Entity17: entity_collectible CARROT, $210, $FF
+SpaceStation2Entity18: entity_collectible SUPER_CARROT, $3E0, $DF
+SpaceStation2Entity19: entity_marvin_martian $3E0, $11F, $3E0, $430, $00
+SpaceStation2Entity20: entity_collectible CARROT, $460, $EF
+SpaceStation2Entity21: entity_collectible CARROT, $4E0, $EF
+SpaceStation2Entity22: entity_collectible CARROT, $410, $7F
+SpaceStation2Entity23: entity_collectible CARROT, $450, $7F
+SpaceStation2Entity24: entity_hover_ship $3B8, $25C, $388, $3E8, $1DC
+SpaceStation2Entity25: entity_hover_ship $230, $17C, $200, $260, $FC
+SpaceStation2Entity26: entity_collectible CLAPBOARD_3, $590, $FF
+SpaceStation2Entity27: entity_k9 $40, $14F
+SpaceStation2Entity28: entity_collectible CARROT, $60, $11F
+SpaceStation2Entity29: entity_marvin_martian $20, $BF, $20, $70, $00
+SpaceStation2Entity30: entity_collectible CARROT, $230, $12F
+SpaceStation2Entity31: entity_instant_martian $4B0, $10F
+SpaceStation2Entity32: entity_collectible SUPER_CARROT, $5B0, $15F
+SpaceStation2Entity33: entity_bomb_hazard $5C0, $12F
+SpaceStation2Entity34: entity_collectible CARROT, $310, $4F
+SpaceStation2Entity35: entity_collectible CARROT, $270, $AF
+SpaceStation2Entity36: entity_collectible CARROT, $2B0, $AF
+SpaceStation2Entity37: entity_bomb_hazard $230, $10F
+SpaceStation2Entity38: entity_lever_spring $300, $B8, $2E0, $C0
+SpaceStation2Entity39: entity_lever_spring $540, $118, $520, $120
+SpaceStation2Entity40: entity_lever_spring $320, $258, $300, $260
+SpaceStation2Entity41: entity_marvin_martian $230, $25F, $1E0, $230, $20
+SpaceStation2Entity42: entity_collectible CLAPBOARD_0, $230, $22F
+SpaceStation2Entity43: entity_instant_martian $160, $18F
+SpaceStation2Entity44: entity_bomb_hazard $C0, $CF
+SpaceStation2Entity45: entity_collectible CARROT, $A0, $9F
+SpaceStation2Entity46: entity_collectible CARROT, $120, $5F
+SpaceStation2Entity47: entity_collectible CARROT, $310, $6F
+SpaceStation2Entity48: entity_instant_martian $390, $4F
+SpaceStation2Entity49: entity_collectible CARROT, $550, $CF
+SpaceStation2Entity50: entity_collectible CARROT, $550, $AF
+SpaceStation2Entity51: entity_collectible CARROT, $330, $20F
+SpaceStation2Entity52: entity_collectible CARROT, $330, $1EF
+SpaceStation2Entity53: entity_collectible CARROT, $3F0, $1AF
+SpaceStation2Entity54: entity_collectible CARROT, $420, $18F
+SpaceStation2Entity55: entity_collectible CARROT, $460, $18F
+SpaceStation2Entity56: entity_collectible CARROT, $1A0, $20F
+SpaceStation2Entity57: entity_collectible CARROT, $A0, $3F
+SpaceStation2Entity58: entity_collectible CARROT, $E0, $3F
+SpaceStation2Entity59: entity_bomb_hazard $210, $14F
+SpaceStation2Entity60: entity_bomb_hazard $3E0, $1FF
+SpaceStation2Entity61: entity_collectible CARROT, $3C0, $1EF
+SpaceStation2Entity62: entity_bomb_hazard $3A0, $1CF
+SpaceStation2Entity63: entity_collectible CLAPBOARD_1, $170, $BF
+SpaceStation2Entity64: entity_collectible SUPER_CARROT, $A0, $FF
+SpaceStation2Entity65: entity_collectible SUPER_CARROT, $20, $8F
+SpaceStation2Entity66: entity_collectible TWEETY_X, $20, $12F
+SpaceStation2Entity67: entity_marvin_martian $2B0, $DF, $260, $2B0, $20
+SpaceStation2Entity68: entity_collectible SUPER_CARROT, $1C0, $8F
+SpaceStation2Entity69: entity_collectible TWEETY_T, $240, $4F
+SpaceStation2Entity70: entity_collectible CLAPBOARD_2, $4A0, $4F
+SpaceStation2Entity71: entity_collectible SUPER_CARROT, $3B0, $8F
+SpaceStation2Entity72: entity_collectible TWEETY_R, $510, $7F
+SpaceStation2Entity73: entity_collectible SUPER_CARROT, $500, $1FF
+SpaceStation2Entity74: entity_marvin_martian $4B0, $23F, $4B0, $500, $00
+SpaceStation2Entity75: entity_collectible TWEETY_A, $500, $18F
+SpaceStation2Entity76: entity_collectible SUPER_CARROT, $580, $1AF
+SpaceStation2Entity77: entity_collectible TWEETY_E, $1A0, $17F
+SpaceStation2Entity78: entity_bomb_hazard $550, $1CF
+SpaceStation2Entity79: entity_bomb_hazard $5A0, $18F
 
 FuddForest1Map:
 	INCBIN "data/levels/fudd_forest_1.vdmap.lz"

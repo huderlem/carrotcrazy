@@ -378,3 +378,14 @@ entity_bomb_hazard: MACRO
 	dw \2, \1
 	db $00, $00, $DE, $77
 	ENDM
+
+; \1: spring x pixel coord
+; \2: spring y pixel coord
+; \3: lever x pixel coord
+; \4: lever y pixel coord
+entity_lever_spring: MACRO
+	dw HandleLeverSpringEntity
+	dw \2, \1
+	db $00
+	dw \4, \3
+	ENDM
