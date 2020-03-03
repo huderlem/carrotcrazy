@@ -13001,14 +13001,17 @@ HandleSeagullEntity:
 .asm_559a
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $559d, $5790 - $559d
+INCBIN "baserom.gbc", $559d, $578b - $559d
 
+HandleHookLineEntity:
+	ld bc, $58fa
+	jr HandleFixedPathEntity
 HandleBalloonsEntity:
 	ld bc, $58d5
-	jr .asm_579a
+	jr HandleFixedPathEntity
 	ld bc, $58bc
-	jr .asm_579a
-.asm_579a
+	jr HandleFixedPathEntity
+HandleFixedPathEntity:
 	push hl
 	push bc
 	ld a, c
@@ -18237,14 +18240,14 @@ FuddForest1Entity1: entity_rock_teeter_totter $510, $120, $508, $548, $140
 					dw $140, $580
 					db $0A
 					dw $578, $578
-FuddForest1Entity2: entity_helicopter_chair $3D0, $DF, $5F
-FuddForest1Entity3: entity_helicopter_chair $660, $11F, $9F
-FuddForest1Entity4: entity_helicopter_chair $7D0, $DF, $5F
-FuddForest1Entity5: entity_disguised_hunter $C0, $10F
-FuddForest1Entity6: entity_elmer_fudd $450, $BF, $450, $4A0, $00
-FuddForest1Entity7: entity_disguised_hunter $800, $5F
-FuddForest1Entity8: entity_collectible CARROT, $80, $BF
-FuddForest1Entity9: entity_collectible CARROT, $B0, $CF
+FuddForest1Entity2:  entity_helicopter_chair $3D0, $DF, $5F
+FuddForest1Entity3:  entity_helicopter_chair $660, $11F, $9F
+FuddForest1Entity4:  entity_helicopter_chair $7D0, $DF, $5F
+FuddForest1Entity5:  entity_disguised_hunter $C0, $10F
+FuddForest1Entity6:  entity_elmer_fudd $450, $BF, $450, $4A0, $00
+FuddForest1Entity7:  entity_disguised_hunter $800, $5F
+FuddForest1Entity8:  entity_collectible CARROT, $80, $BF
+FuddForest1Entity9:  entity_collectible CARROT, $B0, $CF
 FuddForest1Entity10: entity_bear_trap $140, $14F
 FuddForest1Entity11: entity_collectible CARROT, $170, $11F
 FuddForest1Entity12: entity_collectible CARROT, $1A0, $FF
@@ -18298,7 +18301,165 @@ FuddForest1Entity59: entity_collectible TWEETY_A, $990, $11F
 FuddForest1Entity60: entity_bear_trap $890, $FF
 FuddForest1Entity61: entity_bear_trap $8F0, $11F
 
-INCBIN "baserom.gbc", $168c8, $16d45 - $168c8
+FuddForest2EntityTriggers:
+	dw $FFFF, $0000, $6A94
+	trigger  $10,  $C0,  4, FuddForest2
+	trigger  $40,  $F0, 62, FuddForest2
+	trigger  $70, $120,  5, FuddForest2
+	trigger  $B0, $160,  6, FuddForest2
+	trigger  $E0, $1A0,  7, FuddForest2
+	trigger $110, $1C0, 60, FuddForest2
+	trigger $110, $210, 61, FuddForest2
+	trigger $140, $200, 11, FuddForest2
+	trigger $150, $200, 36, FuddForest2
+	trigger $170, $220, 55, FuddForest2
+	trigger $180, $230, 38, FuddForest2
+	trigger $180, $280, 59, FuddForest2
+	trigger $190, $240,  8, FuddForest2
+	trigger $1B0, $260, 37, FuddForest2
+	trigger $1F0, $2A0,  9, FuddForest2
+	trigger $220, $2D0, 10, FuddForest2
+	trigger $220, $320, 12, FuddForest2
+	trigger $250, $300, 66, FuddForest2
+	trigger $260, $310, 67, FuddForest2
+	trigger $290, $450,  0, FuddForest2
+	trigger $330, $3E0, 13, FuddForest2
+	trigger $350, $400, 56, FuddForest2
+	trigger $370, $420, 14, FuddForest2
+	trigger $3F0, $4B0, 15, FuddForest2
+	trigger $420, $520, 53, FuddForest2
+	trigger $430, $4E0, 16, FuddForest2
+	trigger $450, $500, 17, FuddForest2
+	trigger $470, $520, 18, FuddForest2
+	trigger $478, $580, 48, FuddForest2
+	trigger $518, $5D8, 49, FuddForest2
+	trigger $540, $5F0, 19, FuddForest2
+	trigger $570, $620, 21, FuddForest2
+	trigger $5A0, $650, 20, FuddForest2
+	trigger $5C0, $680,  3, FuddForest2
+	trigger $5F0, $6F0, 22, FuddForest2
+	trigger $600, $6B0, 40, FuddForest2
+	trigger $630, $6E0, 39, FuddForest2
+	trigger $660, $760, 52, FuddForest2
+	trigger $670, $720, 23, FuddForest2
+	trigger $690, $740, 24, FuddForest2
+	trigger $6B0, $760, 25, FuddForest2
+	trigger $6C8, $7D0, 47, FuddForest2
+	trigger $760, $920,  1, FuddForest2
+	trigger $800, $8B0, 26, FuddForest2
+	trigger $820, $8D0, 57, FuddForest2
+	trigger $840, $8F0, 27, FuddForest2
+	trigger $880, $930, 43, FuddForest2
+	trigger $8B0, $960, 45, FuddForest2
+	trigger $8D0, $9D8, 28, FuddForest2
+	trigger $8E0, $990, 44, FuddForest2
+	trigger $920, $9D0, 50, FuddForest2
+	trigger $940, $9F0, 29, FuddForest2
+	trigger $960, $A10, 30, FuddForest2
+	trigger $980, $A30, 31, FuddForest2
+	trigger $980, $A40, 63, FuddForest2
+	trigger $9B0, $A70,  2, FuddForest2
+	trigger $9D8, $AE0, 46, FuddForest2
+	trigger $A80, $B30, 58, FuddForest2
+	trigger $AA0, $BA0, 51, FuddForest2
+	trigger $AB0, $B60, 32, FuddForest2
+	trigger $AD0, $B80, 33, FuddForest2
+	trigger $AF0, $BA0, 34, FuddForest2
+	trigger $B10, $C10, 35, FuddForest2
+	trigger $B20, $BD0, 42, FuddForest2
+	trigger $B50, $C00, 41, FuddForest2
+	trigger $B80, $C30, 54, FuddForest2
+	trigger $BC0, $C80, 64, FuddForest2
+	trigger $BC0, $C70, 65, FuddForest2
+	dw $7FFF, $0000, $6A94
+
+FuddForest2Entities:
+FuddForest2Entity0: entity_rock_teeter_totter $330, $E0, $328, $368, $100
+					db $B2, $C7, $00, $6D, $80, $03, $00, $01
+					db $B2, $C7, $01, $76, $90, $03, $00, $01
+					db $B2, $C7, $02, $77, $A0, $03, $00, $01
+					db $B2, $C7, $04, $89, $80, $03, $10, $01
+					db $B2, $C7, $05, $8A, $90, $03, $10, $01
+					db $B2, $C7, $06, $8B, $A0, $03, $10, $01
+					dw $100, $3A0
+					db $0A
+					dw $398, $398
+FuddForest2Entity1: entity_rock_teeter_totter $800, $A0, $7F8, $838, $C0
+					db $74, $C7, $01, $6D, $50, $08, $C0, $00
+					db $74, $C7, $02, $76, $60, $08, $C0, $00
+					db $74, $C7, $03, $77, $70, $08, $C0, $00
+					db $74, $C7, $05, $89, $50, $08, $D0, $00
+					db $74, $C7, $06, $8A, $60, $08, $D0, $00
+					db $74, $C7, $07, $8B, $70, $08, $D0, $00
+					dw $C0, $870
+					db $0A
+					dw $868, $868
+FuddForest2Entity2:  entity_helicopter_chair $A50, $10F, $8F
+FuddForest2Entity3:  entity_helicopter_chair $660, $10F, $8F
+FuddForest2Entity4:  entity_collectible CARROT, $B0, $DF
+FuddForest2Entity5:  entity_collectible CARROT, $110, $DF
+FuddForest2Entity6:  entity_collectible SUPER_CARROT, $150, $AF
+FuddForest2Entity7:  entity_bear_trap $180, $08F
+FuddForest2Entity8:  entity_collectible CARROT, $230, $1F
+FuddForest2Entity9:  entity_collectible CARROT, $290, $1F
+FuddForest2Entity10: entity_collectible CLAPBOARD_1, $2C0, $1F
+FuddForest2Entity11: entity_bear_trap $1E0, $6F
+FuddForest2Entity12: entity_disguised_hunter $2C0, $FF
+FuddForest2Entity13: entity_collectible CARROT, $3D0, $EF
+FuddForest2Entity14: entity_collectible CARROT, $410, $EF
+FuddForest2Entity15: entity_bear_trap $490, $BF
+FuddForest2Entity16: entity_collectible CARROT, $4D0, $9F
+FuddForest2Entity17: entity_collectible CARROT, $4F0, $AF
+FuddForest2Entity18: entity_collectible CARROT, $510, $BF
+FuddForest2Entity19: entity_collectible CARROT, $5E0, $DF
+FuddForest2Entity20: entity_collectible CARROT, $640, $DF
+FuddForest2Entity21: entity_collectible CLAPBOARD_2, $610, $9F
+FuddForest2Entity22: entity_disguised_hunter $690, $7F
+FuddForest2Entity23: entity_collectible CARROT, $710, $5F
+FuddForest2Entity24: entity_collectible CARROT, $730, $6F
+FuddForest2Entity25: entity_collectible CARROT, $750, $7F
+FuddForest2Entity26: entity_collectible CARROT, $8A0, $AF
+FuddForest2Entity27: entity_collectible CARROT, $8E0, $AF
+FuddForest2Entity28: entity_hunting_dog $970, $DF
+FuddForest2Entity29: entity_collectible CARROT, $9E0, $AF
+FuddForest2Entity30: entity_collectible CARROT, $A00, $BF
+FuddForest2Entity31: entity_collectible CARROT, $A20, $CF
+FuddForest2Entity32: entity_collectible CARROT, $B50, $5F
+FuddForest2Entity33: entity_collectible CARROT, $B70, $6F
+FuddForest2Entity34: entity_collectible CARROT, $B90, $7F
+FuddForest2Entity35: entity_disguised_hunter $BB0, $BF
+FuddForest2Entity36: entity_collectible CARROT, $1F0, $EF
+FuddForest2Entity37: entity_collectible CARROT, $250, $EF
+FuddForest2Entity38: entity_collectible CARROT, $220, $EF
+FuddForest2Entity39: entity_collectible CARROT, $6D0, $4F
+FuddForest2Entity40: entity_collectible CARROT, $6A0, $4F
+FuddForest2Entity41: entity_collectible CARROT, $BF0, $8F
+FuddForest2Entity42: entity_collectible CARROT, $BC0, $8F
+FuddForest2Entity43: entity_collectible CARROT, $920, $6F
+FuddForest2Entity44: entity_collectible CARROT, $980, $7F
+FuddForest2Entity45: entity_collectible CARROT, $950, $7F
+FuddForest2Entity46: entity_elmer_fudd $AC8, $7F, $A78, $AC8, $20
+FuddForest2Entity47: entity_elmer_fudd $7B8, $BF, $768, $7B8, $20
+FuddForest2Entity48: entity_elmer_fudd $568, $FF, $518, $568, $20
+FuddForest2Entity49: entity_bear_trap $5B8, $10F
+FuddForest2Entity50: entity_collectible SUPER_CARROT, $9C0, $9F
+FuddForest2Entity51: entity_hook_line $B40, $48
+FuddForest2Entity52: entity_hook_line $700, $48
+FuddForest2Entity53: entity_hook_line $4C0, $88
+FuddForest2Entity54: entity_collectible CLAPBOARD_3, $C20, $5F
+FuddForest2Entity55: entity_collectible TWEETY_E, $210, $4F
+FuddForest2Entity56: entity_collectible TWEETY_X, $3F0, $FF
+FuddForest2Entity57: entity_collectible TWEETY_T, $8C0, $BF
+FuddForest2Entity58: entity_collectible TWEETY_R, $B20, $5F
+FuddForest2Entity59: entity_disguised_hunter $220, $11F
+FuddForest2Entity60: entity_collectible HABANERO_CARROT, $1B0, $DF
+FuddForest2Entity61: entity_disguised_hunter $1B0, $11F
+FuddForest2Entity62: entity_collectible TWEETY_HEART, $E0, $9F
+FuddForest2Entity63: entity_bear_trap $A20, $10F
+FuddForest2Entity64: entity_bear_trap $C60, $CF
+FuddForest2Entity65: entity_collectible TWEETY_A, $C60, $9F
+FuddForest2Entity66: entity_collectible SUPER_CARROT, $2F0, $CF
+FuddForest2Entity67: entity_collectible CLAPBOARD_0, $300, $2F
 
 CrazyTownBossMap:
 	INCBIN "data/levels/crazy_town_boss.vdmap.lz"
@@ -21838,8 +21999,12 @@ ScreenData_FuddForest2:
 	dw FuddForestPalettes
 	dw $0000, $00C0 ; initial camera offset
 	dw $0010, $011F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b69b, $1b6a6 - $1b69b
+	db Bank(FuddForest2EntityTriggers)
+	dw FuddForest2EntityTriggers
+	dw FuddForest2Entities
+	dw Func_808f
+	dw $5C00 ; animated tiles
+	dw $7201 ; bugs bunny's digging metatile replacements
 
 ScreenData_FuddForestBoss:
 	compressed_data FuddForestBossGroundTrackTiles, $9750
@@ -22280,8 +22445,12 @@ ScreenDataGBC_FuddForest2:
 	dw FuddForestPalettes
 	dw $0000, $00C0 ; initial camera offset
 	dw $0010, $011F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1bb68, $1bb73 - $1bb68
+	db Bank(FuddForest2EntityTriggers)
+	dw FuddForest2EntityTriggers
+	dw FuddForest2Entities
+	dw Func_808f
+	dw $5C00 ; animated tiles
+	dw $7201 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_FuddForestBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340

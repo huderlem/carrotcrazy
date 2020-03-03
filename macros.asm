@@ -453,3 +453,12 @@ entity_rock_teeter_totter: MACRO
 	dw \3, \4
 	dw \5
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_hook_line: MACRO
+	dw HandleHookLineEntity
+	dw \2, \1
+	db $00, $00
+	dw $7846 ; TODO:
+	ENDM
