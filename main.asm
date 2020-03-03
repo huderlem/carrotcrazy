@@ -11645,7 +11645,13 @@ HandleSylvesterEntity:
 .asm_4b5d
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $4b60, $4b95 - $4b60
+INCBIN "baserom.gbc", $4b60, $4b8a - $4b60
+
+HandleElmerFuddEntity:
+	ld bc, $4fb6
+	jp Func_4c17
+
+INCBIN "baserom.gbc", $4b90, $4b95 - $4b90
 
 HandleMarvianMartianEntity:
 	ld bc, $4f78
@@ -14128,12 +14134,15 @@ HandleInstantMartianEntity:
 .asm_6c17
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $6c1a, $6c40 - $6c1a
+INCBIN "baserom.gbc", $6c1a, $6c3b - $6c1a
 
+HandleHuntingDogEntity:
+	ld bc, $6e06
+	jr HandleDogEntity
 HandleK9Entity:
 	ld bc, $6ded
-	jr .asm_6c45
-.asm_6c45
+	jr HandleDogEntity
+HandleDogEntity:
 	ld a, c
 	ld [$ffe6], a
 	ld a, b
@@ -14708,7 +14717,500 @@ HandleActionHintEntity:
 .asm_70fc
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $70ff, $74f9 - $70ff
+HandleBearTrapEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	push hl
+	ld hl, $fffc
+	add hl, de
+	ld a, [hPlayerYPos]
+	sub l
+	ld a, [hPlayerYPos + 1]
+	sbc h
+	jr nz, .asm_7135
+	ld a, [hPlayerYPos]
+	sub l
+	cp $22
+	jr nc, .asm_7135
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_7135
+	ld a, [$ffdd]
+	sub c
+	cp $28
+	jr nc, .asm_7135
+	ld a, [$ffb6]
+	and a
+	jr nz, .asm_7135
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_7135
+	pop hl
+	ld a, [hFrameCounter]
+	bit 5, a
+	ld bc, $7958
+	jr z, .asm_7142
+	ld bc, $7967
+.asm_7142
+	call Func_792d
+	jp Func_39ea
+
+HandleDisguisedHunterEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	add a
+	jr nc, .asm_7185
+	ld a, [hl]
+	and $1f
+	jp z, .asm_7211
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_7161
+	dec [hl]
+.asm_7161
+	push hl
+	ld a, c
+	add $08
+	ld c, a
+	ld a, b
+	adc $00
+	ld d, a
+	ld a, e
+	sub $18
+	ld b, a
+	ld hl, $1af3
+	call Func_3c7a
+	pop hl
+	ld a, [hFrameCounter]
+	bit 3, a
+	jp z, .asm_7211
+	ld bc, $7a2a
+	call Func_792d
+	jp .asm_7211
+.asm_7185
+	add a
+	jr nc, .asm_71ba
+	dec [hl]
+	ld a, [hl]
+	and $1f
+	jr nz, .asm_71b2
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	dec [hl]
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+	jr nz, .asm_71ae
+.asm_7199
+	ld a, [hl]
+	and $20
+	set 7, a
+	or $1f
+	ld [hl], a
+	ld a, $02
+	call PlaySoundEffectHome
+	ld bc, $10
+	call AddScore
+	jr .asm_7211
+.asm_71ae
+	ld a, [hl]
+	and $20
+	ld [hl], a
+.asm_71b2
+	ld bc, $7a1b
+	call Func_792d
+	jr .asm_7211
+.asm_71ba
+	call Func_74f9
+	ld bc, $1018
+	call Func_78ae
+	and a
+	jr z, .asm_71d7
+	cp $02
+	jr z, .asm_7199
+	ld a, [hl]
+	or $1f
+	ld [hl], a
+	set 6, [hl]
+	ld a, $13
+	call PlaySoundEffectHome
+	jr .asm_71b2
+.asm_71d7
+	ld a, [$ffe5]
+	rra
+	jr nc, .asm_71e8
+	ld a, [$ffe4]
+	cp $18
+	jr nz, .asm_71e8
+	ld bc, $7244
+	call Func_1868
+.asm_71e8
+	ld a, [$ffe5]
+	and $20
+	res 5, [hl]
+	or [hl]
+	ld [hl], a
+	ld de, $7214
+	ld a, [$ffe5]
+	rra
+	jr nc, .asm_71fb
+	ld de, $7238
+.asm_71fb
+	ld a, [$ffe4]
+	and $f8
+	srl a
+	srl a
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_7211
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $7214, $724d - $7214
+
+HandleHelicopterChairEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jp nz, .asm_72f1
+	push hl
+	inc hl
+	inc hl
+	inc hl
+	ld a, [hli]
+	cp e
+	ld a, [hli]
+	jr nz, .asm_7266
+	cp d
+	jr z, .asm_7279
+.asm_7266
+	ld a, l
+	sub $09
+	ld l, a
+	ld a, h
+	sbc $00
+	ld h, a
+	ld a, [hl]
+	add $01
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hl], a
+	pop hl
+	jr .asm_72e4
+.asm_7279
+	pop hl
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_72e4
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_72e4
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, .asm_72e4
+	cp $38
+	jr nc, .asm_72e4
+	inc de
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	inc a
+	jr nz, .asm_72ee
+	ld a, [hPlayerYPos]
+	sub e
+	cp $fc
+	jr c, .asm_72ee
+	dec de
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_72e4
+	ld a, [$ffdd]
+	sub c
+	cp $10
+	jr nc, .asm_72e4
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $2a
+	ld [$ffb0], a
+	ld a, [$ffad]
+	res 5, a
+	ld [$ffad], a
+	push hl
+	inc hl
+	ld a, [hli]
+	ld [$ffba], a
+	ld a, [hli]
+	ld [$ffbb], a
+	ld a, [hli]
+	ld [$ffbc], a
+	ld a, [hl]
+	ld [$ffbd], a
+	ld hl, $2e0d
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	call Func_2326
+	pop hl
+.asm_72e4
+	ld hl, $7333
+	ld d, b
+	ld b, e
+	call Func_3c7a
+	jr .asm_7330
+.asm_72ee
+	dec de
+	jr .asm_72e4
+.asm_72f1
+	push hl
+	dec hl
+	dec hl
+	dec hl
+	ld a, [hPlayerYPos + 1]
+	ld [hld], a
+	ld a, [hPlayerYPos]
+	ld [hl], a
+	pop hl
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_7314
+	ld a, [$ffb0]
+	and a
+	jr z, .asm_7314
+	ld a, [$def9]
+	bit 1, a
+	jr z, .asm_732a
+	ld a, [$ffad]
+	bit 6, a
+	jr nz, .asm_7330
+.asm_7314
+	res 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	sub a
+	ld [$ffb0], a
+	ld a, $06
+	ld [$ffb2], a
+	ld a, $0b
+	call PlaySoundEffectHome
+	jr .asm_7330
+.asm_732a
+	ld a, [$ffad]
+	res 6, a
+	ld [$ffad], a
+.asm_7330
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $7333, $7375 - $7333
+
+HandleRockTeeterTotterEntity:
+	push hl
+	call Func_43d0
+	pop hl
+	push hl
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	sub $08
+	ld c, a
+	ld a, [hli]
+	sbc $00
+	ld b, a
+	inc hl
+	inc hl
+	inc hl
+	ld a, [hli]
+	cp c
+	ld a, [hli]
+	jp nz, .asm_742a
+	cp b
+	jp nz, .asm_742a
+	ld a, [hli]
+	cp e
+	jr nz, .asm_739c
+	ld a, [hl]
+	cp d
+	jr z, .asm_73a8
+.asm_739c
+	pop hl
+	ld a, [hl]
+	add $02
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hld], a
+	jp .asm_742b
+.asm_73a8
+	pop hl
+	push hl
+	ld bc, $4
+	add hl, bc
+	bit 6, [hl]
+	jr nz, .asm_73f3
+	ld a, $09
+	call PlaySoundEffectHome
+	set 6, [hl]
+	inc hl
+	ld a, [hl]
+	add $40
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hli], a
+	ld bc, $4
+	add hl, bc
+	ld a, $06
+	ld [$ff8a], a
+.asm_73ca
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [bc]
+	inc bc
+	add [hl]
+	inc hl
+	ld e, a
+	ld a, [bc]
+	adc $00
+	ld d, a
+	ld a, [hli]
+	ld [de], a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	push hl
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
+	pop hl
+	ld a, [$ff8a]
+	dec a
+	ld [$ff8a], a
+	jr nz, .asm_73ca
+.asm_73f3
+	pop hl
+	push hl
+	inc hl
+	inc hl
+	ld a, [hli]
+	add $c0
+	ld c, a
+	ld a, [hli]
+	adc $00
+	ld b, a
+	ld de, $39
+	add hl, de
+	ld a, [hli]
+	cp c
+	ld a, [hld]
+	jr nz, .asm_740b
+	cp b
+	jr z, .asm_7428
+.asm_740b
+	ld a, [hl]
+	add $03
+	ld [hli], a
+	ld e, a
+	ld a, [hl]
+	adc $00
+	ld [hld], a
+	dec hl
+	dec hl
+	ld a, c
+	sub e
+	cp $48
+	ld de, $2
+	jr c, .asm_7422
+	ld de, $fffe
+.asm_7422
+	ld a, [hl]
+	add e
+	ld [hli], a
+	ld a, [hl]
+	adc d
+	ld [hl], a
+.asm_7428
+	jr .asm_742a
+.asm_742a
+	pop hl
+.asm_742b
+	ld bc, $3b
+	add hl, bc
+	push hl
+	inc hl
+	inc hl
+	ld a, [hli]
+	sub $08
+	ld c, a
+	ld a, [hli]
+	sbc $00
+	ld b, a
+	inc hl
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld [hl], b
+	pop hl
+	call Func_43d0
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $7449, $74f9 - $7449
 
 Func_74f9:
 	push hl
@@ -17648,7 +18150,155 @@ TreasureIsland2Entity61: entity_collectible CLAPBOARD_2, $B90, $8F
 TreasureIsland2Entity62: entity_collectible TWEETY_T, $9C0, $FF
 TreasureIsland2Entity63: entity_collectible SUPER_CARROT, $A10, $DF
 
-INCBIN "baserom.gbc", $164a5, $16d45 - $164a5
+FuddForest1EntityTriggers:
+	dw $FFFF, $0000, $6EDB
+	trigger  $00,  $90,  8, FuddForest1
+	trigger  $10,  $C0,  9, FuddForest1
+	trigger  $20, $120,  5, FuddForest1
+	trigger  $A0, $160, 10, FuddForest1
+	trigger  $D0, $180, 11, FuddForest1
+	trigger $100, $1B0, 12, FuddForest1
+	trigger $120, $2E0,  0, FuddForest1
+	trigger $1C0, $270, 41, FuddForest1
+	trigger $1E0, $290, 57, FuddForest1
+	trigger $200, $2B0, 42, FuddForest1
+	trigger $250, $300, 14, FuddForest1
+	trigger $280, $330, 13, FuddForest1
+	trigger $2B0, $360, 15, FuddForest1
+	trigger $300, $3B0, 16, FuddForest1
+	trigger $320, $3D0, 21, FuddForest1
+	trigger $330, $3F0,  2, FuddForest1
+	trigger $350, $400, 18, FuddForest1
+	trigger $350, $400, 23, FuddForest1
+	trigger $360, $420, 17, FuddForest1
+	trigger $380, $430, 19, FuddForest1
+	trigger $380, $430, 22, FuddForest1
+	trigger $3B0, $4B8,  6, FuddForest1
+	trigger $3C0, $4C8, 28, FuddForest1
+	trigger $3C0, $470, 43, FuddForest1
+	trigger $3C0, $470, 44, FuddForest1
+	trigger $410, $4C0, 20, FuddForest1
+	trigger $410, $4C0, 24, FuddForest1
+	trigger $430, $4E0, 25, FuddForest1
+	trigger $430, $4E0, 26, FuddForest1
+	trigger $430, $4E0, 27, FuddForest1
+	trigger $470, $630,  1, FuddForest1
+	trigger $510, $5C0, 45, FuddForest1
+	trigger $530, $5E0, 58, FuddForest1
+	trigger $550, $600, 46, FuddForest1
+	trigger $5C0, $680,  3, FuddForest1
+	trigger $610, $718, 29, FuddForest1
+	trigger $620, $6D0, 50, FuddForest1
+	trigger $650, $700, 51, FuddForest1
+	trigger $680, $730, 56, FuddForest1
+	trigger $690, $740, 30, FuddForest1
+	trigger $690, $740, 31, FuddForest1
+	trigger $690, $740, 32, FuddForest1
+	trigger $730, $7F0,  4, FuddForest1
+	trigger $758, $860, 53, FuddForest1
+	trigger $760, $860,  7, FuddForest1
+	trigger $770, $820, 37, FuddForest1
+	trigger $778, $828, 33, FuddForest1
+	trigger $778, $828, 34, FuddForest1
+	trigger $778, $828, 35, FuddForest1
+	trigger $778, $828, 36, FuddForest1
+	trigger $7A0, $850, 38, FuddForest1
+	trigger $7C0, $870, 54, FuddForest1
+	trigger $7D0, $880, 49, FuddForest1
+	trigger $7E0, $890, 39, FuddForest1
+	trigger $7E0, $890, 40, FuddForest1
+	trigger $7F0, $8B0, 60, FuddForest1
+	trigger $820, $8D0, 47, FuddForest1
+	trigger $840, $8F0, 48, FuddForest1
+	trigger $850, $910, 61, FuddForest1
+	trigger $880, $988, 52, FuddForest1
+	trigger $8F0, $9A0, 59, FuddForest1
+	trigger $930, $9E0, 55, FuddForest1
+	dw $7FFF, $0000, $6EDB
+
+FuddForest1Entities:
+FuddForest1Entity0: entity_rock_teeter_totter $1C0, $110, $1B8, $1F8, $130
+					db $5E, $C7, $0D, $6D, $10, $02, $30, $01
+					db $5E, $C7, $0E, $76, $20, $02, $30, $01
+					db $5E, $C7, $0F, $77, $30, $02, $30, $01
+					db $B0, $C7, $01, $89, $10, $02, $40, $01
+					db $B0, $C7, $02, $8A, $20, $02, $40, $01
+					db $B0, $C7, $03, $8B, $30, $02, $40, $01
+					dw $130, $230
+					db $0A
+					dw $228, $228
+FuddForest1Entity1: entity_rock_teeter_totter $510, $120, $508, $548, $140
+					db $CA, $C7, $02, $6D, $60, $05, $40, $01
+					db $CA, $C7, $03, $76, $70, $05, $40, $01
+					db $CC, $C7, $00, $77, $80, $05, $40, $01
+					db $CA, $C7, $06, $89, $60, $05, $50, $01
+					db $CA, $C7, $07, $8A, $70, $05, $50, $01
+					db $CC, $C7, $04, $8B, $80, $05, $50, $01
+					dw $140, $580
+					db $0A
+					dw $578, $578
+FuddForest1Entity2: entity_helicopter_chair $3D0, $DF, $5F
+FuddForest1Entity3: entity_helicopter_chair $660, $11F, $9F
+FuddForest1Entity4: entity_helicopter_chair $7D0, $DF, $5F
+FuddForest1Entity5: entity_disguised_hunter $C0, $10F
+FuddForest1Entity6: entity_elmer_fudd $450, $BF, $450, $4A0, $00
+FuddForest1Entity7: entity_disguised_hunter $800, $5F
+FuddForest1Entity8: entity_collectible CARROT, $80, $BF
+FuddForest1Entity9: entity_collectible CARROT, $B0, $CF
+FuddForest1Entity10: entity_bear_trap $140, $14F
+FuddForest1Entity11: entity_collectible CARROT, $170, $11F
+FuddForest1Entity12: entity_collectible CARROT, $1A0, $FF
+FuddForest1Entity13: entity_collectible CLAPBOARD_0, $320, $9F
+FuddForest1Entity14: entity_collectible CARROT, $2F0, $DF
+FuddForest1Entity15: entity_collectible CARROT, $350, $DF
+FuddForest1Entity16: entity_collectible TWEETY_X, $3A0, $CF
+FuddForest1Entity17: entity_bear_trap $400, $5F
+FuddForest1Entity18: entity_collectible CARROT, $3F0, $2F
+FuddForest1Entity19: entity_collectible CARROT, $420, $2F
+FuddForest1Entity20: entity_collectible SUPER_CARROT, $4B0, $7F
+FuddForest1Entity21: entity_collectible CLAPBOARD_1, $3C0, $13F
+FuddForest1Entity22: entity_collectible CARROT, $420, $13F
+FuddForest1Entity23: entity_collectible CARROT, $3F0, $13F
+FuddForest1Entity24: entity_collectible SUPER_CARROT, $4B0, $11F
+FuddForest1Entity25: entity_collectible CARROT, $4D0, $CF
+FuddForest1Entity26: entity_collectible CARROT, $4D0, $EF
+FuddForest1Entity27: entity_collectible CARROT, $4D0, $10F
+FuddForest1Entity28: entity_hunting_dog $460, $15F
+FuddForest1Entity29: entity_hunting_dog $6B0, $9F
+FuddForest1Entity30: entity_collectible CARROT, $730, $AF
+FuddForest1Entity31: entity_collectible CARROT, $730, $CF
+FuddForest1Entity32: entity_collectible CARROT, $730, $EF
+FuddForest1Entity33: entity_collectible CLAPBOARD_2, $818, $AF
+FuddForest1Entity34: entity_collectible SUPER_CARROT, $818, $10F
+FuddForest1Entity35: entity_collectible CARROT, $818, $CF
+FuddForest1Entity36: entity_collectible CARROT, $818, $EF
+FuddForest1Entity37: entity_collectible CARROT, $810, $2F
+FuddForest1Entity38: entity_collectible CARROT, $840, $2F
+FuddForest1Entity39: entity_collectible CARROT, $880, $6F
+FuddForest1Entity40: entity_collectible CARROT, $880, $8F
+FuddForest1Entity41: entity_collectible CARROT, $260, $11F
+FuddForest1Entity42: entity_collectible CARROT, $2A0, $11F
+FuddForest1Entity43: entity_collectible CARROT, $460, $4F
+FuddForest1Entity44: entity_collectible CARROT, $460, $6F
+FuddForest1Entity45: entity_collectible CARROT, $5B0, $12F
+FuddForest1Entity46: entity_collectible CARROT, $5F0, $12F
+FuddForest1Entity47: entity_collectible CARROT, $8C0, $CF
+FuddForest1Entity48: entity_collectible CARROT, $8E0, $DF
+FuddForest1Entity49: entity_collectible SUPER_CARROT, $870, $AF
+FuddForest1Entity50: entity_collectible CARROT, $6C0, $6F
+FuddForest1Entity51: entity_collectible CARROT, $6F0, $6F
+FuddForest1Entity52: entity_hunting_dog $920, $13F
+FuddForest1Entity53: entity_elmer_fudd $848, $14F, $7F8, $848, $20
+FuddForest1Entity54: entity_collectible TWEETY_R, $860, $4F
+FuddForest1Entity55: entity_collectible CLAPBOARD_3, $9D0, $CF
+FuddForest1Entity56: entity_collectible SUPER_CARROT, $720, $DF
+FuddForest1Entity57: entity_collectible TWEETY_E, $280, $12F
+FuddForest1Entity58: entity_collectible TWEETY_T, $5D0, $13F
+FuddForest1Entity59: entity_collectible TWEETY_A, $990, $11F
+FuddForest1Entity60: entity_bear_trap $890, $FF
+FuddForest1Entity61: entity_bear_trap $8F0, $11F
+
+INCBIN "baserom.gbc", $168c8, $16d45 - $168c8
 
 CrazyTownBossMap:
 	INCBIN "data/levels/crazy_town_boss.vdmap.lz"
@@ -21168,8 +21818,12 @@ ScreenData_FuddForest1:
 	dw FuddForestPalettes
 	dw $0000, $0090 ; initial camera offset
 	dw $0010, $00EF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b664, $1b66f - $1b664
+	db Bank(FuddForest1EntityTriggers)
+	dw FuddForest1EntityTriggers
+	dw FuddForest1Entities
+	dw Func_808f
+	dw $5C00 ; animated tiles
+	dw $71E4 ; bugs bunny's digging metatile replacements
 
 ScreenData_FuddForest2:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -21605,8 +22259,12 @@ ScreenDataGBC_FuddForest1:
 	dw FuddForestPalettes
 	dw $0000, $0090 ; initial camera offset
 	dw $0010, $00EF ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1bb2c, $1bb37 - $1bb2c
+	db Bank(FuddForest1EntityTriggers)
+	dw FuddForest1EntityTriggers
+	dw FuddForest1Entities
+	dw Func_808f
+	dw $5C00 ; animated tiles
+	dw $71E4 ; bugs bunny's digging metatile replacements
 
 ScreenDataGBC_FuddForest2:
 	compressed_data SharedLevelInterfaceTiles, $8340

@@ -389,3 +389,67 @@ entity_lever_spring: MACRO
 	db $00
 	dw \4, \3
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum y coord when flying
+entity_helicopter_chair: MACRO
+	dw HandleHelicopterChairEntity
+	dw \2, \1
+	db $00
+	dw \3, \2
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_disguised_hunter: MACRO
+	dw HandleDisguisedHunterEntity
+	dw \2, \1
+	db $00, $00, $97, $78, $03
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x coord when walking
+; \4: maximum x coord when walking
+; \5: entrance type
+entity_elmer_fudd: MACRO
+	dw HandleElmerFuddEntity
+	dw \2, \1
+	db $80, $01, $00
+	dw \1
+	db \5
+	dw \3, \4
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_bear_trap: MACRO
+	dw HandleBearTrapEntity
+	dw \2, \1
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_hunting_dog: MACRO
+	dw HandleHuntingDogEntity
+	dw \2, \1
+	db $81, $00, $60, $78, $00
+	dw \1
+	db $60, $78
+	ENDM
+
+; \1: rock x pixel coord
+; \2: rock y pixel coord
+; \3: rock minimum x coord when pushing
+; \4: rock maximum x coord when pushing
+; \5: rock maximum y coord when falling
+entity_rock_teeter_totter: MACRO
+	dw HandleRockTeeterTotterEntity
+	dw \2, \1
+	db $0A
+	dw \3, \4
+	dw \5
+	ENDM
