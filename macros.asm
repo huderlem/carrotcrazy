@@ -152,8 +152,8 @@ entity_yosemite_sam: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-; \3: minimum x coord when walking
-; \4: maximum x coord when walking
+; \3: minimum x coord when flying
+; \4: maximum x coord when flying
 ; \5: cannonball explosion y coord
 entity_seagull: MACRO
 	dw HandleSeagullEntity
@@ -461,4 +461,87 @@ entity_hook_line: MACRO
 	dw \2, \1
 	db $00, $00
 	dw $7846 ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_tnt_barrel: MACRO
+	dw HandleTNTBarrelEntity
+	dw \2, \1
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_log_destruction: MACRO
+	dw HandleLogDestructionEntity
+	dw \2, \1
+	db $00, $06
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x pixel coord when surfing
+entity_raft: MACRO
+	dw HandleRaftEntity
+	dw \2, \1
+	db $00
+	dw \3, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x pixel coord when surfing
+entity_dolphin: MACRO
+	dw HandleDolphinEntity
+	dw \2, \1
+	db $00, $00
+	dw $766D ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_cannonball: MACRO
+	dw HandleCannonballEntity
+	dw \2, \1
+	db $20
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \5: health
+entity_yosemite_sam_boss: MACRO
+	dw HandleYosemiteSamBossEntity
+	dw \2, \1
+	db $20, $00
+	db \3
+	db $00, $00, $00, $00, $00, $88, $00, $04
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_yosemite_ship_off_screen: MACRO
+	dw HandleMoveYosemiteShipOffScreenEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_yosemite_ship_far_left: MACRO
+	dw HandleMoveYosemiteShipFarLeftEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_yosemite_ship_far_right: MACRO
+	dw HandleMoveYosemiteShipFarRightEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_yosemite_ship_middle: MACRO
+	dw HandleMoveYosemiteShipMiddleEntity
+	dw \2, \1
 	ENDM

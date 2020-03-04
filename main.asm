@@ -11669,17 +11669,71 @@ HandleYosemiteSamEntity:
 	ld bc, $4efc
 	jp Func_4c17
 
-INCBIN "baserom.gbc", $4bb1, $4bb6 - $4bb1
+HandleYosemiteSamBossEntity:
+	ld bc, $4efc
+	jr Func_4bc7
 
 HandleDaffyDuckEntity:
 	ld bc, $4ebe
 	jp Func_4c17
 
-INCBIN "baserom.gbc", $4bbc, $4c17 - $4bbc
+INCBIN "baserom.gbc", $4bbc, $4bc7 - $4bbc
 
+Func_4bc7:
+	ld a, $ff
+	ld [$dde7], a
+	push hl
+	push bc
+	ld bc, $6
+	add hl, bc
+	ld c, [hl]
+.asm_4bd3
+	ld a, c
+	and a
+	jr z, .asm_4be8
+	dec c
+	push bc
+	add a
+	add a
+	add a
+	ld c, a
+	ld b, $10
+	ld hl, $4bc1
+	call Func_3ca6
+	pop bc
+	jr .asm_4bd3
+.asm_4be8
+	pop bc
+	pop hl
+	push hl
+	ld de, $4
+	add hl, de
+	bit 7, [hl]
+	pop hl
+	jr z, Func_4c1b
+	ld a, [$ffb5]
+	and a
+	jp nz, Func_4ea7
+	ld a, $01
+	ld [$ffb5], a
+	ld a, $04
+	ld [$fff2], a
+	ld hl, hPlayerXPos
+	ld a, [hCameraXOffset]
+	add $4c
+	ld [hli], a
+	ld a, [$ffa1]
+	adc $00
+	ld [hli], a
+	ld a, $58
+	ld [hli], a
+	sub a
+	ld [hl], a
+	jp Func_4ea7
 Func_4c17:
 	sub a
 	ld [$dde7], a
+Func_4c1b:
 	ld a, c
 	ld [$ffe6], a
 	ld a, b
@@ -11695,7 +11749,7 @@ Func_4c17:
 	add a
 	jr nc, .asm_4c4c
 	dec [hl]
-	jp nz, .asm_4ea7
+	jp nz, Func_4ea7
 	ld a, [wDifficultySetting]
 	and a
 	ld a, $01
@@ -11717,7 +11771,7 @@ Func_4c17:
 	ld a, b
 	ld [hld], a
 	ld [hl], c
-	jp .asm_4ea7
+	jp Func_4ea7
 .asm_4c4c
 	add a
 	jr nc, .asm_4c95
@@ -11731,7 +11785,7 @@ Func_4c17:
 .asm_4c5c
 	ld [hld], a
 	set 7, [hl]
-	jp .asm_4ea7
+	jp Func_4ea7
 .asm_4c62
 	dec hl
 	bit 4, [hl]
@@ -11741,7 +11795,7 @@ Func_4c17:
 	cp $78
 	jr nc, .asm_4c72
 	bit 3, a
-	jp z, .asm_4ea7
+	jp z, Func_4ea7
 .asm_4c72
 	ld a, $28
 	jp .asm_4e94
@@ -11760,7 +11814,7 @@ Func_4c17:
 	call Func_3c7a
 	pop hl
 	bit 3, [hl]
-	jp z, .asm_4ea7
+	jp z, Func_4ea7
 	ld a, $22
 	jp .asm_4e94
 .asm_4c95
@@ -11774,7 +11828,7 @@ Func_4c17:
 	ld a, $b4
 	ld [hld], a
 	set 6, [hl]
-	jp .asm_4ea7
+	jp Func_4ea7
 .asm_4ca7
 	cp $1e
 	ld a, $24
@@ -11808,7 +11862,7 @@ Func_4c17:
 	sub $08
 	ld b, a
 	call Func_3c7a
-	jp .asm_4ea7
+	jp Func_4ea7
 .asm_4ce1
 	add a
 	jr nc, .asm_4d0b
@@ -11826,7 +11880,7 @@ Func_4c17:
 	call PlaySoundEffectHome
 	ld bc, $10
 	call AddScore
-	jp .asm_4ea7
+	jp Func_4ea7
 .asm_4cff
 	dec hl
 	ld a, [hl]
@@ -12115,7 +12169,7 @@ Func_4c17:
 	ld b, a
 	dec hl
 	call Func_792d
-.asm_4ea7
+Func_4ea7:
 	jp Func_39ea
 
 INCBIN "baserom.gbc", $4eaa, $4fe0 - $4eaa
@@ -13204,7 +13258,572 @@ HandleFixedPathEntity:
 .asm_58b8
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $58bb, $605e - $58bb
+INCBIN "baserom.gbc", $58bb, $5c2c - $58bb
+
+HandleMoveYosemiteShipFarLeftEntity:
+	ld a, $37
+	ld [$de81], a
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $5c34, $5c61 - $5c34
+
+HandleMoveYosemiteShipMiddleEntity:
+	ld a, $6f
+	ld [$de81], a
+	jp Func_39ea
+
+HandleMoveYosemiteShipFarRightEntity:
+	ld a, $87
+	ld [$de81], a
+	jp Func_39ea
+
+HandleMoveYosemiteShipOffScreenEntity:
+	ld a, $b8
+	ld [$de81], a
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $5c79, $5c7e - $5c79
+
+HandleRaftEntity:
+	ld bc, $5d4c
+	jr .asm_5c83
+.asm_5c83
+	ld a, c
+	ld [$ffe6], a
+	ld a, b
+	ld [$ffe7], a
+	sub a
+	ld [$ff8a], a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	inc hl
+	inc hl
+	bit 7, [hl]
+	jr z, .asm_5ca4
+	ld a, [hl]
+	and $1f
+	cp $0f
+	jp z, .asm_5d49
+	ld a, [hFrameCounter]
+	rra
+	jr c, .asm_5ca4
+	inc [hl]
+.asm_5ca4
+	ld a, [hPlayerXPos]
+	sub $08
+	ld c, a
+	ld a, [hPlayerXPos + 1]
+	sbc 0
+	ld b, a
+	inc hl
+	ld a, [hli]
+	sub c
+	ld a, [hli]
+	sbc b
+	jr c, .asm_5cbc
+	dec hl
+	ld a, [hld]
+	ld b, a
+	ld a, [hld]
+	ld c, a
+	jr .asm_5cd0
+.asm_5cbc
+	ld a, [hli]
+	sub c
+	ld a, [hl]
+	sbc b
+	jr nc, .asm_5cc8
+	ld a, [hld]
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	jr .asm_5ccc
+.asm_5cc8
+	ld a, $ff
+	ld [$ff8a], a
+.asm_5ccc
+	dec hl
+	dec hl
+	dec hl
+	dec hl
+.asm_5cd0
+	dec hl
+	ld a, b
+	ld [hld], a
+	ld a, c
+	ld [hli], a
+	inc hl
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	jr nz, .asm_5d12
+	ld a, [hPlayerYPos]
+	sub e
+	cp $08
+	jr nc, .asm_5d12
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_5d12
+	ld a, [$ffdd]
+	sub c
+	cp $20
+	jr nc, .asm_5d12
+	call Func_28b7
+	ld a, l
+	sub $02
+	ld [$ffe9], a
+	ld a, h
+	sbc $00
+	ld [$ffea], a
+	dec de
+	ld a, e
+	ld [hPlayerYPos], a
+	ld a, d
+	ld [hPlayerYPos + 1], a
+	inc de
+	ld a, [$ff8a]
+	and a
+	jr z, .asm_5d12
+	ld a, $ff
+	ld [$ffe8], a
+.asm_5d12
+	ld a, [$de82]
+	sub $20
+	ld e, a
+	ld a, [hCameraXOffset]
+	add e
+	ld e, a
+	ld a, [hCameraXOffset + 1]
+	adc 0
+	ld d, a
+	ld a, c
+	sub e
+	ld a, b
+	sbc d
+	jr c, .asm_5d32
+	bit 7, [hl]
+	jr nz, .asm_5d32
+	ld a, $0d
+	call PlaySoundEffectHome
+	set 7, [hl]
+.asm_5d32
+	ld a, [$ffe6]
+	ld e, a
+	ld a, [$ffe7]
+	ld d, a
+	ld a, [hl]
+	and $1e
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_5d49
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $5d4c, $5d72 - $5d4c
+
+HandleTNTBarrelEntity:
+	sub a
+	ld [$ff8a], a
+	jr .asm_5d77
+.asm_5d77
+	ld a, [hli]
+	inc hl
+	ld b, a
+	ld a, [hli]
+	add $04
+	ld c, a
+	ld a, [hli]
+	adc $00
+	ld d, a
+	bit 7, [hl]
+	jr z, .asm_5da8
+	ld a, [hl]
+	and $1f
+	cp $13
+	jr z, .asm_5df3
+	ld a, [hFrameCounter]
+	rra
+	jr c, .asm_5d93
+	inc [hl]
+.asm_5d93
+	ld a, [hl]
+	and $1c
+	srl a
+	add $dc
+	ld l, a
+	ld a, $18
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3c7a
+	jr .asm_5df3
+.asm_5da8
+	ld a, c
+	add $14
+	ld c, a
+	ld a, d
+	adc $00
+	ld b, a
+	ld a, [$ffe9]
+	ld e, a
+	ld a, [$ffea]
+	ld d, a
+	or e
+	jr z, .asm_5dce
+	ld a, [de]
+	inc de
+	sub c
+	ld a, [de]
+	inc de
+	sbc b
+	jr nc, .asm_5dce
+	ld a, [de]
+	set 7, a
+	ld [de], a
+	ld [hl], $80
+	ld a, $0d
+	call PlaySoundEffectHome
+	jr .asm_5df3
+.asm_5dce
+	ld a, [$ff8a]
+	and a
+	jr nz, .asm_5df6
+	ld a, [hFrameCounter]
+	and $07
+	jr nz, .asm_5de1
+	inc [hl]
+	ld a, [hl]
+	cp $12
+	jr c, .asm_5de1
+	ld [hl], $00
+.asm_5de1
+	ld a, [hl]
+	add a
+	add $13
+	ld e, a
+	ld a, $5e
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_5df3
+	jp Func_39ea
+.asm_5df6
+	dec hl
+	ld a, [hld]
+	ld d, a
+	ld a, [hld]
+	ld c, a
+	dec hl
+	ld b, [hl]
+	ld hl, $5e05
+	call Func_3c7a
+	jr .asm_5df3
+
+INCBIN "baserom.gbc", $5e05, $5e37 - $5e05
+
+HandleDolphinEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr z, .asm_5e6a
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_5e55
+	inc [hl]
+	ld a, [hl]
+	and $1f
+	cp $10
+	jr c, .asm_5e55
+	ld [hl], $00
+	jr .asm_5e6a
+.asm_5e55
+	ld a, [hl]
+	and $1e
+	add $bd
+	ld e, a
+	ld a, $5e
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+	jr .asm_5eba
+.asm_5e6a
+	call Func_74f9
+	ld a, c
+	add $18
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	ld a, [$ffe9]
+	ld e, a
+	ld a, [$ffea]
+	ld d, a
+	or e
+	jr z, .asm_5e9e
+	ld a, [de]
+	inc de
+	sub c
+	ld c, a
+	ld a, [de]
+	inc de
+	sbc b
+	jr z, .asm_5e9e
+	inc a
+	jr nz, .asm_5e9e
+	ld a, c
+	cp $f8
+	jr c, .asm_5e9e
+	ld a, [de]
+	bit 7, a
+	jr nz, .asm_5e9e
+	set 7, a
+	ld [de], a
+	set 7, [hl]
+	ld a, $0d
+	call PlaySoundEffectHome
+.asm_5e9e
+	ld a, [$ffe4]
+	and $18
+	srl a
+	srl a
+	ld e, a
+	ld a, [$ffe5]
+	add e
+	add $cd
+	ld e, a
+	ld a, $5e
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_5eba
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $5ebd, $5eed - $5ebd
+
+HandleCannonballEntity:
+	ld a, [$de83]
+	add $28
+	ld e, a
+	ld a, [hCameraYOffset]
+	add e
+	ld e, a
+	ld [hli], a
+	ld a, [hCameraYOffset + 1]
+	adc 0
+	ld d, a
+	ld [hli], a
+	ld a, [$de82]
+	ld c, a
+	ld a, [hCameraXOffset]
+	add c
+	ld c, a
+	ld [hli], a
+	ld a, [hCameraXOffset + 1]
+	adc 0
+	ld b, a
+	ld [hli], a
+	ld d, b
+	ld b, e
+	ld a, [hl]
+	and $1f
+	cp $1f
+	jr z, .asm_5f3f
+	ld a, [hFrameCounter]
+	and $03
+	jr nz, .asm_5f2e
+	inc [hl]
+	ld a, [hl]
+	and $1f
+	cp $10
+	jr nz, .asm_5f2e
+	push bc
+	push de
+	ld bc, $5f94
+	call Func_1868
+	pop de
+	pop bc
+.asm_5f2e
+	ld a, [hl]
+	and $1e
+	add $42
+	ld l, a
+	ld a, $5f
+	adc $00
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_3c7a
+.asm_5f3f
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $5f42, $5fa2 - $5f42
+
+HandleLogDestructionEntity:
+	ld bc, $604e
+	jr .asm_5fa7
+.asm_5fa7
+	ld a, c
+	ld [$ffe6], a
+	ld a, b
+	ld [$ffe7], a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_5fd3
+	ld a, [$de82]
+	sub $20
+	ld e, a
+	ld a, [hCameraXOffset]
+	add e
+	ld e, a
+	ld a, [hCameraXOffset + 1]
+	adc 0
+	ld d, a
+	ld a, c
+	sub e
+	ld a, b
+	sbc d
+	jp c, .asm_604b
+	set 7, [hl]
+	jr .asm_604b
+.asm_5fd3
+	inc hl
+	ld a, [hld]
+	and a
+	jr z, .asm_604b
+	ld a, [hl]
+	and $1f
+	cp $07
+	jr nz, .asm_6033
+	ld a, $0d
+	call PlaySoundEffectHome
+	ld a, [hl]
+	and $e0
+	ld [hli], a
+	dec [hl]
+	jr z, .asm_5ff6
+	dec hl
+	dec hl
+	dec hl
+	ld a, c
+	sub $10
+	ld [hli], a
+	ld a, b
+	sbc 0
+	ld [hl], a
+.asm_5ff6
+	push bc
+	push de
+	ld h, b
+	ld l, c
+	add hl, hl
+	add hl, hl
+	ld b, h
+	ld h, d
+	ld l, e
+	add hl, hl
+	add hl, hl
+	ld l, h
+	ld h, (wMetatileRowPointers >> 8)
+	sla l
+	ld a, [hli]
+	ld h, [hl]
+	sla b
+	add b
+	ld l, a
+	jr nc, .asm_600f
+	inc h
+.asm_600f
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, e
+	and $30
+	rrca
+	rrca
+	add l
+	ld l, a
+	ld a, c
+	and $30
+	swap a
+	add l
+	ld l, a
+	pop de
+	pop bc
+	ld a, c
+	and $30
+	swap a
+	ld [hl], a
+	call PrepareDrawMetatile
+	call DrawMetatile_HBlank
+	call DrawMetatileGBCAttributes_HBlank
+	jr .asm_604b
+.asm_6033
+	inc [hl]
+	ld a, [$ffe6]
+	ld e, a
+	ld a, [$ffe7]
+	ld d, a
+	ld a, [hl]
+	and $06
+	add e
+	ld e, a
+	ld a, d
+	adc $00
+	ld d, a
+	ld a, [de]
+	inc de
+	ld c, a
+	ld a, [de]
+	ld b, a
+	call Func_792d
+.asm_604b
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $604e, $605e - $604e
 
 HandleHippoEntity:
 	ld a, [hli]
@@ -19947,7 +20566,199 @@ TreasureIslandBossLevelTiles:
 TreasureIslandBossShipTiles:
 	INCBIN "gfx/treasure_island/boss_ship_tiles.2bpp.lz"
 
-INCBIN "baserom.gbc", $18d4d, $19308 - $18d4d
+TreasureIslandBossEntityTriggers:
+	dw $FFFF, $0000, $8573
+	trigger  $00,  $B8, 36, TreasureIslandBoss
+	trigger  $00,  $A8, 37, TreasureIslandBoss
+	trigger  $00,  $01, 38, TreasureIslandBoss
+	trigger  $10, $148, 84, TreasureIslandBoss
+	trigger  $30,  $E0, 60, TreasureIslandBoss
+	trigger  $50, $100, 59, TreasureIslandBoss
+	trigger  $50, $100, 90, TreasureIslandBoss
+	trigger  $70, $120, 57, TreasureIslandBoss
+	trigger  $B0, $178, 68, TreasureIslandBoss
+	trigger  $C0, $1F8, 83, TreasureIslandBoss
+	trigger  $E0, $190, 63, TreasureIslandBoss
+	trigger $100, $1B0, 64, TreasureIslandBoss
+	trigger $120, $1D0, 62, TreasureIslandBoss
+	trigger $160, $228, 67, TreasureIslandBoss
+	trigger $170, $2A8, 82, TreasureIslandBoss
+	trigger $190, $240, 61, TreasureIslandBoss
+	trigger $1B0, $260, 89, TreasureIslandBoss
+	trigger $1D0, $280, 56, TreasureIslandBoss
+	trigger $1E0, $2F0, 53, TreasureIslandBoss
+	trigger $210, $310, 34, TreasureIslandBoss
+	trigger $260, $370, 52, TreasureIslandBoss
+	trigger $290, $390, 33, TreasureIslandBoss
+	trigger $2E0, $3F0, 51, TreasureIslandBoss
+	trigger $310, $410, 32, TreasureIslandBoss
+	trigger $370, $418, 35, TreasureIslandBoss
+	trigger $370, $4A8, 81, TreasureIslandBoss
+	trigger $3B0, $460, 92, TreasureIslandBoss
+	trigger $410, $4C8, 31, TreasureIslandBoss
+	trigger $420, $558, 80, TreasureIslandBoss
+	trigger $440, $4F0, 46, TreasureIslandBoss
+	trigger $480, $530, 45, TreasureIslandBoss
+	trigger $4C0, $588, 66, TreasureIslandBoss
+	trigger $4D0, $608, 79, TreasureIslandBoss
+	trigger $4F0, $5A0, 29, TreasureIslandBoss
+	trigger $510, $5C0, 93, TreasureIslandBoss
+	trigger $530, $5E0, 30, TreasureIslandBoss
+	trigger $540, $650, 28, TreasureIslandBoss
+	trigger $570, $670, 27, TreasureIslandBoss
+	trigger $5D0, $708, 78, TreasureIslandBoss
+	trigger $648, $6F0, 50, TreasureIslandBoss
+	trigger $650, $6F8, 49, TreasureIslandBoss
+	trigger $670, $728, 26, TreasureIslandBoss
+	trigger $680, $7B8, 77, TreasureIslandBoss
+	trigger $6A0, $750, 44, TreasureIslandBoss
+	trigger $6C0, $770, 58, TreasureIslandBoss
+	trigger $6E0, $790, 43, TreasureIslandBoss
+	trigger $720, $7D8, 25, TreasureIslandBoss
+	trigger $730, $868, 76, TreasureIslandBoss
+	trigger $750, $800, 22, TreasureIslandBoss
+	trigger $770, $820, 23, TreasureIslandBoss
+	trigger $770, $820, 24, TreasureIslandBoss
+	trigger $790, $840, 21, TreasureIslandBoss
+	trigger $7A0, $8B0, 48, TreasureIslandBoss
+	trigger $7D0, $8D0, 18, TreasureIslandBoss
+	trigger $850, $950, 19, TreasureIslandBoss
+	trigger $878, $928, 55, TreasureIslandBoss
+	trigger $8A0, $9B0, 47, TreasureIslandBoss
+	trigger $8D0, $9D0, 20, TreasureIslandBoss
+	trigger $940, $9F8, 91, TreasureIslandBoss
+	trigger $950, $A88, 75, TreasureIslandBoss
+	trigger $970, $A20, 42, TreasureIslandBoss
+	trigger $990, $A40, 88, TreasureIslandBoss
+	trigger $9B0, $A60, 41, TreasureIslandBoss
+	trigger $9F0, $AB8, 65, TreasureIslandBoss
+	trigger $A00, $B38, 74, TreasureIslandBoss
+	trigger $A20, $AD0, 40, TreasureIslandBoss
+	trigger $A40, $AF0, 87, TreasureIslandBoss
+	trigger $A60, $B10, 39, TreasureIslandBoss
+	trigger $AA0, $B58, 12, TreasureIslandBoss
+	trigger $AB0, $BE8, 73, TreasureIslandBoss
+	trigger $AD0, $B80, 11, TreasureIslandBoss
+	trigger $AF0, $BA0,  9, TreasureIslandBoss
+	trigger $AF0, $BA0, 17, TreasureIslandBoss
+	trigger $B10, $BC0, 10, TreasureIslandBoss
+	trigger $B20, $C30, 54, TreasureIslandBoss
+	trigger $B50, $C50,  8, TreasureIslandBoss
+	trigger $BB0, $CE8, 72, TreasureIslandBoss
+	trigger $C27, $CCF, 16, TreasureIslandBoss
+	trigger $C30, $CD8, 15, TreasureIslandBoss
+	trigger $C50, $D08,  7, TreasureIslandBoss
+	trigger $C60, $D98, 71, TreasureIslandBoss
+	trigger $C80, $D30, 14, TreasureIslandBoss
+	trigger $CA0, $D50, 86, TreasureIslandBoss
+	trigger $CC0, $D70, 13, TreasureIslandBoss
+	trigger $D00, $E00,  6, TreasureIslandBoss
+	trigger $D60, $E98, 70, TreasureIslandBoss
+	trigger $D80, $E30,  5, TreasureIslandBoss
+	trigger $DA0, $E50,  4, TreasureIslandBoss
+	trigger $DC0, $E70,  3, TreasureIslandBoss
+	trigger $E00, $EB8,  0, TreasureIslandBoss
+	trigger $E10, $F48, 69, TreasureIslandBoss
+	trigger $E30, $EE0,  1, TreasureIslandBoss
+	trigger $E50, $F00, 85, TreasureIslandBoss
+	trigger $E70, $F20,  2, TreasureIslandBoss
+	dw $7FFF, $0000, $8573
+
+TreasureIslandBossEntities:
+TreasureIslandBossEntity0:  entity_tnt_barrel $EA0, $78
+TreasureIslandBossEntity1:  entity_collectible CARROT, $ED0, $3F
+TreasureIslandBossEntity2:  entity_collectible CARROT, $F10, $3F
+TreasureIslandBossEntity3:  entity_collectible CARROT, $E60, $3F
+TreasureIslandBossEntity4:  entity_collectible TWEETY_E, $E40, $5F
+TreasureIslandBossEntity5:  entity_collectible CARROT, $E20, $3F
+TreasureIslandBossEntity6:  entity_log_destruction $DF0, $7F
+TreasureIslandBossEntity7:  entity_tnt_barrel $CF0, $78
+TreasureIslandBossEntity8:  entity_log_destruction $C40, $7F
+TreasureIslandBossEntity9:  entity_collectible TWEETY_X, $B90, $5F
+TreasureIslandBossEntity10: entity_collectible CARROT, $BB0, $3F
+TreasureIslandBossEntity11: entity_collectible CARROT, $B70, $3F
+TreasureIslandBossEntity12: entity_tnt_barrel $B40, $78
+TreasureIslandBossEntity13: entity_collectible CARROT, $D60, $3F
+TreasureIslandBossEntity14: entity_collectible CARROT, $D20, $3F
+TreasureIslandBossEntity15: entity_move_yosemite_ship_far_left $CD0, $4F
+TreasureIslandBossEntity16: entity_move_yosemite_ship_far_right $CC7, $4F
+TreasureIslandBossEntity17: entity_cannonball $B90, $7F
+TreasureIslandBossEntity18: entity_log_destruction $8C0, $7F
+TreasureIslandBossEntity19: entity_log_destruction $940, $7F
+TreasureIslandBossEntity20: entity_log_destruction $9C0, $7F
+TreasureIslandBossEntity21: entity_collectible CARROT, $830, $3F
+TreasureIslandBossEntity22: entity_collectible CARROT, $7F0, $3F
+TreasureIslandBossEntity23: entity_collectible TWEETY_T, $810, $5F
+TreasureIslandBossEntity24: entity_cannonball $810, $7F
+TreasureIslandBossEntity25: entity_tnt_barrel $7C0, $78
+TreasureIslandBossEntity26: entity_tnt_barrel $710, $78
+TreasureIslandBossEntity27: entity_log_destruction $660, $7F
+TreasureIslandBossEntity28: entity_seagull $630, $38, $5E0, $630, $70
+TreasureIslandBossEntity29: entity_collectible CARROT, $590, $3F
+TreasureIslandBossEntity30: entity_collectible CARROT, $5D0, $3F
+TreasureIslandBossEntity31: entity_tnt_barrel $4B0, $78
+TreasureIslandBossEntity32: entity_log_destruction $400, $7F
+TreasureIslandBossEntity33: entity_log_destruction $380, $7F
+TreasureIslandBossEntity34: entity_log_destruction $300, $7F
+TreasureIslandBossEntity35: entity_move_yosemite_ship_middle $410, $4F
+TreasureIslandBossEntity36: entity_tnt_barrel $A0, $78
+TreasureIslandBossEntity37: entity_move_yosemite_ship_off_screen $A0, $4F
+TreasureIslandBossEntity38: entity_yosemite_sam_boss $88, $6F, $06
+TreasureIslandBossEntity39: entity_collectible CARROT, $B00, $3F
+TreasureIslandBossEntity40: entity_collectible CARROT, $AC0, $3F
+TreasureIslandBossEntity41: entity_collectible CARROT, $A50, $3F
+TreasureIslandBossEntity42: entity_collectible CARROT, $A10, $3F
+TreasureIslandBossEntity43: entity_collectible CARROT, $780, $3F
+TreasureIslandBossEntity44: entity_collectible CARROT, $740, $3F
+TreasureIslandBossEntity45: entity_collectible CARROT, $520, $3F
+TreasureIslandBossEntity46: entity_collectible CARROT, $4E0, $3F
+TreasureIslandBossEntity47: entity_seagull $990, $38, $940, $990, $70
+TreasureIslandBossEntity48: entity_seagull $890, $38, $840, $890, $70
+TreasureIslandBossEntity49: entity_move_yosemite_ship_far_left $6F0, $4F
+TreasureIslandBossEntity50: entity_move_yosemite_ship_far_right $6E8, $4F
+TreasureIslandBossEntity51: entity_seagull $3D0, $38, $380, $3D0, $70
+TreasureIslandBossEntity52: entity_seagull $350, $38, $300, $350, $70
+TreasureIslandBossEntity53: entity_seagull $2D0, $38, $280, $2D0, $70
+TreasureIslandBossEntity54: entity_seagull $C10, $38, $BC0, $C10, $70
+TreasureIslandBossEntity55: entity_collectible TWEETY_HEART, $918, $60
+TreasureIslandBossEntity56: entity_collectible CARROT, $270, $3F
+TreasureIslandBossEntity57: entity_collectible CARROT, $110, $3F
+TreasureIslandBossEntity58: entity_cannonball $760, $7F
+TreasureIslandBossEntity59: entity_cannonball $0F0, $7F
+TreasureIslandBossEntity60: entity_collectible CARROT, $D0, $3F
+TreasureIslandBossEntity61: entity_collectible CARROT, $230, $3F
+TreasureIslandBossEntity62: entity_collectible CARROT, $1C0, $3F
+TreasureIslandBossEntity63: entity_collectible CARROT, $180, $3F
+TreasureIslandBossEntity64: entity_collectible TWEETY_HEART, $1A0, $5F
+TreasureIslandBossEntity65: entity_dolphin $A90, $7F
+TreasureIslandBossEntity66: entity_dolphin $560, $7F
+TreasureIslandBossEntity67: entity_dolphin $200, $7F
+TreasureIslandBossEntity68: entity_dolphin $150, $7F
+TreasureIslandBossEntity69: entity_raft $F30, $6F, $EB0
+TreasureIslandBossEntity70: entity_raft $E80, $6F, $E00
+TreasureIslandBossEntity71: entity_raft $D80, $6F, $D00
+TreasureIslandBossEntity72: entity_raft $CD0, $6F, $C50
+TreasureIslandBossEntity73: entity_raft $BD0, $6F, $B50
+TreasureIslandBossEntity74: entity_raft $B20, $6F, $AA0
+TreasureIslandBossEntity75: entity_raft $A70, $6F, $9F0
+TreasureIslandBossEntity76: entity_raft $850, $6F, $7D0
+TreasureIslandBossEntity77: entity_raft $7A0, $6F, $720
+TreasureIslandBossEntity78: entity_raft $6F0, $6F, $670
+TreasureIslandBossEntity79: entity_raft $5F0, $6F, $570
+TreasureIslandBossEntity80: entity_raft $540, $6F, $4C0
+TreasureIslandBossEntity81: entity_raft $490, $6F, $410
+TreasureIslandBossEntity82: entity_raft $290, $6F, $210
+TreasureIslandBossEntity83: entity_raft $1E0, $6F, $160
+TreasureIslandBossEntity84: entity_raft $130, $6F, $B0
+TreasureIslandBossEntity85: entity_collectible CARROT, $EF0, $2F
+TreasureIslandBossEntity86: entity_collectible CARROT, $D40, $2F
+TreasureIslandBossEntity87: entity_collectible CARROT, $AE0, $2F
+TreasureIslandBossEntity88: entity_collectible CARROT, $A30, $2F
+TreasureIslandBossEntity89: entity_collectible CARROT, $250, $2F
+TreasureIslandBossEntity90: entity_collectible CARROT, $F0, $2F
+TreasureIslandBossEntity91: entity_tnt_barrel $9E0, $78
+TreasureIslandBossEntity92: entity_collectible TWEETY_A, $450, $4F
+TreasureIslandBossEntity93: entity_collectible TWEETY_R, $5B0, $4F
 
 YosemiteSamHeadTiles:
 	INCBIN "gfx/treasure_island/yosemite_sam_head.interleave.2bpp.lz"
@@ -21841,8 +22652,13 @@ ScreenData_TreasureIslandBoss:
 	db 0 ; Boss window palette
 	dw $0F20, $0008 ; initial camera offset
 	dw $0F30, $006F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b4b3, $1b4c0 - $1b4b3
+	db Bank(TreasureIslandBossEntityTriggers)
+	dw TreasureIslandBossEntityTriggers
+	dw TreasureIslandBossEntities
+	dw Func_807a
+	dw $5CB3 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
+	dw $2C96
 
 ScreenData_TazZoo1:
 	compressed_data TazZooLevelTiles, $8B20
@@ -22344,8 +23160,13 @@ ScreenDataGBC_TreasureIslandBoss:
 	db 2 ; Boss window palette
 	dw $0F20, $0008 ; initial camera offset
 	dw $0F30, $006F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1ba28, $1ba35 - $1ba28
+	db Bank(TreasureIslandBossEntityTriggers)
+	dw TreasureIslandBossEntityTriggers
+	dw TreasureIslandBossEntities
+	dw Func_807a
+	dw $5CD4 ; animated tiles
+	dw $7174 ; bugs bunny's digging metatile replacements
+	dw $2C96
 
 ScreenDataGBC_SpaceStation1:
 	compressed_data SharedLevelInterfaceTiles, $8340
