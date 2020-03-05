@@ -520,22 +520,22 @@ entity_yosemite_sam_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_yosemite_ship_off_screen: MACRO
-	dw HandleMoveYosemiteShipOffScreenEntity
+entity_move_boss_vehicle_off_screen: MACRO
+	dw HandleMoveBossVehicleOffScreenEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_yosemite_ship_far_left: MACRO
-	dw HandleMoveYosemiteShipFarLeftEntity
+entity_move_boss_vehicle_far_left: MACRO
+	dw HandleMoveBossVehicleFarLeftEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_yosemite_ship_far_right: MACRO
-	dw HandleMoveYosemiteShipFarRightEntity
+entity_move_boss_vehicle_far_right: MACRO
+	dw HandleMoveBossVehicleFarRightEntity
 	dw \2, \1
 	ENDM
 
@@ -544,4 +544,60 @@ entity_move_yosemite_ship_far_right: MACRO
 entity_move_yosemite_ship_middle: MACRO
 	dw HandleMoveYosemiteShipMiddleEntity
 	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_bouncing_oil_drum: MACRO
+	dw HandleBouncingOilDrumEntity
+	dw \2, \1
+	db $00, $00
+	dw $75D8 ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x pixel coord when riding
+entity_jackhammer: MACRO
+	dw HandleJackhammerEntity
+	dw \2, \1
+	db $00
+	dw \3, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_hanging_hook: MACRO
+	dw HandleHangingHookEntity
+	dw \2, \1
+	db $00, $00
+	dw $75b8 ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_wrecking_ball: MACRO
+	dw HandleWreckingBallEntity
+	dw \2, \1
+	db $00, $00
+	dw $7547 ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_brick_wall: MACRO
+	dw HandleBrickWallEntity
+	dw \2, \1
+	db $06
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: health
+entity_daffy_duck_boss: MACRO
+	dw HandleDaffyDuckBossEntity
+	dw \2, \1
+	db $20, $00
+	db \3
+	db $00, $00, $00, $00, $00, $88, $00, $04
 	ENDM
