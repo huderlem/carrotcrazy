@@ -509,7 +509,7 @@ entity_cannonball: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-; \5: health
+; \3: health
 entity_yosemite_sam_boss: MACRO
 	dw HandleYosemiteSamBossEntity
 	dw \2, \1
@@ -520,22 +520,22 @@ entity_yosemite_sam_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_boss_vehicle_off_screen: MACRO
-	dw HandleMoveBossVehicleOffScreenEntity
+entity_move_right_boss_vehicle_off_screen: MACRO
+	dw HandleMoveRightBossVehicleOffScreenEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_boss_vehicle_far_left: MACRO
-	dw HandleMoveBossVehicleFarLeftEntity
+entity_move_right_boss_vehicle_far_left: MACRO
+	dw HandleMoveRightBossVehicleFarLeftEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_boss_vehicle_far_right: MACRO
-	dw HandleMoveBossVehicleFarRightEntity
+entity_move_right_boss_vehicle_far_right: MACRO
+	dw HandleMoveRightBossVehicleFarRightEntity
 	dw \2, \1
 	ENDM
 
@@ -586,7 +586,7 @@ entity_wrecking_ball: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 entity_brick_wall: MACRO
-	dw HandleBrickWallEntity
+	dw HandleBreakableWallEntity
 	dw \2, \1
 	db $06
 	ENDM
@@ -600,4 +600,99 @@ entity_daffy_duck_boss: MACRO
 	db $20, $00
 	db \3
 	db $00, $00, $00, $00, $00, $88, $00, $04
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_taz_female_boss: MACRO
+	dw HandleTazFemaleBossEntity
+	dw \2, \1
+	db $20, $00, $01, $00, $00, $00, $00, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_balloon: MACRO
+	dw HandleBalloonEntity
+	dw \2, \1
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: maximum x pixel coord when riding
+entity_bicycle: MACRO
+	dw HandleBicycleEntity
+	dw \2, \1
+	db $00
+	dw \3
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_cage_wall: MACRO
+	dw HandleBreakableWallEntity
+	dw \2, \1
+	db $86
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_cage_drop: MACRO
+	dw HandleCageDropEntity
+	dw \2, \1
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_left_boss_vehicle_off_screen: MACRO
+	dw HandleMoveLeftBossVehicleOffScreenEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_left_boss_vehicle_far_left: MACRO
+	dw HandleMoveLeftBossVehicleFarLeftEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_move_left_boss_vehicle_far_right: MACRO
+	dw HandleMoveLeftBossVehicleFarRightEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_normal_scroll_right: MACRO
+	dw HandleNormalScrollRightEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_fast_scroll_right: MACRO
+	dw HandleFastScrollRightEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_fastest_scroll_right: MACRO
+	dw HandleFastestScrollRightEntity
+	dw \2, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: health
+entity_taz_boss: MACRO
+	dw HandleTazBossEntity
+	dw \2, \1
+	db $20, $00
+	db \3
+	db $00, $00, $00, $22, $0F, $AA, $0F, $04
 	ENDM
