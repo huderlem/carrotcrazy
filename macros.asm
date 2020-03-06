@@ -804,3 +804,58 @@ entity_elmer_fudd_boss: MACRO
 	db \3
 	db $00, $00, $00, $00, $00, $88, $00, $04
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_studio_yosemite_sam: MACRO
+	dw HandleStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $6B54
+	dw $6B54
+	db $AC, $01
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_studio_daffy_duck: MACRO
+	dw HandleStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $696E
+	dw $696E
+	db $2C, $01
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_studio_taz: MACRO
+	dw HandleStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $7028
+	dw $7028
+	db $2C, $02
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_studio_marvin_martian: MACRO
+	dw HandleStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $7412
+	dw $7412
+	db $AC, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_studio_elmer_fudd: MACRO
+	dw HandleStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $77AE
+	dw $77AE
+	db $2C, $00
+	ENDM

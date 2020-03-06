@@ -10409,7 +10409,67 @@ INCLUDE "home/load.asm"
 
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
-INCBIN "baserom.gbc", $4000, $40b6 - $4000
+INCBIN "baserom.gbc", $4000, $401a - $4000
+
+HandleStudioCharacterEntity:
+	push hl
+	inc hl
+	inc hl
+	ld a, [hli]
+	sub $23
+	ld c, a
+	ld a, [hli]
+	sbc $00
+	ld b, a
+	ld a, [$ffdd]
+	sub c
+	ld c, a
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_4049
+	ld a, c
+	cp $66
+	jr nc, .asm_4049
+	ld a, [$ffb5]
+	and a
+	jr nz, .asm_4049
+	ld a, [$ffad]
+	bit 4, a
+	jr z, .asm_4049
+	ld a, [$defa]
+	and $41
+	jr z, .asm_4049
+	ld a, $01
+	ld [$ffb5], a
+.asm_4049
+	push hl
+	res 5, [hl]
+	ld a, [hFrameCounter]
+	bit 6, a
+	jr z, .asm_4056
+	set 5, [hl]
+	inc hl
+	inc hl
+.asm_4056
+	inc hl
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	pop hl
+	call Func_792d
+	pop hl
+	ld a, [hli]
+	ld b, a
+	ld de, $8
+	add hl, de
+	ld a, [hli]
+	ld c, a
+	ld d, [hl]
+	ld hl, $4071
+	call Func_3c7a
+	jp Func_39ea
+
+INCBIN "baserom.gbc", $4071, $40b6 - $4071
 
 HandleCollectibleEntity:
 	ld a, [hli]
@@ -19832,7 +19892,45 @@ StudioMetatiles:
 StudioMap:
 	INCBIN "data/levels/studio.vdmap.lz"
 
-INCBIN "baserom.gbc", $11387, $11422 - $11387
+StudioCrazyTownEntityTriggers:
+	dw $FFFF, $0000, $8167
+	trigger $8C, $164, 0, StudioCrazyTown
+	dw $7FFF, $0000, $8167
+
+StudioCrazyTownEntities:
+StudioCrazyTownEntity0: entity_studio_daffy_duck $14C, $6D
+
+StudioTreasureIslandEntityTriggers:
+	dw $FFFF, $0000, $8148
+	trigger $10C, $1E4, 0, StudioTreasureIsland
+	dw $7FFF, $0000, $8148
+
+StudioTreasureIslandEntities:
+StudioTreasureIslandEntity0: entity_studio_yosemite_sam $1CC, $6D
+
+StudioTazZooEntityTriggers:
+	dw $FFFF, $0000, $8129
+	trigger $18C, $264, 0, StudioTazZoo
+	dw $7FFF, $0000, $8129
+
+StudioTazZooEntities:
+StudioTazZooEntity0: entity_studio_taz $24C, $6D
+
+StudioSpaceStationEntityTriggers:
+	dw $FFFF, $0000, $810A
+	trigger $0C, $E4, 0, StudioSpaceStation
+	dw $7FFF, $0000, $810A
+
+StudioSpaceStationEntities:
+StudioSpaceStationEntity0: entity_studio_marvin_martian $CC, $6D
+
+StudioFuddForestEntityTriggers:
+	dw $FFFF, $0000, $80EB
+	trigger $00, $64, 0, StudioFuddForest
+	dw $7FFF, $0000, $80EB
+
+StudioFuddForestEntities:
+StudioFuddForestEntity0: entity_studio_elmer_fudd $4C, $6D
 
 CrazyTownLevelTiles:
 	INCBIN "gfx/crazy_town/level_tiles.2bpp.lz"
@@ -24279,32 +24377,52 @@ ScreenData_Studio:
 ScreenData_StudioTreasureIsland:
 	db $ff
 	dw RunStudioScreen
-
-INCBIN "baserom.gbc", $1b2f1, $1b300 - $1b2f1
+	dw $0000, $0000 ; initial camera offset
+	dw $0010, $0078 ; initial player x/y coords
+	db Bank(StudioTreasureIslandEntityTriggers)
+	dw StudioTreasureIslandEntityTriggers
+	dw StudioTreasureIslandEntities
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_StudioCrazyTown:
 	db $ff
 	dw RunStudioScreen
-
-INCBIN "baserom.gbc", $1b303, $1b312 - $1b303
+	dw $0188, $0000 ; initial camera offset
+	dw $01D4, $0078 ; initial player x/y coords
+	db Bank(StudioCrazyTownEntityTriggers)
+	dw StudioCrazyTownEntityTriggers
+	dw StudioCrazyTownEntities
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_StudioTazZoo:
 	db $ff
 	dw RunStudioScreen
-
-INCBIN "baserom.gbc", $1b315, $1b324 - $1b315
+	dw $0108, $0000 ; initial camera offset
+	dw $0154, $0078 ; initial player x/y coords
+	db Bank(StudioTazZooEntityTriggers)
+	dw StudioTazZooEntityTriggers
+	dw StudioTazZooEntities
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_StudioSpaceStation:
 	db $ff
 	dw RunStudioScreen
-
-INCBIN "baserom.gbc", $1b327, $1b336 - $1b327
+	dw $0208, $0000 ; initial camera offset
+	dw $0254, $0078 ; initial player x/y coords
+	db Bank(StudioSpaceStationEntityTriggers)
+	dw StudioSpaceStationEntityTriggers
+	dw StudioSpaceStationEntities
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_StudioFuddForest:
 	db $ff
 	dw RunStudioScreen
-
-INCBIN "baserom.gbc", $1b339, $1b348 - $1b339
+	dw $0088, $0000 ; initial camera offset
+	dw $00D4, $0078 ; initial player x/y coords
+	db Bank(StudioFuddForestEntityTriggers)
+	dw StudioFuddForestEntityTriggers
+	dw StudioFuddForestEntities
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_CrazyTown1:
 	compressed_data CrazyTownLevelTiles, $8B20
