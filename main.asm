@@ -624,7 +624,7 @@ Func_433:
 
 RunPasswordScreen:
 	push hl
-	ld hl, $76f4
+	ld hl, ScreenData_Password
 	call LoadData
 	call InitScreenMusic
 	pop hl
@@ -24635,7 +24635,14 @@ ScreenData_FuddForestBoss:
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw $0049
 
-INCBIN "baserom.gbc", $1b6f4, $1b710 - $1b6f4
+ScreenData_Password:
+	compressed_data WarnerBrosBackgroundTiles, $8830
+	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
+	compressed_data PasswordCharacterHeadTiles, $8220
+	compressed_data MenuFontTiles, $C000
+	compressed_data GameText, $C500
+	db $ff
+	dw Func_8080
 
 ScreenData_Password1:
 	db $ff
