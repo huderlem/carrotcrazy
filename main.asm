@@ -24664,8 +24664,7 @@ ScreenData_LevelSummary:
 	compressed_data LevelSummaryIconTiles, $80E0
 	db $ff
 	dw RunLevelSummaryScreen
-
-INCBIN "baserom.gbc", $1b73e, $1b740 - $1b73e
+	dw Func_8080
 
 ScreenData_LevelBonus:
 	compressed_data LevelBonusBackgroundTiles, $9500
@@ -24674,7 +24673,7 @@ ScreenData_LevelBonus:
 	compressed_data SharedLevelInterfaceTiles, $C000
 	uncompressed_data LevelBonusExtraTiles, $C620, $00A0
 	db $ff
-	dw $4080 ; TODO: ??
+	dw Func_8080
 
 Data_1b75e:
 	db $03
@@ -24688,8 +24687,7 @@ ScreenData_PrologueScene:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunPrologueSceneScreen
-
-INCBIN "baserom.gbc", $1b77b, $1b77d - $1b77b
+	dw Func_8065
 
 ScreenData_Credits:
 	compressed_data FontTiles, $8340
@@ -24790,7 +24788,7 @@ ScreenDataGBC_LevelBonus:
 	uncompressed_data LevelBonusExtraTiles, $C620, $00A0
 	compressed_data LevelBonusTileAttributesGBC, $DAD0
 	db $ff
-	dw $4080 ; TODO: ??
+	dw Func_8080
 
 ScreenDataGBC_CrazyTown1:
 	compressed_data SharedLevelInterfaceTiles, $8340
