@@ -751,3 +751,56 @@ entity_marvin_martian_boss: MACRO
 	db \3
 	db $00, $00, $00, $00, $00, $88, $00, $04
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_dirt_path_destruction: MACRO
+	dw HandleDirtPathDestructionEntity
+	dw \2, \1
+	db $00, $06
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: minimum x pixel coord when surfing
+entity_train_track_dolly: MACRO
+	dw HandleTrainTrackDollyEntity
+	dw \2, \1
+	db $00
+	dw \3, \1
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_train_track_barricade: MACRO
+	dw HandleTrainTrackBarricadeEntity
+	dw \2, \1
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_brick_thrower_tower: MACRO
+	dw HandleBrickThrowerTowerEntity
+	dw \2, \1
+	db $80, $01, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_boom_barrier: MACRO
+	dw HandleBoomBarrierEntity
+	dw \2, \1
+	db $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: health
+entity_elmer_fudd_boss: MACRO
+	dw HandleElmerFuddBossEntity
+	dw \2, \1
+	db $20, $00
+	db \3
+	db $00, $00, $00, $00, $00, $88, $00, $04
+	ENDM
