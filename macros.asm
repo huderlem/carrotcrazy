@@ -696,3 +696,58 @@ entity_taz_boss: MACRO
 	db \3
 	db $00, $00, $00, $22, $0F, $AA, $0F, $04
 	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_space_scooter: MACRO
+	dw HandleSpaceScooterEntity
+	dw \2, \1
+	db $20
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_fuel_canister: MACRO
+	dw HandleFuelCanisterEntity
+	dw \2, \1
+	db $00, $00
+	dw $781A ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_falling_asteroid: MACRO
+	dw HandleFallingAsteroidEntity
+	dw \2, \1
+	db $00, $00
+	dw $780C ; TODO:
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_instant_martian_boss: MACRO
+	dw HandleInstantMartianEntity
+	dw \2, \1
+	db $00, $00, $02, $77, $00
+	dw \2, \1
+	db $02, $77
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_bomb_hazard_boss: MACRO
+	dw HandleBombHazardEntity
+	dw \2, \1
+	db $00, $00, $D2, $77
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+; \3: health
+entity_marvin_martian_boss: MACRO
+	dw HandleMarvianMartianBossEntity
+	dw \2, \1
+	db $20, $00
+	db \3
+	db $00, $00, $00, $00, $00, $88, $00, $04
+	ENDM

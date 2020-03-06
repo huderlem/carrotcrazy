@@ -11657,7 +11657,9 @@ HandleMarvianMartianEntity:
 	ld bc, $4f78
 	jp Func_4c17
 
-INCBIN "baserom.gbc", $4b9b, $4ba0 - $4b9b
+HandleMarvianMartianBossEntity:
+	ld bc, $4f78
+	jr Func_4bc7
 
 HandleTazEntity:
 	ld bc, $4f3a
@@ -16652,7 +16654,163 @@ HandleHoverShipEntity:
 .asm_6fd7
 	jp Func_39ea
 
-INCBIN "baserom.gbc", $6fda, $70d6 - $6fda
+HandleSpaceScooterEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_704b
+	ld a, [$ffb0]
+	and a
+	jr nz, .asm_7045
+	ld a, [$ffad]
+	bit 2, a
+	jr nz, .asm_7045
+	ld a, [$ffc6]
+	bit 7, a
+	jr nz, .asm_7045
+	cp $38
+	jr nc, .asm_7045
+	ld a, [hPlayerYPos]
+	sub e
+	ld a, [hPlayerYPos + 1]
+	sbc d
+	inc a
+	jr nz, .asm_7045
+	ld a, [hPlayerYPos]
+	sub e
+	cp $f8
+	jr c, .asm_7045
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_7045
+	ld a, [$ffdd]
+	sub c
+	cp $28
+	jr nc, .asm_7045
+	set 7, [hl]
+	ld a, [$ffad]
+	set 6, a
+	ld [$ffad], a
+	ld a, $27
+	ld [$ffb0], a
+	ld a, [$ffad]
+	set 5, a
+	ld [$ffad], a
+	ld a, $bf
+	ld [$ffb7], a
+	push hl
+	ld hl, $2e09
+	call Func_2d62
+	ld hl, hPlayerXPos
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	call Func_2326
+	pop hl
+.asm_7045
+	ld bc, $76ac
+	call Func_792d
+.asm_704b
+	jp Func_39ea
+
+HandleFallingAsteroidEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	call Func_74f9
+	push hl
+	ld hl, $ffe8
+	add hl, de
+	ld a, [hPlayerYPos]
+	sub l
+	ld a, [hPlayerYPos + 1]
+	sbc h
+	jr nz, .asm_7082
+	ld a, [hPlayerYPos]
+	sub l
+	cp $36
+	jr nc, .asm_7082
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_7082
+	ld a, [$ffdd]
+	sub c
+	cp $20
+	jr nc, .asm_7082
+	ld a, [$ffad]
+	set 1, a
+	ld [$ffad], a
+.asm_7082
+	pop hl
+	ld bc, $76be
+	call Func_792d
+	jp Func_39ea
+
+HandleFuelCanisterEntity:
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	bit 7, [hl]
+	jr nz, .asm_70d3
+	call Func_74f9
+	push hl
+	ld hl, $ffe8
+	add hl, de
+	ld a, [hPlayerYPos]
+	sub l
+	ld a, [hPlayerYPos + 1]
+	sbc h
+	jr nz, .asm_70cc
+	ld a, [hPlayerYPos]
+	sub l
+	cp $36
+	jr nc, .asm_70cc
+	ld a, [$ffdd]
+	sub c
+	ld a, [$ffde]
+	sbc b
+	jr nz, .asm_70cc
+	ld a, [$ffdd]
+	sub c
+	cp $20
+	jr nc, .asm_70cc
+	pop hl
+	set 7, [hl]
+	ld a, $bf
+	ld [$ffb7], a
+	ld a, $10
+	call PlaySoundEffectHome
+	jr .asm_70d3
+.asm_70cc
+	pop hl
+	ld bc, $76d3
+	call Func_792d
+.asm_70d3
+	jp Func_39ea
 
 HandleActionHintEntity:
 	ld a, [wDifficultySetting]
@@ -24278,8 +24436,12 @@ ScreenData_SpaceStationBoss:
 	db 0 ; Boss window palette
 	dw $1DE0, $0008 ; initial camera offset
 	dw $1E00, $006F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1b62d, $1b638 - $1b62d
+	db Bank(SpaceStationBossEntityTriggers)
+	dw SpaceStationBossEntityTriggers
+	dw SpaceStationBossEntities
+	dw Func_807a
+	dw $5C00
+	dw $7174
 
 ScreenData_FuddForest1:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -24732,8 +24894,12 @@ ScreenDataGBC_SpaceStationBoss:
 	db 0 ; Boss window palette
 	dw $1DE0, $0008 ; initial camera offset
 	dw $1E00, $006F ; initial player x/y coords
-
-INCBIN "baserom.gbc", $1baf0, $1bafb - $1baf0
+	db Bank(SpaceStationBossEntityTriggers)
+	dw SpaceStationBossEntityTriggers
+	dw SpaceStationBossEntities
+	dw Func_807a
+	dw $5C00
+	dw $7174
 
 ScreenDataGBC_FuddForest1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -25768,7 +25934,199 @@ SpaceStationBossCollisionAttributes:
 SpaceStationBossMap:
 	INCBIN "data/levels/space_station_boss.vdmap.lz"
 
-INCBIN "baserom.gbc", $2ec05, $2f1c8 - $2ec05
+SpaceStationBossEntityTriggers:
+	dw $FFFF, $0000, $66BB
+	trigger   $00,   $28, 90, SpaceStationBoss
+	trigger   $00,   $01, 91, SpaceStationBoss
+	trigger   $20,   $D0, 71, SpaceStationBoss
+	trigger   $60,  $110, 72, SpaceStationBoss
+	trigger   $A0,  $150, 73, SpaceStationBoss
+	trigger   $D0,  $180, 33, SpaceStationBoss
+	trigger  $120,  $1D0, 52, SpaceStationBoss
+	trigger  $190,  $240, 51, SpaceStationBoss
+	trigger  $1E0,  $290, 32, SpaceStationBoss
+	trigger  $270,  $328, 53, SpaceStationBoss
+	trigger  $2C0,  $3B0, 81, SpaceStationBoss
+	trigger  $320,  $3D0, 84, SpaceStationBoss
+	trigger  $360,  $410, 83, SpaceStationBoss
+	trigger  $3A0,  $450, 82, SpaceStationBoss
+	trigger  $3E0,  $498, 31, SpaceStationBoss
+	trigger  $440,  $4F0, 29, SpaceStationBoss
+	trigger  $470,  $520, 86, SpaceStationBoss
+	trigger  $4A0,  $550, 30, SpaceStationBoss
+	trigger  $510,  $5C0, 50, SpaceStationBoss
+	trigger  $530,  $5E0, 80, SpaceStationBoss
+	trigger  $570,  $620, 79, SpaceStationBoss
+	trigger  $5A0,  $650, 28, SpaceStationBoss
+	trigger  $5F0,  $6A0, 27, SpaceStationBoss
+	trigger  $680,  $738, 34, SpaceStationBoss
+	trigger  $6E0,  $798, 18, SpaceStationBoss
+	trigger  $740,  $7F8, 17, SpaceStationBoss
+	trigger  $7D0,  $880, 78, SpaceStationBoss
+	trigger  $7F0,  $8A0, 49, SpaceStationBoss
+	trigger  $810,  $8C0, 76, SpaceStationBoss
+	trigger  $850,  $900, 77, SpaceStationBoss
+	trigger  $870,  $920, 48, SpaceStationBoss
+	trigger  $8B0,  $960, 85, SpaceStationBoss
+	trigger  $8F0,  $9A8, 26, SpaceStationBoss
+	trigger  $950,  $A00, 25, SpaceStationBoss
+	trigger  $980,  $A30, 69, SpaceStationBoss
+	trigger  $9C0,  $A70, 70, SpaceStationBoss
+	trigger  $9F0,  $AA0, 47, SpaceStationBoss
+	trigger  $A80,  $B30, 24, SpaceStationBoss
+	trigger  $AA0,  $B50, 68, SpaceStationBoss
+	trigger  $AE0,  $B90, 67, SpaceStationBoss
+	trigger  $AF0,  $BA0, 16, SpaceStationBoss
+	trigger  $B50,  $C08,  1, SpaceStationBoss
+	trigger  $B60,  $C50, 15, SpaceStationBoss
+	trigger  $BB0,  $C60, 46, SpaceStationBoss
+	trigger  $C60,  $D10, 45, SpaceStationBoss
+	trigger  $CB0,  $D60, 66, SpaceStationBoss
+	trigger  $CF0,  $DA0, 75, SpaceStationBoss
+	trigger  $D40,  $E30, 43, SpaceStationBoss
+	trigger  $E00,  $EB8, 44, SpaceStationBoss
+	trigger  $E50,  $F00, 87, SpaceStationBoss
+	trigger  $E90,  $F40, 88, SpaceStationBoss
+	trigger  $EC0,  $F70, 89, SpaceStationBoss
+	trigger  $F20,  $FD0, 42, SpaceStationBoss
+	trigger  $F70, $1020, 41, SpaceStationBoss
+	trigger  $FC0, $1070, 40, SpaceStationBoss
+	trigger $1060, $1118, 23, SpaceStationBoss
+	trigger $10F0, $11A0, 39, SpaceStationBoss
+	trigger $1140, $11F0, 38, SpaceStationBoss
+	trigger $1180, $1230, 74, SpaceStationBoss
+	trigger $11C0, $1270, 65, SpaceStationBoss
+	trigger $1200, $12B0, 64, SpaceStationBoss
+	trigger $1240, $12F0, 63, SpaceStationBoss
+	trigger $1280, $1338, 22, SpaceStationBoss
+	trigger $12E0, $1398, 14, SpaceStationBoss
+	trigger $1340, $13F8, 13, SpaceStationBoss
+	trigger $13A0, $1458, 12, SpaceStationBoss
+	trigger $1420, $14D0, 37, SpaceStationBoss
+	trigger $1490, $1540, 36, SpaceStationBoss
+	trigger $14B0, $1560, 62, SpaceStationBoss
+	trigger $14D0, $1580, 92, SpaceStationBoss
+	trigger $14F0, $15A0, 61, SpaceStationBoss
+	trigger $1540, $15F8, 21, SpaceStationBoss
+	trigger $15E0, $1698, 11, SpaceStationBoss
+	trigger $1640, $16F8, 10, SpaceStationBoss
+	trigger $16A0, $1758,  9, SpaceStationBoss
+	trigger $1700, $17B8,  8, SpaceStationBoss
+	trigger $1750, $1800, 60, SpaceStationBoss
+	trigger $1770, $1820, 93, SpaceStationBoss
+	trigger $1790, $1840, 59, SpaceStationBoss
+	trigger $17D0, $1888, 20, SpaceStationBoss
+	trigger $1850, $1908,  7, SpaceStationBoss
+	trigger $18B0, $1968,  6, SpaceStationBoss
+	trigger $1910, $19C8,  5, SpaceStationBoss
+	trigger $1960, $1A50, 35, SpaceStationBoss
+	trigger $19E0, $1A90, 58, SpaceStationBoss
+	trigger $1A20, $1AD0, 57, SpaceStationBoss
+	trigger $1A70, $1B28, 19, SpaceStationBoss
+	trigger $1AD0, $1B88,  2, SpaceStationBoss
+	trigger $1B30, $1BE8,  3, SpaceStationBoss
+	trigger $1B90, $1C48,  4, SpaceStationBoss
+	trigger $1C20, $1CD0, 56, SpaceStationBoss
+	trigger $1C60, $1D10, 55, SpaceStationBoss
+	trigger $1CA0, $1D50, 54, SpaceStationBoss
+	trigger $1D00, $1DC0,  0, SpaceStationBoss
+	dw $7FFF, $0000, $66BB
+
+SpaceStationBossEntities:
+SpaceStationBossEntity0:  entity_space_scooter $1DA0, $5F
+SpaceStationBossEntity1:  entity_fuel_canister $BF0, $7F
+SpaceStationBossEntity2:  entity_falling_asteroid $1B70, $08
+SpaceStationBossEntity3:  entity_falling_asteroid $1BD0, $08
+SpaceStationBossEntity4:  entity_falling_asteroid $1C30, $08
+SpaceStationBossEntity5:  entity_falling_asteroid $19B0, $08
+SpaceStationBossEntity6:  entity_falling_asteroid $1950, $08
+SpaceStationBossEntity7:  entity_falling_asteroid $18F0, $08
+SpaceStationBossEntity8:  entity_falling_asteroid $17A0, $08
+SpaceStationBossEntity9:  entity_falling_asteroid $1740, $08
+SpaceStationBossEntity10: entity_falling_asteroid $16E0, $08
+SpaceStationBossEntity11: entity_falling_asteroid $1680, $08
+SpaceStationBossEntity12: entity_falling_asteroid $1440, $08
+SpaceStationBossEntity13: entity_falling_asteroid $13E0, $08
+SpaceStationBossEntity14: entity_falling_asteroid $1380, $08
+SpaceStationBossEntity15: entity_instant_martian_boss $C30, $DF
+SpaceStationBossEntity16: entity_bomb_hazard_boss $0B90, $3F
+SpaceStationBossEntity17: entity_falling_asteroid $7E0, $08
+SpaceStationBossEntity18: entity_falling_asteroid $780, $08
+SpaceStationBossEntity19: entity_fuel_canister $1B10, $6F
+SpaceStationBossEntity20: entity_fuel_canister $1870, $4F
+SpaceStationBossEntity21: entity_fuel_canister $15E0, $4F
+SpaceStationBossEntity22: entity_fuel_canister $1320, $5F
+SpaceStationBossEntity23: entity_fuel_canister $1100, $2F
+SpaceStationBossEntity24: entity_bomb_hazard_boss $0B20, $3F
+SpaceStationBossEntity25: entity_bomb_hazard_boss $09F0, $3F
+SpaceStationBossEntity26: entity_fuel_canister $990, $4F
+SpaceStationBossEntity27: entity_bomb_hazard_boss $0690, $2F
+SpaceStationBossEntity28: entity_bomb_hazard_boss $0640, $2F
+SpaceStationBossEntity29: entity_bomb_hazard_boss $04E0, $1F
+SpaceStationBossEntity30: entity_bomb_hazard_boss $0540, $1F
+SpaceStationBossEntity31: entity_fuel_canister $480, $4F
+SpaceStationBossEntity32: entity_bomb_hazard_boss $0280, $1F
+SpaceStationBossEntity33: entity_bomb_hazard_boss $0170, $3F
+SpaceStationBossEntity34: entity_fuel_canister $720, $1F
+SpaceStationBossEntity35: entity_instant_martian_boss $1A30, $6F
+SpaceStationBossEntity36: entity_bomb_hazard_boss $1530, $2F
+SpaceStationBossEntity37: entity_bomb_hazard_boss $14C0, $2F
+SpaceStationBossEntity38: entity_bomb_hazard_boss $11E0, $5F
+SpaceStationBossEntity39: entity_bomb_hazard_boss $1190, $5F
+SpaceStationBossEntity40: entity_bomb_hazard_boss $1060, $4F
+SpaceStationBossEntity41: entity_bomb_hazard_boss $1010, $4F
+SpaceStationBossEntity42: entity_bomb_hazard_boss $0FC0, $4F
+SpaceStationBossEntity43: entity_instant_martian_boss $E10, $6F
+SpaceStationBossEntity44: entity_fuel_canister $EA0, $4F
+SpaceStationBossEntity45: entity_bomb_hazard_boss $0D00, $4F
+SpaceStationBossEntity46: entity_bomb_hazard_boss $0C50, $5F
+SpaceStationBossEntity47: entity_bomb_hazard_boss $0A90, $2F
+SpaceStationBossEntity48: entity_bomb_hazard_boss $0910, $5F
+SpaceStationBossEntity49: entity_bomb_hazard_boss $0890, $4F
+SpaceStationBossEntity50: entity_bomb_hazard_boss $05B0, $5F
+SpaceStationBossEntity51: entity_bomb_hazard_boss $0230, $3F
+SpaceStationBossEntity52: entity_bomb_hazard_boss $01C0, $3F
+SpaceStationBossEntity53: entity_fuel_canister $310, $4F
+SpaceStationBossEntity54: entity_collectible CARROT, $1D40, $5F
+SpaceStationBossEntity55: entity_collectible CARROT, $1D00, $5F
+SpaceStationBossEntity56: entity_collectible CARROT, $1CC0, $5F
+SpaceStationBossEntity57: entity_collectible CARROT, $1AC0, $4F
+SpaceStationBossEntity58: entity_collectible CARROT, $1A80, $4F
+SpaceStationBossEntity59: entity_collectible CARROT, $1830, $6F
+SpaceStationBossEntity60: entity_collectible CARROT, $17F0, $6F
+SpaceStationBossEntity61: entity_collectible CARROT, $1590, $6F
+SpaceStationBossEntity62: entity_collectible CARROT, $1550, $6F
+SpaceStationBossEntity63: entity_collectible CARROT, $12E0, $3F
+SpaceStationBossEntity64: entity_collectible CARROT, $12A0, $3F
+SpaceStationBossEntity65: entity_collectible CARROT, $1260, $4F
+SpaceStationBossEntity66: entity_collectible CARROT, $D50, $2F
+SpaceStationBossEntity67: entity_collectible CARROT, $B80, $6F
+SpaceStationBossEntity68: entity_collectible CARROT, $B40, $6F
+SpaceStationBossEntity69: entity_collectible CARROT, $A20, $6F
+SpaceStationBossEntity70: entity_collectible CARROT, $A60, $6F
+SpaceStationBossEntity71: entity_collectible CARROT, $C0, $5F
+SpaceStationBossEntity72: entity_collectible CARROT, $100, $5F
+SpaceStationBossEntity73: entity_collectible CARROT, $140, $5F
+SpaceStationBossEntity74: entity_collectible CARROT, $1220, $4F
+SpaceStationBossEntity75: entity_collectible CARROT, $D90, $4F
+SpaceStationBossEntity76: entity_collectible CARROT, $8B0, $1F
+SpaceStationBossEntity77: entity_collectible CARROT, $8F0, $1F
+SpaceStationBossEntity78: entity_collectible CARROT, $870, $1F
+SpaceStationBossEntity79: entity_collectible CARROT, $610, $2F
+SpaceStationBossEntity80: entity_collectible CARROT, $5D0, $2F
+SpaceStationBossEntity81: entity_instant_martian_boss $390, $5F
+SpaceStationBossEntity82: entity_collectible CARROT, $440, $3F
+SpaceStationBossEntity83: entity_collectible CARROT, $400, $3F
+SpaceStationBossEntity84: entity_collectible CARROT, $3C0, $3F
+SpaceStationBossEntity85: entity_collectible TWEETY_R, $950, $4F
+SpaceStationBossEntity86: entity_collectible TWEETY_A, $510, $4F
+SpaceStationBossEntity87: entity_collectible CARROT, $EF0, $3F
+SpaceStationBossEntity88: entity_collectible CARROT, $F30, $3F
+SpaceStationBossEntity89: entity_collectible TWEETY_T, $F60, $5F
+SpaceStationBossEntity90: entity_move_right_boss_vehicle_off_screen $20, $5F
+SpaceStationBossEntity91: entity_marvin_martian_boss $88, $6F, $09
+SpaceStationBossEntity92: entity_collectible TWEETY_X, $1570, $5F
+SpaceStationBossEntity93: entity_collectible TWEETY_E, $1810, $5F
 
 TreasureIsland1Map:
 	INCBIN "data/levels/treasure_island_1.vdmap.lz"
