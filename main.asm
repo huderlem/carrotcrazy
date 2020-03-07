@@ -257,7 +257,7 @@ RunPrologueSceneScreen:
 	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld hl, Data_1aa1a
 	call LoadCGBPalettesHome
@@ -413,7 +413,7 @@ RunLevelBonusScreen:
 	call Func_7b8a
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld a, Bank(Func_17bf9)
 	ld [MBC5RomBank], a
@@ -538,7 +538,7 @@ RunLevelSummaryScreen:
 	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld hl, $c528
 	ld a, [hli]
@@ -649,7 +649,7 @@ RunPasswordScreen:
 	ld [bc], a
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld hl, $c526
 	ld a, [hli]
@@ -817,7 +817,7 @@ RunLanguageSelectScreen:
 	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	ld hl, $c502
 	ld a, [hli]
 	ld h, [hl]
@@ -896,7 +896,7 @@ RunOptionsScreen:
 	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld hl, $c504
 	ld a, [hli]
@@ -1104,7 +1104,7 @@ RunTitlescreen:
 	call Func_2c73
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld a, Bank(Func_17d6e)
 	ld [MBC5RomBank], a
@@ -1469,7 +1469,7 @@ RunIntroScene:
 	call InitScreenMusic
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld hl, $c506
 	ld a, [hli]
@@ -2034,7 +2034,7 @@ RunLevelIntroScreen:
 	call Func_3a42
 	call WriteDMACodeToHRAM
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call ResetFrameCounter
 	ld hl, $dec0
 	ld a, $80
@@ -2148,12 +2148,12 @@ asm_e77:
 	ld [bc], a
 	call InitPlayerPosition
 	call InitLevelEntities
-	call Func_2342
+	call InitPlayerState
 	call Func_3335
 	call Func_392e
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	call Func_31e1
@@ -2230,18 +2230,18 @@ asm_e77:
 	jr .asm_f55
 .asm_f49
 	call HandlePlayerInput
-	call Func_1940
-	call Func_235e
+	call UpdatePlayerStateHome
+	call HandlePlayerCollision
 	call PrepareCameraUpdate
 .asm_f55
-	call Func_2a84
+	call HandleCameraScrollHome
 	ld a, [wInCreditsScene]
 	and a
 	jr nz, .asm_f61
-	call Func_2c9f
+	call DrawPlayerSprite
 .asm_f61
 	call Func_3939
-	call Func_3252
+	call LoadDynamicEntitySprites
 .waitFloor
 	ld a, [rLY]
 	cp 111
@@ -2272,7 +2272,7 @@ asm_e77:
 	rra
 	add [hl]
 	ld [rSCX], a
-	call Func_2e27
+	call DrawStudioHUD
 	ld a, 192
 	ld [rSCY], a
 	ld hl, hCameraXOffset + 1
@@ -2402,13 +2402,13 @@ RunLevelScreen:
 	call InitLevelEntities
 	call InitScreenMusic
 	call InitAnimatedTiles
-	call Func_2342
+	call InitPlayerState
 	call Func_3335
 	call Func_392e
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	call Func_31e1
@@ -2422,24 +2422,24 @@ RunLevelScreen:
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
-.asm_1097
+.loop
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
 	call TryTogglePause
 	call TryInitNextScreenHome
 	call TickMusicEngineHome
 	call HandlePlayerInput
-	call Func_1940
-	call Func_235e
+	call UpdatePlayerStateHome
+	call HandlePlayerCollision
 	call PrepareCameraUpdate
-	call Func_2a84
+	call HandleCameraScrollHome
 	call Func_3939
 	call Func_173b
-	call Func_3252
-	call Func_2c9f
-	call Func_2e21
+	call LoadDynamicEntitySprites
+	call DrawPlayerSprite
+	call DrawLevelHUD
 	call UpdateFrameCounter
-	jr .asm_1097
+	jr .loop
 
 Func_10c9:
 	ld a, [hGameBoyColorDetection]
@@ -2495,14 +2495,14 @@ RunCrazyTownBossScreen:
 	call InitLevelEntities
 	call InitScreenMusic
 	call InitAnimatedTiles
-	call Func_2342
+	call InitPlayerState
 	call Func_2c73
 	call Func_3335
 	call Func_392e
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -1
@@ -2566,14 +2566,14 @@ RunCrazyTownBossScreen:
 	jr nz, .asm_11b7
 	ld a, [$dec9]
 	ld [rSCX], a
-	call Func_1940
+	call UpdatePlayerStateHome
 .asm_11c5
 	ld a, [rLY]
 	cp 76
 	jr nz, .asm_11c5
 	ld a, [$decb]
 	ld [rSCX], a
-	call Func_235e
+	call HandlePlayerCollision
 .asm_11d3
 	ld a, [rLY]
 	cp 87
@@ -2584,11 +2584,11 @@ RunCrazyTownBossScreen:
 	ld a, [hCameraXOffset]
 	ld [rSCX], a
 	call PrepareCameraUpdate
-	call Func_2a84
+	call HandleCameraScrollHome
 	call Func_3939
-	call Func_3252
-	call Func_2c9f
-	call Func_2e21
+	call LoadDynamicEntitySprites
+	call DrawPlayerSprite
+	call DrawLevelHUD
 	call UpdateFrameCounter
 	jp .asm_1179
 
@@ -2631,14 +2631,14 @@ RunTreasureIslandBossScreen:
 	call InitLevelEntities
 	call InitScreenMusic
 	call InitAnimatedTiles
-	call Func_2342
+	call InitPlayerState
 	call Func_2c73
 	call Func_3335
 	call Func_392e
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -1
@@ -2692,10 +2692,10 @@ RunTreasureIslandBossScreen:
 	call Func_1722
 	call TickMusicEngineHome
 	call HandlePlayerInput
-	call Func_1940
-	call Func_235e
+	call UpdatePlayerStateHome
+	call HandlePlayerCollision
 	call PrepareCameraUpdate
-	call Func_2a84
+	call HandleCameraScrollHome
 	call Func_3939
 	call Func_173b
 .asm_12e7
@@ -2712,7 +2712,7 @@ RunTreasureIslandBossScreen:
 	jr nz, .asm_12f8
 	ld a, [$decb]
 	ld [rSCX], a
-	call Func_3252
+	call LoadDynamicEntitySprites
 .asm_1306
 	ld a, [rLY]
 	cp 96
@@ -2729,8 +2729,8 @@ RunTreasureIslandBossScreen:
 	ld [rSCY], a
 	ld a, [hCameraXOffset]
 	ld [rSCX], a
-	call Func_2c9f
-	call Func_2e21
+	call DrawPlayerSprite
+	call DrawLevelHUD
 	call UpdateFrameCounter
 	jp .asm_12a3
 
@@ -2743,14 +2743,14 @@ RunTazZooBossScreen:
 	call InitLevelEntities
 	call InitScreenMusic
 	call InitAnimatedTiles
-	call Func_2342
+	call InitPlayerState
 	call Func_2c73
 	call Func_3335
 	call Func_392e
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, 1
@@ -2830,11 +2830,11 @@ RunTazZooBossScreen:
 	call TryTogglePause
 	call TryInitNextScreenHome
 	call HandlePlayerInput
-	call Func_1940
-	call Func_235e
+	call UpdatePlayerStateHome
+	call HandlePlayerCollision
 	call TickMusicEngineHome
 	call PrepareCameraUpdate
-	call Func_2a84
+	call HandleCameraScrollHome
 	call Func_2c2b
 	call Func_1722
 	call Func_16fc
@@ -2848,7 +2848,7 @@ RunTazZooBossScreen:
 	ld [rSCX], a
 	call Func_3939
 	call Func_173b
-	call Func_3252
+	call LoadDynamicEntitySprites
 .asm_1425
 	ld a, [rLY]
 	cp 103
@@ -2858,8 +2858,8 @@ RunTazZooBossScreen:
 	ld [rSCY], a
 	ld a, [hCameraXOffset]
 	ld [rSCX], a
-	call Func_2c9f
-	call Func_2e21
+	call DrawPlayerSprite
+	call DrawLevelHUD
 	call UpdateFrameCounter
 	jp .asm_13df
 
@@ -2871,13 +2871,13 @@ RunSpaceStationBossScreen:
 	call InitLevelEntities
 	call InitScreenMusic
 	call InitAnimatedTiles
-	call Func_2342
+	call InitPlayerState
 	call Func_3335
 	call Func_392e
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -2
@@ -2938,10 +2938,10 @@ RunSpaceStationBossScreen:
 	call Func_1704
 	call TickMusicEngineHome
 	call HandlePlayerInput
-	call Func_1940
-	call Func_235e
+	call UpdatePlayerStateHome
+	call HandlePlayerCollision
 	call PrepareCameraUpdate
-	call Func_2a84
+	call HandleCameraScrollHome
 	call Func_3939
 	call Func_173b
 .asm_1500
@@ -2950,9 +2950,9 @@ RunSpaceStationBossScreen:
 	jr nz, .asm_1500
 	ld a, 176
 	ld [rWX], a
-	call Func_3252
-	call Func_2c9f
-	call Func_2e21
+	call LoadDynamicEntitySprites
+	call DrawPlayerSprite
+	call DrawLevelHUD
 	call UpdateFrameCounter
 	jr .asm_14bb
 
@@ -2964,14 +2964,14 @@ RunFuddForestBossScreen:
 	call InitLevelEntities
 	call InitScreenMusic
 	call InitAnimatedTiles
-	call Func_2342
+	call InitPlayerState
 	call Func_2c73
 	call Func_3335
 	call Func_392e
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
-	call Func_3c72
+	call InitKeysState
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -1
@@ -3035,10 +3035,10 @@ RunFuddForestBossScreen:
 	call Func_1722
 	call TickMusicEngineHome
 	call HandlePlayerInput
-	call Func_1940
-	call Func_235e
+	call UpdatePlayerStateHome
+	call HandlePlayerCollision
 	call PrepareCameraUpdate
-	call Func_2a84
+	call HandleCameraScrollHome
 .asm_15e9
 	ld a, [rLY]
 	cp 64
@@ -3047,7 +3047,7 @@ RunFuddForestBossScreen:
 	ld [rSCX], a
 	call Func_3939
 	call Func_173b
-	call Func_3252
+	call LoadDynamicEntitySprites
 .asm_15fd
 	ld a, [rLY]
 	cp 103
@@ -3066,8 +3066,8 @@ RunFuddForestBossScreen:
 	jr nz, .asm_1617
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ld [rLCDC], a
-	call Func_2c9f
-	call Func_2e21
+	call DrawPlayerSprite
+	call DrawLevelHUD
 	call UpdateFrameCounter
 	jp .asm_15ab
 
@@ -3557,10 +3557,10 @@ Func_18d1:
 
 INCBIN "baserom.gbc", $18dc, $1940 - $18dc
 
-Func_1940:
-	ld a, Bank(Func_17929)
+UpdatePlayerStateHome:
+	ld a, Bank(UpdatePlayerState)
 	ld [MBC5RomBank], a
-	jp Func_17929
+	jp UpdatePlayerState
 
 Func_1948:
 	ld [$ffc3], a
@@ -3633,7 +3633,7 @@ HandlePlayerInput:
 	ld d, a
 	ld a, [wHeldKeys]
 	ld e, a
-	ld a, [$ffb5]
+	ld a, [hLevelCleared]
 	and a
 	jp nz, Func_1a37
 	bit 2, b
@@ -3719,13 +3719,13 @@ Func_1a37:
 	sub a
 	ld [$ffb9], a
 	ld [$ffb7], a
-	ld hl, $ffb5
+	ld hl, hLevelCleared
 	ld a, [hl]
 	inc [hl]
 	cp $01
 	jr nz, .asm_1a64
-	ld a, [$fff2]
-	cp $04
+	ld a, [hNumClapboards]
+	cp 4
 	jr nz, .asm_1a55
 	res 5, b
 	ld hl, $2dc5
@@ -4454,7 +4454,7 @@ Func_1e8c:
 	and $f0
 	ld c, a
 	ld b, [hl]
-	ld hl, $ffaa
+	ld hl, hDiggingMetatileReplacements
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -5146,13 +5146,13 @@ Func_232c:
 	ld [$ffd2], a
 	ret
 
-Func_2342:
+InitPlayerState:
 	ld a, $06
 	ld [MBC5RomBank], a
 	ld a, [hli]
-	ld [$ffaa], a
+	ld [hDiggingMetatileReplacements], a
 	ld a, [hli]
-	ld [$ffab], a
+	ld [hDiggingMetatileReplacements + 1], a
 	ld c, $ac
 	ld b, $14
 	sub a
@@ -5166,7 +5166,7 @@ Func_2342:
 	ld [$ffad], a
 	ret
 
-Func_235e:
+HandlePlayerCollision:
 	ld a, [hPaused]
 	and a
 	ret nz
@@ -6376,10 +6376,10 @@ PrepareCameraUpdate:
 	ld [$ffa4], a
 	ret
 
-Func_2a84:
-	ld a, Bank(Func_17643)
+HandleCameraScrollHome:
+	ld a, Bank(HandleCameraScroll)
 	ld [MBC5RomBank], a
-	jp Func_17643
+	jp HandleCameraScroll
 
 ; Prepares a metatile to be drawn on screen.
 ; Input: bc = metatile x pixel offset
@@ -6803,7 +6803,7 @@ Func_2c73:
 
 INCBIN "baserom.gbc", $2c8d, $2c9f - $2c8d
 
-Func_2c9f:
+DrawPlayerSprite:
 	ld a, [hPaused]
 	and a
 	ret nz
@@ -6989,18 +6989,18 @@ Func_2e11:
 	ld [rSCY], a
 	ret
 
-Func_2e21:
+DrawLevelHUD:
 	sub a
 	ld [$de85], a
-	jr Func_2e2e
-Func_2e27:
+	jr DrawHUD
+DrawStudioHUD:
 	ld a, $ff
 	ld [$de85], a
-	jr Func_2e2e
-Func_2e2e:
+	jr DrawHUD
+DrawHUD:
 	ld a, [rLY]
 	cp 119
-	jr nz, Func_2e2e
+	jr nz, DrawHUD
 	call WaitHBlankStart
 	ld a, [hForcedSideScrollSpeed]
 	and a
@@ -7263,7 +7263,7 @@ Func_2e2e:
 	jr .asm_2f66
 .asm_2f98
 	ld sp, wStack - 2
-	jp Func_3000
+	jp DrawHUDElement
 
 Func_2f9e:
 	inc [hl]
@@ -7352,7 +7352,7 @@ InitAnimatedTiles:
 	ld [$dda2], a
 	ret
 
-Func_3000:
+DrawHUDElement:
 	ld hl, $ffec
 	inc [hl]
 	ld a, [hl]
@@ -7371,54 +7371,54 @@ Func_3000:
 	ld bc, vBGWin
 	ld a, [hForcedSideScrollSpeed]
 	and a
-	jr z, .asm_3020
+	jr z, .jump
 	ld bc, $9ba0
-.asm_3020
+.jump
 	jp hl
 .jumpTable
-	jp Func_303f
-	jp Func_3057
-	jp Func_307b
-	jp Func_309c
-	jp Func_30ac
-	jp Func_30bf
-	jp Func_30d2
-	jp Func_30e3
-	jp Func_30f8
-	jp Func_30fd
+	jp DrawHUDCurrentHealth
+	jp DrawHUDNumLives
+	jp DrawHUDScore
+	jp DrawHUDNumClapboards
+	jp DrawHUDBunnyFaceTop
+	jp DrawHUDBunnyFaceBottom
+	jp DrawHUDEXTRALetter
+	jp DrawHUDClapboardPiece
+	jp DrawHUDCarrotMeterTop
+	jp DrawHUDCarrotMeterBottom
 
-Func_303f:
+DrawHUDCurrentHealth:
 	ld h, b
 	ld l, c
 	ld a, [hCurHealth]
 	ld b, a
 	ld a, [hMaxHealth]
 	ld c, a
-.asm_3047
+.drawHeart
 	ld a, b
 	and a
-	jr z, .asm_3050
+	jr z, .emptyHeart
 	dec b
 	ld [hl], $8f
-	jr .asm_3052
-.asm_3050
+	jr .next
+.emptyHeart
 	ld [hl], $b1
-.asm_3052
+.next
 	inc l
 	dec c
-	jr nz, .asm_3047
+	jr nz, .drawHeart
 	ret
 
-Func_3057:
+DrawHUDNumLives:
 	ld a, [hForcedSideScrollSpeed]
 	and a
 	ld hl, $4b
-	jr z, .asm_3069
+	jr z, .draw
 	ld hl, $49
-	cp $fe
-	jr nz, .asm_3069
+	cp -2 ; space station boss
+	jr nz, .draw
 	ld hl, $4b
-.asm_3069
+.draw
 	add hl, bc
 	ld a, [hNumLives]
 	and $f0
@@ -7431,13 +7431,13 @@ Func_3057:
 	ld [hl], a
 	ret
 
-Func_307b:
+DrawHUDScore:
 	ld hl, $4e
 	add hl, bc
-	ld c, $f1
+	ld c, (hScore + 1) & $ff
 	ld b, $84
 	ld de, $ff0
-Func_3086:
+DrawScore:
 	ld a, [$ff00+c]
 	and e
 	swap a
@@ -7459,42 +7459,42 @@ Func_3086:
 	ld [hl], a
 	ret
 
-Func_309c:
+DrawHUDNumClapboards:
 	ld a, [hForcedSideScrollSpeed]
 	and a
 	ret nz
 	ld hl, $47
 	add hl, bc
-	ld a, [$fff2]
+	ld a, [hNumClapboards]
 	and $0f
 	add $84
 	ld [hl], a
 	ret
 
-Func_30ac:
+DrawHUDBunnyFaceTop:
 	ld a, [$ffad]
 	add a
 	ld hl, $4436
-	jr nc, .asm_30b7
+	jr nc, .draw
 	ld hl, $4496
-.asm_30b7
-	ld a, $03
+.draw
+	ld a, 3
 	ld bc, $8900
 	jp Func_31a9
 
-Func_30bf:
+DrawHUDBunnyFaceBottom:
 	ld a, [$ffad]
 	add a
 	ld hl, $4466
-	jr nc, .asm_30ca
+	jr nc, .draw
 	ld hl, $44c6
-.asm_30ca
-	ld a, $03
+.draw
+	ld a, 3
 	ld bc, $8930
 	jp Func_31a9
 
-Func_30d2:
-	ld hl, $fff5
+DrawHUDEXTRALetter:
+	ld hl, hEXTRALetterHUD
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -7504,14 +7504,14 @@ Func_30d2:
 	ld l, a
 	or h
 	ret z
-	ld a, $02
+	ld a, 2
 	jp Func_31a9
 
-Func_30e3:
+DrawHUDClapboardPiece:
 	ld a, [hForcedSideScrollSpeed]
 	and a
 	ret nz
-	ld hl, $fff9
+	ld hl, hClapboardPieceHUD
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -7521,17 +7521,17 @@ Func_30e3:
 	ld l, a
 	or h
 	ret z
-	ld a, $01
+	ld a, 1
 	jp Func_31a9
 
-Func_30f8:
+DrawHUDCarrotMeterTop:
 	sub a
 	ld [$ff8a], a
-	jr Func_3101
-Func_30fd:
+	jr DrawHUDCarrotMeterRow
+DrawHUDCarrotMeterBottom:
 	ld a, $10
 	ld [$ff8a], a
-Func_3101:
+DrawHUDCarrotMeterRow:
 	ld hl, hNumCarrots
 	ld a, [hli]
 	cp [hl]
@@ -7681,7 +7681,7 @@ Func_31a9:
 	ld l, c
 	ld a, $04
 	ld [MBC5RomBank], a
-.asm_31b2
+.loop
 	pop bc
 	ld a, c
 	ld [hli], a
@@ -7723,7 +7723,7 @@ Func_31a9:
 	ld a, b
 	ld [hli], a
 	dec d
-	jr nz, .asm_31b2
+	jr nz, .loop
 	ld sp, wStack - 2
 	ret
 
@@ -7762,15 +7762,15 @@ Func_31e1:
 	ld [$ffec], a
 	ld [hNumCarrots], a
 	ld [hCarrotMeter], a
-	ld [$fff2], a
-	ld [$fff5], a
-	ld [$fff6], a
-	ld [$fff7], a
-	ld [$fff8], a
-	ld [$fff9], a
-	ld [$fffa], a
-	ld [$fffb], a
-	ld [$fffc], a
+	ld [hNumClapboards], a
+	ld [hEXTRALetterHUD], a
+	ld [hEXTRALetterHUD + 1], a
+	ld [hEXTRALetterHUD + 2], a
+	ld [hEXTRALetterHUD + 3], a
+	ld [hClapboardPieceHUD], a
+	ld [hClapboardPieceHUD + 1], a
+	ld [hClapboardPieceHUD + 2], a
+	ld [hClapboardPieceHUD + 3], a
 	ld [hEXTRALetters], a
 	ret
 
@@ -7796,7 +7796,7 @@ ResetPlayerData:
 
 INCBIN "baserom.gbc", $324e, $3252 - $324e
 
-Func_3252:
+LoadDynamicEntitySprites:
 	ld a, [hPaused]
 	and a
 	ret nz
@@ -9317,7 +9317,7 @@ Func_3939:
 	ret nz
 	sub a
 	ld [$ffe8], a
-	ld hl, $ffdb
+	ld hl, hCameraXOffsetScreenRight
 	ld a, [hCameraXOffset]
 	add SCRN_X
 	ld [hli], a
@@ -9482,7 +9482,7 @@ InitLevelEntities:
 	jr nz, .copyLoop
 	sub a
 	ld [$ffe8], a
-	ld hl, $ffdb
+	ld hl, hCameraXOffsetScreenRight
 	ld a, [hCameraXOffset]
 	add SCRN_X
 	ld [hli], a
@@ -9928,7 +9928,7 @@ TryTogglePause:
 	jp z, ResumeMusicHome
 	jp PauseMusicHome
 
-Func_3c72:
+InitKeysState:
 	sub a
 	ld hl, wNewKeys
 	ld [hld], a
@@ -9937,10 +9937,10 @@ Func_3c72:
 	ret
 
 Func_3c7a:
-	ld a, [$ffdb]
+	ld a, [hCameraXOffsetScreenRight]
 	sub c
 	ld e, a
-	ld a, [$ffdc]
+	ld a, [hCameraXOffsetScreenRight + 1]
 	sbc d
 	jr nz, .asm_3c95
 	ld a, e
@@ -10409,7 +10409,23 @@ INCLUDE "home/load.asm"
 
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
-INCBIN "baserom.gbc", $4000, $401a - $4000
+Func_4000:
+	ld bc, $4
+	add hl, bc
+	res 5, [hl]
+	ld a, [hFrameCounter]
+	bit 6, a
+	jr z, .asm_400e
+	set 5, [hl] ; make the character sprites face the opposite direction
+.asm_400e
+	inc hl
+	ld a, [hli]
+	ld c, a
+	ld a, [hld]
+	ld b, a
+	dec hl
+	call Func_792d
+	jp Func_39ea
 
 HandleStudioCharacterEntity:
 	push hl
@@ -10430,7 +10446,7 @@ HandleStudioCharacterEntity:
 	ld a, c
 	cp $66
 	jr nc, .asm_4049
-	ld a, [$ffb5]
+	ld a, [hLevelCleared]
 	and a
 	jr nz, .asm_4049
 	ld a, [$ffad]
@@ -10440,7 +10456,7 @@ HandleStudioCharacterEntity:
 	and $41
 	jr z, .asm_4049
 	ld a, $01
-	ld [$ffb5], a
+	ld [hLevelCleared], a
 .asm_4049
 	push hl
 	res 5, [hl]
@@ -10778,16 +10794,16 @@ HandleCollectibleEntity:
 .collectClapboardPiece
 	ld a, $12
 	call PlaySoundEffectHome
-	ld hl, $fff2
+	ld hl, hNumClapboards
 	inc [hl]
 	ld a, [hl]
-	cp $04
+	cp 4
 	jr nz, .asm_42ac
 	ld a, $01
-	ld [$ffb5], a
+	ld [hLevelCleared], a
 .asm_42ac
-	ld hl, $fff9
-	jr .asm_42e5
+	ld hl, hClapboardPieceHUD
+	jr .initHUDTile
 .collectLetterE
 	ld bc, $8960
 	ld de, $44f6
@@ -10813,8 +10829,8 @@ HandleCollectibleEntity:
 	call PlaySoundEffectHome
 	ld hl, hEXTRALetters
 	inc [hl]
-	ld hl, $fff5
-.asm_42e5
+	ld hl, hEXTRALetterHUD
+.initHUDTile
 	ld a, c
 	ld [hli], a
 	ld a, b
@@ -11791,13 +11807,13 @@ Func_4bc7:
 	bit 7, [hl]
 	pop hl
 	jr z, Func_4c1b
-	ld a, [$ffb5]
+	ld a, [hLevelCleared]
 	and a
 	jp nz, Func_4ea7
 	ld a, $01
-	ld [$ffb5], a
-	ld a, $04
-	ld [$fff2], a
+	ld [hLevelCleared], a
+	ld a, 4
+	ld [hNumClapboards], a
 	ld hl, hPlayerXPos
 	ld a, [hCameraXOffset]
 	add $4c
@@ -12902,7 +12918,7 @@ HandleSeagullEntity:
 	ld [hli], a
 	jr .asm_54c3
 .asm_5447
-	ld de, $fff9
+	ld de, hClapboardPieceHUD
 	add hl, de
 	ld a, c
 	ld [hli], a
@@ -16219,7 +16235,7 @@ HandleDogEntity:
 	ld [hli], a
 	ld b, h
 	ld c, l
-	ld de, $fff9
+	ld de, hClapboardPieceHUD
 	add hl, de
 	ld a, [bc]
 	inc bc
@@ -17649,10 +17665,10 @@ Func_792d:
 	ld a, [hld]
 	ld d, a
 	ld e, [hl]
-	ld a, [$ffdb]
+	ld a, [hCameraXOffsetScreenRight]
 	sub e
 	ld e, a
-	ld a, [$ffdc]
+	ld a, [hCameraXOffsetScreenRight + 1]
 	sbc d
 	ret nz
 	ld a, e
@@ -17718,7 +17734,7 @@ Func_795e:
 	ld a, [$ddcd]
 	bit 5, a
 	jr z, .asm_79bb
-	ld hl, $ffb5
+	ld hl, hLevelCleared
 	dec [hl]
 	jp z, InitNextScreen
 	ld hl, $ddde
@@ -21163,7 +21179,7 @@ ClearOAMBuffer:
 	ld [hActiveSprites], a
 	ret
 
-Func_17643:
+HandleCameraScroll:
 	ld a, [hPaused]
 	and a
 	ret nz
@@ -21517,7 +21533,7 @@ Func_177a1:
 
 INCBIN "baserom.gbc", $1783f, $17929 - $1783f
 
-Func_17929:
+UpdatePlayerState:
 	ld a, [hPaused]
 	and a
 	ret nz
@@ -21635,7 +21651,7 @@ Func_17929:
 	jr c, .asm_179f0
 	ld c, $01
 .asm_179f0
-	ld a, [$ffb5]
+	ld a, [hLevelCleared]
 	and a
 	jr z, .asm_179f7
 	ld e, $00
@@ -21947,7 +21963,7 @@ INCBIN "baserom.gbc", $17bce, $17be2 - $17bce
 
 Func_17be2:
 	ld hl, $3d83
-	ld bc, $fff2
+	ld bc, hNumClapboards
 	ld de, $c001
 .asm_17beb
 	ld a, l
@@ -22002,7 +22018,7 @@ Func_17bf9:
 	ld [hli], a
 	ld [hli], a
 	ld a, $ff
-	ld [$ffb5], a
+	ld [hLevelCleared], a
 	ld a, 120
 	ld [rWY], a
 	ld a, 7
@@ -22024,7 +22040,7 @@ Func_17c3a:
 	ld c, $f1
 	ld b, $10
 	ld de, $ff0
-	call Func_3086
+	call DrawScore
 	ld hl, hNumCarrots
 	ld a, [hli]
 	cp [hl]

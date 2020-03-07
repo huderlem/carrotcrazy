@@ -19,9 +19,15 @@ hCameraYOffset EQU $ffa2
 hLevelPixelWidth  EQU $ffa6
 hLevelPixelHeight EQU $ffa8
 
+hDiggingMetatileReplacements EQU $ffaa
+
+hLevelCleared EQU $ffb5
+
 ; The current pixel coordinates of the player
 hPlayerXPos EQU $ffc8
 hPlayerYPos EQU $ffca
+
+hCameraXOffsetScreenRight EQU $ffdb
 
 hCurHealth EQU $ffed
 hMaxHealth EQU $ffee
@@ -30,8 +36,13 @@ hNumLives  EQU $ffef
 ; Holds a 2-byte little-endian BCD value.
 hScore EQU $fff0
 
-hNumCarrots  EQU $fff3
-hCarrotMeter EQU $fff4
+hNumClapboards EQU $fff2
+hNumCarrots    EQU $fff3
+hCarrotMeter   EQU $fff4
+
+hEXTRALetterHUD EQU $fff5
+
+hClapboardPieceHUD EQU $fff9
 
 ; Holds the count of obtained letters for EXTRA.
 ; If all letters were obtained, the player gets to go to the bonus stage.
