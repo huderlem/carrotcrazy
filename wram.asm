@@ -49,7 +49,13 @@ wEnableLevelSkip:: ; $dde8
 wHUDTileAttribute:: ; $dde9
 	ds 1
 
-	ds $fd
+	ds $9c
+
+wQueuedTileGfx:: ; $de86
+	ds 16 * 3
+wQueuedTileGfxEnd:: ; $deb6
+
+	ds $31
 
 wPasswordEntryCursor:: ; $dee7
 	ds 1

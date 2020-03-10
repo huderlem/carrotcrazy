@@ -560,7 +560,7 @@ RunLevelSummaryScreen:
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
-	call Func_3ca6
+	call LoadOAMSprites
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
 	call ReadJoyPadHome
@@ -576,7 +576,7 @@ RunLevelSummaryScreen:
 	jr nz, .asm_3f4
 	ld bc, $8044
 	ld hl, $7b43
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_3f4
 	ld hl, $de80
 	ld a, [hl]
@@ -671,7 +671,7 @@ RunPasswordScreen:
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
-	call Func_3ca6
+	call LoadOAMSprites
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
 	call ReadJoyPadHome
@@ -700,7 +700,7 @@ RunPasswordScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 	pop hl
 	pop de
 	pop bc
@@ -766,7 +766,7 @@ RunWarnerBrosCopyrightScreen:
 	ld [MBC5RomBank], a
 	ld hl, $7861
 	ld bc, $5c39
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_56c
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
@@ -838,7 +838,7 @@ RunLanguageSelectScreen:
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
-	call Func_3ca6
+	call LoadOAMSprites
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
 	call ReadJoyPadHome
@@ -850,7 +850,7 @@ RunLanguageSelectScreen:
 	ld hl, $6db3
 	ld a, $05
 	ld [MBC5RomBank], a
-	call Func_3ca6
+	call LoadOAMSprites
 	ld a, [$defc]
 	and a
 	jp nz, .asm_5f4
@@ -922,7 +922,7 @@ RunOptionsScreen:
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
-	call Func_3ca6
+	call LoadOAMSprites
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
 	call ReadJoyPadHome
@@ -1227,7 +1227,7 @@ RunTitlescreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 	pop hl
 	pop de
 	inc hl
@@ -1322,7 +1322,7 @@ RunTitlescreen:
 	ld b, [hl]
 	ld c, $3c
 	ld hl, $6eea
-	call Func_3ca6
+	call LoadOAMSprites
 	ld hl, $ded4
 	inc [hl]
 	ld a, [hl]
@@ -1371,7 +1371,7 @@ RunTitlescreen:
 	ld h, [hl]
 	ld l, a
 	ld b, $70
-	call Func_3ca6
+	call LoadOAMSprites
 	jr .asm_9a3
 .asm_98b
 	cp $c8
@@ -1386,7 +1386,7 @@ RunTitlescreen:
 	ld hl, $6fe6
 	ld a, $05
 	ld [MBC5RomBank], a
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_9a3
 	ld a, [rLY]
 	cp 112
@@ -1418,7 +1418,7 @@ RunTitlescreen:
 	ld hl, $702a
 .asm_9e1
 	ld bc, $5034
-	call Func_3ca6
+	call LoadOAMSprites
 	ld a, [$defc]
 	and a
 	jp nz, .asm_826
@@ -2061,7 +2061,7 @@ RunLevelIntroScreen:
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
-	call Func_3ca6
+	call LoadOAMSprites
 	ld a, $03
 	ld [MBC5RomBank], a
 	ld hl, $ddc5
@@ -2074,7 +2074,7 @@ RunLevelIntroScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 	ld hl, $dec0
 	ld a, [hli]
 	and a
@@ -2150,7 +2150,7 @@ asm_e77:
 	call InitLevelEntities
 	call InitPlayerState
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_2d73
 	call Func_3dce
 	call InitKeysState
@@ -2404,7 +2404,7 @@ RunLevelScreen:
 	call InitAnimatedTiles
 	call InitPlayerState
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
@@ -2498,7 +2498,7 @@ RunCrazyTownBossScreen:
 	call InitPlayerState
 	call Func_2c73
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
@@ -2634,7 +2634,7 @@ RunTreasureIslandBossScreen:
 	call InitPlayerState
 	call Func_2c73
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
@@ -2746,7 +2746,7 @@ RunTazZooBossScreen:
 	call InitPlayerState
 	call Func_2c73
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
@@ -2873,7 +2873,7 @@ RunSpaceStationBossScreen:
 	call InitAnimatedTiles
 	call InitPlayerState
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
@@ -2967,7 +2967,7 @@ RunFuddForestBossScreen:
 	call InitPlayerState
 	call Func_2c73
 	call Func_3335
-	call Func_392e
+	call ClearQueuedTileGfx
 	call Func_18d1
 	call Func_2d73
 	call Func_3dce
@@ -3082,7 +3082,7 @@ Func_162d:
 	ld c, a
 	ld b, [hl]
 	ld hl, $7396
-	call Func_3ca6
+	call LoadOAMSprites
 	ld a, [$ffad]
 	bit 2, a
 	ret nz
@@ -3207,7 +3207,7 @@ Func_16d2:
 	ld c, a
 	ld b, [hl]
 	ld hl, $73bc
-	call Func_3ca6
+	call LoadOAMSprites
 	ret
 
 Func_16fc:
@@ -3231,7 +3231,7 @@ Func_170c:
 	ld c, a
 	ld b, [hl]
 	ld hl, $7ad6
-	call Func_3ca6
+	call LoadOAMSprites
 	ret
 
 Func_1722:
@@ -3770,7 +3770,7 @@ Func_1a73:
 	sub $18
 	ld b, a
 	ld hl, $1af3
-	call Func_3c98
+	call LoadOAMSpritesCameraOffset
 	ld hl, $2db9
 	call Func_2d62
 	ld hl, $ffb8
@@ -4994,7 +4994,7 @@ Func_2145:
 	ld a, [hFrameCounter]
 	bit 2, a
 	jr z, .asm_2238
-	call Func_3c98
+	call LoadOAMSpritesCameraOffset
 .asm_2238
 	pop de
 	pop bc
@@ -5118,7 +5118,7 @@ Func_22c9:
 	ld b, a
 	ld a, [hPlayerXPos]
 	ld c, a
-	call Func_3c98
+	call LoadOAMSpritesCameraOffset
 	pop de
 	pop bc
 	res 4, b
@@ -7021,7 +7021,7 @@ DrawHUD:
 	jp nz, .asm_2eeb
 	ld a, [hFrameCounter]
 	rra
-	jp c, Func_3340
+	jp c, LoadQueuedTileGfx
 	ld hl, $ffd8
 	ld a, [hli]
 	ld [MBC5RomBank], a
@@ -7847,7 +7847,7 @@ LoadDynamicEntitySprites:
 	ld [$ff8d], a
 	ld a, [hActiveSprites]
 	ld c, a
-	ld b, $df
+	ld b, (wOAMBuffer >> 8)
 	ld a, [$ff8c]
 	bit 5, a
 	jr nz, .asm_32bc
@@ -7911,7 +7911,7 @@ LoadDynamicEntitySprites:
 	ld [bc], a
 	ret
 .asm_32ea
-	ld hl, $de86
+	ld hl, wQueuedTileGfx
 	ld a, [bc]
 	inc c
 	ld [$ff8a], a
@@ -7980,8 +7980,9 @@ Func_3335:
 	jr nz, .asm_333b
 	ret
 
-Func_3340:
-	ld hl, $de86
+; Giant unrolled loop for loading queued tile gfx data.
+LoadQueuedTileGfx:
+	ld hl, wQueuedTileGfx
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8056,7 +8057,7 @@ Func_3340:
 	ld [hl], e
 	inc l
 	ld [hl], d
-	ld hl, $de89
+	ld hl, wQueuedTileGfx + 3
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8129,7 +8130,7 @@ Func_3340:
 	dec a
 	ld [$ff8a], a
 	jr nz, .asm_33be
-	ld hl, $de8c
+	ld hl, wQueuedTileGfx + 6
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8204,7 +8205,7 @@ Func_3340:
 	ld [hl], e
 	inc l
 	ld [hl], d
-	ld hl, $de8f
+	ld hl, wQueuedTileGfx + 9
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8277,7 +8278,7 @@ Func_3340:
 	dec a
 	ld [$ff8a], a
 	jr nz, .asm_3472
-	ld hl, $de92
+	ld hl, wQueuedTileGfx + 12
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8352,7 +8353,7 @@ Func_3340:
 	ld [hl], e
 	inc l
 	ld [hl], d
-	ld hl, $de95
+	ld hl, wQueuedTileGfx + 15
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8455,7 +8456,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $de98
+	ld hl, wQueuedTileGfx + 18
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8530,7 +8531,7 @@ Func_3340:
 	ld [hl], e
 	inc l
 	ld [hl], d
-	ld hl, $de9b
+	ld hl, wQueuedTileGfx + 21
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8603,7 +8604,7 @@ Func_3340:
 	dec a
 	ld [$ff8a], a
 	jr nz, .asm_35f8
-	ld hl, $de9e
+	ld hl, wQueuedTileGfx + 24
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8678,7 +8679,7 @@ Func_3340:
 	ld [hl], e
 	inc l
 	ld [hl], d
-	ld hl, $dea1
+	ld hl, wQueuedTileGfx + 27
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8770,7 +8771,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $dea4
+	ld hl, wQueuedTileGfx + 30
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8857,7 +8858,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $dea7
+	ld hl, wQueuedTileGfx + 33
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -8944,7 +8945,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $deaa
+	ld hl, wQueuedTileGfx + 36
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -9031,7 +9032,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $dead
+	ld hl, wQueuedTileGfx + 39
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -9118,7 +9119,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $deb0
+	ld hl, wQueuedTileGfx + 42
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -9205,7 +9206,7 @@ Func_3340:
 	ld [hl], c
 	inc l
 	ld [hl], b
-	ld hl, $deb3
+	ld hl, wQueuedTileGfx + 45
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -9301,14 +9302,14 @@ Func_3340:
 	ld [rSCY], a
 	ret
 
-Func_392e:
-	ld hl, $de86
-	ld b, $30
+ClearQueuedTileGfx:
+	ld hl, wQueuedTileGfx
+	ld b, wQueuedTileGfxEnd - wQueuedTileGfx
 	sub a
-.asm_3934
+.loop
 	ld [hli], a
 	dec b
-	jr nz, .asm_3934
+	jr nz, .loop
 	ret
 
 Func_3939:
@@ -9569,7 +9570,7 @@ Func_3a82:
 	ld [MBC5RomBank], a
 	ld hl, $731c
 	ld bc, $0
-	call Func_3ca6
+	call LoadOAMSprites
 	ld hl, $deed
 	ld a, [hli]
 	ld c, a
@@ -9951,13 +9952,13 @@ Func_3c7a:
 	ld a, b
 	sub e
 	cp $98
-	jr c, Func_3c98
+	jr c, LoadOAMSpritesCameraOffset
 	cp $e0
-	jr nc, Func_3c98
+	jr nc, LoadOAMSpritesCameraOffset
 .asm_3c95
 	ld a, $ff
 	ret
-Func_3c98:
+LoadOAMSpritesCameraOffset:
 	ld a, [hCameraXOffset]
 	ld e, a
 	ld a, c
@@ -9968,9 +9969,12 @@ Func_3c98:
 	ld a, b
 	sub e
 	ld b, a
-	jr Func_3ca6
+	jr LoadOAMSprites
 
-Func_3ca6:
+; b = y offset
+; c = x offset
+; [hl] = function that loads the oam data
+LoadOAMSprites:
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -9978,7 +9982,7 @@ Func_3ca6:
 	push de
 	ld a, [hActiveSprites]
 	ld e, a
-	ld d, $df
+	ld d, wOAMBuffer >> 8
 	ret
 
 Func_3cb1:
@@ -10150,6 +10154,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load4SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10178,6 +10183,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load2SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10507,7 +10513,7 @@ HandleCollectibleEntity:
 .asm_40cc
 	ld a, [hl]
 	and $0f
-	cp $07
+	cp TWEETY_E
 	jr c, .asm_410d
 	push hl
 	inc hl
@@ -10515,14 +10521,14 @@ HandleCollectibleEntity:
 	inc [hl]
 	ld a, [hl]
 	and $07
-	jr nz, .asm_40e4
+	jr nz, .afterHoverMovement
 	bit 4, [hl]
-	jr nz, .asm_40e3
+	jr nz, .moveDown
 	dec de
-	jr .asm_40e4
-.asm_40e3
+	jr .afterHoverMovement
+.moveDown
 	inc de
-.asm_40e4
+.afterHoverMovement
 	bit 7, d
 	jr z, .asm_40eb
 	ld de, $0
@@ -10543,13 +10549,13 @@ HandleCollectibleEntity:
 	srl a
 	srl a
 	ld e, a
-	ld d, $00
-	ld hl, $4385
+	ld d, 0
+	ld hl, TweetySprites
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c98
+	call LoadOAMSpritesCameraOffset
 	pop de
 	pop bc
 	pop hl
@@ -10587,13 +10593,13 @@ HandleCollectibleEntity:
 .asm_413d
 	inc [hl]
 .asm_413e
-	ld hl, $4371
+	ld hl, CarrotSparkle1Sprite
 	bit 2, a
 	jr z, .asm_4148
-	ld hl, $437b
+	ld hl, CarrotSparkle2Sprite
 .asm_4148
 	ld b, e
-	call Func_3c98
+	call LoadOAMSpritesCameraOffset
 	jp .asm_423b
 .asm_414f
 	ld a, [$ffdd]
@@ -10661,7 +10667,7 @@ HandleCollectibleEntity:
 	dec hl
 	ld a, [hl]
 	and $0f
-	cp $07
+	cp TWEETY_E
 	jr c, .asm_4200
 	push hl
 	ld hl, $48
@@ -10701,18 +10707,18 @@ HandleCollectibleEntity:
 .asm_4200
 	ld a, [hli]
 	and $0f
-	jr nz, .asm_420e
+	jr nz, .notCarrotEntity
 	ld b, e
-	ld hl, $4367
-	call Func_3c98
+	ld hl, CarrotSprite
+	call LoadOAMSpritesCameraOffset
 	jr .asm_423b
-.asm_420e
+.notCarrotEntity
 	dec a
 	add a
-	add $15
+	add (CollectibleEntitySprites & $ff)
 	ld c, a
-	ld a, $43
-	adc $00
+	ld a, (CollectibleEntitySprites >> 8)
+	adc 0
 	ld b, a
 	ld a, [bc]
 	inc bc
@@ -10735,7 +10741,7 @@ HandleCollectibleEntity:
 	add e
 	ld e, a
 	ld a, d
-	adc $00
+	adc 0
 	ld d, a
 	ld a, [de]
 	inc de
@@ -10860,7 +10866,107 @@ HandleCollectibleEntity:
 	ld [hNumLives], a
 	jp .asm_423b
 
-INCBIN "baserom.gbc", $4315, $43c3 - $4315
+CollectibleEntitySprites:
+	dw HabaneroCarrotSprites ; HABANERO_CARROT
+	dw SuperCarrotSprites    ; SUPER_CARROT
+	dw Data_433f ; CLAPBOARD_0
+	dw Data_433f ; CLAPBOARD_1
+	dw Data_433f ; CLAPBOARD_2
+	dw Data_433f ; CLAPBOARD_3
+	dw Data_4352 ; TWEETY_E
+	dw Data_4355 ; TWEETY_X
+	dw Data_4358 ; TWEETY_T
+	dw Data_435B ; TWEETY_R
+	dw Data_435E ; TWEETY_A
+	dw Data_4361 ; TWEETY_HEART
+	dw Data_4364 ; TWEETY_1UP
+
+HabaneroCarrotSprites:
+	db 1
+	dw HabaneroCarrotSprite0 + 1
+
+SuperCarrotSprites:
+	db 6
+	dw SuperCarrotSprite0 + 1
+	dw SuperCarrotSprite1 + 1
+	dw SuperCarrotSprite2 + 1
+	dw SuperCarrotSprite3 + 1
+	dw SuperCarrotSprite2 + 1
+	dw SuperCarrotSprite1 + 1
+
+Data_433f:
+	db 9
+	dw $6863, $686C, $6875, $687E, $6887, $6890, $6899, $68A2, $68AB
+
+Data_4352:
+	db 1
+	dw $6824
+
+Data_4355:
+	db 1
+	dw $682D
+
+Data_4358:
+	db 1
+	dw $6836
+
+Data_435B:
+	db 1
+	dw $683F
+
+Data_435E:
+	db 1
+	dw $6848
+
+Data_4361:
+	db 1
+	dw $6851
+
+Data_4364:
+	db 1
+	dw $685A
+
+CarrotSprite:
+	dw Load2SubSprites
+	sub_sprite $40, $07,  8, 0
+	sub_sprite $42, $07, 16, 0
+
+CarrotSparkle1Sprite:
+	dw Load2SubSprites
+	sub_sprite $3E, $06,  8, 0
+	sub_sprite $3E, $46, 16, 0
+
+CarrotSparkle2Sprite:
+	dw Load2SubSprites
+	sub_sprite $3E, $46,  8, 0
+	sub_sprite $3E, $06, 16, 0
+
+TweetySprites:
+	dw TweetyNeutralSprite
+	dw TweetyDownSprite
+	dw TweetyNeutralSprite
+	dw TweetyUpSprite
+
+TweetyUpSprite:
+	dw Load4SubSprites
+	sub_sprite $34, $06,  8, -32
+	sub_sprite $36, $06,  8, -16
+	sub_sprite $34, $26, 16, -32
+	sub_sprite $36, $26, 16, -16
+
+TweetyNeutralSprite:
+	dw Load4SubSprites
+	sub_sprite $38, $06,  8, -32
+	sub_sprite $3A, $06,  8, -16
+	sub_sprite $38, $26, 16, -32
+	sub_sprite $3A, $26, 16, -16
+
+TweetyDownSprite:
+	dw Load4SubSprites
+	sub_sprite $3C, $06,  8, -16
+	sub_sprite $3C, $26, 16, -16
+	sub_sprite $38, $06,  8, -32
+	sub_sprite $38, $26, 16, -32
 
 HandlePushableObjectEntity:
 	ld a, [$ffb0]
@@ -11795,7 +11901,7 @@ Func_4bc7:
 	ld c, a
 	ld b, $10
 	ld hl, $4bc1
-	call Func_3ca6
+	call LoadOAMSprites
 	pop bc
 	jr .asm_4bd3
 .asm_4be8
@@ -15136,7 +15242,7 @@ HandleBicycleEntity:
 	ld c, a
 	ld a, [hPlayerYPos]
 	ld b, a
-	call Func_3c98
+	call LoadOAMSpritesCameraOffset
 	pop de
 	pop bc
 	pop hl
@@ -17713,7 +17819,7 @@ Func_795e:
 	jr z, .asm_7973
 	ld hl, $c222
 .asm_7973
-	call Func_3ca6
+	call LoadOAMSprites
 	ld a, [$ddcd]
 	bit 6, a
 	jr nz, .asm_7998
@@ -17722,7 +17828,7 @@ Func_795e:
 	jr z, .asm_798c
 	ld bc, $3844
 	ld hl, $c25c
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_798c
 	ld a, [wNewKeys]
 	bit PADB_B, a
@@ -17746,7 +17852,7 @@ Func_795e:
 	ret z
 	ld bc, $3844
 	ld hl, $c272
-	call Func_3ca6
+	call LoadOAMSprites
 	ret
 .asm_79bb
 	ld hl, $ddce
@@ -17893,7 +17999,7 @@ Func_795e:
 	ld c, a
 	ld a, [$ddd1]
 	ld b, a
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_7a95
 	ld hl, $ddd2
 	ld a, [hli]
@@ -17939,7 +18045,7 @@ Func_795e:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_7ad0
 	ld hl, $ddd5
 	ld a, [hli]
@@ -17972,7 +18078,7 @@ Func_795e:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 	ret
 .asm_7b01
 	inc l
@@ -17990,7 +18096,7 @@ Func_795e:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 	ld hl, $ddd5
 	ld a, [hli]
 	add a
@@ -21016,7 +21122,7 @@ Func_173fa:
 	ld a, [$de82]
 	ld c, a
 	ld b, $48
-	call Func_3ca6
+	call LoadOAMSprites
 	pop hl
 	ld a, [$de82]
 	cp $38
@@ -21025,7 +21131,7 @@ Func_173fa:
 	sub $50
 	ld c, a
 	ld b, $48
-	call Func_3ca6
+	call LoadOAMSprites
 .asm_17509
 	ld a, [$de82]
 	and a
@@ -21456,7 +21562,7 @@ Func_177a1:
 	ld c, a
 	ld b, [hl]
 	ld hl, $783f
-	call Func_3ca6
+	call LoadOAMSprites
 	ld bc, $8283
 	ld a, [$ffb7]
 	add $1f
@@ -22126,7 +22232,7 @@ Func_17ca6:
 	ld [hActiveSprites], a
 	ld bc, $5440
 	ld hl, $7b39
-	call Func_3ca6
+	call LoadOAMSprites
 	ret
 
 Func_17cea:
@@ -22155,7 +22261,7 @@ Func_17cfd:
 	ld b, [hl]
 	ld hl, $6db3
 	ld c, $08
-	call Func_3ca6
+	call LoadOAMSprites
 	ld hl, wPasswordCharacters + 2
 	ld de, $6e80
 	ld a, [wPasswordEntryCursor]
@@ -22191,7 +22297,7 @@ Func_17cfd:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3ca6
+	call LoadOAMSprites
 	pop hl
 	pop de
 	pop bc
@@ -22205,7 +22311,7 @@ Func_17cfd:
 	ld hl, $6de7
 .asm_17d55
 	ld bc, $6848
-	call Func_3ca6
+	call LoadOAMSprites
 	ld hl, $6dc1
 	ld a, [wDifficultySetting]
 	and a
@@ -22213,7 +22319,7 @@ Func_17cfd:
 	ld hl, $6dcf
 .asm_17d67
 	ld bc, $7844
-	call Func_3ca6
+	call LoadOAMSprites
 	ret
 
 Func_17d6e:
@@ -25831,7 +25937,14 @@ TazZooBossMetatiles:
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
-INCBIN "baserom.gbc", $20000, $20d60 - $20000
+INCBIN "baserom.gbc", $20000, $20400 - $20000
+
+HabaneroCarrotTiles:
+	INCBIN "gfx/entities/habanero_carrot.interleave.2bpp"
+SuperCarrotTiles:
+	INCBIN "gfx/entities/super_carrot.interleave.2bpp"
+
+INCBIN "baserom.gbc", $20540, $20d60 - $20540
 
 SpaceStationLevelTiles:
 	INCBIN "gfx/space_station/level_tiles.2bpp.lz"
@@ -26435,7 +26548,34 @@ TreasureIslandCollisionAttributes:
 TazZooBossMap:
 	INCBIN "data/levels/taz_zoo_boss.vdmap.lz"
 
-INCBIN "baserom.gbc", $32823, $34000 - $32823
+INCBIN "baserom.gbc", $32823, $328b3 - $32823
+
+HabaneroCarrotSprite0:
+	dynamic_sprite 2, HabaneroCarrotTiles, 6
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+SuperCarrotSprite0:
+	dynamic_sprite 2, SuperCarrotTiles, 7
+	dynamic_sprite_offsets  8, -3, 16
+	dynamic_sprite_offsets 16, -3,  8
+
+SuperCarrotSprite1:
+	dynamic_sprite 2, SuperCarrotTiles + $40, 7
+	dynamic_sprite_offsets  8, -2, 16
+	dynamic_sprite_offsets 16, -2,  8
+
+SuperCarrotSprite2:
+	dynamic_sprite 2, SuperCarrotTiles + $80, 7
+	dynamic_sprite_offsets  8, -1, 16
+	dynamic_sprite_offsets 16, -1,  8
+
+SuperCarrotSprite3:
+	dynamic_sprite 2, SuperCarrotTiles + $C0, 7
+	dynamic_sprite_offsets  8,  0, 16
+	dynamic_sprite_offsets 16,  0,  8
+
+INCBIN "baserom.gbc", $328e0, $34000 - $328e0
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 

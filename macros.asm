@@ -37,7 +37,7 @@ bigdw: MACRO ; big-endian word
 	ENDM
 
 RGB: MACRO
-	dw (\3 << 10 | \2 << 5 | \1)
+	dw ((\3) << 10 | (\2) << 5 | (\1))
 	ENDM
 
 ; \1: source data
@@ -56,6 +56,29 @@ uncompressed_data: MACRO
 	dw \1
 	dw \3
 	dw \2
+	ENDM
+
+; \1: tile id
+; \2: oam attribute
+; \3: x offset
+; \4: y offset
+sub_sprite: MACRO
+	db \4, \3, \1, \2
+	ENDM
+
+; \1; num sub sprites
+; \2: gfx address
+; \3: palette id
+dynamic_sprite: MACRO
+	db \3
+	dw ((\2) & $fff) | (\1)
+	ENDM
+
+; \1: x offset
+; \2: y offset
+; \3: x offset when horizontally flipped
+dynamic_sprite_offsets: MACRO
+	db \2, \1, \3
 	ENDM
 
 ; \1: minimum x coord
@@ -185,7 +208,7 @@ entity_brick_thrower: MACRO
 entity_fire_hydrant: MACRO
 	dw HandleFireHydrantEntity
 	dw \2, \1
-	db $00, $00, $2B, $75, (\2 & $ff)
+	db $00, $00, $2B, $75, ((\2) & $ff)
 	ENDM
 
 ; \1: x pixel coord
