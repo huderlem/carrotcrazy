@@ -10869,17 +10869,17 @@ HandleCollectibleEntity:
 CollectibleEntitySprites:
 	dw HabaneroCarrotSprites ; HABANERO_CARROT
 	dw SuperCarrotSprites    ; SUPER_CARROT
-	dw Data_433f ; CLAPBOARD_0
-	dw Data_433f ; CLAPBOARD_1
-	dw Data_433f ; CLAPBOARD_2
-	dw Data_433f ; CLAPBOARD_3
-	dw Data_4352 ; TWEETY_E
-	dw Data_4355 ; TWEETY_X
-	dw Data_4358 ; TWEETY_T
-	dw Data_435B ; TWEETY_R
-	dw Data_435E ; TWEETY_A
-	dw Data_4361 ; TWEETY_HEART
-	dw Data_4364 ; TWEETY_1UP
+	dw ClapboardSprites      ; CLAPBOARD_0
+	dw ClapboardSprites      ; CLAPBOARD_1
+	dw ClapboardSprites      ; CLAPBOARD_2
+	dw ClapboardSprites      ; CLAPBOARD_3
+	dw TweetyESprites        ; TWEETY_E
+	dw TweetyXSprites        ; TWEETY_X
+	dw TweetyTSprites        ; TWEETY_T
+	dw TweetyRSprites        ; TWEETY_R
+	dw TweetyASprites        ; TWEETY_A
+	dw TweetyHeartSprites    ; TWEETY_HEART
+	dw Tweety1UpSprites      ; TWEETY_1UP
 
 HabaneroCarrotSprites:
 	db 1
@@ -10894,37 +10894,45 @@ SuperCarrotSprites:
 	dw SuperCarrotSprite2 + 1
 	dw SuperCarrotSprite1 + 1
 
-Data_433f:
+ClapboardSprites:
 	db 9
-	dw $6863, $686C, $6875, $687E, $6887, $6890, $6899, $68A2, $68AB
+	dw ClapboardSprite0 + 1
+	dw ClapboardSprite1 + 1
+	dw ClapboardSprite2 + 1
+	dw ClapboardSprite3 + 1
+	dw ClapboardSprite4 + 1
+	dw ClapboardSprite5 + 1
+	dw ClapboardSprite6 + 1
+	dw ClapboardSprite7 + 1
+	dw ClapboardSprite8 + 1
 
-Data_4352:
+TweetyESprites:
 	db 1
-	dw $6824
+	dw TweetyESprite0 + 1
 
-Data_4355:
+TweetyXSprites:
 	db 1
-	dw $682D
+	dw TweetyXSprite0 + 1
 
-Data_4358:
+TweetyTSprites:
 	db 1
-	dw $6836
+	dw TweetyTSprite0 + 1
 
-Data_435B:
+TweetyRSprites:
 	db 1
-	dw $683F
+	dw TweetyRSprite0 + 1
 
-Data_435E:
+TweetyASprites:
 	db 1
-	dw $6848
+	dw TweetyASprite0 + 1
 
-Data_4361:
+TweetyHeartSprites:
 	db 1
-	dw $6851
+	dw TweetyHeartSprite0 + 1
 
-Data_4364:
+Tweety1UpSprites:
 	db 1
-	dw $685A
+	dw Tweety1UpSprite0 + 1
 
 CarrotSprite:
 	dw Load2SubSprites
@@ -25937,8 +25945,10 @@ TazZooBossMetatiles:
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
-INCBIN "baserom.gbc", $20000, $20400 - $20000
-
+TweetyCollectiblesTiles:
+	INCBIN "gfx/entities/tweety_collectibles.interleave.2bpp"
+ClapboardTiles:
+	INCBIN "gfx/entities/clapboard.interleave.2bpp"
 HabaneroCarrotTiles:
 	INCBIN "gfx/entities/habanero_carrot.interleave.2bpp"
 SuperCarrotTiles:
@@ -26548,7 +26558,85 @@ TreasureIslandCollisionAttributes:
 TazZooBossMap:
 	INCBIN "data/levels/taz_zoo_boss.vdmap.lz"
 
-INCBIN "baserom.gbc", $32823, $328b3 - $32823
+TweetyESprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+TweetyXSprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles + $40, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+TweetyTSprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles + $80, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+TweetyRSprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles + $C0, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+TweetyASprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles + $100, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+TweetyHeartSprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles + $140, 7
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+Tweety1UpSprite0:
+	dynamic_sprite 2, TweetyCollectiblesTiles + $180, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite0:
+	dynamic_sprite 2, ClapboardTiles, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite1:
+	dynamic_sprite 2, ClapboardTiles + $40, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite2:
+	dynamic_sprite 2, ClapboardTiles + $80, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite3:
+	dynamic_sprite 2, ClapboardTiles + $C0, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite4:
+	dynamic_sprite 2, ClapboardTiles + $100, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite5:
+	dynamic_sprite 2, ClapboardTiles + $140, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite6:
+	dynamic_sprite 2, ClapboardTiles + $180, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite7:
+	dynamic_sprite 2, ClapboardTiles + $1C0, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
+
+ClapboardSprite8:
+	dynamic_sprite 2, ClapboardTiles + $200, 5
+	dynamic_sprite_offsets  8, 0, 16
+	dynamic_sprite_offsets 16, 0,  8
 
 HabaneroCarrotSprite0:
 	dynamic_sprite 2, HabaneroCarrotTiles, 6
