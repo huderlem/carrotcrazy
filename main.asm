@@ -3404,7 +3404,7 @@ Func_1748:
 	ld l, a
 	ld d, b
 	ld b, e
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop de
 	pop bc
 	and a
@@ -9447,7 +9447,7 @@ Func_39b7:
 	inc hl
 	jr .asm_39bc
 
-Func_39ea:
+ExitEntityHandler:
 	pop de
 	pop bc
 	pop hl
@@ -9937,7 +9937,7 @@ InitKeysState:
 	ld [hl], a
 	ret
 
-Func_3c7a:
+LoadOAMSpritesStandard:
 	ld a, [hCameraXOffsetScreenRight]
 	sub c
 	ld e, a
@@ -9985,7 +9985,7 @@ LoadOAMSprites:
 	ld d, wOAMBuffer >> 8
 	ret
 
-Func_3cb1:
+Load16SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10000,6 +10000,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load15SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10014,6 +10015,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load14SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10028,6 +10030,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load13SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10042,6 +10045,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load12SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10056,6 +10060,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load11SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10070,6 +10075,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load10SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10084,6 +10090,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load9SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10098,6 +10105,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load8SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10112,6 +10120,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load7SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10126,6 +10135,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load6SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10140,6 +10150,7 @@ Func_3cb1:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load5SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10169,6 +10180,7 @@ Load4SubSprites:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load3SubSprites:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -10431,7 +10443,7 @@ Func_4000:
 	ld b, a
 	dec hl
 	call Func_792d
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleStudioCharacterEntity:
 	push hl
@@ -10441,7 +10453,7 @@ HandleStudioCharacterEntity:
 	sub $23
 	ld c, a
 	ld a, [hli]
-	sbc $00
+	sbc 0
 	ld b, a
 	ld a, [$ffdd]
 	sub c
@@ -10461,7 +10473,7 @@ HandleStudioCharacterEntity:
 	ld a, [$defa]
 	and $41
 	jr z, .asm_4049
-	ld a, $01
+	ld a, 1
 	ld [hLevelCleared], a
 .asm_4049
 	push hl
@@ -10487,11 +10499,29 @@ HandleStudioCharacterEntity:
 	ld a, [hli]
 	ld c, a
 	ld d, [hl]
-	ld hl, $4071
-	call Func_3c7a
-	jp Func_39ea
+	ld hl, StudioCameraAndArrowSprite
+	call LoadOAMSpritesStandard
+	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $4071, $40b6 - $4071
+StudioCameraAndArrowSprite:
+	dw Load15SubSprites
+	sub_sprite $56, $05,  9, -23
+	sub_sprite $58, $05, 17, -23
+	sub_sprite $5A, $05, 25, -23
+	sub_sprite $5C, $05,  9,  -7
+	sub_sprite $5E, $05, 17,  -7
+	sub_sprite $60, $05, 25,  -7
+	sub_sprite $62, $05,  8,   9
+	sub_sprite $64, $05, 16,   9
+	sub_sprite $66, $05, 24,   9
+	sub_sprite $68, $06, 41, -66
+	sub_sprite $6A, $06, 49, -66
+	sub_sprite $6C, $06, 57, -66
+	sub_sprite $6E, $06, 41, -50
+	sub_sprite $70, $06, 49, -50
+	sub_sprite $72, $06, 57, -50
+
+INCBIN "baserom.gbc", $40af, $40b6 - $40af
 
 HandleCollectibleEntity:
 	ld a, [hli]
@@ -10750,7 +10780,7 @@ HandleCollectibleEntity:
 	ld b, a
 	call Func_792d
 .asm_423b
-	jp Func_39ea
+	jp ExitEntityHandler
 .collectCarrot
 	ld a, $0f
 	call PlaySoundEffectHome
@@ -10759,7 +10789,7 @@ HandleCollectibleEntity:
 	jr z, .asm_423b
 	inc a
 	ld [hNumCarrots], a
-	ld bc, $5
+	ld bc, 5
 	call AddScore
 	jr .asm_423b
 .collectHabaneroCarrot
@@ -10805,7 +10835,7 @@ HandleCollectibleEntity:
 	ld a, [hl]
 	cp 4
 	jr nz, .asm_42ac
-	ld a, $01
+	ld a, 1
 	ld [hLevelCleared], a
 .asm_42ac
 	ld hl, hClapboardPieceHUD
@@ -10979,11 +11009,11 @@ TweetyDownSprite:
 HandlePushableObjectEntity:
 	ld a, [$ffb0]
 	cp $21
-	jp z, Func_39ea
-	call Func_43d0
-	jp Func_39ea
+	jp z, ExitEntityHandler
+	call HandlePushableObjectEntity_
+	jp ExitEntityHandler
 
-Func_43d0:
+HandlePushableObjectEntity_:
 	push hl
 	ld a, [hli]
 	inc hl
@@ -10995,19 +11025,19 @@ Func_43d0:
 	ld a, [hl]
 	ld e, a
 	and $0e
-	add $fd
+	add (PushableObjectSprites & $ff)
 	ld l, a
-	ld a, $44
-	adc $00
+	ld a, (PushableObjectSprites >> 8)
+	adc 0
 	ld h, a
 	bit 7, e
-	jr z, .asm_43f0
+	jr z, .loadSprites
 	ld a, [hFrameCounter]
 	bit 4, a
-	jr z, .asm_43f0
+	jr z, .loadSprites
 	inc hl
 	inc hl
-.asm_43f0
+.loadSprites
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -11016,7 +11046,7 @@ Func_43d0:
 	ld a, [hli]
 	add $1e
 	ld [$ff8b], a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hli]
 	ld c, a
@@ -11027,11 +11057,11 @@ Func_43d0:
 	ld e, a
 	ld a, [hPlayerYPos + 1]
 	sbc b
-	jp nz, .asm_44db
+	jp nz, .return
 	ld a, [$ff8b]
 	dec a
 	cp e
-	jp c, .asm_44db
+	jp c, .return
 	ld a, [hli]
 	sub $08
 	ld c, a
@@ -11043,11 +11073,11 @@ Func_43d0:
 	ld e, a
 	ld a, [hPlayerXPos + 1]
 	sbc b
-	jp nz, .asm_44db
+	jp nz, .return
 	ld a, [$ff8a]
 	add $08
 	cp e
-	jp c, .asm_44db
+	jp c, .return
 	ld a, [$ffcd]
 	sub c
 	ld e, a
@@ -11073,7 +11103,7 @@ Func_43d0:
 	inc hl
 	ld de, $ffff
 	call Func_44dc
-	ld de, hEXTRALetters
+	ld de, -3
 	add hl, de
 	ld a, [$ff8a]
 	add $09
@@ -11101,7 +11131,7 @@ Func_43d0:
 	ld a, b
 	adc $00
 	ld [hl], a
-	jr .asm_44db
+	jr .return
 .asm_4486
 	push hl
 	ld de, $fffc
@@ -11127,7 +11157,7 @@ Func_43d0:
 	adc $00
 	ld [hPlayerYPos + 1], a
 	call Func_260d
-	jr .asm_44db
+	jr .return
 .asm_44af
 	bit 7, [hl]
 	ld de, $fffc
@@ -11152,10 +11182,10 @@ Func_43d0:
 	srl a
 	srl a
 	call Func_1948
-	jr .asm_44db
+	jr .return
 .asm_44d8
 	call Func_28b7
-.asm_44db
+.return
 	ret
 
 Func_44dc:
@@ -11187,8 +11217,85 @@ Func_44dc:
 	dec hl
 	ret
 
-INCBIN "baserom.gbc", $44fd, $45e1 - $44fd
+PushableObjectSprites:
+	dw PushableCrateSprite
+	dw PushableChest0Sprite
+	dw PushableChest1Sprite
+	dw PushableGiraffeFeederSprite
+	dw PushableComputerSprite
+	dw PushableTeeterTotterRockSprite
 
+PushableCrateSprite:
+	db $1f, $20
+	dw Load8SubSprites
+	sub_sprite $5E, $00, 24, 16
+	sub_sprite $60, $00, 32, 16
+	sub_sprite $60, $20,  8, 16
+	sub_sprite $5E, $20, 16, 16
+	sub_sprite $62, $00, 24, 32
+	sub_sprite $64, $00, 32, 32
+	sub_sprite $64, $20,  8, 32
+	sub_sprite $62, $20, 16, 32
+
+PushableChest0Sprite:
+	db $1f, $20
+	dw Load8SubSprites
+	sub_sprite $60, $02,  8, 16
+	sub_sprite $62, $02, 16, 16
+	sub_sprite $64, $02, 24, 16
+	sub_sprite $66, $02, 32, 16
+	sub_sprite $68, $02,  8, 32
+	sub_sprite $6A, $02, 16, 32
+	sub_sprite $6C, $02, 24, 32
+	sub_sprite $6E, $02, 32, 32
+
+PushableChest1Sprite:
+	db $1f, $20
+	dw Load8SubSprites
+	sub_sprite $70, $02,  8, 16
+	sub_sprite $72, $02, 16, 16
+	sub_sprite $74, $02, 24, 16
+	sub_sprite $76, $02, 32, 16
+	sub_sprite $78, $02,  8, 32
+	sub_sprite $7A, $02, 16, 32
+	sub_sprite $7C, $02, 24, 32
+	sub_sprite $7E, $02, 32, 32
+
+PushableGiraffeFeederSprite:
+	db $1f, $18
+	dw Load8SubSprites
+	sub_sprite $60, $05,  8, 15
+	sub_sprite $62, $05, 16, 15
+	sub_sprite $62, $25, 24, 15
+	sub_sprite $60, $25, 32, 15
+	sub_sprite $64, $05,  8, 31
+	sub_sprite $66, $05, 16, 31
+	sub_sprite $66, $25, 24, 31
+	sub_sprite $64, $25, 32, 31
+
+PushableComputerSprite:
+	db $1f, $20
+	dw Load8SubSprites
+	sub_sprite $58, $01,  8, 16
+	sub_sprite $5A, $01, 16, 16
+	sub_sprite $5A, $21, 24, 16
+	sub_sprite $58, $21, 32, 16
+	sub_sprite $5C, $01,  8, 32
+	sub_sprite $5E, $01, 16, 32
+	sub_sprite $5E, $21, 24, 32
+	sub_sprite $5C, $21, 32, 32
+
+PushableTeeterTotterRockSprite:
+	db $1f, $20
+	dw Load8SubSprites
+	sub_sprite $60, $01,  8, 16
+	sub_sprite $62, $01, 16, 16
+	sub_sprite $62, $21, 24, 16
+	sub_sprite $60, $21, 32, 16
+	sub_sprite $64, $01,  8, 32
+	sub_sprite $66, $01, 16, 32
+	sub_sprite $66, $21, 24, 32
+	sub_sprite $64, $21, 32, 32
 
 HandleFireHydrantEntity:
 	ld a, [hli]
@@ -11283,7 +11390,7 @@ HandleFireHydrantEntity:
 	sub $02
 	ld b, a
 	ld hl, $46e2
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	ld hl, $ff8a
 	ld a, [hli]
 	ld c, a
@@ -11335,9 +11442,9 @@ HandleFireHydrantEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 .asm_46bd
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $46c0, $4800 - $46c0
 
@@ -11459,7 +11566,7 @@ HandleSkateboardEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_48be
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleBrickThrowerTowerEntity:
 	push hl
@@ -11471,7 +11578,7 @@ HandleBrickThrowerTowerEntity:
 	ld c, a
 	ld d, [hl]
 	ld hl, $49d0
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 HandleBrickThrowerEntity:
 	ld a, [hli]
@@ -11516,7 +11623,7 @@ HandleBrickThrowerEntity:
 .asm_490a
 	push hl
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_499c
@@ -11606,7 +11713,7 @@ HandleBrickThrowerEntity:
 	dec hl
 	call Func_792d
 .asm_499c
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $499f, $4a02 - $499f
 
@@ -11667,7 +11774,7 @@ HandleSylvesterEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_4ac9
 .asm_4a5a
 	inc [hl]
@@ -11832,7 +11939,7 @@ HandleSylvesterEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_4b5d
 .asm_4b52
 	dec hl
@@ -11841,9 +11948,9 @@ HandleSylvesterEntity:
 	ld [hl], b
 	pop hl
 	ld hl, $4b80
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 .asm_4b5d
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $4b60, $4b8a - $4b60
 
@@ -12021,7 +12128,7 @@ Func_4c1b:
 	sub $16
 	ld b, a
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
 	jp z, Func_4ea7
@@ -12071,7 +12178,7 @@ Func_4c1b:
 	ld a, b
 	sub $08
 	ld b, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jp Func_4ea7
 .asm_4ce1
 	add a
@@ -12380,7 +12487,7 @@ Func_4c1b:
 	dec hl
 	call Func_792d
 Func_4ea7:
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $4eaa, $4fe0 - $4eaa
 
@@ -12427,7 +12534,7 @@ HandleRockThrowerEntity:
 .asm_5019
 	push hl
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_50ab
@@ -12517,7 +12624,7 @@ HandleRockThrowerEntity:
 	dec hl
 	call Func_792d
 .asm_50ab
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $50ae, $50df - $50ae
 
@@ -12677,7 +12784,7 @@ HandleBarrelBoatEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_51cf
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $51d2, $5212 - $51d2
 
@@ -12827,7 +12934,7 @@ HandleCannonEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_5306
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $5309, $5329 - $5309
 
@@ -12930,7 +13037,7 @@ HandleSeagullEntity:
 	ld a, b
 	sub $06
 	ld b, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jp .asm_550b
 .asm_53be
 	add a
@@ -13251,7 +13358,7 @@ HandleSeagullEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_559a
 .asm_558e
 	dec hl
@@ -13261,9 +13368,9 @@ HandleSeagullEntity:
 	ld [hld], a
 	ld [hl], b
 	ld hl, $55e1
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 .asm_559a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $559d, $55eb - $559d
 
@@ -13312,7 +13419,7 @@ HandleJackhammerEntity:
 	ld a, b
 	sub $08
 	ld b, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jp .asm_570a
 .asm_5632
 	ld a, [$ff8e]
@@ -13442,7 +13549,7 @@ HandleJackhammerEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_570a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleWreckingBallEntity:
 	ld a, [hli]
@@ -13487,8 +13594,8 @@ HandleWreckingBallEntity:
 	ld d, b
 	ld b, e
 	ld hl, $5755
-	call Func_3c7a
-	jp Func_39ea
+	call LoadOAMSpritesStandard
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $5755, $578b - $5755
 
@@ -13552,7 +13659,7 @@ HandleFixedPathEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hli]
 	ld e, a
@@ -13692,7 +13799,7 @@ HandleFixedPathEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_58b8
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $58bb, $5922 - $58bb
 
@@ -13738,7 +13845,7 @@ HandleBouncingOilDrumEntity:
 	ld a, b
 	sub $08
 	ld b, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_59d4
 .asm_595f
 	call Func_74f9
@@ -13815,7 +13922,7 @@ HandleBouncingOilDrumEntity:
 	ld b, a
 	call Func_792d
 .asm_59d4
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $59d7, $59df - $59d7
 
@@ -13846,7 +13953,7 @@ HandleBreakableWallEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	dec hl
 	dec hl
@@ -13926,59 +14033,59 @@ HandleBreakableWallEntity:
 	adc $00
 	ld [hl], a
 .asm_5a79
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $5a7c, $5c2c - $5a7c
 
 HandleMoveRightBossVehicleFarLeftEntity:
 	ld a, $37
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleMoveLeftBossVehicleFarLeftEntity:
 	ld a, $38
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleMoveLeftBossVehicleOffScreenEntity:
 	ld a, $00
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleMoveLeftBossVehicleFarRightEntity:
 	ld a, $98
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleFastestScrollRightEntity:
 	ld a, 4
 	ld [hForcedSideScrollSpeed], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleFastScrollRightEntity:
 	ld a, 2
 	ld [hForcedSideScrollSpeed], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleNormalScrollRightEntity:
 	ld a, 1
 	ld [hForcedSideScrollSpeed], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleMoveYosemiteShipMiddleEntity:
 	ld a, $6f
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleMoveRightBossVehicleFarRightEntity:
 	ld a, $87
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleMoveRightBossVehicleOffScreenEntity:
 	ld a, $b8
 	ld [$de81], a
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleTrainTrackDollyEntity:
 	ld bc, $5d5c
@@ -14129,7 +14236,7 @@ HandleBossMovablePlatformEntity
 	ld b, a
 	call Func_792d
 .asm_5d49
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $5d4c, $5d6c - $5d4c
 
@@ -14173,7 +14280,7 @@ HandleBossGroundTrap
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_5df3
 .asm_5da8
 	ld a, c
@@ -14229,7 +14336,7 @@ HandleBossGroundTrap
 	ld b, a
 	call Func_792d
 .asm_5df3
-	jp Func_39ea
+	jp ExitEntityHandler
 .asm_5df6
 	dec hl
 	ld a, [hld]
@@ -14239,7 +14346,7 @@ HandleBossGroundTrap
 	dec hl
 	ld b, [hl]
 	ld hl, $5e05
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_5df3
 
 INCBIN "baserom.gbc", $5e05, $5e37 - $5e05
@@ -14335,7 +14442,7 @@ HandleDolphinEntity:
 	ld b, a
 	call Func_792d
 .asm_5eba
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $5ebd, $5eed - $5ebd
 
@@ -14392,9 +14499,9 @@ HandleCannonballEntity:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 .asm_5f3f
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $5f42, $5f9d - $5f42
 
@@ -14527,7 +14634,7 @@ HandlePlatformDestructionEntity
 	ld b, a
 	call Func_792d
 .asm_604b
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $604e, $605e - $604e
 
@@ -14655,11 +14762,11 @@ HandleHippoEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_6129
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleGiraffeFeederEntity:
 	push hl
-	call Func_43d0
+	call HandlePushableObjectEntity_
 	pop hl
 	ld bc, $d
 	add hl, bc
@@ -14739,7 +14846,7 @@ HandleGiraffeFeederEntity:
 	ld a, [de]
 	ld b, a
 	call Func_792d
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $619f, $61a7 - $619f
 
@@ -14786,7 +14893,7 @@ HandleMonkeyEntity:
 .asm_61e0
 	push hl
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_6272
@@ -14876,7 +14983,7 @@ HandleMonkeyEntity:
 	dec hl
 	call Func_792d
 .asm_6272
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6275, $629e - $6275
 
@@ -14926,7 +15033,7 @@ HandleTazFemaleEntity:
 .asm_62dc
 	push hl
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_63d8
@@ -15090,7 +15197,7 @@ HandleTazFemaleEntity:
 	dec hl
 	call Func_792d
 .asm_63d8
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $63db, $642c - $63db
 
@@ -15138,7 +15245,7 @@ HandleBicycleEntity:
 	ld a, b
 	sub $08
 	ld b, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jp .asm_6574
 .asm_6471
 	ld a, [$ff8e]
@@ -15292,7 +15399,7 @@ HandleBicycleEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_6574
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6577, $6595 - $6577
 
@@ -15485,7 +15592,7 @@ HandleBalloonEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_66c2
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $66c5, $66e3 - $66c5
 
@@ -15508,7 +15615,7 @@ HandleTazFemaleBossEntity:
 	dec [hl]
 	push hl
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_681c
@@ -15808,7 +15915,7 @@ HandleTazFemaleBossEntity:
 	ld b, a
 	call Func_792d
 .asm_68a2
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $68a5, $68c5 - $68a5
 
@@ -15830,7 +15937,7 @@ HandleCageDropEntity:
 	ld hl, $698a
 .asm_68db
 	ld b, $08
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop de
 	pop bc
 	pop hl
@@ -15862,7 +15969,7 @@ HandleCageDropEntity:
 	ld a, d
 	adc $00
 	ld d, a
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_6981
 .asm_6912
 	bit 6, [hl]
@@ -15933,7 +16040,7 @@ HandleCageDropEntity:
 	ld bc, $738b
 	call Func_792d
 .asm_6981
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6984, $6990 - $6984
 
@@ -15996,7 +16103,7 @@ HandleTeleporterEntity:
 .asm_69ed
 	set 7, [hl]
 .asm_69ef
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleBombHazardEntity:
 	ld a, [hli]
@@ -16032,7 +16139,7 @@ HandleBombHazardEntity:
 	ld l, a
 	ld d, b
 	ld b, e
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_6a7d
 .asm_6a26
 	push hl
@@ -16089,9 +16196,9 @@ HandleBombHazardEntity:
 	ld l, a
 	ld d, b
 	ld b, e
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 .asm_6a7d
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6a80, $6ae0 - $6a80
 
@@ -16213,7 +16320,7 @@ HandleInstantMartianEntity:
 	ld l, a
 	ld d, b
 	ld b, e
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jp .asm_6c17
 .asm_6b8b
 	add a
@@ -16303,7 +16410,7 @@ HandleInstantMartianEntity:
 	ld b, a
 	call Func_792d
 .asm_6c17
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6c1a, $6c3b - $6c1a
 
@@ -16431,7 +16538,7 @@ HandleDogEntity:
 	sub $0e
 	ld b, a
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hFrameCounter]
 	bit 3, a
@@ -16590,7 +16697,7 @@ HandleDogEntity:
 	ld b, a
 	call Func_792d
 .asm_6de5
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6de8, $6e1a - $6de8
 
@@ -16674,7 +16781,7 @@ HandleLeverSpringEntity:
 	jr z, .asm_6e95
 	ld hl, $6eba
 .asm_6e95
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	ld bc, $810
 	call Func_78ae
@@ -16684,7 +16791,7 @@ HandleLeverSpringEntity:
 	add hl, bc
 	set 7, [hl]
 .asm_6ea9
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $6eac, $6ec8 - $6eac
 
@@ -16819,7 +16926,7 @@ HandleHoverShipEntity:
 	ld d, a
 	ld hl, $41
 .asm_6f8f
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_6fd7
 .asm_6f94
 	push hl
@@ -16862,7 +16969,7 @@ HandleHoverShipEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_6fd7
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleSpaceScooterEntity:
 	ld a, [hli]
@@ -16933,7 +17040,7 @@ HandleSpaceScooterEntity:
 	ld bc, $76ac
 	call Func_792d
 .asm_704b
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleFallingAsteroidEntity:
 	ld a, [hli]
@@ -16973,7 +17080,7 @@ HandleFallingAsteroidEntity:
 	pop hl
 	ld bc, $76be
 	call Func_792d
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleFuelCanisterEntity:
 	ld a, [hli]
@@ -17020,12 +17127,12 @@ HandleFuelCanisterEntity:
 	ld bc, $76d3
 	call Func_792d
 .asm_70d3
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleActionHintEntity:
 	ld a, [wDifficultySetting]
 	and a
-	jp nz, Func_39ea
+	jp nz, ExitEntityHandler
 	ld bc, $4
 	add hl, bc
 	push hl
@@ -17042,7 +17149,7 @@ HandleActionHintEntity:
 .asm_70f9
 	call Func_792d
 .asm_70fc
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleBearTrapEntity:
 	ld a, [hli]
@@ -17089,7 +17196,7 @@ HandleBearTrapEntity:
 	ld bc, $7967
 .asm_7142
 	call Func_792d
-	jp Func_39ea
+	jp ExitEntityHandler
 
 HandleDisguisedHunterEntity:
 	ld a, [hli]
@@ -17122,7 +17229,7 @@ HandleDisguisedHunterEntity:
 	sub $18
 	ld b, a
 	ld hl, $1af3
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hFrameCounter]
 	bit 3, a
@@ -17218,7 +17325,7 @@ HandleDisguisedHunterEntity:
 	ld b, a
 	call Func_792d
 .asm_7211
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $7214, $724d - $7214
 
@@ -17327,7 +17434,7 @@ HandleHelicopterChairEntity:
 	ld hl, $7333
 	ld d, b
 	ld b, e
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_7330
 .asm_72ee
 	dec de
@@ -17371,13 +17478,13 @@ HandleHelicopterChairEntity:
 	res 6, a
 	ld [$ffad], a
 .asm_7330
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $7333, $7375 - $7333
 
 HandleRockTeeterTotterEntity:
 	push hl
-	call Func_43d0
+	call HandlePushableObjectEntity_
 	pop hl
 	push hl
 	ld a, [hli]
@@ -17534,8 +17641,8 @@ HandleRockTeeterTotterEntity:
 	ld [hli], a
 	ld [hl], b
 	pop hl
-	call Func_43d0
-	jp Func_39ea
+	call HandlePushableObjectEntity_
+	jp ExitEntityHandler
 
 HandleBoomBarrierEntity:
 	ld a, [hli]
@@ -17570,7 +17677,7 @@ HandleBoomBarrierEntity:
 	ld l, a
 	ld d, b
 	ld b, e
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	jr .asm_74e6
 .asm_747a
 	ld a, [$ffdd]
@@ -17641,7 +17748,7 @@ HandleBoomBarrierEntity:
 	ld b, a
 	call Func_792d
 .asm_74e6
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $74e9, $74f9 - $74e9
 
@@ -18251,7 +18358,7 @@ HandleLadderEntity:
 	ld d, b
 	ld b, e
 	ld hl, $7dc2
-	call Func_3c7a
+	call LoadOAMSpritesStandard
 	pop hl
 	pop de
 	pop bc
@@ -18468,7 +18575,7 @@ HandleLadderEntity:
 	ld [hl], a
 	call Func_2326
 .asm_7dbf
-	jp Func_39ea
+	jp ExitEntityHandler
 
 INCBIN "baserom.gbc", $7dc2, $7dfc - $7dc2
 

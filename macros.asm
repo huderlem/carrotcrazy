@@ -127,7 +127,7 @@ entity_barrel_boat: MACRO
 entity_pushable_chest: MACRO
 	dw HandlePushableObjectEntity
 	dw \2, \1
-	db $82
+	db $80 | 2
 	dw \3, \4
 	ENDM
 
@@ -138,7 +138,7 @@ entity_pushable_chest: MACRO
 entity_pushable_crate: MACRO
 	dw HandlePushableObjectEntity
 	dw \2, \1
-	db $00
+	db 0
 	dw \3, \4
 	ENDM
 
@@ -307,7 +307,7 @@ entity_taz_female: MACRO
 entity_giraffe_feeder: MACRO
 	dw HandleGiraffeFeederEntity
 	dw \2, \1
-	db $06
+	db 6
 	dw \3, \4
 	db \6, $00
 	dw \5
@@ -345,7 +345,7 @@ entity_marvin_martian: MACRO
 entity_pushable_computer: MACRO
 	dw HandlePushableObjectEntity
 	dw \2, \1
-	db $08
+	db 8
 	dw \3, \4
 	ENDM
 
@@ -472,7 +472,7 @@ entity_hunting_dog: MACRO
 entity_rock_teeter_totter: MACRO
 	dw HandleRockTeeterTotterEntity
 	dw \2, \1
-	db $0A
+	db 10
 	dw \3, \4
 	dw \5
 	ENDM
