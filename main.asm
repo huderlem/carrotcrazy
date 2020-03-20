@@ -7941,11 +7941,11 @@ LoadDynamicEntitySprites:
 	and $c0
 	rlca
 	rlca
-	add $08
+	add 8 ; first bank of dynamic sprite gfx
 	ld c, a
 	ld a, [de]
 	and $3f
-	add $40
+	add $40 ; high byte of gfx address
 	ld d, a
 	ld a, [$ff8b]
 	ld e, a
@@ -11369,9 +11369,9 @@ HandleFireHydrantEntity:
 .asm_464b
 	ld a, [hl]
 	and $06
-	add $c0
+	add (FireHydrantWaterSprites & $ff)
 	ld e, a
-	ld a, $46
+	ld a, (FireHydrantWaterSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -11389,7 +11389,7 @@ HandleFireHydrantEntity:
 	ld a, [hl]
 	sub $02
 	ld b, a
-	ld hl, $46e2
+	ld hl, FireHydrantSprite
 	call LoadOAMSpritesStandard
 	ld hl, $ff8a
 	ld a, [hli]
@@ -11434,9 +11434,9 @@ HandleFireHydrantEntity:
 	dec a
 	add a
 .asm_46af
-	add $c6
+	add (FireHydrantWaterColumnSprites & $ff)
 	ld l, a
-	ld a, $46
+	ld a, (FireHydrantWaterColumnSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -11446,7 +11446,135 @@ HandleFireHydrantEntity:
 .asm_46bd
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $46c0, $4800 - $46c0
+FireHydrantWaterSprites:
+	dw FireHydrantWaterSprite0 + 1
+	dw FireHydrantWaterSprite1 + 1
+	dw FireHydrantWaterSprite2 + 1
+
+FireHydrantWaterColumnSprites:
+	dw FireHydrantWaterColumnSprite0
+	dw FireHydrantWaterColumnSprite1
+	dw FireHydrantWaterColumnSprite2
+	dw FireHydrantWaterColumnSprite3
+	dw FireHydrantWaterColumnSprite4
+	dw FireHydrantWaterColumnSprite5
+	dw FireHydrantWaterColumnSprite6
+	dw FireHydrantWaterColumnSprite7
+	dw FireHydrantWaterColumnSprite8
+	dw FireHydrantWaterColumnSprite9
+	dw FireHydrantWaterColumnSprite10
+	dw FireHydrantWaterColumnSprite11
+	dw FireHydrantWaterColumnSprite12
+	dw FireHydrantWaterColumnSprite13
+
+FireHydrantSprite:
+	dw Load4SubSprites
+	sub_sprite $72, $22, 16, 32
+	sub_sprite $72, $02, 24, 32
+	sub_sprite $74, $22, 16, 48
+	sub_sprite $74, $02, 24, 48
+
+FireHydrantWaterColumnSprite0:
+	dw Load2SubSprites
+	sub_sprite $7A, $24, 16, 16
+	sub_sprite $7A, $04, 24, 16
+
+FireHydrantWaterColumnSprite1:
+	dw Load2SubSprites
+	sub_sprite $78, $24, 16, 16
+	sub_sprite $78, $04, 24, 16
+
+FireHydrantWaterColumnSprite2:
+	dw Load2SubSprites
+	sub_sprite $76, $24, 16, 16
+	sub_sprite $76, $04, 24, 16
+
+FireHydrantWaterColumnSprite3:
+	dw Load2SubSprites
+	sub_sprite $6C, $24, 16, 16
+	sub_sprite $6C, $04, 24, 16
+
+FireHydrantWaterColumnSprite4:
+	dw Load4SubSprites
+	sub_sprite $7A, $24, 16,  0
+	sub_sprite $7A, $04, 24,  0
+	sub_sprite $6C, $24, 16, 16
+	sub_sprite $6C, $04, 24, 16
+
+FireHydrantWaterColumnSprite5:
+	dw Load4SubSprites
+	sub_sprite $78, $24, 16,  0
+	sub_sprite $78, $04, 24,  0
+	sub_sprite $6C, $24, 16, 16
+	sub_sprite $6C, $04, 24, 16
+
+FireHydrantWaterColumnSprite6:
+	dw Load4SubSprites
+	sub_sprite $76, $24, 16,  0
+	sub_sprite $76, $04, 24,  0
+	sub_sprite $6C, $24, 16, 16
+	sub_sprite $6C, $04, 24, 16
+
+FireHydrantWaterColumnSprite7:
+	dw Load4SubSprites
+	sub_sprite $6C, $24, 16,  0
+	sub_sprite $6C, $04, 24,  0
+	sub_sprite $6C, $24, 16, 16
+	sub_sprite $6C, $04, 24, 16
+
+FireHydrantWaterColumnSprite8:
+	dw Load6SubSprites
+	sub_sprite $7A, $24, 16, -16
+	sub_sprite $7A, $04, 24, -16
+	sub_sprite $6C, $24, 16,   0
+	sub_sprite $6C, $04, 24,   0
+	sub_sprite $6C, $24, 16,  16
+	sub_sprite $6C, $04, 24,  16
+
+FireHydrantWaterColumnSprite9:
+	dw Load6SubSprites
+	sub_sprite $78, $24, 16, -16
+	sub_sprite $78, $04, 24, -16
+	sub_sprite $6C, $24, 16,   0
+	sub_sprite $6C, $04, 24,   0
+	sub_sprite $6C, $24, 16,  16
+	sub_sprite $6C, $04, 24,  16
+
+FireHydrantWaterColumnSprite10:
+	dw Load6SubSprites
+	sub_sprite $76, $24, 16, -16
+	sub_sprite $76, $04, 24, -16
+	sub_sprite $6C, $24, 16,   0
+	sub_sprite $6C, $04, 24,   0
+	sub_sprite $6C, $24, 16,  16
+	sub_sprite $6C, $04, 24,  16
+
+FireHydrantWaterColumnSprite11:
+	dw Load6SubSprites
+	sub_sprite $6C, $24, 16, -16
+	sub_sprite $6C, $04, 24, -16
+	sub_sprite $6C, $24, 16,   0
+	sub_sprite $6C, $04, 24,   0
+	sub_sprite $6C, $24, 16,  16
+	sub_sprite $6C, $04, 24,  16
+
+FireHydrantWaterColumnSprite12:
+	dw Load6SubSprites
+	sub_sprite $6E, $24, 16, -16
+	sub_sprite $6E, $04, 24, -16
+	sub_sprite $6E, $24, 16,   0
+	sub_sprite $6E, $04, 24,   0
+	sub_sprite $6E, $24, 16,  16
+	sub_sprite $6E, $04, 24,  16
+
+FireHydrantWaterColumnSprite13:
+	dw Load6SubSprites
+	sub_sprite $70, $24, 16, -16
+	sub_sprite $70, $04, 24, -16
+	sub_sprite $70, $24, 16,   0
+	sub_sprite $70, $04, 24,   0
+	sub_sprite $70, $24, 16,  16
+	sub_sprite $70, $04, 24,  16
 
 HandleSkateboardEntity:
 	ld a, [hli]
@@ -26401,7 +26529,12 @@ TazZooBossStampedeTilemap:
 
 SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
-INCBIN "baserom.gbc", $24000, $27c00 - $24000
+INCBIN "baserom.gbc", $24000, $248a0 - $24000
+
+FireHydrantWaterTiles:
+	INCBIN "gfx/entities/fire_hydrant_water.interleave.2bpp"
+
+INCBIN "baserom.gbc", $24a20, $27c00 - $24a20
 
 SpaceStationCollisionAttributes:
 	INCBIN "data/levels/space_station_collision_attrs.bin.lz"
@@ -26666,111 +26799,134 @@ TazZooBossMap:
 	INCBIN "data/levels/taz_zoo_boss.vdmap.lz"
 
 TweetyESprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles, 5
+	dynamic_sprite 2, TweetyCollectiblesTiles, Bank(TweetyCollectiblesTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyXSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $40, 5
+	dynamic_sprite 2, TweetyCollectiblesTiles + $40, Bank(TweetyCollectiblesTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyTSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $80, 5
+	dynamic_sprite 2, TweetyCollectiblesTiles + $80, Bank(TweetyCollectiblesTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyRSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $C0, 5
+	dynamic_sprite 2, TweetyCollectiblesTiles + $C0, Bank(TweetyCollectiblesTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyASprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $100, 5
+	dynamic_sprite 2, TweetyCollectiblesTiles + $100, Bank(TweetyCollectiblesTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyHeartSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $140, 7
+	dynamic_sprite 2, TweetyCollectiblesTiles + $140, Bank(TweetyCollectiblesTiles), 7
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 Tweety1UpSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $180, 5
+	dynamic_sprite 2, TweetyCollectiblesTiles + $180, Bank(TweetyCollectiblesTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite0:
-	dynamic_sprite 2, ClapboardTiles, 5
+	dynamic_sprite 2, ClapboardTiles, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite1:
-	dynamic_sprite 2, ClapboardTiles + $40, 5
+	dynamic_sprite 2, ClapboardTiles + $40, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite2:
-	dynamic_sprite 2, ClapboardTiles + $80, 5
+	dynamic_sprite 2, ClapboardTiles + $80, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite3:
-	dynamic_sprite 2, ClapboardTiles + $C0, 5
+	dynamic_sprite 2, ClapboardTiles + $C0, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite4:
-	dynamic_sprite 2, ClapboardTiles + $100, 5
+	dynamic_sprite 2, ClapboardTiles + $100, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite5:
-	dynamic_sprite 2, ClapboardTiles + $140, 5
+	dynamic_sprite 2, ClapboardTiles + $140, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite6:
-	dynamic_sprite 2, ClapboardTiles + $180, 5
+	dynamic_sprite 2, ClapboardTiles + $180, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite7:
-	dynamic_sprite 2, ClapboardTiles + $1C0, 5
+	dynamic_sprite 2, ClapboardTiles + $1C0, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite8:
-	dynamic_sprite 2, ClapboardTiles + $200, 5
+	dynamic_sprite 2, ClapboardTiles + $200, Bank(ClapboardTiles), 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 HabaneroCarrotSprite0:
-	dynamic_sprite 2, HabaneroCarrotTiles, 6
+	dynamic_sprite 2, HabaneroCarrotTiles, Bank(HabaneroCarrotTiles), 6
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 SuperCarrotSprite0:
-	dynamic_sprite 2, SuperCarrotTiles, 7
+	dynamic_sprite 2, SuperCarrotTiles, Bank(SuperCarrotTiles), 7
 	dynamic_sprite_offsets  8, -3, 16
 	dynamic_sprite_offsets 16, -3,  8
 
 SuperCarrotSprite1:
-	dynamic_sprite 2, SuperCarrotTiles + $40, 7
+	dynamic_sprite 2, SuperCarrotTiles + $40, Bank(SuperCarrotTiles), 7
 	dynamic_sprite_offsets  8, -2, 16
 	dynamic_sprite_offsets 16, -2,  8
 
 SuperCarrotSprite2:
-	dynamic_sprite 2, SuperCarrotTiles + $80, 7
+	dynamic_sprite 2, SuperCarrotTiles + $80, Bank(SuperCarrotTiles), 7
 	dynamic_sprite_offsets  8, -1, 16
 	dynamic_sprite_offsets 16, -1,  8
 
 SuperCarrotSprite3:
-	dynamic_sprite 2, SuperCarrotTiles + $C0, 7
+	dynamic_sprite 2, SuperCarrotTiles + $C0, Bank(SuperCarrotTiles), 7
 	dynamic_sprite_offsets  8,  0, 16
 	dynamic_sprite_offsets 16,  0,  8
 
-INCBIN "baserom.gbc", $328e0, $34000 - $328e0
+INCBIN "baserom.gbc", $328e0, $329d6 - $328e0
+
+FireHydrantWaterSprite0:
+	dynamic_sprite 4, FireHydrantWaterTiles, Bank(FireHydrantWaterTiles), 4
+	dynamic_sprite_offsets  8, 14, 32
+	dynamic_sprite_offsets 16, 14, 24
+	dynamic_sprite_offsets 24, 14, 16
+	dynamic_sprite_offsets 32, 14,  8
+
+FireHydrantWaterSprite1:
+	dynamic_sprite 4, FireHydrantWaterTiles + $80, Bank(FireHydrantWaterTiles), 4
+	dynamic_sprite_offsets  8, 14, 32
+	dynamic_sprite_offsets 16, 14, 24
+	dynamic_sprite_offsets 24, 14, 16
+	dynamic_sprite_offsets 32, 14,  8
+
+FireHydrantWaterSprite2:
+	dynamic_sprite 4, FireHydrantWaterTiles + $100, Bank(FireHydrantWaterTiles), 4
+	dynamic_sprite_offsets  8, 14, 32
+	dynamic_sprite_offsets 16, 14, 24
+	dynamic_sprite_offsets 24, 14, 16
+	dynamic_sprite_offsets 32, 14,  8
+
+INCBIN "baserom.gbc", $32a03, $34000 - $32a03
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
