@@ -3769,7 +3769,7 @@ Func_1a73:
 	ld a, [hPlayerYPos]
 	sub $18
 	ld b, a
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesCameraOffset
 	ld hl, $2db9
 	call Func_2d62
@@ -3824,7 +3824,10 @@ Func_1ae2:
 	ld [$ffb0], a
 	jp Func_2326
 
-INCBIN "baserom.gbc", $1af3, $1afd - $1af3
+DizzyStarsSprite:
+	dw Load2SubSprites
+	sub_sprite $44, $06,  8, 0
+	sub_sprite $46, $06, 16, 0
 
 Func_1afd:
 	bit 4, d
@@ -11705,7 +11708,7 @@ HandleBrickThrowerTowerEntity:
 	ld a, [hli]
 	ld c, a
 	ld d, [hl]
-	ld hl, $49d0
+	ld hl, BrickThrowerTowerSprite
 	call LoadOAMSpritesStandard
 	pop hl
 HandleBrickThrowerEntity:
@@ -11750,7 +11753,7 @@ HandleBrickThrowerEntity:
 	jp .asm_499c
 .asm_490a
 	push hl
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
@@ -11790,7 +11793,7 @@ HandleBrickThrowerEntity:
 	ld a, [hld]
 	cp $30
 	jr nz, .asm_4955
-	ld bc, $49c7
+	ld bc, Data_49c7
 	call Func_1868
 	jr .asm_4969
 .asm_4955
@@ -11827,9 +11830,9 @@ HandleBrickThrowerEntity:
 	and $f8
 	srl a
 	srl a
-	add $9f
+	add (BrickThrowerSprites & $ff)
 	ld e, a
-	ld a, $49
+	ld a, (BrickThrowerSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -11843,7 +11846,45 @@ HandleBrickThrowerEntity:
 .asm_499c
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $499f, $4a02 - $499f
+BrickThrowerSprites:
+	dw BrickThrowerSprite0 + 1
+	dw BrickThrowerSprite1 + 1
+	dw BrickThrowerSprite2 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite4 + 1
+	dw BrickThrowerSprite4 + 1
+	dw BrickThrowerSprite4 + 1
+	dw BrickThrowerSprite2 + 1
+	dw BrickThrowerSprite2 + 1
+	dw BrickThrowerSprite2 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+	dw BrickThrowerSprite3 + 1
+
+Data_49c7: ; TODO: controls the brick's trajectory?
+	db $01, $F0, $02, $F7, $13, $E9, $18, $84, $70
+
+BrickThrowerTowerSprite:
+	dw Load12SubSprites
+	sub_sprite $6C, $05, $04, $C0
+	sub_sprite $6E, $05, $0C, $C0
+	sub_sprite $6C, $25, $14, $C0
+	sub_sprite $70, $05, $04, $D0
+	sub_sprite $72, $05, $0C, $D0
+	sub_sprite $70, $25, $14, $D0
+	sub_sprite $74, $05, $03, $E0
+	sub_sprite $74, $25, $15, $E0
+	sub_sprite $76, $05, $02, $F0
+	sub_sprite $76, $25, $16, $F0
+	sub_sprite $78, $05, $02, $00
+	sub_sprite $78, $25, $16, $00
 
 HandleSylvesterEntity:
 	ld a, [hli]
@@ -12255,7 +12296,7 @@ Func_4c1b:
 	ld a, b
 	sub $16
 	ld b, a
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
@@ -12661,7 +12702,7 @@ HandleRockThrowerEntity:
 	jp .asm_50ab
 .asm_5019
 	push hl
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
@@ -15020,7 +15061,7 @@ HandleMonkeyEntity:
 	jp .asm_6272
 .asm_61e0
 	push hl
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
@@ -15160,7 +15201,7 @@ HandleTazFemaleEntity:
 	jp .asm_63d8
 .asm_62dc
 	push hl
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
@@ -15742,7 +15783,7 @@ HandleTazFemaleBossEntity:
 	jp z, .asm_681c
 	dec [hl]
 	push hl
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	bit 3, [hl]
@@ -16665,7 +16706,7 @@ HandleDogEntity:
 	ld a, e
 	sub $0e
 	ld b, a
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hFrameCounter]
@@ -17356,7 +17397,7 @@ HandleDisguisedHunterEntity:
 	ld a, e
 	sub $18
 	ld b, a
-	ld hl, $1af3
+	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hFrameCounter]
@@ -26534,7 +26575,12 @@ INCBIN "baserom.gbc", $24000, $248a0 - $24000
 FireHydrantWaterTiles:
 	INCBIN "gfx/entities/fire_hydrant_water.interleave.2bpp"
 
-INCBIN "baserom.gbc", $24a20, $27c00 - $24a20
+INCBIN "baserom.gbc", $24a20, $24ac0 - $24a20
+
+BrickThrowerTiles:
+	INCBIN "gfx/entities/brick_thrower.interleave.2bpp"
+
+INCBIN "baserom.gbc", $24da0, $27c00 - $24da0
 
 SpaceStationCollisionAttributes:
 	INCBIN "data/levels/space_station_collision_attrs.bin.lz"
@@ -26926,7 +26972,44 @@ FireHydrantWaterSprite2:
 	dynamic_sprite_offsets 24, 14, 16
 	dynamic_sprite_offsets 32, 14,  8
 
-INCBIN "baserom.gbc", $32a03, $34000 - $32a03
+INCBIN "baserom.gbc", $32a03, $32a15 - $32a03
+
+BrickThrowerSprite0:
+	dynamic_sprite 2, BrickThrowerTiles, Bank(BrickThrowerTiles), 3
+	dynamic_sprite_offsets 11, 1, 15
+	dynamic_sprite_offsets 19, 1,  7
+
+BrickThrowerSprite1:
+	dynamic_sprite 3, BrickThrowerTiles + $40, Bank(BrickThrowerTiles), 3
+	dynamic_sprite_offsets  3, 1, 23
+	dynamic_sprite_offsets 11, 1, 15
+	dynamic_sprite_offsets 19, 1,  7
+
+BrickThrowerSprite2:
+	dynamic_sprite 5, BrickThrowerTiles + $A0, Bank(BrickThrowerTiles), 3
+	dynamic_sprite_offsets 11, -15, 15
+	dynamic_sprite_offsets 19, -15,  7
+	dynamic_sprite_offsets  3,   1, 23
+	dynamic_sprite_offsets 11,   1, 15
+	dynamic_sprite_offsets 19,   1,  7
+
+BrickThrowerSprite3:
+	dynamic_sprite 5, BrickThrowerTiles + $140, Bank(BrickThrowerTiles), 3
+	dynamic_sprite_offsets  8, -15, 18
+	dynamic_sprite_offsets 16, -15, 10
+	dynamic_sprite_offsets  8,   1, 18
+	dynamic_sprite_offsets 16,   1, 10
+	dynamic_sprite_offsets 24,   1,  2
+
+BrickThrowerSprite4:
+	dynamic_sprite 5, BrickThrowerTiles + $1E0, Bank(BrickThrowerTiles), 3
+	dynamic_sprite_offsets 10, -15, 16
+	dynamic_sprite_offsets 18, -15,  8
+	dynamic_sprite_offsets 26, -15,  0
+	dynamic_sprite_offsets 10,   1, 16
+	dynamic_sprite_offsets 18,   1,  8
+
+INCBIN "baserom.gbc", $32a60, $34000 - $32a60
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 

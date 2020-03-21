@@ -104,3 +104,6 @@ gfx/fudd_forest/boss_level_tiles_gbc.2bpp: %.2bpp: %.png
 gfx/fudd_forest/boss_train_tiles_gbc.2bpp: %.2bpp: %.png
 	rgbgfx -x 9 -o $@ $<
 
+gfx/entities/brick_thrower.interleave.2bpp: %.2bpp: %.png
+	rgbgfx -o $@ $<
+	tools/gfx --interleave --remove-whitespace --png $< -o $@ $@
