@@ -11913,7 +11913,7 @@ HandleSylvesterEntity:
 	ld [hld], a
 	jr .asm_4a5a
 .asm_4a22
-	ld bc, $6ab2
+	ld bc, SylvesterSprite5 + 1
 	ld a, [hl]
 	cp $78
 	jp nc, .asm_4ac5
@@ -12005,9 +12005,9 @@ HandleSylvesterEntity:
 	and $f0
 	swap a
 	add a
-	add $60
+	add (SylvesterSprites & $ff)
 	ld e, a
-	ld a, $4b
+	ld a, (SylvesterSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -12116,12 +12116,33 @@ HandleSylvesterEntity:
 	ld [hld], a
 	ld [hl], b
 	pop hl
-	ld hl, $4b80
+	ld hl, SylvesterBombSprite
 	call LoadOAMSpritesStandard
 .asm_4b5d
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $4b60, $4b8a - $4b60
+SylvesterSprites:
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite1 + 1
+	dw SylvesterSprite2 + 1
+	dw SylvesterSprite2 + 1
+	dw SylvesterSprite2 + 1
+	dw SylvesterSprite3 + 1
+	dw SylvesterSprite3 + 1
+	dw SylvesterSprite3 + 1
+	dw SylvesterSprite4 + 1
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite0 + 1
+	dw SylvesterSprite0 + 1
+
+SylvesterBombSprite:
+	dw Load2SubSprites
+	sub_sprite $56, $05,  8, 0
+	sub_sprite $58, $05, 16, 0
 
 HandleElmerFuddEntity:
 	ld bc, $4fb6
@@ -26580,7 +26601,20 @@ INCBIN "baserom.gbc", $24a20, $24ac0 - $24a20
 BrickThrowerTiles:
 	INCBIN "gfx/entities/brick_thrower.interleave.2bpp"
 
-INCBIN "baserom.gbc", $24da0, $27c00 - $24da0
+SylvesterTiles0:
+	INCBIN "gfx/entities/sylvester/frame_0.interleave.2bpp"
+SylvesterTiles1:
+	INCBIN "gfx/entities/sylvester/frame_1.interleave.2bpp"
+SylvesterTiles2:
+	INCBIN "gfx/entities/sylvester/frame_2.interleave.2bpp"
+SylvesterTiles3:
+	INCBIN "gfx/entities/sylvester/frame_3.interleave.2bpp"
+SylvesterTiles4:
+	INCBIN "gfx/entities/sylvester/frame_4.interleave.2bpp"
+SylvesterTiles5:
+	INCBIN "gfx/entities/sylvester/frame_5.interleave.2bpp"
+
+INCBIN "baserom.gbc", $25060, $27c00 - $25060
 
 SpaceStationCollisionAttributes:
 	INCBIN "data/levels/space_station_collision_attrs.bin.lz"
@@ -27009,7 +27043,49 @@ BrickThrowerSprite4:
 	dynamic_sprite_offsets 10,   1, 16
 	dynamic_sprite_offsets 18,   1,  8
 
-INCBIN "baserom.gbc", $32a60, $34000 - $32a60
+INCBIN "baserom.gbc", $32a60, $32a6f - $32a60
+
+SylvesterSprite0:
+	dynamic_sprite 2, SylvesterTiles0, Bank(SylvesterTiles0), 5
+	dynamic_sprite_offsets 13, 1,  -5
+	dynamic_sprite_offsets 21, 1, -13
+
+SylvesterSprite1:
+	dynamic_sprite 2, SylvesterTiles1, Bank(SylvesterTiles1), 5
+	dynamic_sprite_offsets 12, 1,  -4
+	dynamic_sprite_offsets 20, 1, -12
+
+SylvesterSprite2:
+	dynamic_sprite 5, SylvesterTiles2, Bank(SylvesterTiles2), 5
+	dynamic_sprite_offsets  9,   3,  -1
+	dynamic_sprite_offsets 17,   3,  -9
+	dynamic_sprite_offsets 25,   3, -17
+	dynamic_sprite_offsets 12, -13,  -4
+	dynamic_sprite_offsets 20, -13, -12
+
+SylvesterSprite3:
+	dynamic_sprite 5, SylvesterTiles3, Bank(SylvesterTiles3), 5
+	dynamic_sprite_offsets  8,   3,   0
+	dynamic_sprite_offsets 16,   3,  -8
+	dynamic_sprite_offsets 24,   3, -16
+	dynamic_sprite_offsets 12, -13,  -4
+	dynamic_sprite_offsets 20, -13, -12
+
+SylvesterSprite4:
+	dynamic_sprite 3, SylvesterTiles4, Bank(SylvesterTiles4), 5
+	dynamic_sprite_offsets 11, 1,  -3
+	dynamic_sprite_offsets 19, 1, -11
+	dynamic_sprite_offsets 27, 1, -19
+
+SylvesterSprite5:
+	dynamic_sprite 5, SylvesterTiles5, Bank(SylvesterTiles5), 5
+	dynamic_sprite_offsets 11, -15,  -3
+	dynamic_sprite_offsets 19, -15, -11
+	dynamic_sprite_offsets 11,   1,  -3
+	dynamic_sprite_offsets 19,   1, -11
+	dynamic_sprite_offsets 27,   1, -19
+
+INCBIN "baserom.gbc", $32ac3, $34000 - $32ac3
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
