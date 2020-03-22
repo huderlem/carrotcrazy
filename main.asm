@@ -11786,7 +11786,7 @@ HandleBrickThrowerEntity:
 	inc hl
 	jr .asm_4947
 .asm_4942
-	ld bc, $6a61
+	ld bc, BrickThrowerSprite5 + 1
 	jr .asm_4998
 .asm_4947
 	inc [hl]
@@ -26242,14 +26242,48 @@ TazZooBossMetatiles:
 
 SECTION "ROM Bank $08", ROMX[$4000], BANK[$8]
 
-TweetyCollectiblesTiles:
-	INCBIN "gfx/entities/tweety_collectibles.interleave.2bpp"
-ClapboardTiles:
-	INCBIN "gfx/entities/clapboard.interleave.2bpp"
-HabaneroCarrotTiles:
-	INCBIN "gfx/entities/habanero_carrot.interleave.2bpp"
-SuperCarrotTiles:
-	INCBIN "gfx/entities/super_carrot.interleave.2bpp"
+TweetyLetterETiles:
+	INCBIN "gfx/entities/tweety_collectibles/letter_e.interleave.2bpp"
+TweetyLetterXTiles:
+	INCBIN "gfx/entities/tweety_collectibles/letter_x.interleave.2bpp"
+TweetyLetterTTiles:
+	INCBIN "gfx/entities/tweety_collectibles/letter_t.interleave.2bpp"
+TweetyLetterRTiles:
+	INCBIN "gfx/entities/tweety_collectibles/letter_r.interleave.2bpp"
+TweetyLetterATiles:
+	INCBIN "gfx/entities/tweety_collectibles/letter_a.interleave.2bpp"
+TweetyHeartTiles:
+	INCBIN "gfx/entities/tweety_collectibles/heart.interleave.2bpp"
+Tweety1UpTiles:
+	INCBIN "gfx/entities/tweety_collectibles/1_up.interleave.2bpp"
+ClapboardTiles0:
+	INCBIN "gfx/entities/clapboard/frame_0.interleave.2bpp"
+ClapboardTiles1:
+	INCBIN "gfx/entities/clapboard/frame_1.interleave.2bpp"
+ClapboardTiles2:
+	INCBIN "gfx/entities/clapboard/frame_2.interleave.2bpp"
+ClapboardTiles3:
+	INCBIN "gfx/entities/clapboard/frame_3.interleave.2bpp"
+ClapboardTiles4:
+	INCBIN "gfx/entities/clapboard/frame_4.interleave.2bpp"
+ClapboardTiles5:
+	INCBIN "gfx/entities/clapboard/frame_5.interleave.2bpp"
+ClapboardTiles6:
+	INCBIN "gfx/entities/clapboard/frame_6.interleave.2bpp"
+ClapboardTiles7:
+	INCBIN "gfx/entities/clapboard/frame_7.interleave.2bpp"
+ClapboardTiles8:
+	INCBIN "gfx/entities/clapboard/frame_8.interleave.2bpp"
+HabaneroCarrotTiles0:
+	INCBIN "gfx/entities/habanero_carrot/frame_0.interleave.2bpp"
+SuperCarrotTiles0:
+	INCBIN "gfx/entities/super_carrot/frame_0.interleave.2bpp"
+SuperCarrotTiles1:
+	INCBIN "gfx/entities/super_carrot/frame_1.interleave.2bpp"
+SuperCarrotTiles2:
+	INCBIN "gfx/entities/super_carrot/frame_2.interleave.2bpp"
+SuperCarrotTiles3:
+	INCBIN "gfx/entities/super_carrot/frame_3.interleave.2bpp"
 
 INCBIN "baserom.gbc", $20540, $20d60 - $20540
 
@@ -26593,13 +26627,27 @@ SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
 INCBIN "baserom.gbc", $24000, $248a0 - $24000
 
-FireHydrantWaterTiles:
-	INCBIN "gfx/entities/fire_hydrant_water.interleave.2bpp"
+FireHydrantWaterTiles0:
+	INCBIN "gfx/entities/fire_hydrant_water/frame_0.interleave.2bpp"
+FireHydrantWaterTiles1:
+	INCBIN "gfx/entities/fire_hydrant_water/frame_1.interleave.2bpp"
+FireHydrantWaterTiles2:
+	INCBIN "gfx/entities/fire_hydrant_water/frame_2.interleave.2bpp"
 
 INCBIN "baserom.gbc", $24a20, $24ac0 - $24a20
 
-BrickThrowerTiles:
-	INCBIN "gfx/entities/brick_thrower.interleave.2bpp"
+BrickThrowerTiles0:
+	INCBIN "gfx/entities/brick_thrower/frame_0.interleave.2bpp"
+BrickThrowerTiles1:
+	INCBIN "gfx/entities/brick_thrower/frame_1.interleave.2bpp"
+BrickThrowerTiles2:
+	INCBIN "gfx/entities/brick_thrower/frame_2.interleave.2bpp"
+BrickThrowerTiles3:
+	INCBIN "gfx/entities/brick_thrower/frame_3.interleave.2bpp"
+BrickThrowerTiles4:
+	INCBIN "gfx/entities/brick_thrower/frame_4.interleave.2bpp"
+BrickThrowerTiles5:
+	INCBIN "gfx/entities/brick_thrower/frame_5.interleave.2bpp"
 
 SylvesterTiles0:
 	INCBIN "gfx/entities/sylvester/frame_0.interleave.2bpp"
@@ -26879,128 +26927,128 @@ TazZooBossMap:
 	INCBIN "data/levels/taz_zoo_boss.vdmap.lz"
 
 TweetyESprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles, Bank(TweetyCollectiblesTiles), 5
+	dynamic_sprite 2, TweetyLetterETiles, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyXSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $40, Bank(TweetyCollectiblesTiles), 5
+	dynamic_sprite 2, TweetyLetterXTiles, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyTSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $80, Bank(TweetyCollectiblesTiles), 5
+	dynamic_sprite 2, TweetyLetterTTiles, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyRSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $C0, Bank(TweetyCollectiblesTiles), 5
+	dynamic_sprite 2, TweetyLetterRTiles, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyASprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $100, Bank(TweetyCollectiblesTiles), 5
+	dynamic_sprite 2, TweetyLetterATiles, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyHeartSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $140, Bank(TweetyCollectiblesTiles), 7
+	dynamic_sprite 2, TweetyHeartTiles, 7
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 Tweety1UpSprite0:
-	dynamic_sprite 2, TweetyCollectiblesTiles + $180, Bank(TweetyCollectiblesTiles), 5
+	dynamic_sprite 2, Tweety1UpTiles, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite0:
-	dynamic_sprite 2, ClapboardTiles, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles0, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite1:
-	dynamic_sprite 2, ClapboardTiles + $40, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles1, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite2:
-	dynamic_sprite 2, ClapboardTiles + $80, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles2, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite3:
-	dynamic_sprite 2, ClapboardTiles + $C0, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles3, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite4:
-	dynamic_sprite 2, ClapboardTiles + $100, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles4, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite5:
-	dynamic_sprite 2, ClapboardTiles + $140, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles5, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite6:
-	dynamic_sprite 2, ClapboardTiles + $180, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles6, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite7:
-	dynamic_sprite 2, ClapboardTiles + $1C0, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles7, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite8:
-	dynamic_sprite 2, ClapboardTiles + $200, Bank(ClapboardTiles), 5
+	dynamic_sprite 2, ClapboardTiles8, 5
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 HabaneroCarrotSprite0:
-	dynamic_sprite 2, HabaneroCarrotTiles, Bank(HabaneroCarrotTiles), 6
+	dynamic_sprite 2, HabaneroCarrotTiles0, 6
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 SuperCarrotSprite0:
-	dynamic_sprite 2, SuperCarrotTiles, Bank(SuperCarrotTiles), 7
+	dynamic_sprite 2, SuperCarrotTiles0, 7
 	dynamic_sprite_offsets  8, -3, 16
 	dynamic_sprite_offsets 16, -3,  8
 
 SuperCarrotSprite1:
-	dynamic_sprite 2, SuperCarrotTiles + $40, Bank(SuperCarrotTiles), 7
+	dynamic_sprite 2, SuperCarrotTiles1, 7
 	dynamic_sprite_offsets  8, -2, 16
 	dynamic_sprite_offsets 16, -2,  8
 
 SuperCarrotSprite2:
-	dynamic_sprite 2, SuperCarrotTiles + $80, Bank(SuperCarrotTiles), 7
+	dynamic_sprite 2, SuperCarrotTiles2, 7
 	dynamic_sprite_offsets  8, -1, 16
 	dynamic_sprite_offsets 16, -1,  8
 
 SuperCarrotSprite3:
-	dynamic_sprite 2, SuperCarrotTiles + $C0, Bank(SuperCarrotTiles), 7
+	dynamic_sprite 2, SuperCarrotTiles3, 7
 	dynamic_sprite_offsets  8,  0, 16
 	dynamic_sprite_offsets 16,  0,  8
 
 INCBIN "baserom.gbc", $328e0, $329d6 - $328e0
 
 FireHydrantWaterSprite0:
-	dynamic_sprite 4, FireHydrantWaterTiles, Bank(FireHydrantWaterTiles), 4
+	dynamic_sprite 4, FireHydrantWaterTiles0, 4
 	dynamic_sprite_offsets  8, 14, 32
 	dynamic_sprite_offsets 16, 14, 24
 	dynamic_sprite_offsets 24, 14, 16
 	dynamic_sprite_offsets 32, 14,  8
 
 FireHydrantWaterSprite1:
-	dynamic_sprite 4, FireHydrantWaterTiles + $80, Bank(FireHydrantWaterTiles), 4
+	dynamic_sprite 4, FireHydrantWaterTiles1, 4
 	dynamic_sprite_offsets  8, 14, 32
 	dynamic_sprite_offsets 16, 14, 24
 	dynamic_sprite_offsets 24, 14, 16
 	dynamic_sprite_offsets 32, 14,  8
 
 FireHydrantWaterSprite2:
-	dynamic_sprite 4, FireHydrantWaterTiles + $100, Bank(FireHydrantWaterTiles), 4
+	dynamic_sprite 4, FireHydrantWaterTiles2, 4
 	dynamic_sprite_offsets  8, 14, 32
 	dynamic_sprite_offsets 16, 14, 24
 	dynamic_sprite_offsets 24, 14, 16
@@ -27009,18 +27057,18 @@ FireHydrantWaterSprite2:
 INCBIN "baserom.gbc", $32a03, $32a15 - $32a03
 
 BrickThrowerSprite0:
-	dynamic_sprite 2, BrickThrowerTiles, Bank(BrickThrowerTiles), 3
+	dynamic_sprite 2, BrickThrowerTiles0, 3
 	dynamic_sprite_offsets 11, 1, 15
 	dynamic_sprite_offsets 19, 1,  7
 
 BrickThrowerSprite1:
-	dynamic_sprite 3, BrickThrowerTiles + $40, Bank(BrickThrowerTiles), 3
+	dynamic_sprite 3, BrickThrowerTiles1, 3
 	dynamic_sprite_offsets  3, 1, 23
 	dynamic_sprite_offsets 11, 1, 15
 	dynamic_sprite_offsets 19, 1,  7
 
 BrickThrowerSprite2:
-	dynamic_sprite 5, BrickThrowerTiles + $A0, Bank(BrickThrowerTiles), 3
+	dynamic_sprite 5, BrickThrowerTiles2, 3
 	dynamic_sprite_offsets 11, -15, 15
 	dynamic_sprite_offsets 19, -15,  7
 	dynamic_sprite_offsets  3,   1, 23
@@ -27028,7 +27076,7 @@ BrickThrowerSprite2:
 	dynamic_sprite_offsets 19,   1,  7
 
 BrickThrowerSprite3:
-	dynamic_sprite 5, BrickThrowerTiles + $140, Bank(BrickThrowerTiles), 3
+	dynamic_sprite 5, BrickThrowerTiles3, 3
 	dynamic_sprite_offsets  8, -15, 18
 	dynamic_sprite_offsets 16, -15, 10
 	dynamic_sprite_offsets  8,   1, 18
@@ -27036,27 +27084,34 @@ BrickThrowerSprite3:
 	dynamic_sprite_offsets 24,   1,  2
 
 BrickThrowerSprite4:
-	dynamic_sprite 5, BrickThrowerTiles + $1E0, Bank(BrickThrowerTiles), 3
+	dynamic_sprite 5, BrickThrowerTiles4, 3
 	dynamic_sprite_offsets 10, -15, 16
 	dynamic_sprite_offsets 18, -15,  8
 	dynamic_sprite_offsets 26, -15,  0
 	dynamic_sprite_offsets 10,   1, 16
 	dynamic_sprite_offsets 18,   1,  8
 
-INCBIN "baserom.gbc", $32a60, $32a6f - $32a60
+BrickThrowerSprite5:
+	dynamic_sprite 3, BrickThrowerTiles5, 3
+	dynamic_sprite_offsets  6, 1, 20
+	dynamic_sprite_offsets 14, 1, 12
+	dynamic_sprite_offsets 22, 1,  4
+
+EmptySprite_32a6c:
+	dynamic_sprite 0, SylvesterTiles0, 3
 
 SylvesterSprite0:
-	dynamic_sprite 2, SylvesterTiles0, Bank(SylvesterTiles0), 5
+	dynamic_sprite 2, SylvesterTiles0, 5
 	dynamic_sprite_offsets 13, 1,  -5
 	dynamic_sprite_offsets 21, 1, -13
 
 SylvesterSprite1:
-	dynamic_sprite 2, SylvesterTiles1, Bank(SylvesterTiles1), 5
+	dynamic_sprite 2, SylvesterTiles1, 5
 	dynamic_sprite_offsets 12, 1,  -4
 	dynamic_sprite_offsets 20, 1, -12
 
 SylvesterSprite2:
-	dynamic_sprite 5, SylvesterTiles2, Bank(SylvesterTiles2), 5
+	dynamic_sprite 5, SylvesterTiles2, 5
 	dynamic_sprite_offsets  9,   3,  -1
 	dynamic_sprite_offsets 17,   3,  -9
 	dynamic_sprite_offsets 25,   3, -17
@@ -27064,7 +27119,7 @@ SylvesterSprite2:
 	dynamic_sprite_offsets 20, -13, -12
 
 SylvesterSprite3:
-	dynamic_sprite 5, SylvesterTiles3, Bank(SylvesterTiles3), 5
+	dynamic_sprite 5, SylvesterTiles3, 5
 	dynamic_sprite_offsets  8,   3,   0
 	dynamic_sprite_offsets 16,   3,  -8
 	dynamic_sprite_offsets 24,   3, -16
@@ -27072,13 +27127,13 @@ SylvesterSprite3:
 	dynamic_sprite_offsets 20, -13, -12
 
 SylvesterSprite4:
-	dynamic_sprite 3, SylvesterTiles4, Bank(SylvesterTiles4), 5
+	dynamic_sprite 3, SylvesterTiles4, 5
 	dynamic_sprite_offsets 11, 1,  -3
 	dynamic_sprite_offsets 19, 1, -11
 	dynamic_sprite_offsets 27, 1, -19
 
 SylvesterSprite5:
-	dynamic_sprite 5, SylvesterTiles5, Bank(SylvesterTiles5), 5
+	dynamic_sprite 5, SylvesterTiles5, 5
 	dynamic_sprite_offsets 11, -15,  -3
 	dynamic_sprite_offsets 19, -15, -11
 	dynamic_sprite_offsets 11,   1,  -3
