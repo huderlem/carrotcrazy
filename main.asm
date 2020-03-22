@@ -10213,6 +10213,7 @@ Load2SubSprites:
 	ld a, [hli]
 	ld [de], a
 	inc e
+Load1SubSprite:
 	ld a, [hli]
 	add b
 	ld [de], a
@@ -12146,47 +12147,49 @@ SylvesterBombSprite:
 
 HandleElmerFuddEntity:
 	ld bc, $4fb6
-	jp Func_4c17
+	jp HandleCharacterEntity
 
 HandleElmerFuddBossEntity:
 	ld bc, $4fb6
-	jr Func_4bc7
+	jr HandleCharacterBossEntity
 
 HandleMarvianMartianEntity:
 	ld bc, $4f78
-	jp Func_4c17
+	jp HandleCharacterEntity
 
 HandleMarvianMartianBossEntity:
 	ld bc, $4f78
-	jr Func_4bc7
+	jr HandleCharacterBossEntity
 
 HandleTazEntity:
 	ld bc, $4f3a
-	jp Func_4c17
+	jp HandleCharacterEntity
 
 HandleTazBossEntity:
 	ld bc, $4f3a
-	jr Func_4bc7
+	jr HandleCharacterBossEntity
 
 HandleYosemiteSamEntity:
-	ld bc, $4efc
-	jp Func_4c17
+	ld bc, YosemiteSamSprites
+	jp HandleCharacterEntity
 
 HandleYosemiteSamBossEntity:
-	ld bc, $4efc
-	jr Func_4bc7
+	ld bc, YosemiteSamSprites
+	jr HandleCharacterBossEntity
 
 HandleDaffyDuckEntity:
 	ld bc, $4ebe
-	jp Func_4c17
+	jp HandleCharacterEntity
 
 HandleDaffyDuckBossEntity:
 	ld bc, $4ebe
-	jr Func_4bc7
+	jr HandleCharacterBossEntity
 
-INCBIN "baserom.gbc", $4bc1, $4bc7 - $4bc1
+BossHeartSprite:
+	dw Load1SubSprite
+	sub_sprite $8E, $07, 0, 0
 
-Func_4bc7:
+HandleCharacterBossEntity:
 	ld a, $ff
 	ld [$dde7], a
 	push hl
@@ -12194,7 +12197,7 @@ Func_4bc7:
 	ld bc, $6
 	add hl, bc
 	ld c, [hl]
-.asm_4bd3
+.drawHeartLoop
 	ld a, c
 	and a
 	jr z, .asm_4be8
@@ -12205,10 +12208,10 @@ Func_4bc7:
 	add a
 	ld c, a
 	ld b, $10
-	ld hl, $4bc1
+	ld hl, BossHeartSprite
 	call LoadOAMSprites
 	pop bc
-	jr .asm_4bd3
+	jr .drawHeartLoop
 .asm_4be8
 	pop bc
 	pop hl
@@ -12221,7 +12224,7 @@ Func_4bc7:
 	ld a, [hLevelCleared]
 	and a
 	jp nz, Func_4ea7
-	ld a, $01
+	ld a, 1
 	ld [hLevelCleared], a
 	ld a, 4
 	ld [hNumClapboards], a
@@ -12237,7 +12240,7 @@ Func_4bc7:
 	sub a
 	ld [hl], a
 	jp Func_4ea7
-Func_4c17:
+HandleCharacterEntity:
 	sub a
 	ld [$dde7], a
 Func_4c1b:
@@ -12679,7 +12682,32 @@ Func_4c1b:
 Func_4ea7:
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $4eaa, $4fe0 - $4eaa
+INCBIN "baserom.gbc", $4eaa, $4efc - $4eaa
+
+YosemiteSamSprites:
+	dw YosemiteSamSprite0 + 1
+	dw YosemiteSamSprite1 + 1
+	dw YosemiteSamSprite2 + 1
+	dw YosemiteSamSprite3 + 1
+	dw YosemiteSamSprite4 + 1
+	dw YosemiteSamSprite5 + 1
+	dw YosemiteSamSprite11 + 1
+	dw YosemiteSamSprite12 + 1
+	dw YosemiteSamSprite6 + 1
+	dw YosemiteSamSprite6 + 1
+	dw YosemiteSamSprite6 + 1
+	dw YosemiteSamSprite6 + 1
+	dw YosemiteSamSprite6 + 1
+	dw YosemiteSamSprite6 + 1
+	dw YosemiteSamSprite7 + 1
+	dw YosemiteSamSprite7 + 1
+	dw YosemiteSamSprite10 + 1
+	dw YosemiteSamSprite9 + 1
+	dw YosemiteSamSprite7 + 1
+	dw YosemiteSamSprite13 + 1
+	dw YosemiteSamSprite8 + 1
+
+INCBIN "baserom.gbc", $4f26, $4fe0 - $4f26
 
 HandleRockThrowerEntity:
 	ld a, [hli]
@@ -26662,7 +26690,36 @@ SylvesterTiles4:
 SylvesterTiles5:
 	INCBIN "gfx/entities/sylvester/frame_5.interleave.2bpp"
 
-INCBIN "baserom.gbc", $25060, $27c00 - $25060
+YosemiteSamTiles0:
+	INCBIN "gfx/entities/yosemite_sam/frame_0.interleave.2bpp"
+YosemiteSamTiles1:
+	INCBIN "gfx/entities/yosemite_sam/frame_1.interleave.2bpp"
+YosemiteSamTiles2:
+	INCBIN "gfx/entities/yosemite_sam/frame_2.interleave.2bpp"
+YosemiteSamTiles3:
+	INCBIN "gfx/entities/yosemite_sam/frame_3.interleave.2bpp"
+YosemiteSamTiles4:
+	INCBIN "gfx/entities/yosemite_sam/frame_4.interleave.2bpp"
+YosemiteSamTiles5:
+	INCBIN "gfx/entities/yosemite_sam/frame_5.interleave.2bpp"
+YosemiteSamTiles6:
+	INCBIN "gfx/entities/yosemite_sam/frame_6.interleave.2bpp"
+YosemiteSamTiles7:
+	INCBIN "gfx/entities/yosemite_sam/frame_7.interleave.2bpp"
+YosemiteSamTiles8:
+	INCBIN "gfx/entities/yosemite_sam/frame_8.interleave.2bpp"
+YosemiteSamTiles9:
+	INCBIN "gfx/entities/yosemite_sam/frame_9.interleave.2bpp"
+YosemiteSamTiles10:
+	INCBIN "gfx/entities/yosemite_sam/frame_10.interleave.2bpp"
+YosemiteSamTiles11:
+	INCBIN "gfx/entities/yosemite_sam/frame_11.interleave.2bpp"
+YosemiteSamTiles12:
+	INCBIN "gfx/entities/yosemite_sam/frame_12.interleave.2bpp"
+YosemiteSamTiles13:
+	INCBIN "gfx/entities/yosemite_sam/frame_13.interleave.2bpp"
+
+INCBIN "baserom.gbc", $25b80, $27c00 - $25b80
 
 SpaceStationCollisionAttributes:
 	INCBIN "data/levels/space_station_collision_attrs.bin.lz"
@@ -27140,7 +27197,141 @@ SylvesterSprite5:
 	dynamic_sprite_offsets 19,   1, -11
 	dynamic_sprite_offsets 27,   1, -19
 
-INCBIN "baserom.gbc", $32ac3, $34000 - $32ac3
+YosemiteSamSprite0:
+	dynamic_sprite 7, YosemiteSamTiles0, 0
+	dynamic_sprite_offsets  9,   1, 23
+	dynamic_sprite_offsets 17,   1, 15
+	dynamic_sprite_offsets 25,   1,  7
+	dynamic_sprite_offsets 11, -15, 21
+	dynamic_sprite_offsets 19, -15, 13
+	dynamic_sprite_offsets  9, -31, 23
+	dynamic_sprite_offsets 17, -31, 15
+
+YosemiteSamSprite1:
+	dynamic_sprite 7, YosemiteSamTiles1, 0
+	dynamic_sprite_offsets 10,   1, 22
+	dynamic_sprite_offsets 18,   1, 14
+	dynamic_sprite_offsets 26,   1,  6
+	dynamic_sprite_offsets 12, -15, 20
+	dynamic_sprite_offsets 20, -15, 12
+	dynamic_sprite_offsets 10, -31, 22
+	dynamic_sprite_offsets 18, -31, 14
+
+YosemiteSamSprite2:
+	dynamic_sprite 7, YosemiteSamTiles2, 0
+	dynamic_sprite_offsets  9,   1, 23
+	dynamic_sprite_offsets 17,   1, 15
+	dynamic_sprite_offsets 25,   1,  7
+	dynamic_sprite_offsets 11, -15, 21
+	dynamic_sprite_offsets 19, -15, 13
+	dynamic_sprite_offsets  9, -31, 23
+	dynamic_sprite_offsets 17, -31, 15
+
+YosemiteSamSprite3:
+	dynamic_sprite 7, YosemiteSamTiles3, 0
+	dynamic_sprite_offsets  9,   1, 23
+	dynamic_sprite_offsets 17,   1, 15
+	dynamic_sprite_offsets 25,   1,  7
+	dynamic_sprite_offsets 11, -15, 21
+	dynamic_sprite_offsets 19, -15, 13
+	dynamic_sprite_offsets  9, -31, 23
+	dynamic_sprite_offsets 17, -31, 15
+
+YosemiteSamSprite4:
+	dynamic_sprite 7, YosemiteSamTiles4, 0
+	dynamic_sprite_offsets 10,   1, 22
+	dynamic_sprite_offsets 18,   1, 14
+	dynamic_sprite_offsets 26,   1,  6
+	dynamic_sprite_offsets 12, -15, 20
+	dynamic_sprite_offsets 20, -15, 12
+	dynamic_sprite_offsets 10, -31, 22
+	dynamic_sprite_offsets 18, -31, 14
+
+YosemiteSamSprite5:
+	dynamic_sprite 7, YosemiteSamTiles5, 0
+	dynamic_sprite_offsets  9,   1, 23
+	dynamic_sprite_offsets 17,   1, 15
+	dynamic_sprite_offsets 25,   1,  7
+	dynamic_sprite_offsets 11, -15, 21
+	dynamic_sprite_offsets 19, -15, 13
+	dynamic_sprite_offsets  9, -31, 23
+	dynamic_sprite_offsets 17, -31, 15
+
+YosemiteSamSprite6:
+	dynamic_sprite 8, YosemiteSamTiles6, 0
+	dynamic_sprite_offsets 11,   6, 21
+	dynamic_sprite_offsets 19,   6, 13
+	dynamic_sprite_offsets  9, -26, 23
+	dynamic_sprite_offsets 17, -26, 15
+	dynamic_sprite_offsets 25, -26,  7
+	dynamic_sprite_offsets  9, -10, 23
+	dynamic_sprite_offsets 17, -10, 15
+	dynamic_sprite_offsets 25, -10,  7
+
+EmptySprite_32b6e:
+	db $00, $A0, $56 ; TODO:
+
+YosemiteSamSprite7:
+	dynamic_sprite 8, YosemiteSamTiles7, 0
+	dynamic_sprite_offsets 10, -27, 22
+	dynamic_sprite_offsets 18, -27, 14
+	dynamic_sprite_offsets 10, -11, 22
+	dynamic_sprite_offsets 18, -11, 14
+	dynamic_sprite_offsets  8,   5, 24
+	dynamic_sprite_offsets 16,   5, 16
+	dynamic_sprite_offsets 24,  -4,  8
+	dynamic_sprite_offsets 32,  -4,  0
+
+YosemiteSamSprite8:
+	dynamic_sprite 6, YosemiteSamTiles8, 0
+	dynamic_sprite_offsets  8,   5, 24
+	dynamic_sprite_offsets 16,   5, 16
+	dynamic_sprite_offsets 24,   5,  8
+	dynamic_sprite_offsets 10, -11, 22
+	dynamic_sprite_offsets 18, -11, 14
+	dynamic_sprite_offsets 26, -11,  6
+
+YosemiteSamSprite9:
+	dynamic_sprite 6, YosemiteSamTiles9, 0
+	dynamic_sprite_offsets  6,   1, 26
+	dynamic_sprite_offsets 14,   1, 18
+	dynamic_sprite_offsets 22,   1, 10
+	dynamic_sprite_offsets 19, -31, 13
+	dynamic_sprite_offsets 11, -15, 21
+	dynamic_sprite_offsets 19, -15, 13
+
+YosemiteSamSprite10:
+	dynamic_sprite 3, YosemiteSamTiles10, 0
+	dynamic_sprite_offsets  8,  1, 24
+	dynamic_sprite_offsets 16,  1, 16
+	dynamic_sprite_offsets 24,  1,  8
+
+YosemiteSamSprite11:
+	dynamic_sprite 3, YosemiteSamTiles11, 0
+	dynamic_sprite_offsets 8, -34, 24
+	dynamic_sprite_offsets 8, -18, 24
+	dynamic_sprite_offsets 8,  -2, 24
+
+YosemiteSamSprite12:
+	dynamic_sprite 5, YosemiteSamTiles12, 0
+	dynamic_sprite_offsets  8, -32, 24
+	dynamic_sprite_offsets  8, -16, 24
+	dynamic_sprite_offsets 16, -16, 16
+	dynamic_sprite_offsets  8,   0, 24
+	dynamic_sprite_offsets 16,   0, 16
+
+YosemiteSamSprite13:
+	dynamic_sprite 8, YosemiteSamTiles13, 0
+	dynamic_sprite_offsets 11, -26, 21
+	dynamic_sprite_offsets 19, -26, 13
+	dynamic_sprite_offsets 11, -10, 21
+	dynamic_sprite_offsets 19, -10, 13
+	dynamic_sprite_offsets 11,   6, 21
+	dynamic_sprite_offsets 19,   6, 13
+	dynamic_sprite_offsets  3,  -2, 29
+	dynamic_sprite_offsets 27, -10,  5
+
+INCBIN "baserom.gbc", $32bfb, $34000 - $32bfb
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
