@@ -71,7 +71,7 @@ sub_sprite: MACRO
 ; \3: palette id
 dynamic_sprite: MACRO
 	db \3
-	dw ((Bank(\2) - 8) << 14) | ((\2) & $3fff) | (\1)
+	dw ((Bank(\2) - 8) << 14) | ((\2) & $3ff0) | (\1)
 	ENDM
 
 ; \1: x offset

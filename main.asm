@@ -12178,11 +12178,11 @@ HandleYosemiteSamBossEntity:
 	jr HandleCharacterBossEntity
 
 HandleDaffyDuckEntity:
-	ld bc, $4ebe
+	ld bc, DaffyDuckSprites
 	jp HandleCharacterEntity
 
 HandleDaffyDuckBossEntity:
-	ld bc, $4ebe
+	ld bc, DaffyDuckSprites
 	jr HandleCharacterBossEntity
 
 BossHeartSprite:
@@ -12682,7 +12682,32 @@ Func_4c1b:
 Func_4ea7:
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $4eaa, $4efc - $4eaa
+INCBIN "baserom.gbc", $4eaa, $4ebe - $4eaa
+
+DaffyDuckSprites:
+	dw DaffyDuckSprite0 + 1
+	dw DaffyDuckSprite1 + 1
+	dw DaffyDuckSprite2 + 1
+	dw DaffyDuckSprite3 + 1
+	dw DaffyDuckSprite4 + 1
+	dw DaffyDuckSprite5 + 1
+	dw DaffyDuckSprite11 + 1
+	dw DaffyDuckSprite12 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite8 + 1
+	dw DaffyDuckSprite8 + 1
+	dw DaffyDuckSprite10 + 1
+	dw DaffyDuckSprite6 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite7 + 1
+	dw DaffyDuckSprite9 + 1
+
+INCBIN "baserom.gbc", $4ee8, $4efc - $4ee8
 
 YosemiteSamSprites:
 	dw YosemiteSamSprite0 + 1
@@ -26653,7 +26678,34 @@ TazZooBossStampedeTilemap:
 
 SECTION "ROM Bank $09", ROMX[$4000], BANK[$9]
 
-INCBIN "baserom.gbc", $24000, $248a0 - $24000
+DaffyDuckTiles0:
+	INCBIN "gfx/entities/daffy_duck/frame_0.interleave.2bpp"
+DaffyDuckTiles1:
+	INCBIN "gfx/entities/daffy_duck/frame_1.interleave.2bpp"
+DaffyDuckTiles2:
+	INCBIN "gfx/entities/daffy_duck/frame_2.interleave.2bpp"
+DaffyDuckTiles3:
+	INCBIN "gfx/entities/daffy_duck/frame_3.interleave.2bpp"
+DaffyDuckTiles4:
+	INCBIN "gfx/entities/daffy_duck/frame_4.interleave.2bpp"
+DaffyDuckTiles5:
+	INCBIN "gfx/entities/daffy_duck/frame_5.interleave.2bpp"
+DaffyDuckTiles6:
+	INCBIN "gfx/entities/daffy_duck/frame_6.interleave.2bpp"
+DaffyDuckTiles7:
+	INCBIN "gfx/entities/daffy_duck/frame_7.interleave.2bpp"
+DaffyDuckTiles8:
+	INCBIN "gfx/entities/daffy_duck/frame_8.interleave.2bpp"
+DaffyDuckTiles9:
+	INCBIN "gfx/entities/daffy_duck/frame_9.interleave.2bpp"
+DaffyDuckTiles10:
+	INCBIN "gfx/entities/daffy_duck/frame_10.interleave.2bpp"
+DaffyDuckTiles11:
+	INCBIN "gfx/entities/daffy_duck/frame_11.interleave.2bpp"
+DaffyDuckTiles12:
+	INCBIN "gfx/entities/daffy_duck/frame_12.interleave.2bpp"
+
+INCBIN "baserom.gbc", $248a0, $248a0 - $248a0
 
 FireHydrantWaterTiles0:
 	INCBIN "gfx/entities/fire_hydrant_water/frame_0.interleave.2bpp"
@@ -27088,7 +27140,115 @@ SuperCarrotSprite3:
 	dynamic_sprite_offsets  8,  0, 16
 	dynamic_sprite_offsets 16,  0,  8
 
-INCBIN "baserom.gbc", $328e0, $329d6 - $328e0
+DaffyDuckSprite0:
+	dynamic_sprite 6, DaffyDuckTiles0, 1
+	dynamic_sprite_offsets 18, -15, 16
+	dynamic_sprite_offsets 26, -14,  8
+	dynamic_sprite_offsets 32, -12,  2
+	dynamic_sprite_offsets  8,   2, 26
+	dynamic_sprite_offsets 16,   1, 18
+	dynamic_sprite_offsets 24,   1, 10
+
+DaffyDuckSprite1:
+	dynamic_sprite 6, DaffyDuckTiles1, 1
+	dynamic_sprite_offsets 21, -15, 13
+	dynamic_sprite_offsets 29, -15,  5
+	dynamic_sprite_offsets 37, -15, -3
+	dynamic_sprite_offsets 12,   1, 22
+	dynamic_sprite_offsets 20,   1, 14
+	dynamic_sprite_offsets 28,   1,  6
+
+DaffyDuckSprite2:
+	dynamic_sprite 6, DaffyDuckTiles2, 1
+	dynamic_sprite_offsets 18, -15, 16
+	dynamic_sprite_offsets 26, -15,  8
+	dynamic_sprite_offsets 34, -15,  0
+	dynamic_sprite_offsets 10,   1, 24
+	dynamic_sprite_offsets 18,   1, 16
+	dynamic_sprite_offsets 26,   1,  8
+
+DaffyDuckSprite3:
+	dynamic_sprite 6, DaffyDuckTiles3, 1
+	dynamic_sprite_offsets 18, -15, 16
+	dynamic_sprite_offsets 26, -15,  8
+	dynamic_sprite_offsets 30, -11,  4
+	dynamic_sprite_offsets  8,   3, 26
+	dynamic_sprite_offsets 16,   1, 18
+	dynamic_sprite_offsets 24,   1, 10
+
+DaffyDuckSprite4:
+	dynamic_sprite 6, DaffyDuckTiles4, 1
+	dynamic_sprite_offsets 19, -15, 15
+	dynamic_sprite_offsets 27, -15,  7
+	dynamic_sprite_offsets 35, -15, -1
+	dynamic_sprite_offsets 13,   1, 21
+	dynamic_sprite_offsets 21,   1, 13
+	dynamic_sprite_offsets 29,   1,  5
+
+DaffyDuckSprite5:
+	dynamic_sprite 6, DaffyDuckTiles5, 1
+	dynamic_sprite_offsets 20, -15, 14
+	dynamic_sprite_offsets 28, -15,  6
+	dynamic_sprite_offsets 36, -15, -2
+	dynamic_sprite_offsets 11,   1, 23
+	dynamic_sprite_offsets 19,   1, 15
+	dynamic_sprite_offsets 27,   1,  7
+
+DaffyDuckSprite6:
+	dynamic_sprite 4, DaffyDuckTiles6, 1
+	dynamic_sprite_offsets 16, -15, 18
+	dynamic_sprite_offsets 10,   1, 24
+	dynamic_sprite_offsets 18,   1, 16
+	dynamic_sprite_offsets 26,   1,  8
+
+DaffyDuckSprite7:
+	dynamic_sprite 6, DaffyDuckTiles7, 1
+	dynamic_sprite_offsets 12, -15, 22
+	dynamic_sprite_offsets 20, -15, 14
+	dynamic_sprite_offsets 28, -15,  6
+	dynamic_sprite_offsets 12,   1, 22
+	dynamic_sprite_offsets 20,   1, 14
+	dynamic_sprite_offsets 28,   1,  6
+
+DaffyDuckSprite8:
+	dynamic_sprite 6, DaffyDuckTiles8, 1
+	dynamic_sprite_offsets 11, -15, 23
+	dynamic_sprite_offsets 19, -15, 15
+	dynamic_sprite_offsets 27, -15,  7
+	dynamic_sprite_offsets 11,   1, 23
+	dynamic_sprite_offsets 19,   1, 15
+	dynamic_sprite_offsets 27,   1,  7
+
+DaffyDuckSprite9:
+	dynamic_sprite 6, DaffyDuckTiles9, 1
+	dynamic_sprite_offsets 10, -15, 24
+	dynamic_sprite_offsets 18, -15, 16
+	dynamic_sprite_offsets 26, -15,  8
+	dynamic_sprite_offsets 10,   1, 24
+	dynamic_sprite_offsets 18,   1, 16
+	dynamic_sprite_offsets 26,   1,  8
+
+DaffyDuckSprite10:
+	dynamic_sprite 3, DaffyDuckTiles10, 1
+	dynamic_sprite_offsets  9, 1, 25
+	dynamic_sprite_offsets 17, 1, 17
+	dynamic_sprite_offsets 25, 1,  9
+
+DaffyDuckSprite11:
+	dynamic_sprite 3, DaffyDuckTiles11, 1
+	dynamic_sprite_offsets  8, -15, 26
+	dynamic_sprite_offsets 16, -15, 18
+	dynamic_sprite_offsets  8,  1, 26
+
+DaffyDuckSprite12:
+	dynamic_sprite 5, DaffyDuckTiles12, 1
+	dynamic_sprite_offsets  8, -15, 26
+	dynamic_sprite_offsets 16, -15, 18
+	dynamic_sprite_offsets  8,   1, 26
+	dynamic_sprite_offsets 16,   1, 18
+	dynamic_sprite_offsets 24, -12, 10
+
+INCBIN "baserom.gbc", $329d6, $329d6 - $329d6
 
 FireHydrantWaterSprite0:
 	dynamic_sprite 4, FireHydrantWaterTiles0, 4
