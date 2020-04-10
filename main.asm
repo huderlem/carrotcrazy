@@ -12162,11 +12162,11 @@ HandleMarvianMartianBossEntity:
 	jr HandleCharacterBossEntity
 
 HandleTazEntity:
-	ld bc, $4f3a
+	ld bc, TazSprites
 	jp HandleCharacterEntity
 
 HandleTazBossEntity:
-	ld bc, $4f3a
+	ld bc, TazSprites
 	jr HandleCharacterBossEntity
 
 HandleYosemiteSamEntity:
@@ -12732,7 +12732,32 @@ YosemiteSamSprites:
 	dw YosemiteSamSprite13 + 1
 	dw YosemiteSamSprite8 + 1
 
-INCBIN "baserom.gbc", $4f26, $4fe0 - $4f26
+INCBIN "baserom.gbc", $4f26, $4f3a - $4f26
+
+TazSprites:
+	dw TazSprite0 + 1
+	dw TazSprite1 + 1
+	dw TazSprite2 + 1
+	dw TazSprite3 + 1
+	dw TazSprite4 + 1
+	dw TazSprite5 + 1
+	dw TazSprite11 + 1
+	dw TazSprite12 + 1
+	dw TazSprite6 + 1
+	dw TazSprite6 + 1
+	dw TazSprite6 + 1
+	dw TazSprite6 + 1
+	dw TazSprite6 + 1
+	dw TazSprite6 + 1
+	dw TazSprite7 + 1
+	dw TazSprite7 + 1
+	dw TazSprite10 + 1
+	dw TazSprite9 + 1
+	dw TazSprite6 + 1
+	dw TazSprite6 + 1
+	dw TazSprite8 + 1
+
+INCBIN "baserom.gbc", $4f64, $4fe0 - $4f64
 
 HandleRockThrowerEntity:
 	ld a, [hli]
@@ -26783,7 +26808,36 @@ WarnerBrosGameOverTiles:
 
 SECTION "ROM Bank $0A", ROMX[$4000], BANK[$A]
 
-INCBIN "baserom.gbc", $28000, $2bee0 - $28000
+INCBIN "baserom.gbc", $28000, $28aa0 - $28000
+
+TazTiles0:
+	INCBIN "gfx/entities/taz/frame_0.interleave.2bpp"
+TazTiles1:
+	INCBIN "gfx/entities/taz/frame_1.interleave.2bpp"
+TazTiles2:
+	INCBIN "gfx/entities/taz/frame_2.interleave.2bpp"
+TazTiles3:
+	INCBIN "gfx/entities/taz/frame_3.interleave.2bpp"
+TazTiles4:
+	INCBIN "gfx/entities/taz/frame_4.interleave.2bpp"
+TazTiles5:
+	INCBIN "gfx/entities/taz/frame_5.interleave.2bpp"
+TazTiles6:
+	INCBIN "gfx/entities/taz/frame_6.interleave.2bpp"
+TazTiles7:
+	INCBIN "gfx/entities/taz/frame_7.interleave.2bpp"
+TazTiles8:
+	INCBIN "gfx/entities/taz/frame_8.interleave.2bpp"
+TazTiles9:
+	INCBIN "gfx/entities/taz/frame_9.interleave.2bpp"
+TazTiles10:
+	INCBIN "gfx/entities/taz/frame_10.interleave.2bpp"
+TazTiles11:
+	INCBIN "gfx/entities/taz/frame_11.interleave.2bpp"
+TazTiles12:
+	INCBIN "gfx/entities/taz/frame_12.interleave.2bpp"
+
+INCBIN "baserom.gbc", $293a0, $2bee0 - $293a0
 
 FuddForestCollisionAttributes:
 	INCBIN "data/levels/fudd_forest_collision_attrs.bin.lz"
@@ -27491,7 +27545,123 @@ YosemiteSamSprite13:
 	dynamic_sprite_offsets  3,  -2, 29
 	dynamic_sprite_offsets 27, -10,  5
 
-INCBIN "baserom.gbc", $32bfb, $34000 - $32bfb
+INCBIN "baserom.gbc", $32bfb, $32fa9 - $32bfb
+
+TazSprite0:
+	dynamic_sprite 6, TazTiles0, 2
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+TazSprite1:
+	dynamic_sprite 6, TazTiles1, 2
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+TazSprite2:
+	dynamic_sprite 6, TazTiles2, 2
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+TazSprite3:
+	dynamic_sprite 6, TazTiles3, 2
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+TazSprite4:
+	dynamic_sprite 6, TazTiles4, 2
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+TazSprite5:
+	dynamic_sprite 6, TazTiles5, 2
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+TazSprite6:
+	dynamic_sprite 6, TazTiles6, 2
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+	dynamic_sprite_offsets  7, -15, 23
+	dynamic_sprite_offsets 15, -15, 15
+	dynamic_sprite_offsets 23, -15,  7
+
+EmptySprite_3303c:
+	db $02, $E0, $8F ; TODO:
+
+TazSprite7:
+	dynamic_sprite 6, TazTiles7, 2
+	dynamic_sprite_offsets  6,   1, 24
+	dynamic_sprite_offsets 14,   1, 16
+	dynamic_sprite_offsets 22,   1,  8
+	dynamic_sprite_offsets  5, -15, 25
+	dynamic_sprite_offsets 13, -15, 17
+	dynamic_sprite_offsets 21, -15,  9
+
+TazSprite8:
+	dynamic_sprite 6, TazTiles8, 2
+	dynamic_sprite_offsets  6, -15, 24
+	dynamic_sprite_offsets 14, -15, 16
+	dynamic_sprite_offsets 22, -15,  8
+	dynamic_sprite_offsets  6,   1, 24
+	dynamic_sprite_offsets 14,   1, 16
+	dynamic_sprite_offsets 22,   1,  8
+
+TazSprite9:
+	dynamic_sprite 6, TazTiles9, 2
+	dynamic_sprite_offsets  2,   1, 28
+	dynamic_sprite_offsets 10,   1, 20
+	dynamic_sprite_offsets 18,   1, 12
+	dynamic_sprite_offsets 26,   1,  4
+	dynamic_sprite_offsets 13, -15, 17
+	dynamic_sprite_offsets 21, -15,  9
+
+TazSprite10:
+	dynamic_sprite 3, TazTiles10, 2
+	dynamic_sprite_offsets  8, 1, 22
+	dynamic_sprite_offsets 16, 1, 14
+	dynamic_sprite_offsets 24, 1,  6
+
+TazSprite11:
+	dynamic_sprite 3, TazTiles11, 2
+	dynamic_sprite_offsets  8,  5, 22
+	dynamic_sprite_offsets 16,  5, 14
+	dynamic_sprite_offsets 24,  5,  6
+
+TazSprite12:
+	dynamic_sprite 6, TazTiles12, 2
+	dynamic_sprite_offsets  8, -5, 22
+	dynamic_sprite_offsets 16, -5, 14
+	dynamic_sprite_offsets 24, -5,  6
+	dynamic_sprite_offsets  8, 11, 22
+	dynamic_sprite_offsets 16, 11, 14
+	dynamic_sprite_offsets 24, 11,  6
+
+INCBIN "baserom.gbc", $330ab, $34000 - $330ab
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
