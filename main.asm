@@ -12926,10 +12926,10 @@ HandleRockThrowerEntity:
 	and $f8
 	srl a
 	srl a
-	add $ae
+	add (RockThrowerSprites & $ff)
 	ld e, a
-	ld a, $50
-	adc $00
+	ld a, (RockThrowerSprites >> 8)
+	adc 0
 	ld d, a
 	ld a, [de]
 	inc de
@@ -12942,7 +12942,29 @@ HandleRockThrowerEntity:
 .asm_50ab
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $50ae, $50df - $50ae
+RockThrowerSprites:
+	dw RockThrowerSprite0 + 1
+	dw RockThrowerSprite1 + 1
+	dw RockThrowerSprite2 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite4 + 1
+	dw RockThrowerSprite4 + 1
+	dw RockThrowerSprite4 + 1
+	dw RockThrowerSprite2 + 1
+	dw RockThrowerSprite2 + 1
+	dw RockThrowerSprite2 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+	dw RockThrowerSprite3 + 1
+
+INCBIN "baserom.gbc", $50d6, $50df - $50d6
 
 HandleBarrelBoatEntity:
 	push hl
@@ -26844,7 +26866,18 @@ YosemiteSamTiles12:
 YosemiteSamTiles13:
 	INCBIN "gfx/entities/yosemite_sam/frame_13.interleave.2bpp"
 
-INCBIN "baserom.gbc", $25b80, $27040 - $25b80
+RockThrowerTiles0:
+	INCBIN "gfx/entities/rock_thrower/frame_0.interleave.2bpp"
+RockThrowerTiles1:
+	INCBIN "gfx/entities/rock_thrower/frame_1.interleave.2bpp"
+RockThrowerTiles2:
+	INCBIN "gfx/entities/rock_thrower/frame_2.interleave.2bpp"
+RockThrowerTiles3:
+	INCBIN "gfx/entities/rock_thrower/frame_3.interleave.2bpp"
+RockThrowerTiles4:
+	INCBIN "gfx/entities/rock_thrower/frame_4.interleave.2bpp"
+
+INCBIN "baserom.gbc", $25e20, $27040 - $25e20
 
 ElmerFuddTiles0:
 	INCBIN "gfx/entities/elmer_fudd/frame_0.interleave.2bpp"
@@ -27649,7 +27682,43 @@ YosemiteSamSprite13:
 	dynamic_sprite_offsets  3,  -2, 29
 	dynamic_sprite_offsets 27, -10,  5
 
-INCBIN "baserom.gbc", $32bfb, $32fa9 - $32bfb
+RockThrowerSprite0:
+	dynamic_sprite 2, RockThrowerTiles0, 3
+	dynamic_sprite_offsets 10, 1, 19
+	dynamic_sprite_offsets 18, 1, 11
+
+RockThrowerSprite1:
+	dynamic_sprite 2, RockThrowerTiles1, 3
+	dynamic_sprite_offsets 10, 1, 19
+	dynamic_sprite_offsets 18, 1, 11
+
+RockThrowerSprite2:
+	dynamic_sprite 5, RockThrowerTiles2, 3
+	dynamic_sprite_offsets  9,   1, 20
+	dynamic_sprite_offsets 17,   1, 12
+	dynamic_sprite_offsets 25,   1,  4
+	dynamic_sprite_offsets 10, -15, 19
+	dynamic_sprite_offsets 18, -15, 11
+
+RockThrowerSprite3:
+	dynamic_sprite 6, RockThrowerTiles3, 3
+	dynamic_sprite_offsets  8, -15, 21
+	dynamic_sprite_offsets 16, -15, 13
+	dynamic_sprite_offsets  8,   1, 21
+	dynamic_sprite_offsets 16,   1, 13
+	dynamic_sprite_offsets 24,   1,  5
+	dynamic_sprite_offsets 32,   1, -3
+
+RockThrowerSprite4:
+	dynamic_sprite 6, RockThrowerTiles4, 3
+	dynamic_sprite_offsets  8, -15, 21
+	dynamic_sprite_offsets 16, -15, 13
+	dynamic_sprite_offsets 24, -15,  5
+	dynamic_sprite_offsets  8,   1, 21
+	dynamic_sprite_offsets 16,   1, 13
+	dynamic_sprite_offsets 24,   1,  5
+
+INCBIN "baserom.gbc", $32c49, $32fa9 - $32c49
 
 TazSprite0:
 	dynamic_sprite 6, TazTiles0, 2
