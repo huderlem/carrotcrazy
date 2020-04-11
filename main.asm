@@ -12146,11 +12146,11 @@ SylvesterBombSprite:
 	sub_sprite $58, $05, 16, 0
 
 HandleElmerFuddEntity:
-	ld bc, $4fb6
+	ld bc, ElmerFuddSprites
 	jp HandleCharacterEntity
 
 HandleElmerFuddBossEntity:
-	ld bc, $4fb6
+	ld bc, ElmerFuddSprites
 	jr HandleCharacterBossEntity
 
 HandleMarvianMartianEntity:
@@ -12782,7 +12782,30 @@ MarvinMartianSprites:
 	dw MarvinMartianSprite11 + 1
 	dw MarvinMartianSprite6 + 1
 
-INCBIN "baserom.gbc", $4fa2, $4fe0 - $4fa2
+INCBIN "baserom.gbc", $4fa2, $4fb6 - $4fa2
+
+ElmerFuddSprites:
+	dw ElmerFuddSprite0 + 1
+	dw ElmerFuddSprite1 + 1
+	dw ElmerFuddSprite2 + 1
+	dw ElmerFuddSprite3 + 1
+	dw ElmerFuddSprite4 + 1
+	dw ElmerFuddSprite5 + 1
+	dw ElmerFuddSprite11 + 1
+	dw ElmerFuddSprite12 + 1
+	dw ElmerFuddSprite6 + 1
+	dw ElmerFuddSprite6 + 1
+	dw ElmerFuddSprite6 + 1
+	dw ElmerFuddSprite6 + 1
+	dw ElmerFuddSprite6 + 1
+	dw ElmerFuddSprite6 + 1
+	dw ElmerFuddSprite7 + 1
+	dw ElmerFuddSprite7 + 1
+	dw ElmerFuddSprite10 + 1
+	dw ElmerFuddSprite9 + 1
+	dw ElmerFuddSprite7 + 1
+	dw ElmerFuddSprite13 + 1
+	dw ElmerFuddSprite8 + 1
 
 HandleRockThrowerEntity:
 	ld a, [hli]
@@ -26821,7 +26844,36 @@ YosemiteSamTiles12:
 YosemiteSamTiles13:
 	INCBIN "gfx/entities/yosemite_sam/frame_13.interleave.2bpp"
 
-INCBIN "baserom.gbc", $25b80, $27c00 - $25b80
+INCBIN "baserom.gbc", $25b80, $27040 - $25b80
+
+ElmerFuddTiles0:
+	INCBIN "gfx/entities/elmer_fudd/frame_0.interleave.2bpp"
+ElmerFuddTiles1:
+	INCBIN "gfx/entities/elmer_fudd/frame_1.interleave.2bpp"
+ElmerFuddTiles2:
+	INCBIN "gfx/entities/elmer_fudd/frame_2.interleave.2bpp"
+ElmerFuddTiles3:
+	INCBIN "gfx/entities/elmer_fudd/frame_3.interleave.2bpp"
+ElmerFuddTiles4:
+	INCBIN "gfx/entities/elmer_fudd/frame_4.interleave.2bpp"
+ElmerFuddTiles5:
+	INCBIN "gfx/entities/elmer_fudd/frame_5.interleave.2bpp"
+ElmerFuddTiles6:
+	INCBIN "gfx/entities/elmer_fudd/frame_6.interleave.2bpp"
+ElmerFuddTiles7:
+	INCBIN "gfx/entities/elmer_fudd/frame_7.interleave.2bpp"
+ElmerFuddTiles8:
+	INCBIN "gfx/entities/elmer_fudd/frame_8.interleave.2bpp"
+ElmerFuddTiles9:
+	INCBIN "gfx/entities/elmer_fudd/frame_9.interleave.2bpp"
+ElmerFuddTiles10:
+	INCBIN "gfx/entities/elmer_fudd/frame_10.interleave.2bpp"
+ElmerFuddTiles11:
+	INCBIN "gfx/entities/elmer_fudd/frame_11.interleave.2bpp"
+ElmerFuddTiles12:
+	INCBIN "gfx/entities/elmer_fudd/frame_12.interleave.2bpp"
+ElmerFuddTiles13:
+	INCBIN "gfx/entities/elmer_fudd/frame_13.interleave.2bpp"
 
 SpaceStationCollisionAttributes:
 	INCBIN "data/levels/space_station_collision_attrs.bin.lz"
@@ -27815,7 +27867,170 @@ MarvinMartianSprite11:
 	dynamic_sprite_offsets 22, -15,  8
 	dynamic_sprite_offsets 26,  -7,  4
 
-INCBIN "baserom.gbc", $3349e, $34000 - $3349e
+INCBIN "baserom.gbc", $3349e, $33714 - $3349e
+
+	; dw $7715
+	; dw $7730
+	; dw $7748
+	; dw $7763
+	; dw $777E
+	; dw $7796
+	; dw $7823
+	; dw $782F
+	; dw $77AE
+	; dw $77AE
+	; dw $77AE
+	; dw $77AE
+	; dw $77AE
+	; dw $77AE
+	; dw $77CC
+	; dw $77CC
+	; dw $7814
+	; dw $77FF
+	; dw $77CC
+	; dw $7841
+	; dw $77E7
+
+ElmerFuddSprite0:
+	dynamic_sprite 8, ElmerFuddTiles0, 4
+	dynamic_sprite_offsets -1,  -1, 37
+	dynamic_sprite_offsets  7,  -1, 29
+	dynamic_sprite_offsets 15,  -1, 21
+	dynamic_sprite_offsets 23,  -1, 13
+	dynamic_sprite_offsets 13, -17, 23
+	dynamic_sprite_offsets 21, -17, 15
+	dynamic_sprite_offsets 29, -13,  7
+	dynamic_sprite_offsets 37, -13, -1
+
+ElmerFuddSprite1:
+	dynamic_sprite 7, ElmerFuddTiles1, 4
+	dynamic_sprite_offsets 17,   1, 19
+	dynamic_sprite_offsets 25,   1, 11
+	dynamic_sprite_offsets 14, -15, 22
+	dynamic_sprite_offsets 22, -15, 14
+	dynamic_sprite_offsets  9,   0, 27
+	dynamic_sprite_offsets 30, -12,  6
+	dynamic_sprite_offsets 38, -12, -2
+
+ElmerFuddSprite2:
+	dynamic_sprite 8, ElmerFuddTiles2, 4
+	dynamic_sprite_offsets  6,   1, 30
+	dynamic_sprite_offsets 14,   1, 22
+	dynamic_sprite_offsets 22,   1, 14
+	dynamic_sprite_offsets 30,   1,  6
+	dynamic_sprite_offsets 12, -15, 24
+	dynamic_sprite_offsets 20, -15, 16
+	dynamic_sprite_offsets 28, -15,  8
+	dynamic_sprite_offsets 36,  -7,  0
+
+ElmerFuddSprite3:
+	dynamic_sprite 8, ElmerFuddTiles3, 4
+	dynamic_sprite_offsets  1,  -1, 35
+	dynamic_sprite_offsets  9,  -1, 27
+	dynamic_sprite_offsets 17,  -1, 19
+	dynamic_sprite_offsets 25,  -1, 11
+	dynamic_sprite_offsets 33,  -1,  3
+	dynamic_sprite_offsets 14, -17, 22
+	dynamic_sprite_offsets 22, -17, 14
+	dynamic_sprite_offsets 30, -17,  6
+
+ElmerFuddSprite4:
+	dynamic_sprite 7, ElmerFuddTiles4, 4
+	dynamic_sprite_offsets 10,   1, 26
+	dynamic_sprite_offsets 18,   1, 18
+	dynamic_sprite_offsets 26,   1, 10
+	dynamic_sprite_offsets 14, -15, 22
+	dynamic_sprite_offsets 22, -15, 14
+	dynamic_sprite_offsets 30, -15,  6
+	dynamic_sprite_offsets 34,   0,  2
+
+ElmerFuddSprite5:
+	dynamic_sprite 7, ElmerFuddTiles5, 4
+	dynamic_sprite_offsets  9,   1, 27
+	dynamic_sprite_offsets 17,   1, 19
+	dynamic_sprite_offsets 25,   1, 11
+	dynamic_sprite_offsets 13, -15, 23
+	dynamic_sprite_offsets 21, -15, 15
+	dynamic_sprite_offsets 29, -15,  7
+	dynamic_sprite_offsets 33,   0,  3
+
+ElmerFuddSprite6:
+	dynamic_sprite 8, ElmerFuddTiles6, 4
+	dynamic_sprite_offsets  6, -15, 30
+	dynamic_sprite_offsets 14, -15, 22
+	dynamic_sprite_offsets 22, -15, 14
+	dynamic_sprite_offsets  6,   1, 30
+	dynamic_sprite_offsets 14,   1, 22
+	dynamic_sprite_offsets 22,   1, 14
+	dynamic_sprite_offsets 11, -31, 25
+	dynamic_sprite_offsets 19, -31, 17
+
+EmptySprite_337c8:
+	db $04, $E0, $76 ; TODO:
+
+ElmerFuddSprite7:
+	dynamic_sprite 8, ElmerFuddTiles7, 4
+	dynamic_sprite_offsets 14,   1, 22
+	dynamic_sprite_offsets 22,   1, 14
+	dynamic_sprite_offsets 18, -15, 18
+	dynamic_sprite_offsets 26, -15, 10
+	dynamic_sprite_offsets 15, -27, 21
+	dynamic_sprite_offsets 23, -27, 13
+	dynamic_sprite_offsets 30,  -5,  6
+	dynamic_sprite_offsets 38,  -5, -2
+
+ElmerFuddSprite8:
+	dynamic_sprite 7, ElmerFuddTiles8, 4
+	dynamic_sprite_offsets 20, -31, 16
+	dynamic_sprite_offsets 12, -15, 24
+	dynamic_sprite_offsets 20, -15, 16
+	dynamic_sprite_offsets 28, -15,  8
+	dynamic_sprite_offsets 12,   1, 24
+	dynamic_sprite_offsets 20,   1, 16
+	dynamic_sprite_offsets 28,   1,  8
+
+ElmerFuddSprite9:
+	dynamic_sprite 6, ElmerFuddTiles9, 4
+	dynamic_sprite_offsets 10,   1, 26
+	dynamic_sprite_offsets 18,   1, 18
+	dynamic_sprite_offsets 26,   1, 10
+	dynamic_sprite_offsets 14, -15, 22
+	dynamic_sprite_offsets 22, -15, 14
+	dynamic_sprite_offsets 30, -15,  6
+
+ElmerFuddSprite10:
+	dynamic_sprite 4, ElmerFuddTiles10, 4
+	dynamic_sprite_offsets 11, 1, 25
+	dynamic_sprite_offsets 19, 1, 17
+	dynamic_sprite_offsets 27, 1,  9
+	dynamic_sprite_offsets 35, 1,  1
+
+ElmerFuddSprite11:
+	dynamic_sprite 3, ElmerFuddTiles11, 4
+	dynamic_sprite_offsets  8, -25, 28
+	dynamic_sprite_offsets  8,  -9, 28
+	dynamic_sprite_offsets 16,  -9, 20
+
+ElmerFuddSprite12:
+	dynamic_sprite 5, ElmerFuddTiles12, 4
+	dynamic_sprite_offsets  8,   1, 28
+	dynamic_sprite_offsets 16,   1, 20
+	dynamic_sprite_offsets  8, -15, 28
+	dynamic_sprite_offsets 16, -15, 20
+	dynamic_sprite_offsets 24, -10, 12
+
+ElmerFuddSprite13:
+	dynamic_sprite 8, ElmerFuddTiles13, 4
+	dynamic_sprite_offsets 14,   1, 22
+	dynamic_sprite_offsets 22,   1, 14
+	dynamic_sprite_offsets 17, -15, 19
+	dynamic_sprite_offsets 25, -15, 11
+	dynamic_sprite_offsets 30,  -5,  6
+	dynamic_sprite_offsets 38,  -5, -2
+	dynamic_sprite_offsets 14, -27, 22
+	dynamic_sprite_offsets 22, -27, 14
+
+INCBIN "baserom.gbc", $3385b, $34000 - $3385b
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
