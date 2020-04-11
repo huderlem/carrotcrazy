@@ -12154,11 +12154,11 @@ HandleElmerFuddBossEntity:
 	jr HandleCharacterBossEntity
 
 HandleMarvianMartianEntity:
-	ld bc, $4f78
+	ld bc, MarvinMartianSprites
 	jp HandleCharacterEntity
 
 HandleMarvianMartianBossEntity:
-	ld bc, $4f78
+	ld bc, MarvinMartianSprites
 	jr HandleCharacterBossEntity
 
 HandleTazEntity:
@@ -12757,7 +12757,32 @@ TazSprites:
 	dw TazSprite6 + 1
 	dw TazSprite8 + 1
 
-INCBIN "baserom.gbc", $4f64, $4fe0 - $4f64
+INCBIN "baserom.gbc", $4f64, $4f78 - $4f64
+
+MarvinMartianSprites:
+	dw MarvinMartianSprite0 + 1
+	dw MarvinMartianSprite1 + 1
+	dw MarvinMartianSprite2 + 1
+	dw MarvinMartianSprite3 + 1
+	dw MarvinMartianSprite3 + 1
+	dw MarvinMartianSprite3 + 1
+	dw MarvinMartianSprite9 + 1
+	dw MarvinMartianSprite10 + 1
+	dw MarvinMartianSprite4 + 1
+	dw MarvinMartianSprite4 + 1
+	dw MarvinMartianSprite4 + 1
+	dw MarvinMartianSprite4 + 1
+	dw MarvinMartianSprite4 + 1
+	dw MarvinMartianSprite4 + 1
+	dw MarvinMartianSprite5 + 1
+	dw MarvinMartianSprite5 + 1
+	dw MarvinMartianSprite8 + 1
+	dw MarvinMartianSprite7 + 1
+	dw MarvinMartianSprite5 + 1
+	dw MarvinMartianSprite11 + 1
+	dw MarvinMartianSprite6 + 1
+
+INCBIN "baserom.gbc", $4fa2, $4fe0 - $4fa2
 
 HandleRockThrowerEntity:
 	ld a, [hli]
@@ -26837,7 +26862,34 @@ TazTiles11:
 TazTiles12:
 	INCBIN "gfx/entities/taz/frame_12.interleave.2bpp"
 
-INCBIN "baserom.gbc", $293a0, $2bee0 - $293a0
+INCBIN "baserom.gbc", $293a0, $2ae40 - $293a0
+
+MarvinMartianTiles0:
+	INCBIN "gfx/entities/marvin_martian/frame_0.interleave.2bpp"
+MarvinMartianTiles1:
+	INCBIN "gfx/entities/marvin_martian/frame_1.interleave.2bpp"
+MarvinMartianTiles2:
+	INCBIN "gfx/entities/marvin_martian/frame_2.interleave.2bpp"
+MarvinMartianTiles3:
+	INCBIN "gfx/entities/marvin_martian/frame_3.interleave.2bpp"
+MarvinMartianTiles4:
+	INCBIN "gfx/entities/marvin_martian/frame_4.interleave.2bpp"
+MarvinMartianTiles5:
+	INCBIN "gfx/entities/marvin_martian/frame_5.interleave.2bpp"
+MarvinMartianTiles6:
+	INCBIN "gfx/entities/marvin_martian/frame_6.interleave.2bpp"
+MarvinMartianTiles7:
+	INCBIN "gfx/entities/marvin_martian/frame_7.interleave.2bpp"
+MarvinMartianTiles8:
+	INCBIN "gfx/entities/marvin_martian/frame_8.interleave.2bpp"
+MarvinMartianTiles9:
+	INCBIN "gfx/entities/marvin_martian/frame_9.interleave.2bpp"
+MarvinMartianTiles10:
+	INCBIN "gfx/entities/marvin_martian/frame_10.interleave.2bpp"
+MarvinMartianTiles11:
+	INCBIN "gfx/entities/marvin_martian/frame_11.interleave.2bpp"
+
+INCBIN "baserom.gbc", $2b5e0, $2bee0 - $2b5e0
 
 FuddForestCollisionAttributes:
 	INCBIN "data/levels/fudd_forest_collision_attrs.bin.lz"
@@ -27661,7 +27713,109 @@ TazSprite12:
 	dynamic_sprite_offsets 16, 11, 14
 	dynamic_sprite_offsets 24, 11,  6
 
-INCBIN "baserom.gbc", $330ab, $34000 - $330ab
+INCBIN "baserom.gbc", $330ab, $333c0 - $330ab
+
+MarvinMartianSprite0:
+	dynamic_sprite 6, MarvinMartianTiles0, 3
+	dynamic_sprite_offsets  9, -15, 21
+	dynamic_sprite_offsets 17, -15, 13
+	dynamic_sprite_offsets 25, -15,  5
+	dynamic_sprite_offsets  9,   1, 21
+	dynamic_sprite_offsets 17,   1, 13
+	dynamic_sprite_offsets 25,   1,  5
+
+MarvinMartianSprite1:
+	dynamic_sprite 6, MarvinMartianTiles1, 3
+	dynamic_sprite_offsets 10, -15, 20
+	dynamic_sprite_offsets 18, -15, 12
+	dynamic_sprite_offsets 26, -15,  4
+	dynamic_sprite_offsets 10,   1, 20
+	dynamic_sprite_offsets 18,   1, 12
+	dynamic_sprite_offsets 26,   1,  4
+
+MarvinMartianSprite2:
+	dynamic_sprite 6, MarvinMartianTiles2, 3
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+MarvinMartianSprite3:
+	dynamic_sprite 5, MarvinMartianTiles3, 3
+	dynamic_sprite_offsets 10, -15, 20
+	dynamic_sprite_offsets 18, -15, 12
+	dynamic_sprite_offsets 26, -15,  4
+	dynamic_sprite_offsets 10,   1, 20
+	dynamic_sprite_offsets 18,   1, 12
+
+MarvinMartianSprite4:
+	dynamic_sprite 6, MarvinMartianTiles4, 3
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets 24, -15,  6
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+
+EmptySprite_33426:
+	db $03, $E0, $B1 ; TODO:
+
+MarvinMartianSprite5:
+	dynamic_sprite 6, MarvinMartianTiles5, 3
+	dynamic_sprite_offsets 10, -15, 20
+	dynamic_sprite_offsets 18, -15, 12
+	dynamic_sprite_offsets 10,   1, 20
+	dynamic_sprite_offsets 18,   1, 12
+	dynamic_sprite_offsets 26,  -9,  4
+	dynamic_sprite_offsets 34,  -9, -4
+
+MarvinMartianSprite6:
+	dynamic_sprite 6, MarvinMartianTiles6, 3
+	dynamic_sprite_offsets 10,   1, 20
+	dynamic_sprite_offsets 18,   1, 12
+	dynamic_sprite_offsets  6, -15, 24
+	dynamic_sprite_offsets 14, -15, 16
+	dynamic_sprite_offsets 22, -15,  8
+	dynamic_sprite_offsets 26,  -8,  4
+
+MarvinMartianSprite7:
+	dynamic_sprite 5, MarvinMartianTiles7, 3
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+	dynamic_sprite_offsets 24,   1,  6
+	dynamic_sprite_offsets 12, -15, 18
+	dynamic_sprite_offsets 20, -15, 10
+
+MarvinMartianSprite8:
+	dynamic_sprite 3, MarvinMartianTiles8, 3
+	dynamic_sprite_offsets  8, 1, 22
+	dynamic_sprite_offsets 16, 1, 14
+	dynamic_sprite_offsets 24, 1,  6
+
+MarvinMartianSprite9:
+	dynamic_sprite 2, MarvinMartianTiles9, 3
+	dynamic_sprite_offsets 8, -16, 22
+	dynamic_sprite_offsets 8,   0, 22
+
+MarvinMartianSprite10:
+	dynamic_sprite 4, MarvinMartianTiles10, 3
+	dynamic_sprite_offsets  8, -15, 22
+	dynamic_sprite_offsets 16, -15, 14
+	dynamic_sprite_offsets  8,   1, 22
+	dynamic_sprite_offsets 16,   1, 14
+
+MarvinMartianSprite11:
+	dynamic_sprite 6, MarvinMartianTiles11, 3
+	dynamic_sprite_offsets 10,   1, 20
+	dynamic_sprite_offsets 18,   1, 12
+	dynamic_sprite_offsets  6, -15, 24
+	dynamic_sprite_offsets 14, -15, 16
+	dynamic_sprite_offsets 22, -15,  8
+	dynamic_sprite_offsets 26,  -7,  4
+
+INCBIN "baserom.gbc", $3349e, $34000 - $3349e
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
