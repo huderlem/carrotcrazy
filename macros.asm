@@ -68,9 +68,10 @@ sub_sprite: MACRO
 
 ; \1; num sub sprites
 ; \2: gfx address
-; \3: palette id
+; \3: gb palette id
+; \4: cgb palette id
 dynamic_sprite: MACRO
-	db \3
+	db ((\4 & $1) << 4) | (\3 & $7)
 	dw ((Bank(\2) - 8) << 14) | ((\2) & $3ff0) | (\1)
 	ENDM
 
