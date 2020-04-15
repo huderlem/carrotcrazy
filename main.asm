@@ -13295,7 +13295,7 @@ CannonSprites:
 	dw CannonSprite1 + 1
 
 HandleSeagullEntity:
-	ld bc, $559f
+	ld bc, SeagullSprites
 	jr .asm_532e
 .asm_532e
 	ld a, c
@@ -13723,12 +13723,53 @@ HandleSeagullEntity:
 	ld a, e
 	ld [hld], a
 	ld [hl], b
-	ld hl, $55e1
+	ld hl, SeagullCannonBallSprite
 	call LoadOAMSpritesStandard
 .asm_559a
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $559d, $55eb - $559d
+UnusedSeagullSprites_559d:
+	dw SeagullSprite7 + 1
+
+SeagullSprites:
+	dw SeagullSprite0 + 1
+	dw SeagullSprite1 + 1
+	dw SeagullSprite2 + 1
+	dw SeagullSprite3 + 1
+	dw SeagullSprite8 + 1
+	dw SeagullSprite9 + 1
+	dw SeagullSprite10 + 1
+	dw SeagullSprite11 + 1
+	dw SeagullSprite12 + 1
+	dw SeagullSprite4 + 1
+	dw SeagullSprite5 + 1
+	dw SeagullSprite5 + 1
+	dw SeagullSprite5 + 1
+	dw SeagullSprite6 + 1
+	dw SeagullSprite6 + 1
+	dw SeagullSprite6 + 1
+	dw SeagullSprite4 + 1
+	dw SeagullSprite13 + 1
+	dw SeagullSprite14 + 1
+	dw SeagullSprite15 + 1
+	dw SeagullSprite16 + 1
+	dw SeagullSprite15 + 1
+	dw SeagullSprite14 + 1
+	dw SeagullSprite13 + 1
+	dw SeagullSprite14 + 1
+	dw SeagullSprite15 + 1
+	dw SeagullSprite16 + 1
+	dw SeagullSprite15 + 1
+	dw SeagullSprite14 + 1
+	dw SeagullSprite13 + 1
+	dw SeagullSprite14 + 1
+	dw SeagullSprite15 + 1
+	dw SeagullSprite16 + 1
+
+SeagullCannonBallSprite:
+	dw Load2SubSprites
+	sub_sprite $56, $04,  8, 0
+	sub_sprite $56, $64, 16, 2
 
 HandleJackhammerEntity:
 	ld a, [$de82]
@@ -26904,7 +26945,42 @@ CannonTiles1:
 CannonTiles2:
 	INCBIN "gfx/entities/cannon/frame_2.interleave.2bpp"
 
-INCBIN "baserom.gbc", $26180, $27040 - $26180
+SeagullTiles0:
+	INCBIN "gfx/entities/seagull/frame_0.interleave.2bpp"
+SeagullTiles1:
+	INCBIN "gfx/entities/seagull/frame_1.interleave.2bpp"
+SeagullTiles2:
+	INCBIN "gfx/entities/seagull/frame_2.interleave.2bpp"
+SeagullTiles3:
+	INCBIN "gfx/entities/seagull/frame_3.interleave.2bpp"
+SeagullTiles4:
+	INCBIN "gfx/entities/seagull/frame_4.interleave.2bpp"
+SeagullTiles5:
+	INCBIN "gfx/entities/seagull/frame_5.interleave.2bpp"
+SeagullTiles6:
+	INCBIN "gfx/entities/seagull/frame_6.interleave.2bpp"
+SeagullTiles7:
+	INCBIN "gfx/entities/seagull/frame_7.interleave.2bpp"
+SeagullTiles8:
+	INCBIN "gfx/entities/seagull/frame_8.interleave.2bpp"
+SeagullTiles9:
+	INCBIN "gfx/entities/seagull/frame_9.interleave.2bpp"
+SeagullTiles10:
+	INCBIN "gfx/entities/seagull/frame_10.interleave.2bpp"
+SeagullTiles11:
+	INCBIN "gfx/entities/seagull/frame_11.interleave.2bpp"
+SeagullTiles12:
+	INCBIN "gfx/entities/seagull/frame_12.interleave.2bpp"
+SeagullTiles13:
+	INCBIN "gfx/entities/seagull/frame_13.interleave.2bpp"
+SeagullTiles14:
+	INCBIN "gfx/entities/seagull/frame_14.interleave.2bpp"
+SeagullTiles15:
+	INCBIN "gfx/entities/seagull/frame_15.interleave.2bpp"
+SeagullTiles16:
+	INCBIN "gfx/entities/seagull/frame_16.interleave.2bpp"
+
+INCBIN "baserom.gbc", $26ac0, $27040 - $26ac0
 
 ElmerFuddTiles0:
 	INCBIN "gfx/entities/elmer_fudd/frame_0.interleave.2bpp"
@@ -27774,7 +27850,132 @@ CannonSprite2:
 	dynamic_sprite_offsets 19,   1, 19
 	dynamic_sprite_offsets 27,   1, 11
 
-INCBIN "baserom.gbc", $32cac, $32fa9 - $32cac
+SeagullSprite0:
+	dynamic_sprite 6, SeagullTiles0, 4, 0
+	dynamic_sprite_offsets  9, -12, 31
+	dynamic_sprite_offsets 17, -12, 23
+	dynamic_sprite_offsets 25, -12, 15
+	dynamic_sprite_offsets 33, -12,  7
+	dynamic_sprite_offsets  9,   4, 31
+	dynamic_sprite_offsets 17,   4, 23
+
+SeagullSprite1:
+	dynamic_sprite 5, SeagullTiles1, 4, 0
+	dynamic_sprite_offsets 10, -11, 30
+	dynamic_sprite_offsets 18, -11, 22
+	dynamic_sprite_offsets 26, -11, 14
+	dynamic_sprite_offsets 34, -11,  6
+	dynamic_sprite_offsets 10,  5, 30
+
+SeagullSprite2:
+	dynamic_sprite 6, SeagullTiles2, 4, 0
+	dynamic_sprite_offsets  9, -12, 31
+	dynamic_sprite_offsets 17, -12, 23
+	dynamic_sprite_offsets  9,   4, 31
+	dynamic_sprite_offsets 17,   4, 23
+	dynamic_sprite_offsets 25, -11, 15
+	dynamic_sprite_offsets 33, -12,  7
+
+SeagullSprite3:
+	dynamic_sprite 5, SeagullTiles3, 4, 0
+	dynamic_sprite_offsets  9, -13, 31
+	dynamic_sprite_offsets 17, -13, 23
+	dynamic_sprite_offsets 25, -13, 15
+	dynamic_sprite_offsets 33, -13,  7
+	dynamic_sprite_offsets 10,   3, 30
+
+SeagullSprite4:
+	dynamic_sprite 6, SeagullTiles4, 4, 0
+	dynamic_sprite_offsets 11, -14, 29
+	dynamic_sprite_offsets 19, -14, 21
+	dynamic_sprite_offsets 27, -14, 13
+	dynamic_sprite_offsets 35, -14,  5
+	dynamic_sprite_offsets 11,   2, 29
+	dynamic_sprite_offsets 19,   2, 21
+
+SeagullSprite5:
+	dynamic_sprite 6, SeagullTiles5, 4, 0
+	dynamic_sprite_offsets  9, -18, 31
+	dynamic_sprite_offsets 17, -18, 23
+	dynamic_sprite_offsets 25, -18, 15
+	dynamic_sprite_offsets 33, -18,  7
+	dynamic_sprite_offsets 17,  -2, 23
+	dynamic_sprite_offsets 25,  -2, 15
+
+SeagullSprite6:
+	dynamic_sprite 6, SeagullTiles6, 4, 0
+	dynamic_sprite_offsets  9, -19, 31
+	dynamic_sprite_offsets 17, -19, 23
+	dynamic_sprite_offsets 25, -19, 15
+	dynamic_sprite_offsets 33, -19,  7
+	dynamic_sprite_offsets 17,  -3, 23
+	dynamic_sprite_offsets 25,  -3, 15
+
+SeagullSprite7:
+	dynamic_sprite 6, SeagullTiles7, 4, 0
+	dynamic_sprite_offsets  9, -17, 31
+	dynamic_sprite_offsets 17, -17, 23
+	dynamic_sprite_offsets 25, -17, 15
+	dynamic_sprite_offsets 17,  -1, 23
+	dynamic_sprite_offsets 25,  -1, 15
+	dynamic_sprite_offsets 33, -17,  7
+
+SeagullSprite8:
+	dynamic_sprite 2, SeagullTiles8, 4, 0
+	dynamic_sprite_offsets 20, -12, 20
+	dynamic_sprite_offsets 28, -12, 12
+
+SeagullSprite9:
+	dynamic_sprite 2, SeagullTiles9, 4, 0
+	dynamic_sprite_offsets 18, -10, 22
+	dynamic_sprite_offsets 26, -10, 14
+
+SeagullSprite10:
+	dynamic_sprite 2, SeagullTiles10, 4, 0
+	dynamic_sprite_offsets 17, -9, 23
+	dynamic_sprite_offsets 25, -9, 15
+
+SeagullSprite11:
+	dynamic_sprite 4, SeagullTiles11, 4, 0
+	dynamic_sprite_offsets 14, -8, 26
+	dynamic_sprite_offsets 22, -8, 18
+	dynamic_sprite_offsets 30, -8, 10
+	dynamic_sprite_offsets 21,  8, 19
+
+SeagullSprite12:
+	dynamic_sprite 6, SeagullTiles12, 4, 0
+	dynamic_sprite_offsets 11, -10, 29
+	dynamic_sprite_offsets 19, -10, 21
+	dynamic_sprite_offsets 27, -10, 13
+	dynamic_sprite_offsets 35, -10,  5
+	dynamic_sprite_offsets 14,   6, 26
+	dynamic_sprite_offsets 22,   6, 18
+
+SeagullSprite13:
+	dynamic_sprite 3, SeagullTiles13, 4, 0
+	dynamic_sprite_offsets  8, -13, 32
+	dynamic_sprite_offsets 23, -24, 17
+	dynamic_sprite_offsets 28,   1, 12
+
+SeagullSprite14:
+	dynamic_sprite 3, SeagullTiles14, 4, 0
+	dynamic_sprite_offsets 25,   3, 15
+	dynamic_sprite_offsets 11, -12, 29
+	dynamic_sprite_offsets 20, -24, 20
+
+SeagullSprite15:
+	dynamic_sprite 3, SeagullTiles15, 4, 0
+	dynamic_sprite_offsets 16, -26, 24
+	dynamic_sprite_offsets 15, -11, 25
+	dynamic_sprite_offsets 21,   5, 19
+
+SeagullSprite16:
+	dynamic_sprite 3, SeagullTiles16, 4, 0
+	dynamic_sprite_offsets 13, -26, 27
+	dynamic_sprite_offsets 19, -12, 21
+	dynamic_sprite_offsets 16,   4, 24
+
+INCBIN "baserom.gbc", $32dbd, $32fa9 - $32dbd
 
 TazSprite0:
 	dynamic_sprite 6, TazTiles0, 2, 0
