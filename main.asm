@@ -13990,11 +13990,25 @@ HandleWreckingBallEntity:
 .asm_574a
 	ld d, b
 	ld b, e
-	ld hl, $5755
+	ld hl, WreckingBallSprite
 	call LoadOAMSpritesStandard
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $5755, $578b - $5755
+WreckingBallSprite:
+	dw Load13SubSprites
+	sub_sprite $6C, $05, 20, -96
+	sub_sprite $6C, $45, 20, -80
+	sub_sprite $6C, $05, 20, -64
+	sub_sprite $6C, $45, 20, -48
+	sub_sprite $6C, $05, 20, -32
+	sub_sprite $6E, $05,  8, -16
+	sub_sprite $70, $05, 16, -16
+	sub_sprite $70, $25, 24, -16
+	sub_sprite $6E, $25, 32, -16
+	sub_sprite $72, $05,  8,   0
+	sub_sprite $74, $05, 16,   0
+	sub_sprite $74, $25, 24,   0
+	sub_sprite $72, $25, 32,   0
 
 HandleHookLineEntity:
 	ld bc, $58fa
