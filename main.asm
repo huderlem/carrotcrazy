@@ -14011,13 +14011,13 @@ WreckingBallSprite:
 	sub_sprite $72, $25, 32,   0
 
 HandleHookLineEntity:
-	ld bc, $58fa
+	ld bc, HookLineSpriteData + 1
 	jr HandleFixedPathEntity
 HandleBalloonsEntity:
-	ld bc, $58d5
+	ld bc, BalloonsSpriteData + 1
 	jr HandleFixedPathEntity
 HandleHangingHookEntity:
-	ld bc, $58bc
+	ld bc, HangingHookSpriteData + 1
 	jr HandleFixedPathEntity
 HandleFixedPathEntity:
 	push hl
@@ -14065,7 +14065,7 @@ HandleFixedPathEntity:
 	add l
 	ld l, a
 	ld a, h
-	adc $00
+	adc 0
 	ld h, a
 	ld a, [hli]
 	ld h, [hl]
@@ -14212,7 +14212,51 @@ HandleFixedPathEntity:
 .asm_58b8
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $58bb, $5922 - $58bb
+HangingHookSpriteData:
+	db $8
+	dw HangingHookSprite0
+
+HangingHookSprite0:
+	dw Load5SubSprites
+	sub_sprite $56, $02,  3, -48
+	sub_sprite $56, $02,  3, -32
+	sub_sprite $58, $02,  3, -16
+	sub_sprite $80, $02,  2,   0
+	sub_sprite $82, $02, 10,   0
+
+BalloonsSpriteData:
+	db $08
+	dw BalloonsSprite0
+
+BalloonsSprite0:
+	dw Load8SubSprites
+	db $ED, $F8, $58, $03
+	db $ED, $00, $5A, $03
+	db $ED, $08, $5A, $23
+	db $ED, $10, $58, $23
+	db $FD, $F8, $5C, $03
+	db $FD, $00, $5E, $03
+	db $FD, $08, $5E, $23
+	db $FD, $10, $5C, $23
+
+HookLineSpriteData:
+	db $10
+	dw HookLineSprite0
+	dw HookLineSprite1
+
+HookLineSprite0:
+	dw Load4SubSprites
+	sub_sprite $56, $05, 0, -16
+	sub_sprite $58, $05, 8, -16
+	sub_sprite $5C, $05, 0,   0
+	sub_sprite $5E, $05, 8,   0
+
+HookLineSprite1:
+	dw Load4SubSprites
+	sub_sprite $56, $45, 0, -16
+	sub_sprite $58, $45, 8, -16
+	sub_sprite $5C, $05, 0,   0
+	sub_sprite $5E, $05, 8,   0
 
 HandleBouncingOilDrumEntity:
 	ld a, [hli]
