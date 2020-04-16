@@ -14365,10 +14365,10 @@ HandleBouncingOilDrumEntity:
 	and $18
 	srl a
 	srl a
-	add $d7
+	add (BouncingOilDrumSprites & $ff)
 	ld e, a
-	ld a, $59
-	adc $00
+	ld a, (BouncingOilDrumSprites >> 8)
+	adc 0
 	ld d, a
 	ld a, [de]
 	inc de
@@ -14379,7 +14379,11 @@ HandleBouncingOilDrumEntity:
 .asm_59d4
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $59d7, $59df - $59d7
+BouncingOilDrumSprites:
+	dw BouncingOilDrumSprite0 + 1
+	dw BouncingOilDrumSprite0 + 1
+	dw BouncingOilDrumSprite0 + 1
+	dw BouncingOilDrumSprite0 + 1
 
 HandleBreakableWallEntity:
 	ld a, [hli]
@@ -27038,7 +27042,12 @@ SeagullTiles15:
 SeagullTiles16:
 	INCBIN "gfx/entities/seagull/frame_16.interleave.2bpp"
 
-INCBIN "baserom.gbc", $26ac0, $27040 - $26ac0
+INCBIN "baserom.gbc", $26ac0, $26b40 - $26ac0
+
+BouncingOilDrumTiles0:
+	INCBIN "gfx/entities/bouncing_oil_drum/frame_0.interleave.2bpp"
+
+INCBIN "baserom.gbc", $26c00, $27040 - $26c00
 
 ElmerFuddTiles0:
 	INCBIN "gfx/entities/elmer_fudd/frame_0.interleave.2bpp"
@@ -28033,7 +28042,18 @@ SeagullSprite16:
 	dynamic_sprite_offsets 19, -12, 21
 	dynamic_sprite_offsets 16,   4, 24
 
-INCBIN "baserom.gbc", $32dbd, $32fa9 - $32dbd
+INCBIN "baserom.gbc", $32dbd, $32dcc - $32dbd
+
+BouncingOilDrumSprite0:
+	dynamic_sprite 6, BouncingOilDrumTiles0, 2, 0
+	dynamic_sprite_offsets $08, $F9, $00
+	dynamic_sprite_offsets $10, $F9, $F8
+	dynamic_sprite_offsets $18, $F9, $F0
+	dynamic_sprite_offsets $08, $09, $00
+	dynamic_sprite_offsets $10, $09, $F8
+	dynamic_sprite_offsets $18, $09, $F0
+
+INCBIN "baserom.gbc", $32de1, $32fa9 - $32de1
 
 TazSprite0:
 	dynamic_sprite 6, TazTiles0, 2, 0
