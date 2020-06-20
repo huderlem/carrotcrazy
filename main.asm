@@ -14400,9 +14400,9 @@ HandleBreakableWallEntity:
 	dec a
 	add a
 	bit 7, [hl]
-	ld hl, $5a7c
+	ld hl, BrickWallSprites
 	jr z, .asm_59f9
-	ld hl, $5a88
+	ld hl, CageWallSprites
 .asm_59f9
 	add l
 	ld l, a
@@ -14494,7 +14494,153 @@ HandleBreakableWallEntity:
 .asm_5a79
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $5a7c, $5c2c - $5a7c
+BrickWallSprites:
+	dw BrickWallSprite0
+	dw BrickWallSprite1
+	dw BrickWallSprite2
+	dw BrickWallSprite3
+	dw BrickWallSprite4
+	dw BrickWallSprite5
+
+CageWallSprites:
+	dw CageWallSprite0
+	dw CageWallSprite1
+	dw CageWallSprite2
+	dw CageWallSprite3
+	dw CageWallSprite4
+	dw CageWallSprite5
+
+BrickWallSprite5:
+	dw Load12SubSprites
+	sub_sprite $76, $00,  8, -48
+	sub_sprite $78, $00, 16, -48
+	sub_sprite $7A, $00, 24, -48
+	sub_sprite $76, $00,  8, -32
+	sub_sprite $78, $00, 16, -32
+	sub_sprite $7A, $00, 24, -32
+	sub_sprite $76, $00,  8, -16
+	sub_sprite $78, $00, 16, -16
+	sub_sprite $7A, $00, 24, -16
+	sub_sprite $76, $00,  8,   0
+	sub_sprite $78, $00, 16,   0
+	sub_sprite $7A, $00, 24,   0
+
+BrickWallSprite4:
+	dw Load12SubSprites
+	sub_sprite $76, $00,  8, -48
+	sub_sprite $78, $00, 16, -48
+	sub_sprite $7C, $00, 24, -48
+	sub_sprite $76, $00,  8, -32
+	sub_sprite $78, $00, 16, -32
+	sub_sprite $7C, $00, 24, -32
+	sub_sprite $76, $00,  8, -16
+	sub_sprite $78, $00, 16, -16
+	sub_sprite $7C, $00, 24, -16
+	sub_sprite $76, $00,  8,   0
+	sub_sprite $78, $00, 16,   0
+	sub_sprite $7C, $00, 24,   0
+
+BrickWallSprite3:
+	dw Load8SubSprites
+	sub_sprite $76, $00,  8, -48
+	sub_sprite $7A, $00, 16, -48
+	sub_sprite $76, $00,  8, -32
+	sub_sprite $7A, $00, 16, -32
+	sub_sprite $76, $00,  8, -16
+	sub_sprite $7A, $00, 16, -16
+	sub_sprite $76, $00,  8,   0
+	sub_sprite $7A, $00, 16,   0
+
+BrickWallSprite2:
+	dw Load8SubSprites
+	sub_sprite $76, $00,  8, -48
+	sub_sprite $7C, $00, 16, -48
+	sub_sprite $76, $00,  8, -32
+	sub_sprite $7C, $00, 16, -32
+	sub_sprite $76, $00,  8, -16
+	sub_sprite $7C, $00, 16, -16
+	sub_sprite $76, $00,  8,   0
+	sub_sprite $7C, $00, 16,   0
+
+BrickWallSprite1:
+	dw Load4SubSprites
+	sub_sprite $7E, $00, 8, -48
+	sub_sprite $7E, $00, 8, -32
+	sub_sprite $7E, $00, 8, -16
+	sub_sprite $7E, $00, 8,   0
+
+BrickWallSprite0:
+	dw Load4SubSprites
+	sub_sprite $7C, $00, 8, -48
+	sub_sprite $7C, $00, 8, -32
+	sub_sprite $7C, $00, 8, -16
+	sub_sprite $7C, $00, 8,   0
+
+CageWallSprite5:
+	dw Load12SubSprites
+	sub_sprite $6A, $45,  8, -48
+	sub_sprite $6A, $45, 16, -48
+	sub_sprite $6C, $45, 24, -48
+	sub_sprite $68, $05,  8, -32
+	sub_sprite $68, $05, 16, -32
+	sub_sprite $68, $05, 24, -32
+	sub_sprite $68, $05,  8, -16
+	sub_sprite $68, $05, 16, -16
+	sub_sprite $68, $05, 24, -16
+	sub_sprite $6A, $05,  8,   0
+	sub_sprite $6A, $05, 16,   0
+	sub_sprite $6C, $05, 24,   0
+
+CageWallSprite4:
+	dw Load12SubSprites
+	sub_sprite $66, $45,  8, -48
+	sub_sprite $6A, $45, 16, -48
+	sub_sprite $6C, $45, 24, -48
+	sub_sprite $64, $05,  8, -32
+	sub_sprite $68, $05, 16, -32
+	sub_sprite $68, $05, 24, -32
+	sub_sprite $64, $05,  8, -16
+	sub_sprite $68, $05, 16, -16
+	sub_sprite $68, $05, 24, -16
+	sub_sprite $66, $05,  8,   0
+	sub_sprite $6A, $05, 16,   0
+	sub_sprite $6C, $05, 24,   0
+
+CageWallSprite3:
+	dw Load8SubSprites
+	sub_sprite $6A, $45,  8, -48
+	sub_sprite $6C, $45, 16, -48
+	sub_sprite $68, $05,  8, -32
+	sub_sprite $68, $05, 16, -32
+	sub_sprite $68, $05,  8, -16
+	sub_sprite $68, $05, 16, -16
+	sub_sprite $6A, $05,  8,   0
+	sub_sprite $6C, $05, 16,   0
+
+CageWallSprite2:
+	dw Load8SubSprites
+	sub_sprite $66, $45,  8, -48
+	sub_sprite $6C, $45, 16, -48
+	sub_sprite $64, $05,  8, -32
+	sub_sprite $68, $05, 16, -32
+	sub_sprite $64, $05,  8, -16
+	sub_sprite $68, $05, 16, -16
+	sub_sprite $66, $05,  8,   0
+	sub_sprite $6C, $05, 16,   0
+
+CageWallSprite1:
+	dw Load4SubSprites
+	sub_sprite $6C, $45,  8, -48
+	sub_sprite $68, $05,  8, -32
+	sub_sprite $68, $05,  8, -16
+	sub_sprite $6C, $05,  8,   0
+
+CageWallSprite0:
+	dw Load4SubSprites
+	sub_sprite $66, $45, 8, -48
+	sub_sprite $64, $05, 8, -32
+	sub_sprite $64, $05, 8, -16
+	sub_sprite $66, $05, 8,   0
 
 HandleMoveRightBossVehicleFarLeftEntity:
 	ld a, $37
@@ -14547,10 +14693,10 @@ HandleMoveRightBossVehicleOffScreenEntity:
 	jp ExitEntityHandler
 
 HandleTrainTrackDollyEntity:
-	ld bc, $5d5c
+	ld bc, TrainTrackDollySprites
 	jr HandleBossMovablePlatformEntity
 HandleRaftEntity:
-	ld bc, $5d4c
+	ld bc, RaftSprites
 	jr HandleBossMovablePlatformEntity
 HandleBossMovablePlatformEntity
 	ld a, c
@@ -14697,7 +14843,25 @@ HandleBossMovablePlatformEntity
 .asm_5d49
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $5d4c, $5d6c - $5d4c
+RaftSprites:
+	dw RaftSprite0 + 1
+	dw RaftSprite1 + 1
+	dw RaftSprite2 + 1
+	dw RaftSprite3 + 1
+	dw RaftSprite4 + 1
+	dw RaftSprite5 + 1
+	dw RaftSprite6 + 1
+	dw RaftSprite7 + 1
+
+TrainTrackDollySprites:
+	dw TrainTrackDollySprite0 + 1
+	dw TrainTrackDollySprite1 + 1
+	dw TrainTrackDollySprite2 + 1
+	dw TrainTrackDollySprite3 + 1
+	dw TrainTrackDollySprite4 + 1
+	dw TrainTrackDollySprite5 + 1
+	dw TrainTrackDollySprite6 + 1
+	dw TrainTrackDollySprite7 + 1
 
 HandleTrainTrackBarricadeEntity:
 	ld a, $ff
@@ -14783,9 +14947,9 @@ HandleBossGroundTrap
 .asm_5de1
 	ld a, [hl]
 	add a
-	add $13
+	add (TNTBarrelSprites & $ff)
 	ld e, a
-	ld a, $5e
+	ld a, (TNTBarrelSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -14804,11 +14968,35 @@ HandleBossGroundTrap
 	ld c, a
 	dec hl
 	ld b, [hl]
-	ld hl, $5e05
+	ld hl, TrainTrackBarricadeSprite
 	call LoadOAMSpritesStandard
 	jr .asm_5df3
 
-INCBIN "baserom.gbc", $5e05, $5e37 - $5e05
+TrainTrackBarricadeSprite:
+	dw Load3SubSprites
+	sub_sprite $64, $00,  8, 0
+	sub_sprite $66, $00, 16, 0
+	sub_sprite $68, $00, 24, 0
+
+TNTBarrelSprites:
+	dw TNTBarrelSprite0 + 1
+	dw TNTBarrelSprite0 + 1
+	dw TNTBarrelSprite1 + 1
+	dw TNTBarrelSprite1 + 1
+	dw TNTBarrelSprite2 + 1
+	dw TNTBarrelSprite2 + 1
+	dw TNTBarrelSprite3 + 1
+	dw TNTBarrelSprite3 + 1
+	dw TNTBarrelSprite4 + 1
+	dw TNTBarrelSprite4 + 1
+	dw TNTBarrelSprite4 + 1
+	dw TNTBarrelSprite3 + 1
+	dw TNTBarrelSprite3 + 1
+	dw TNTBarrelSprite2 + 1
+	dw TNTBarrelSprite2 + 1
+	dw TNTBarrelSprite1 + 1
+	dw TNTBarrelSprite1 + 1
+	dw TNTBarrelSprite0 + 1
 
 HandleDolphinEntity:
 	ld a, [hli]
@@ -26554,7 +26742,26 @@ SuperCarrotTiles2:
 SuperCarrotTiles3:
 	INCBIN "gfx/entities/super_carrot/frame_3.interleave.2bpp"
 
-INCBIN "baserom.gbc", $20540, $20d60 - $20540
+INCBIN "baserom.gbc", $20540, $207e0 - $20540
+
+TrainTrackDollyTiles0:
+	INCBIN "gfx/entities/train_track_dolly/frame_0.interleave.2bpp"
+TrainTrackDollyTiles1:
+	INCBIN "gfx/entities/train_track_dolly/frame_1.interleave.2bpp"
+TrainTrackDollyTiles2:
+	INCBIN "gfx/entities/train_track_dolly/frame_2.interleave.2bpp"
+TrainTrackDollyTiles3:
+	INCBIN "gfx/entities/train_track_dolly/frame_3.interleave.2bpp"
+TrainTrackDollyTiles4:
+	INCBIN "gfx/entities/train_track_dolly/frame_4.interleave.2bpp"
+TrainTrackDollyTiles5:
+	INCBIN "gfx/entities/train_track_dolly/frame_5.interleave.2bpp"
+TrainTrackDollyTiles6:
+	INCBIN "gfx/entities/train_track_dolly/frame_6.interleave.2bpp"
+TrainTrackDollyTiles7:
+	INCBIN "gfx/entities/train_track_dolly/frame_7.interleave.2bpp"
+
+INCBIN "baserom.gbc", $20a40, $20d60 - $20a40
 
 SpaceStationLevelTiles:
 	INCBIN "gfx/space_station/level_tiles.2bpp.lz"
@@ -27047,7 +27254,24 @@ INCBIN "baserom.gbc", $26ac0, $26b40 - $26ac0
 BouncingOilDrumTiles0:
 	INCBIN "gfx/entities/bouncing_oil_drum/frame_0.interleave.2bpp"
 
-INCBIN "baserom.gbc", $26c00, $27040 - $26c00
+RaftTiles0:
+	INCBIN "gfx/entities/raft/frame_0.interleave.2bpp"
+RaftTiles1:
+	INCBIN "gfx/entities/raft/frame_1.interleave.2bpp"
+RaftTiles2:
+	INCBIN "gfx/entities/raft/frame_2.interleave.2bpp"
+RaftTiles3:
+	INCBIN "gfx/entities/raft/frame_3.interleave.2bpp"
+RaftTiles4:
+	INCBIN "gfx/entities/raft/frame_4.interleave.2bpp"
+RaftTiles5:
+	INCBIN "gfx/entities/raft/frame_5.interleave.2bpp"
+RaftTiles6:
+	INCBIN "gfx/entities/raft/frame_6.interleave.2bpp"
+RaftTiles7:
+	INCBIN "gfx/entities/raft/frame_7.interleave.2bpp"
+
+INCBIN "baserom.gbc", $26e60, $27040 - $26e60
 
 ElmerFuddTiles0:
 	INCBIN "gfx/entities/elmer_fudd/frame_0.interleave.2bpp"
@@ -27088,7 +27312,18 @@ WarnerBrosGameOverTiles:
 
 SECTION "ROM Bank $0A", ROMX[$4000], BANK[$A]
 
-INCBIN "baserom.gbc", $28000, $28aa0 - $28000
+TNTBarrelTiles0:
+	INCBIN "gfx/entities/tnt_barrel/frame_0.interleave.2bpp"
+TNTBarrelTiles1:
+	INCBIN "gfx/entities/tnt_barrel/frame_1.interleave.2bpp"
+TNTBarrelTiles2:
+	INCBIN "gfx/entities/tnt_barrel/frame_2.interleave.2bpp"
+TNTBarrelTiles3:
+	INCBIN "gfx/entities/tnt_barrel/frame_3.interleave.2bpp"
+TNTBarrelTiles4:
+	INCBIN "gfx/entities/tnt_barrel/frame_4.interleave.2bpp"
+
+INCBIN "baserom.gbc", $283c0, $28aa0 - $283c0
 
 TazTiles0:
 	INCBIN "gfx/entities/taz/frame_0.interleave.2bpp"
@@ -28046,14 +28281,116 @@ INCBIN "baserom.gbc", $32dbd, $32dcc - $32dbd
 
 BouncingOilDrumSprite0:
 	dynamic_sprite 6, BouncingOilDrumTiles0, 2, 0
-	dynamic_sprite_offsets $08, $F9, $00
-	dynamic_sprite_offsets $10, $F9, $F8
-	dynamic_sprite_offsets $18, $F9, $F0
-	dynamic_sprite_offsets $08, $09, $00
-	dynamic_sprite_offsets $10, $09, $F8
-	dynamic_sprite_offsets $18, $09, $F0
+	dynamic_sprite_offsets  8, -7,   0
+	dynamic_sprite_offsets 16, -7,  -8
+	dynamic_sprite_offsets 24, -7, -16
+	dynamic_sprite_offsets  8,  9,   0
+	dynamic_sprite_offsets 16,  9,  -8
+	dynamic_sprite_offsets 24,  9, -16
 
-INCBIN "baserom.gbc", $32de1, $32fa9 - $32de1
+RaftSprite0:
+	dynamic_sprite 3, RaftTiles0, 0, 0
+	dynamic_sprite_offsets  8, 16,   0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite1:
+	dynamic_sprite 3, RaftTiles1, 0, 0
+	dynamic_sprite_offsets  8, 16,   0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite2:
+	dynamic_sprite 3, RaftTiles2, 0, 0
+	dynamic_sprite_offsets  8, 16,   0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite3:
+	dynamic_sprite 3, RaftTiles3, 0, 0
+	dynamic_sprite_offsets  8, 16,   0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite4:
+	dynamic_sprite 2, RaftTiles4, 0, 0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite5:
+	dynamic_sprite 2, RaftTiles5, 0, 0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite6:
+	dynamic_sprite 2, RaftTiles6, 0, 0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+
+RaftSprite7:
+	dynamic_sprite 1, RaftTiles7, 0, 0
+	dynamic_sprite_offsets 24, 16, -16
+
+INCBIN "baserom.gbc", $32e32, $32e35 - $32e32
+
+TNTBarrelSprite0:
+	dynamic_sprite 6, TNTBarrelTiles0, 0, 0
+	dynamic_sprite_offsets  8, 11,   0
+	dynamic_sprite_offsets 16, 11,  -8
+	dynamic_sprite_offsets 24, 11, -16
+	dynamic_sprite_offsets  9, -5,  -1
+	dynamic_sprite_offsets 17, -5,  -9
+	dynamic_sprite_offsets 25, -5, -17
+
+EmptySprite_32e4a:
+	dynamic_sprite 0, TNTBarrelTiles1, 0, 0
+
+TNTBarrelSprite1:
+	dynamic_sprite 6, TNTBarrelTiles1, 0, 0
+	dynamic_sprite_offsets  8,  8,   0
+	dynamic_sprite_offsets 16,  8,  -8
+	dynamic_sprite_offsets 24,  8, -16
+	dynamic_sprite_offsets  9, -8,  -1
+	dynamic_sprite_offsets 17, -8,  -9
+	dynamic_sprite_offsets 25, -8, -17
+
+EmptySprite_32e62:
+	dynamic_sprite 0, TNTBarrelTiles2, 0, 0
+
+TNTBarrelSprite2:
+	dynamic_sprite 6, TNTBarrelTiles2, 0, 0
+	dynamic_sprite_offsets  8, -6,   0
+	dynamic_sprite_offsets 16, -6,  -8
+	dynamic_sprite_offsets 24, -6, -16
+	dynamic_sprite_offsets  8, 10,   0
+	dynamic_sprite_offsets 16, 10,  -8
+	dynamic_sprite_offsets 24, 10, -16
+
+EmptySprite_32e7a:
+	dynamic_sprite 0, TNTBarrelTiles3, 0, 0
+
+TNTBarrelSprite3:
+	dynamic_sprite 6, TNTBarrelTiles3, 0, 0
+	dynamic_sprite_offsets  8, 10,   0
+	dynamic_sprite_offsets 16, 10,  -8
+	dynamic_sprite_offsets 24, 10, -16
+	dynamic_sprite_offsets  7, -6,   1
+	dynamic_sprite_offsets 15, -6,  -7
+	dynamic_sprite_offsets 23, -6, -15
+
+EmptySprite_32e92:
+	dynamic_sprite 0, TNTBarrelTiles4, 0, 0
+
+TNTBarrelSprite4:
+	dynamic_sprite 6, TNTBarrelTiles4, 0, 0
+	dynamic_sprite_offsets  7,  8,   1
+	dynamic_sprite_offsets 15,  8,  -7
+	dynamic_sprite_offsets 23,  8, -15
+	dynamic_sprite_offsets  6, -8,   2
+	dynamic_sprite_offsets 14, -8,  -6
+	dynamic_sprite_offsets 22, -8, -14
+
+INCBIN "baserom.gbc", $32eaa, $32fa9 - $32eaa
 
 TazSprite0:
 	dynamic_sprite 6, TazTiles0, 2, 0
@@ -28273,28 +28610,6 @@ MarvinMartianSprite11:
 
 INCBIN "baserom.gbc", $3349e, $33714 - $3349e
 
-	; dw $7715
-	; dw $7730
-	; dw $7748
-	; dw $7763
-	; dw $777E
-	; dw $7796
-	; dw $7823
-	; dw $782F
-	; dw $77AE
-	; dw $77AE
-	; dw $77AE
-	; dw $77AE
-	; dw $77AE
-	; dw $77AE
-	; dw $77CC
-	; dw $77CC
-	; dw $7814
-	; dw $77FF
-	; dw $77CC
-	; dw $7841
-	; dw $77E7
-
 ElmerFuddSprite0:
 	dynamic_sprite 8, ElmerFuddTiles0, 4, 0
 	dynamic_sprite_offsets -1,  -1, 37
@@ -28434,7 +28749,52 @@ ElmerFuddSprite13:
 	dynamic_sprite_offsets 14, -27, 22
 	dynamic_sprite_offsets 22, -27, 14
 
-INCBIN "baserom.gbc", $3385b, $34000 - $3385b
+INCBIN "baserom.gbc", $3385b, $33a3b - $3385b
+
+TrainTrackDollySprite0:
+	dynamic_sprite 3, TrainTrackDollyTiles0, 4, 0
+	dynamic_sprite_offsets  8, 15,   0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite1:
+	dynamic_sprite 3, TrainTrackDollyTiles1, 4, 0
+	dynamic_sprite_offsets  8, 15,   0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite2:
+	dynamic_sprite 3, TrainTrackDollyTiles2, 4, 0
+	dynamic_sprite_offsets  8, 15,   0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite3:
+	dynamic_sprite 3, TrainTrackDollyTiles3, 4, 0
+	dynamic_sprite_offsets  8, 15,   0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite4:
+	dynamic_sprite 2, TrainTrackDollyTiles4, 4, 0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite5:
+	dynamic_sprite 2, TrainTrackDollyTiles5, 4, 0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite6:
+	dynamic_sprite 2, TrainTrackDollyTiles6, 4, 0
+	dynamic_sprite_offsets 16, 15,  -8
+	dynamic_sprite_offsets 24, 15, -16
+
+TrainTrackDollySprite7:
+	dynamic_sprite 1, TrainTrackDollyTiles7, 4, 0
+	dynamic_sprite_offsets $18, 15, $F0
+
+INCBIN "baserom.gbc", $33a8c, $34000 - $33a8c
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
