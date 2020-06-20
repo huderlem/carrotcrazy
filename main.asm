@@ -19274,8 +19274,6 @@ TreasureIslandBossShipTilemap:
 TazZooBossCollisionAttributes:
 	INCBIN "data/levels/taz_zoo_boss_collision_attrs.bin.lz"
 
-INCBIN "baserom.gbc", $7ee1, $8000 - $7ee1
-
 SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
 INCBIN "baserom.gbc", $8000, $804a - $8000
