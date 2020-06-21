@@ -516,8 +516,8 @@ entity_raft: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum x pixel coord when surfing
-entity_dolphin: MACRO
-	dw HandleDolphinEntity
+entity_shark: MACRO
+	dw HandleSharkEntity
 	dw \2, \1
 	db $00, $00
 	dw $766D ; TODO:

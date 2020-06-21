@@ -14998,7 +14998,7 @@ TNTBarrelSprites:
 	dw TNTBarrelSprite1 + 1
 	dw TNTBarrelSprite0 + 1
 
-HandleDolphinEntity:
+HandleSharkEntity:
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -15022,9 +15022,9 @@ HandleDolphinEntity:
 .asm_5e55
 	ld a, [hl]
 	and $1e
-	add $bd
+	add (SharkEmergeSprites & $ff)
 	ld e, a
-	ld a, $5e
+	ld a, (SharkEmergeSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -15077,9 +15077,9 @@ HandleDolphinEntity:
 	ld e, a
 	ld a, [$ffe5]
 	add e
-	add $cd
+	add (SharkSwimSprites & $ff)
 	ld e, a
-	ld a, $5e
+	ld a, (SharkSwimSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -15091,7 +15091,33 @@ HandleDolphinEntity:
 .asm_5eba
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $5ebd, $5eed - $5ebd
+SharkEmergeSprites:
+	dw SharkEmergeSprite0 + 1
+	dw SharkEmergeSprite1 + 1
+	dw SharkEmergeSprite2 + 1
+	dw SharkEmergeSprite3 + 1
+	dw SharkEmergeSprite4 + 1
+	dw SharkEmergeSprite5 + 1
+	dw SharkEmergeSprite6 + 1
+	dw SharkEmergeSprite7 + 1
+
+SharkSwimSprites:
+	dw SharkSwimSprite9 + 1
+	dw SharkSwimSprite8 + 1
+	dw SharkSwimSprite7 + 1
+	dw SharkSwimSprite6 + 1
+	dw SharkSwimSprite1 + 1
+	dw SharkSwimSprite0 + 1
+	dw SharkSwimSprite1 + 1
+	dw SharkSwimSprite0 + 1
+	dw SharkSwimSprite4 + 1
+	dw SharkSwimSprite3 + 1
+	dw SharkSwimSprite2 + 1
+	dw SharkSwimSprite1 + 1
+	dw SharkSwimSprite6 + 1
+	dw SharkSwimSprite5 + 1
+	dw SharkSwimSprite6 + 1
+	dw SharkSwimSprite5 + 1
 
 HandleCannonballEntity:
 	ld a, [$de83]
@@ -23483,10 +23509,10 @@ TreasureIslandBossEntity61: entity_collectible CARROT, $230, $3F
 TreasureIslandBossEntity62: entity_collectible CARROT, $1C0, $3F
 TreasureIslandBossEntity63: entity_collectible CARROT, $180, $3F
 TreasureIslandBossEntity64: entity_collectible TWEETY_HEART, $1A0, $5F
-TreasureIslandBossEntity65: entity_dolphin $A90, $7F
-TreasureIslandBossEntity66: entity_dolphin $560, $7F
-TreasureIslandBossEntity67: entity_dolphin $200, $7F
-TreasureIslandBossEntity68: entity_dolphin $150, $7F
+TreasureIslandBossEntity65: entity_shark $A90, $7F
+TreasureIslandBossEntity66: entity_shark $560, $7F
+TreasureIslandBossEntity67: entity_shark $200, $7F
+TreasureIslandBossEntity68: entity_shark $150, $7F
 TreasureIslandBossEntity69: entity_raft $F30, $6F, $EB0
 TreasureIslandBossEntity70: entity_raft $E80, $6F, $E00
 TreasureIslandBossEntity71: entity_raft $D80, $6F, $D00
@@ -24821,7 +24847,11 @@ CommonSpritePalettes:
 	RGB(31, 8, 0)
 	RGB(0, 0, 0)
 
-INCBIN "baserom.gbc", $1af2a, $1af32 - $1af2a
+Data_1af2a: ; ??
+	RGB(31, 31, 31)
+	RGB(28, 12, 0)
+	RGB(24, 3, 0)
+	RGB(0, 0, 0)
 
 BonusScreenGBCPalettes:
 	db 6 ; num background palettes
@@ -27321,7 +27351,43 @@ TNTBarrelTiles3:
 TNTBarrelTiles4:
 	INCBIN "gfx/entities/tnt_barrel/frame_4.interleave.2bpp"
 
-INCBIN "baserom.gbc", $283c0, $28aa0 - $283c0
+SharkEmergeTiles0:
+	INCBIN "gfx/entities/shark_emerge/frame_0.interleave.2bpp"
+SharkEmergeTiles1:
+	INCBIN "gfx/entities/shark_emerge/frame_1.interleave.2bpp"
+SharkEmergeTiles2:
+	INCBIN "gfx/entities/shark_emerge/frame_2.interleave.2bpp"
+SharkEmergeTiles3:
+	INCBIN "gfx/entities/shark_emerge/frame_3.interleave.2bpp"
+SharkEmergeTiles4:
+	INCBIN "gfx/entities/shark_emerge/frame_4.interleave.2bpp"
+SharkEmergeTiles5:
+	INCBIN "gfx/entities/shark_emerge/frame_5.interleave.2bpp"
+SharkEmergeTiles6:
+	INCBIN "gfx/entities/shark_emerge/frame_6.interleave.2bpp"
+SharkEmergeTiles7:
+	INCBIN "gfx/entities/shark_emerge/frame_7.interleave.2bpp"
+
+SharkSwimTiles0:
+	INCBIN "gfx/entities/shark_swim/frame_0.interleave.2bpp"
+SharkSwimTiles1:
+	INCBIN "gfx/entities/shark_swim/frame_1.interleave.2bpp"
+SharkSwimTiles2:
+	INCBIN "gfx/entities/shark_swim/frame_2.interleave.2bpp"
+SharkSwimTiles3:
+	INCBIN "gfx/entities/shark_swim/frame_3.interleave.2bpp"
+SharkSwimTiles4:
+	INCBIN "gfx/entities/shark_swim/frame_4.interleave.2bpp"
+SharkSwimTiles5:
+	INCBIN "gfx/entities/shark_swim/frame_5.interleave.2bpp"
+SharkSwimTiles6:
+	INCBIN "gfx/entities/shark_swim/frame_6.interleave.2bpp"
+SharkSwimTiles7:
+	INCBIN "gfx/entities/shark_swim/frame_7.interleave.2bpp"
+SharkSwimTiles8:
+	INCBIN "gfx/entities/shark_swim/frame_8.interleave.2bpp"
+SharkSwimTiles9:
+	INCBIN "gfx/entities/shark_swim/frame_9.interleave.2bpp"
 
 TazTiles0:
 	INCBIN "gfx/entities/taz/frame_0.interleave.2bpp"
@@ -28388,7 +28454,116 @@ TNTBarrelSprite4:
 	dynamic_sprite_offsets 14, -8,  -6
 	dynamic_sprite_offsets 22, -8, -14
 
-INCBIN "baserom.gbc", $32eaa, $32fa9 - $32eaa
+SharkEmergeSprite0:
+	dynamic_sprite 2, SharkEmergeTiles0, 3, 0
+	dynamic_sprite_offsets 12, 1,  -4
+	dynamic_sprite_offsets 20, 1, -12
+
+SharkEmergeSprite1:
+	dynamic_sprite 3, SharkEmergeTiles1, 3, 0
+	dynamic_sprite_offsets 11, 1,  -3
+	dynamic_sprite_offsets 19, 1, -11
+	dynamic_sprite_offsets 27, 1, -19
+
+SharkEmergeSprite2:
+	dynamic_sprite 5, SharkEmergeTiles2, 3, 0
+	dynamic_sprite_offsets 11,   1,  -3
+	dynamic_sprite_offsets 19,   1, -11
+	dynamic_sprite_offsets 27,   1, -19
+	dynamic_sprite_offsets 15, -15,  -7
+	dynamic_sprite_offsets 23, -15, -15
+
+SharkEmergeSprite3:
+	dynamic_sprite 6, SharkEmergeTiles3, 3, 0
+	dynamic_sprite_offsets  8, -15,   0
+	dynamic_sprite_offsets 16, -15,  -8
+	dynamic_sprite_offsets 24, -15, -16
+	dynamic_sprite_offsets  8,   1,   0
+	dynamic_sprite_offsets 16,   1,  -8
+	dynamic_sprite_offsets 24,   1, -16
+
+SharkEmergeSprite4:
+	dynamic_sprite 6, SharkEmergeTiles4, 3, 0
+	dynamic_sprite_offsets  9,   1,  -1
+	dynamic_sprite_offsets 17,   1,  -9
+	dynamic_sprite_offsets 25,   1, -17
+	dynamic_sprite_offsets 16, -15,  -8
+	dynamic_sprite_offsets 24, -15, -16
+	dynamic_sprite_offsets 32, -15, -24
+
+SharkEmergeSprite5:
+	dynamic_sprite 6, SharkEmergeTiles5, 3, 0
+	dynamic_sprite_offsets 10,   5,  -2
+	dynamic_sprite_offsets 18,   5, -10
+	dynamic_sprite_offsets 26,   5, -18
+	dynamic_sprite_offsets 15, -11,  -7
+	dynamic_sprite_offsets 23, -11, -15
+	dynamic_sprite_offsets 31, -11, -23
+
+SharkEmergeSprite6:
+	dynamic_sprite 6, SharkEmergeTiles6, 3, 0
+	dynamic_sprite_offsets 11, 13,  -3
+	dynamic_sprite_offsets 19, 13, -11
+	dynamic_sprite_offsets 27, 13, -19
+	dynamic_sprite_offsets 16, -3,  -8
+	dynamic_sprite_offsets 24, -3, -16
+	dynamic_sprite_offsets 32, -3, -24
+
+SharkEmergeSprite7:
+	dynamic_sprite 3, SharkEmergeTiles7, 3, 0
+	dynamic_sprite_offsets 17, 5,  -9
+	dynamic_sprite_offsets 25, 5, -17
+	dynamic_sprite_offsets 33, 5, -25
+
+SharkSwimSprite0:
+	dynamic_sprite 2, SharkSwimTiles0, 3, 0
+	dynamic_sprite_offsets 17, 1,  -9
+	dynamic_sprite_offsets 25, 1, -17
+
+SharkSwimSprite1:
+	dynamic_sprite 2, SharkSwimTiles1, 3, 0
+	dynamic_sprite_offsets 17, 1,  -9
+	dynamic_sprite_offsets 25, 1, -17
+
+SharkSwimSprite2:
+	dynamic_sprite 2, SharkSwimTiles2, 3, 0
+	dynamic_sprite_offsets 15, 1,  -7
+	dynamic_sprite_offsets 23, 1, -15
+
+SharkSwimSprite3:
+	dynamic_sprite 1, SharkSwimTiles3, 3, 0
+	dynamic_sprite_offsets 21, 1, -13
+
+SharkSwimSprite4:
+	dynamic_sprite 2, SharkSwimTiles4, 3, 0
+	dynamic_sprite_offsets 19, 1, -11
+	dynamic_sprite_offsets 27, 1, -19
+
+SharkSwimSprite5:
+	dynamic_sprite 2, SharkSwimTiles5, 3, 0
+	dynamic_sprite_offsets 17, 1,  -9
+	dynamic_sprite_offsets 25, 1, -17
+
+SharkSwimSprite6:
+	dynamic_sprite 2, SharkSwimTiles6, 3, 0
+	dynamic_sprite_offsets 17, 1,  -9
+	dynamic_sprite_offsets 25, 1, -17
+
+SharkSwimSprite7:
+	dynamic_sprite 2, SharkSwimTiles7, 3, 0
+	dynamic_sprite_offsets 19, 1, -11
+	dynamic_sprite_offsets 27, 1, -19
+
+SharkSwimSprite8:
+	dynamic_sprite 1, SharkSwimTiles8, 3, 0
+	dynamic_sprite_offsets 21, 1, -13
+
+SharkSwimSprite9:
+	dynamic_sprite 2, SharkSwimTiles9, 3, 0
+	dynamic_sprite_offsets 15, 1,  -7
+	dynamic_sprite_offsets 23, 1, -15
+
+INCBIN "baserom.gbc", $32f85, $32fa9 - $32f85
 
 TazSprite0:
 	dynamic_sprite 6, TazTiles0, 2, 0
