@@ -15157,16 +15157,16 @@ HandleCannonballEntity:
 	jr nz, .asm_5f2e
 	push bc
 	push de
-	ld bc, $5f94
+	ld bc, Data_5f94
 	call Func_1868
 	pop de
 	pop bc
 .asm_5f2e
 	ld a, [hl]
 	and $1e
-	add $42
+	add (CannonBallLauncherSprites & $ff)
 	ld l, a
-	ld a, $5f
+	ld a, (CannonBallLauncherSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -15176,13 +15176,57 @@ HandleCannonballEntity:
 .asm_5f3f
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $5f42, $5f9d - $5f42
+CannonBallLauncherSprites:
+	dw CannonBallLauncherSprite4
+	dw CannonBallLauncherSprite3
+	dw CannonBallLauncherSprite2
+	dw CannonBallLauncherSprite1
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite0
+	dw CannonBallLauncherSprite1
+	dw CannonBallLauncherSprite2
+	dw CannonBallLauncherSprite3
+	dw CannonBallLauncherSprite4
+
+CannonBallLauncherSprite0:
+	dw Load2SubSprites
+	sub_sprite $70, $11, -12, 0
+	sub_sprite $72, $11,  -4, 0
+
+CannonBallLauncherSprite1:
+	dw Load2SubSprites
+	sub_sprite $74, $11, -12, 0
+	sub_sprite $76, $11,  -4, 0
+
+CannonBallLauncherSprite2:
+	dw Load2SubSprites
+	sub_sprite $78, $11, -12, 0
+	sub_sprite $7A, $11,  -4, 0
+
+CannonBallLauncherSprite3:
+	dw Load2SubSprites
+	sub_sprite $7C, $11, -12, 0
+	sub_sprite $7E, $11,  -4, 0
+
+CannonBallLauncherSprite4:
+	dw Load2SubSprites
+	sub_sprite $80, $11, -12, 0
+	sub_sprite $82, $11,  -4, 0
+
+Data_5f94: ; TODO: controls the cannon ball's trajectory?
+	db $00, $00, $02, $E8, $00, $FF, $00, $F4, $70
 
 HandleDirtPathDestructionEntity:
-	ld bc, $6056
+	ld bc, DirtPathDestructionSprites
 	jr HandlePlatformDestructionEntity
 HandleLogDestructionEntity:
-	ld bc, $604e
+	ld bc, LogDestructionSprites
 	jr HandlePlatformDestructionEntity
 HandlePlatformDestructionEntity
 	ld a, c
@@ -15309,7 +15353,17 @@ HandlePlatformDestructionEntity
 .asm_604b
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $604e, $605e - $604e
+LogDestructionSprites:
+	dw LogDestructionSprite0 + 1
+	dw LogDestructionSprite1 + 1
+	dw LogDestructionSprite2 + 1
+	dw LogDestructionSprite3 + 1
+
+DirtPathDestructionSprites:
+	dw DirtPathDestructionSprite0 + 1
+	dw DirtPathDestructionSprite1 + 1
+	dw DirtPathDestructionSprite2 + 1
+	dw DirtPathDestructionSprite3 + 1
 
 HandleHippoEntity:
 	ld a, [hli]
@@ -26789,7 +26843,16 @@ TrainTrackDollyTiles6:
 TrainTrackDollyTiles7:
 	INCBIN "gfx/entities/train_track_dolly/frame_7.interleave.2bpp"
 
-INCBIN "baserom.gbc", $20a40, $20d60 - $20a40
+DirtPathDestructionTiles0:
+	INCBIN "gfx/entities/dirt_path_destruction/frame_0.interleave.2bpp"
+DirtPathDestructionTiles1:
+	INCBIN "gfx/entities/dirt_path_destruction/frame_1.interleave.2bpp"
+DirtPathDestructionTiles2:
+	INCBIN "gfx/entities/dirt_path_destruction/frame_2.interleave.2bpp"
+DirtPathDestructionTiles3:
+	INCBIN "gfx/entities/dirt_path_destruction/frame_3.interleave.2bpp"
+
+INCBIN "baserom.gbc", $20b40, $20d60 - $20b40
 
 SpaceStationLevelTiles:
 	INCBIN "gfx/space_station/level_tiles.2bpp.lz"
@@ -27299,7 +27362,16 @@ RaftTiles6:
 RaftTiles7:
 	INCBIN "gfx/entities/raft/frame_7.interleave.2bpp"
 
-INCBIN "baserom.gbc", $26e60, $27040 - $26e60
+LogDestructionTiles0:
+	INCBIN "gfx/entities/log_destruction/frame_0.interleave.2bpp"
+LogDestructionTiles1:
+	INCBIN "gfx/entities/log_destruction/frame_1.interleave.2bpp"
+LogDestructionTiles2:
+	INCBIN "gfx/entities/log_destruction/frame_2.interleave.2bpp"
+LogDestructionTiles3:
+	INCBIN "gfx/entities/log_destruction/frame_3.interleave.2bpp"
+
+INCBIN "baserom.gbc", $26f60, $27040 - $26f60
 
 ElmerFuddTiles0:
 	INCBIN "gfx/entities/elmer_fudd/frame_0.interleave.2bpp"
@@ -28563,7 +28635,25 @@ SharkSwimSprite9:
 	dynamic_sprite_offsets 15, 1,  -7
 	dynamic_sprite_offsets 23, 1, -15
 
-INCBIN "baserom.gbc", $32f85, $32fa9 - $32f85
+LogDestructionSprite0:
+	dynamic_sprite 2, LogDestructionTiles0, 2, 1
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+LogDestructionSprite1:
+	dynamic_sprite 2, LogDestructionTiles1, 2, 1
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+LogDestructionSprite2:
+	dynamic_sprite 2, LogDestructionTiles2, 2, 1
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+LogDestructionSprite3:
+	dynamic_sprite 2, LogDestructionTiles3, 2, 1
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
 
 TazSprite0:
 	dynamic_sprite 6, TazTiles0, 2, 0
@@ -28967,7 +29057,27 @@ TrainTrackDollySprite7:
 	dynamic_sprite 1, TrainTrackDollyTiles7, 4, 0
 	dynamic_sprite_offsets $18, 15, $F0
 
-INCBIN "baserom.gbc", $33a8c, $34000 - $33a8c
+DirtPathDestructionSprite0:
+	dynamic_sprite 2, DirtPathDestructionTiles0, 2, 0
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+DirtPathDestructionSprite1:
+	dynamic_sprite 2, DirtPathDestructionTiles1, 2, 0
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+DirtPathDestructionSprite2:
+	dynamic_sprite 2, DirtPathDestructionTiles2, 2, 0
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+DirtPathDestructionSprite3:
+	dynamic_sprite 2, DirtPathDestructionTiles3, 2, 0
+	dynamic_sprite_offsets  8, 1,  0
+	dynamic_sprite_offsets 16, 1, -8
+
+INCBIN "baserom.gbc", $33ab0, $34000 - $33ab0
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
