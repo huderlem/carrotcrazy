@@ -7477,9 +7477,9 @@ DrawHUDNumClapboards:
 DrawHUDBunnyFaceTop:
 	ld a, [$ffad]
 	add a
-	ld hl, $4436
+	ld hl, HUDBugsBunnyFaceTiles
 	jr nc, .draw
-	ld hl, $4496
+	ld hl, HUDLolaBunnyFaceTiles
 .draw
 	ld a, 3
 	ld bc, $8900
@@ -7488,9 +7488,9 @@ DrawHUDBunnyFaceTop:
 DrawHUDBunnyFaceBottom:
 	ld a, [$ffad]
 	add a
-	ld hl, $4466
+	ld hl, HUDBugsBunnyFaceTiles + $30
 	jr nc, .draw
-	ld hl, $44c6
+	ld hl, HUDLolaBunnyFaceTiles + $30
 .draw
 	ld a, 3
 	ld bc, $8930
@@ -10817,19 +10817,19 @@ HandleCollectibleEntity:
 	jr .asm_423b
 .collectClapboard0
 	ld bc, $8800
-	ld de, $4596
+	ld de, HUDClapboardPiecesTiles
 	jr .collectClapboardPiece
 .collectClapboard1
 	ld bc, $8810
-	ld de, $45a6
+	ld de, HUDClapboardPiecesTiles + $10
 	jr .collectClapboardPiece
 .collectClapboard2
 	ld bc, $8820
-	ld de, $45b6
+	ld de, HUDClapboardPiecesTiles + $20
 	jr .collectClapboardPiece
 .collectClapboard3
 	ld bc, $8830
-	ld de, $45c6
+	ld de, HUDClapboardPiecesTiles + $30
 	jr .collectClapboardPiece
 .collectClapboardPiece
 	ld a, $12
@@ -10846,23 +10846,23 @@ HandleCollectibleEntity:
 	jr .initHUDTile
 .collectLetterE
 	ld bc, $8960
-	ld de, $44f6
+	ld de, HUDExtraLettersTiles
 	jr .collectEXTRALetter
 .collectLetterX
 	ld bc, $8980
-	ld de, $4516
+	ld de, HUDExtraLettersTiles + $20
 	jr .collectEXTRALetter
 .collectLetterT
 	ld bc, $89a0
-	ld de, $4536
+	ld de, HUDExtraLettersTiles + $40
 	jr .collectEXTRALetter
 .collectLetterR
 	ld bc, $89c0
-	ld de, $4556
+	ld de, HUDExtraLettersTiles + $60
 	jr .collectEXTRALetter
 .collectLetterA
 	ld bc, $89e0
-	ld de, $4576
+	ld de, HUDExtraLettersTiles + $80
 	jr .collectEXTRALetter
 .collectEXTRALetter
 	ld a, $12
@@ -21120,17 +21120,22 @@ TreasureIslandBossSpriteTiles:
 
 SECTION "ROM Bank $04", ROMX[$4000], BANK[$4]
 
-INCBIN "baserom.gbc", $10000, $10100 - $10000
+HUDCarrotMeterTiles:
+	INCBIN "gfx/hud/carrot_meter.interleave.2bpp"
 
 SharedLevelInterfaceTiles:
 	INCBIN "gfx/level_interface.interleave.2bpp.lz"
 
-INCBIN "baserom.gbc", $10436, $104f6 - $10436
+HUDBugsBunnyFaceTiles:
+	INCBIN "gfx/hud/bugs_bunny_face.2bpp"
+HUDLolaBunnyFaceTiles:
+	INCBIN "gfx/hud/lola_bunny_face.2bpp"
 
-LevelBonusExtraTiles:
+HUDExtraLettersTiles:
 	INCBIN "gfx/level_bonus/extra.interleave.2bpp"
 
-INCBIN "baserom.gbc", $10596, $105d6 - $10596
+HUDClapboardPiecesTiles:
+	INCBIN "gfx/hud/clapboard_pieces.interleave.2bpp"
 
 StudioCeilingFloorTiles:
 	INCBIN "gfx/studio/ceiling_floor.2bpp.lz"
@@ -26044,7 +26049,7 @@ ScreenData_LevelBonus:
 	compressed_data LevelBonusBackgroundTilemap, $9800
 	compressed_data LevelBonusSpriteTiles, $8000
 	compressed_data SharedLevelInterfaceTiles, $C000
-	uncompressed_data LevelBonusExtraTiles, $C620, $00A0
+	uncompressed_data HUDExtraLettersTiles, $C620, $00A0
 	db $ff
 	dw Func_8080
 
@@ -26158,7 +26163,7 @@ ScreenDataGBC_LevelBonus:
 	compressed_data LevelBonusBackgroundTilemapGBC, $9800
 	compressed_data LevelBonusSpriteTiles, $8000
 	compressed_data SharedLevelInterfaceTiles, $C000
-	uncompressed_data LevelBonusExtraTiles, $C620, $00A0
+	uncompressed_data HUDExtraLettersTiles, $C620, $00A0
 	compressed_data LevelBonusTileAttributesGBC, $DAD0
 	db $ff
 	dw Func_8080
