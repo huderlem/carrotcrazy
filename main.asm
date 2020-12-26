@@ -17321,10 +17321,10 @@ Data_6c32:
 	db $00, $00, $02, $F0, $18, $FD, $00, $68, $71
 
 HandleHuntingDogEntity:
-	ld bc, $6e06
+	ld bc, HuntingDogSprites
 	jr HandleDogEntity
 HandleK9Entity:
-	ld bc, $6ded
+	ld bc, K9Sprites
 	jr HandleDogEntity
 HandleDogEntity:
 	ld a, c
@@ -17605,7 +17605,37 @@ HandleDogEntity:
 .asm_6de5
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $6de8, $6e1a - $6de8
+; The code above subtracts from K9Sprites to get this data.
+	db 7
+	dw K9Sprite10 + 1
+	dw K9Sprite11 + 1
+K9Sprites:
+	dw K9Sprite6 + 1
+	dw K9Sprite7 + 1
+	dw K9Sprite8 + 1
+	dw K9Sprite9 + 1
+	dw K9Sprite0 + 1
+	dw K9Sprite1 + 1
+	dw K9Sprite2 + 1
+	dw K9Sprite3 + 1
+	dw K9Sprite4 + 1
+	dw K9Sprite5 + 1
+
+; The code above subtracts from HuntingDogSprites to get this data.
+	db 3
+	dw HuntingDogSprite10 + 1
+	dw HuntingDogSprite11 + 1
+HuntingDogSprites:
+	dw HuntingDogSprite6 + 1
+	dw HuntingDogSprite7 + 1
+	dw HuntingDogSprite8 + 1
+	dw HuntingDogSprite9 + 1
+	dw HuntingDogSprite0 + 1
+	dw HuntingDogSprite1 + 1
+	dw HuntingDogSprite2 + 1
+	dw HuntingDogSprite3 + 1
+	dw HuntingDogSprite4 + 1
+	dw HuntingDogSprite5 + 1
 
 HandleLeverSpringEntity:
 	ld a, [hli]
@@ -27769,7 +27799,30 @@ MarvinMartianTiles10:
 MarvinMartianTiles11:
 	INCBIN "gfx/entities/marvin_martian/frame_11.interleave.2bpp"
 
-INCBIN "baserom.gbc", $2b5e0, $2bee0 - $2b5e0
+HuntingDogTiles0:
+	INCBIN "gfx/entities/hunting_dog/frame_0.interleave.2bpp"
+HuntingDogTiles1:
+	INCBIN "gfx/entities/hunting_dog/frame_1.interleave.2bpp"
+HuntingDogTiles2:
+	INCBIN "gfx/entities/hunting_dog/frame_2.interleave.2bpp"
+HuntingDogTiles3:
+	INCBIN "gfx/entities/hunting_dog/frame_3.interleave.2bpp"
+HuntingDogTiles4:
+	INCBIN "gfx/entities/hunting_dog/frame_4.interleave.2bpp"
+HuntingDogTiles5:
+	INCBIN "gfx/entities/hunting_dog/frame_5.interleave.2bpp"
+HuntingDogTiles6:
+	INCBIN "gfx/entities/hunting_dog/frame_6.interleave.2bpp"
+HuntingDogTiles7:
+	INCBIN "gfx/entities/hunting_dog/frame_7.interleave.2bpp"
+HuntingDogTiles8:
+	INCBIN "gfx/entities/hunting_dog/frame_8.interleave.2bpp"
+HuntingDogTiles9:
+	INCBIN "gfx/entities/hunting_dog/frame_9.interleave.2bpp"
+HuntingDogTiles10:
+	INCBIN "gfx/entities/hunting_dog/frame_10.interleave.2bpp"
+HuntingDogTiles11:
+	INCBIN "gfx/entities/hunting_dog/frame_11.interleave.2bpp"
 
 FuddForestCollisionAttributes:
 	INCBIN "data/levels/fudd_forest_collision_attrs.bin.lz"
@@ -27807,7 +27860,32 @@ InstantMartianTiles10:
 InstantMartianTiles11:
 	INCBIN "gfx/entities/instant_martian/frame_11.interleave.2bpp"
 
-INCBIN "baserom.gbc", $2C800, $2dae0 - $2C800
+K9Tiles0:
+	INCBIN "gfx/entities/k9/frame_0.interleave.2bpp"
+K9Tiles1:
+	INCBIN "gfx/entities/k9/frame_1.interleave.2bpp"
+K9Tiles2:
+	INCBIN "gfx/entities/k9/frame_2.interleave.2bpp"
+K9Tiles3:
+	INCBIN "gfx/entities/k9/frame_3.interleave.2bpp"
+K9Tiles4:
+	INCBIN "gfx/entities/k9/frame_4.interleave.2bpp"
+K9Tiles5:
+	INCBIN "gfx/entities/k9/frame_5.interleave.2bpp"
+K9Tiles6:
+	INCBIN "gfx/entities/k9/frame_6.interleave.2bpp"
+K9Tiles7:
+	INCBIN "gfx/entities/k9/frame_7.interleave.2bpp"
+K9Tiles8:
+	INCBIN "gfx/entities/k9/frame_8.interleave.2bpp"
+K9Tiles9:
+	INCBIN "gfx/entities/k9/frame_9.interleave.2bpp"
+K9Tiles10:
+	INCBIN "gfx/entities/k9/frame_10.interleave.2bpp"
+K9Tiles11:
+	INCBIN "gfx/entities/k9/frame_11.interleave.2bpp"
+
+INCBIN "baserom.gbc", $2d080, $2dae0 - $2d080
 
 SpaceStationBossShipTiles:
 	INCBIN "gfx/space_station/boss_ship_tiles.2bpp.lz"
@@ -29565,7 +29643,111 @@ InstantMartianSprite11:
 	dynamic_sprite_offsets  7, -15, 27
 	dynamic_sprite_offsets 15, -15, 19
 
-INCBIN "baserom.gbc", $33582, $33714 - $33582
+K9Sprite0:
+	dynamic_sprite 8, K9Tiles0, 0, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 32, -15,  8
+	dynamic_sprite_offsets  8,   1, 32
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+	dynamic_sprite_offsets 32,   1,  8
+
+K9Sprite1:
+	dynamic_sprite 6, K9Tiles1, 0, 0
+	dynamic_sprite_offsets 13, -15, 27
+	dynamic_sprite_offsets 21, -15, 19
+	dynamic_sprite_offsets 29, -15, 11
+	dynamic_sprite_offsets 12,   1, 28
+	dynamic_sprite_offsets 20,   1, 20
+	dynamic_sprite_offsets 28,   1, 12
+
+K9Sprite2:
+	dynamic_sprite 7, K9Tiles2, 0, 0
+	dynamic_sprite_offsets 14, -15, 26
+	dynamic_sprite_offsets 22, -15, 18
+	dynamic_sprite_offsets 30, -15, 10
+	dynamic_sprite_offsets  6,   1, 34
+	dynamic_sprite_offsets 14,   1, 26
+	dynamic_sprite_offsets 22,   1, 18
+	dynamic_sprite_offsets 30,   1, 10
+
+K9Sprite3:
+	dynamic_sprite 8, K9Tiles3, 0, 0
+	dynamic_sprite_offsets  7, -15, 33
+	dynamic_sprite_offsets 15, -15, 25
+	dynamic_sprite_offsets 23, -15, 17
+	dynamic_sprite_offsets 31, -15,  9
+	dynamic_sprite_offsets  7,   1, 33
+	dynamic_sprite_offsets 15,   1, 25
+	dynamic_sprite_offsets 23,   1, 17
+	dynamic_sprite_offsets 31,   1,  9
+
+K9Sprite4:
+	dynamic_sprite 6, K9Tiles4, 0, 0
+	dynamic_sprite_offsets 13, -15, 27
+	dynamic_sprite_offsets 21, -15, 19
+	dynamic_sprite_offsets 29, -15, 11
+	dynamic_sprite_offsets 13,   1, 27
+	dynamic_sprite_offsets 21,   1, 19
+	dynamic_sprite_offsets 29,   1, 11
+
+K9Sprite5:
+	dynamic_sprite 7, K9Tiles5, 0, 0
+	dynamic_sprite_offsets 14, -15, 26
+	dynamic_sprite_offsets 22, -15, 18
+	dynamic_sprite_offsets 30, -15, 10
+	dynamic_sprite_offsets  9,   1, 31
+	dynamic_sprite_offsets 17,   1, 23
+	dynamic_sprite_offsets 25,   1, 15
+	dynamic_sprite_offsets 33,   1,  7
+
+K9Sprite6:
+	dynamic_sprite 2, K9Tiles6, 0, 0
+	dynamic_sprite_offsets 8, -19, 32
+	dynamic_sprite_offsets 8,  -3, 32
+
+K9Sprite7:
+	dynamic_sprite 4, K9Tiles7, 0, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets  8,   1, 32
+	dynamic_sprite_offsets 16,   1, 24
+
+K9Sprite8:
+	dynamic_sprite 5, K9Tiles8, 0, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets  8,   1, 32
+	dynamic_sprite_offsets 16,   1, 24
+
+K9Sprite9:
+	dynamic_sprite 7, K9Tiles9, 0, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 32, -15,  8
+	dynamic_sprite_offsets  8,   1, 32
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+K9Sprite10:
+	dynamic_sprite 4, K9Tiles10, 0, 0
+	dynamic_sprite_offsets  8, 1, 32
+	dynamic_sprite_offsets 16, 1, 24
+	dynamic_sprite_offsets 24, 1, 16
+	dynamic_sprite_offsets 32, 1,  8
+
+K9Sprite11:
+	dynamic_sprite 4, K9Tiles11, 0, 0
+	dynamic_sprite_offsets  8, 1, 32
+	dynamic_sprite_offsets 16, 1, 24
+	dynamic_sprite_offsets 24, 1, 16
+	dynamic_sprite_offsets 32, 1,  8
+
+INCBIN "baserom.gbc", $33672, $33714 - $33672
 
 ElmerFuddSprite0:
 	dynamic_sprite 8, ElmerFuddTiles0, 4, 0
@@ -29706,7 +29888,115 @@ ElmerFuddSprite13:
 	dynamic_sprite_offsets 14, -27, 22
 	dynamic_sprite_offsets 22, -27, 14
 
-INCBIN "baserom.gbc", $3385b, $33a3b - $3385b
+HuntingDogSprite0:
+	dynamic_sprite 8, HuntingDogTiles0, 0, 0
+	dynamic_sprite_offsets 10,  -6, 38
+	dynamic_sprite_offsets 18,  -6, 30
+	dynamic_sprite_offsets 26,  -6, 22
+	dynamic_sprite_offsets 34,  -5, 14
+	dynamic_sprite_offsets 15, -22, 33
+	dynamic_sprite_offsets 23, -22, 25
+	dynamic_sprite_offsets 42,  -8,  6
+	dynamic_sprite_offsets 34, -21, 14
+
+HuntingDogSprite1:
+	dynamic_sprite 8, HuntingDogTiles1, 0, 0
+	dynamic_sprite_offsets 14, -21, 34
+	dynamic_sprite_offsets 22, -21, 26
+	dynamic_sprite_offsets 14,  -5, 34
+	dynamic_sprite_offsets 22,  -5, 26
+	dynamic_sprite_offsets 30,  -4, 18
+	dynamic_sprite_offsets 38,  -4, 10
+	dynamic_sprite_offsets 42, -13,  6
+	dynamic_sprite_offsets 34, -20, 14
+
+HuntingDogSprite2:
+	dynamic_sprite 8, HuntingDogTiles2, 0, 0
+	dynamic_sprite_offsets 15, -19, 33
+	dynamic_sprite_offsets 15,  -3, 33
+	dynamic_sprite_offsets 23, -19, 25
+	dynamic_sprite_offsets 23,  -3, 25
+	dynamic_sprite_offsets 31,  -1, 17
+	dynamic_sprite_offsets 31, -17, 17
+	dynamic_sprite_offsets  7, -10, 41
+	dynamic_sprite_offsets 39,  -7,  9
+
+HuntingDogSprite3:
+	dynamic_sprite 7, HuntingDogTiles3, 0, 0
+	dynamic_sprite_offsets  7, -4, 41
+	dynamic_sprite_offsets 15, -4, 33
+	dynamic_sprite_offsets 23, -4, 25
+	dynamic_sprite_offsets 31, -4, 17
+	dynamic_sprite_offsets 39, -4,  9
+	dynamic_sprite_offsets 15, 12, 33
+	dynamic_sprite_offsets 23, 12, 25
+
+HuntingDogSprite4:
+	dynamic_sprite 8, HuntingDogTiles4, 0, 0
+	dynamic_sprite_offsets  9, -6, 39
+	dynamic_sprite_offsets 17, -6, 31
+	dynamic_sprite_offsets 25, -6, 23
+	dynamic_sprite_offsets 33, -6, 15
+	dynamic_sprite_offsets 41, -6,  7
+	dynamic_sprite_offsets  9, 10, 39
+	dynamic_sprite_offsets 17, 10, 31
+	dynamic_sprite_offsets 28, 10, 20
+
+HuntingDogSprite5:
+	dynamic_sprite 8, HuntingDogTiles5, 0, 0
+	dynamic_sprite_offsets 10, -9, 38
+	dynamic_sprite_offsets 18, -9, 30
+	dynamic_sprite_offsets  8,  7, 40
+	dynamic_sprite_offsets 16,  7, 32
+	dynamic_sprite_offsets 24,  7, 24
+	dynamic_sprite_offsets 26, -7, 22
+	dynamic_sprite_offsets 34, -7, 14
+	dynamic_sprite_offsets 42, -7,  6
+
+HuntingDogSprite6:
+	dynamic_sprite 1, HuntingDogTiles6, 0, 0
+	dynamic_sprite_offsets 8, -10, 40
+
+HuntingDogSprite7:
+	dynamic_sprite 2, HuntingDogTiles7, 0, 0
+	dynamic_sprite_offsets  8, -3, 40
+	dynamic_sprite_offsets 16, -3, 32
+
+HuntingDogSprite8:
+	dynamic_sprite 5, HuntingDogTiles8, 0, 0
+	dynamic_sprite_offsets  8, -6, 40
+	dynamic_sprite_offsets 16, -6, 32
+	dynamic_sprite_offsets 24, -6, 24
+	dynamic_sprite_offsets 32, -6, 16
+	dynamic_sprite_offsets 13, 10, 35
+
+HuntingDogSprite9:
+	dynamic_sprite 7, HuntingDogTiles9, 0, 0
+	dynamic_sprite_offsets  8, -10, 40
+	dynamic_sprite_offsets 16, -10, 32
+	dynamic_sprite_offsets  8,   6, 40
+	dynamic_sprite_offsets 16,   6, 32
+	dynamic_sprite_offsets 24,  -8, 24
+	dynamic_sprite_offsets 32,  -8, 16
+	dynamic_sprite_offsets 40,  -8,  8
+
+HuntingDogSprite10:
+	dynamic_sprite 5, HuntingDogTiles10, 0, 0
+	dynamic_sprite_offsets  9, 1, 39
+	dynamic_sprite_offsets 17, 1, 31
+	dynamic_sprite_offsets 25, 1, 23
+	dynamic_sprite_offsets 33, 1, 15
+	dynamic_sprite_offsets 41, 1,  7
+
+HuntingDogSprite11:
+	dynamic_sprite 5, HuntingDogTiles11, 0, 0
+	dynamic_sprite_offsets  7, 1, 41
+	dynamic_sprite_offsets 15, 1, 33
+	dynamic_sprite_offsets 23, 1, 25
+	dynamic_sprite_offsets 31, 1, 17
+	dynamic_sprite_offsets 39, 1,  9
+
+INCBIN "baserom.gbc", $33957, $33a3b - $33957
 
 TrainTrackDollySprite0:
 	dynamic_sprite 3, TrainTrackDollyTiles0, 4, 0
