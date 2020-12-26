@@ -17713,9 +17713,9 @@ HandleLeverSpringEntity:
 	ld a, [hli]
 	ld d, a
 	push hl
-	ld hl, $6eac
+	ld hl, LeverSpringOffSprite
 	jr z, .asm_6e95
-	ld hl, $6eba
+	ld hl, LeverSpringOnSprite
 .asm_6e95
 	call LoadOAMSpritesStandard
 	pop hl
@@ -17729,7 +17729,17 @@ HandleLeverSpringEntity:
 .asm_6ea9
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $6eac, $6ec8 - $6eac
+LeverSpringOffSprite:
+	dw Load3SubSprites
+	sub_sprite $74, $05, -8, -8
+	sub_sprite $76, $05,  0,  0
+	sub_sprite $78, $05,  8,  0
+
+LeverSpringOnSprite:
+	dw Load3SubSprites
+	sub_sprite $74, $25, 20, -8
+	sub_sprite $76, $25, 12,  0
+	sub_sprite $78, $25,  4,  0
 
 HandleHoverShipEntity:
 	ld a, [hli]
@@ -18231,7 +18241,7 @@ HandleDisguisedHunterEntity:
 	ld a, [$ffe4]
 	cp $18
 	jr nz, .asm_71e8
-	ld bc, $7244
+	ld bc, Data_7244
 	call Func_1868
 .asm_71e8
 	ld a, [$ffe5]
@@ -18239,11 +18249,11 @@ HandleDisguisedHunterEntity:
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
-	ld de, $7214
+	ld de, DisguisedHunterSprites
 	ld a, [$ffe5]
 	rra
 	jr nc, .asm_71fb
-	ld de, $7238
+	ld de, DisguisedHunterShootingSprites
 .asm_71fb
 	ld a, [$ffe4]
 	and $f8
@@ -18263,7 +18273,36 @@ HandleDisguisedHunterEntity:
 .asm_7211
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $7214, $724d - $7214
+DisguisedHunterSprites:
+	dw DisguisedHunterSprite0 + 1
+	dw DisguisedHunterSprite1 + 1
+	dw DisguisedHunterSprite2 + 1
+	dw DisguisedHunterSprite3 + 1
+	dw DisguisedHunterSprite4 + 1
+	dw DisguisedHunterSprite5 + 1
+	dw DisguisedHunterSprite0 + 1
+	dw DisguisedHunterSprite1 + 1
+	dw DisguisedHunterSprite2 + 1
+	dw DisguisedHunterSprite3 + 1
+	dw DisguisedHunterSprite4 + 1
+	dw DisguisedHunterSprite5 + 1
+	dw DisguisedHunterSprite0 + 1
+	dw DisguisedHunterSprite1 + 1
+	dw DisguisedHunterSprite2 + 1
+	dw DisguisedHunterSprite3 + 1
+	dw DisguisedHunterSprite4 + 1
+	dw DisguisedHunterSprite5 + 1
+
+DisguisedHunterShootingSprites:
+	dw DisguisedHunterShootingSprite0 + 1
+	dw DisguisedHunterShootingSprite1 + 1
+	dw DisguisedHunterShootingSprite2 + 1
+	dw DisguisedHunterShootingSprite2 + 1
+	dw DisguisedHunterShootingSprite1 + 1
+	dw DisguisedHunterShootingSprite0 + 1
+
+Data_7244: ; controls the bullet's trajectory?
+	db $00, $00, $02, $FC, $1C, $F7, $00, $BC, $70
 
 HandleHelicopterChairEntity:
 	ld a, [hli]
@@ -27885,7 +27924,28 @@ K9Tiles10:
 K9Tiles11:
 	INCBIN "gfx/entities/k9/frame_11.interleave.2bpp"
 
-INCBIN "baserom.gbc", $2d080, $2dae0 - $2d080
+INCBIN "baserom.gbc", $2d080, $2d3e0 - $2d080
+
+DisguisedHunterTiles0:
+	INCBIN "gfx/entities/disguised_hunter/frame_0.interleave.2bpp"
+DisguisedHunterTiles1:
+	INCBIN "gfx/entities/disguised_hunter/frame_1.interleave.2bpp"
+DisguisedHunterTiles2:
+	INCBIN "gfx/entities/disguised_hunter/frame_2.interleave.2bpp"
+DisguisedHunterTiles3:
+	INCBIN "gfx/entities/disguised_hunter/frame_3.interleave.2bpp"
+DisguisedHunterTiles4:
+	INCBIN "gfx/entities/disguised_hunter/frame_4.interleave.2bpp"
+DisguisedHunterTiles5:
+	INCBIN "gfx/entities/disguised_hunter/frame_5.interleave.2bpp"
+DisguisedHunterTiles6:
+	INCBIN "gfx/entities/disguised_hunter/frame_6.interleave.2bpp"
+DisguisedHunterTiles7:
+	INCBIN "gfx/entities/disguised_hunter/frame_7.interleave.2bpp"
+DisguisedHunterTiles8:
+	INCBIN "gfx/entities/disguised_hunter/frame_8.interleave.2bpp"
+
+INCBIN "baserom.gbc", $2d9c0, $2dae0 - $2d9c0
 
 SpaceStationBossShipTiles:
 	INCBIN "gfx/space_station/boss_ship_tiles.2bpp.lz"
@@ -29996,7 +30056,83 @@ HuntingDogSprite11:
 	dynamic_sprite_offsets 31, 1, 17
 	dynamic_sprite_offsets 39, 1,  9
 
-INCBIN "baserom.gbc", $33957, $33a3b - $33957
+INCBIN "baserom.gbc", $33957, $33972 - $33957
+
+DisguisedHunterSprite0:
+	dynamic_sprite 5, DisguisedHunterTiles0, 2, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+DisguisedHunterSprite1:
+	dynamic_sprite 5, DisguisedHunterTiles1, 2, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+DisguisedHunterSprite2:
+	dynamic_sprite 5, DisguisedHunterTiles2, 2, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+DisguisedHunterSprite3:
+	dynamic_sprite 5, DisguisedHunterTiles3, 2, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+DisguisedHunterSprite4:
+	dynamic_sprite 5, DisguisedHunterTiles4, 2, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+DisguisedHunterSprite5:
+	dynamic_sprite 5, DisguisedHunterTiles5, 2, 0
+	dynamic_sprite_offsets  8, -15, 32
+	dynamic_sprite_offsets 16, -15, 24
+	dynamic_sprite_offsets 24, -15, 16
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+
+DisguisedHunterShootingSprite0:
+	dynamic_sprite 5, DisguisedHunterTiles6, 2, 0
+	dynamic_sprite_offsets  8, -6, 32
+	dynamic_sprite_offsets 16, -6, 24
+	dynamic_sprite_offsets 24, -6, 16
+	dynamic_sprite_offsets 16, 10, 24
+	dynamic_sprite_offsets 24, 10, 16
+
+DisguisedHunterShootingSprite1:
+	dynamic_sprite 6, DisguisedHunterTiles7, 2, 0
+	dynamic_sprite_offsets  8, -6, 32
+	dynamic_sprite_offsets 16, -6, 24
+	dynamic_sprite_offsets 24, -6, 16
+	dynamic_sprite_offsets 32, -6,  8
+	dynamic_sprite_offsets 16, 10, 24
+	dynamic_sprite_offsets 24, 10, 16
+
+DisguisedHunterShootingSprite2:
+	dynamic_sprite 6, DisguisedHunterTiles8, 2, 0
+	dynamic_sprite_offsets  8, -6, 32
+	dynamic_sprite_offsets 16, -6, 24
+	dynamic_sprite_offsets 24, -6, 16
+	dynamic_sprite_offsets 32, -6,  8
+	dynamic_sprite_offsets 16, 10, 24
+	dynamic_sprite_offsets 24, 10, 16
+
+INCBIN "baserom.gbc", $33a1a, $33a3b - $33a1a
 
 TrainTrackDollySprite0:
 	dynamic_sprite 3, TrainTrackDollyTiles0, 4, 0
