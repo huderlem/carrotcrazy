@@ -16486,7 +16486,7 @@ HandleTazFemaleBossEntity:
 	inc hl
 	inc hl
 .asm_674d
-	ld de, $68a5
+	ld de, TazFemaleBossSprites
 	ld a, [hl]
 	cp $18
 	jp c, .asm_6806
@@ -16516,7 +16516,7 @@ HandleTazFemaleBossEntity:
 	inc hl
 	inc hl
 .asm_6777
-	ld de, $68a5
+	ld de, TazFemaleBossSprites
 	ld a, [hl]
 	cp $18
 	jp c, .asm_6806
@@ -16540,7 +16540,7 @@ HandleTazFemaleBossEntity:
 	ld a, [hl]
 	adc $00
 	ld [hli], a
-	ld de, $68a5
+	ld de, TazFemaleBossSprites
 	ld a, [hli]
 	and $03
 	cp $03
@@ -16734,7 +16734,23 @@ HandleTazFemaleBossEntity:
 .asm_68a2
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $68a5, $68c5 - $68a5
+TazFemaleBossSprites:
+	dw TazSprite0 + 1
+	dw TazSprite1 + 1
+	dw TazSprite2 + 1
+	dw TazSprite3 + 1
+	dw TazSprite4 + 1
+	dw TazSprite5 + 1
+	dw TazFemaleBossSprite0 + 1
+	dw TazFemaleBossSprite0 + 1
+	dw TazFemaleBossSprite0 + 1
+	dw TazFemaleBossSprite0 + 1
+	dw TazFemaleBossSprite1 + 1
+	dw TazFemaleBossSprite2 + 1
+	dw TazFemaleBossSprite3 + 1
+	dw TazFemaleBossSprite4 + 1
+	dw TazFemaleBossSprite5 + 1
+	dw TazFemaleBossSprite6 + 1
 
 HandleCageDropEntity:
 	ld a, [hli]
@@ -27711,7 +27727,22 @@ BalloonTiles4:
 BalloonTiles5:
 	INCBIN "gfx/entities/balloon/frame_5.interleave.2bpp"
 
-INCBIN "baserom.gbc", $2a880, $2ae40 - $2a880
+TazFemaleBossTiles0:
+	INCBIN "gfx/entities/taz_female_boss/frame_0.interleave.2bpp"
+TazFemaleBossTiles1:
+	INCBIN "gfx/entities/taz_female_boss/frame_1.interleave.2bpp"
+TazFemaleBossTiles2:
+	INCBIN "gfx/entities/taz_female_boss/frame_2.interleave.2bpp"
+TazFemaleBossTiles3:
+	INCBIN "gfx/entities/taz_female_boss/frame_3.interleave.2bpp"
+TazFemaleBossTiles4:
+	INCBIN "gfx/entities/taz_female_boss/frame_4.interleave.2bpp"
+TazFemaleBossTiles5:
+	INCBIN "gfx/entities/taz_female_boss/frame_5.interleave.2bpp"
+TazFemaleBossTiles6:
+	INCBIN "gfx/entities/taz_female_boss/frame_6.interleave.2bpp"
+
+INCBIN "baserom.gbc", $2ac40, $2ae40 - $2ac40
 
 MarvinMartianTiles0:
 	INCBIN "gfx/entities/marvin_martian/frame_0.interleave.2bpp"
@@ -29279,7 +29310,58 @@ BalloonSprite5:
 	dynamic_sprite_offsets 1,  -1,  0
 	dynamic_sprite_offsets 9,  -1, -8
 
-INCBIN "baserom.gbc", $3331b, $333c0 - $3331b
+TazFemaleBossSprite0:
+	dynamic_sprite 6, TazFemaleBossTiles0, 2, 0
+	dynamic_sprite_offsets  8, -15, 28
+	dynamic_sprite_offsets 16, -15, 20
+	dynamic_sprite_offsets 24, -15, 12
+	dynamic_sprite_offsets  8,   1, 28
+	dynamic_sprite_offsets 16,   1, 20
+	dynamic_sprite_offsets 24,   1, 12
+
+TazFemaleBossSprite1:
+	dynamic_sprite 4, TazFemaleBossTiles1, 3, 1
+	dynamic_sprite_offsets  0, 17,   0
+	dynamic_sprite_offsets  8, 17,  -8
+	dynamic_sprite_offsets 16, 17, -16
+	dynamic_sprite_offsets 24, 17, -24
+
+TazFemaleBossSprite2:
+	dynamic_sprite 4, TazFemaleBossTiles2, 3, 1
+	dynamic_sprite_offsets  0, 17,   0
+	dynamic_sprite_offsets  8, 17,  -8
+	dynamic_sprite_offsets 16, 17, -16
+	dynamic_sprite_offsets 24, 17, -24
+
+TazFemaleBossSprite3:
+	dynamic_sprite 4, TazFemaleBossTiles3, 3, 1
+	dynamic_sprite_offsets  0, 17,   0
+	dynamic_sprite_offsets  8, 17,  -8
+	dynamic_sprite_offsets 16, 17, -16
+	dynamic_sprite_offsets 24, 17, -24
+
+TazFemaleBossSprite4:
+	dynamic_sprite 4, TazFemaleBossTiles4, 3, 1
+	dynamic_sprite_offsets  0, 17,   0
+	dynamic_sprite_offsets  8, 17,  -8
+	dynamic_sprite_offsets 16, 17, -16
+	dynamic_sprite_offsets 24, 17, -24
+
+TazFemaleBossSprite5:
+	dynamic_sprite 4, TazFemaleBossTiles5, 3, 1
+	dynamic_sprite_offsets  0, 17,   0
+	dynamic_sprite_offsets  8, 17,  -8
+	dynamic_sprite_offsets 16, 17, -16
+	dynamic_sprite_offsets 24, 17, -24
+
+TazFemaleBossSprite6:
+	dynamic_sprite 4, TazFemaleBossTiles6, 3, 1
+	dynamic_sprite_offsets  0, 17,   0
+	dynamic_sprite_offsets  8, 17,  -8
+	dynamic_sprite_offsets 16, 17, -16
+	dynamic_sprite_offsets 24, 17, -24
+
+INCBIN "baserom.gbc", $3338a, $333c0 - $3338a
 
 MarvinMartianSprite0:
 	dynamic_sprite 6, MarvinMartianTiles0, 3, 0
