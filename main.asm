@@ -18406,7 +18406,7 @@ HandleHelicopterChairEntity:
 	call Func_2326
 	pop hl
 .asm_72e4
-	ld hl, $7333
+	ld hl, HelicopterChairSprite
 	ld d, b
 	ld b, e
 	call LoadOAMSpritesStandard
@@ -18455,7 +18455,24 @@ HandleHelicopterChairEntity:
 .asm_7330
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $7333, $7375 - $7333
+HelicopterChairSprite:
+	dw Load16SubSprites
+	sub_sprite $68, $05, 12, -47
+	sub_sprite $6A, $05, 20, -47
+	sub_sprite $6C, $05, 12, -31
+	sub_sprite $6E, $05, 20, -31
+	sub_sprite $70, $05, 12, -15
+	sub_sprite $72, $05, 20, -15
+	sub_sprite $74, $05, 12,   1
+	sub_sprite $76, $05, 20,   1
+	sub_sprite $68, $25,  4, -47
+	sub_sprite $6A, $25, -4, -47
+	sub_sprite $6C, $25,  4, -31
+	sub_sprite $6E, $25, -4, -31
+	sub_sprite $70, $25,  4, -15
+	sub_sprite $72, $25, -4, -15
+	sub_sprite $74, $25,  4,   1
+	sub_sprite $76, $25, -4,   1
 
 HandleRockTeeterTotterEntity:
 	push hl
@@ -18711,9 +18728,9 @@ HandleBoomBarrierEntity:
 	and $38
 	srl a
 	srl a
-	add $e9
+	add (BoomBarrierSprites & $ff)
 	ld e, a
-	ld a, $74
+	ld a, (BoomBarrierSprites >> 8)
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -18725,7 +18742,15 @@ HandleBoomBarrierEntity:
 .asm_74e6
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $74e9, $74f9 - $74e9
+BoomBarrierSprites:
+	dw BoomBarrierSprite0 + 1
+	dw BoomBarrierSprite0 + 1
+	dw BoomBarrierSprite0 + 1
+	dw BoomBarrierSprite1 + 1
+	dw BoomBarrierSprite2 + 1
+	dw BoomBarrierSprite3 + 1
+	dw BoomBarrierSprite2 + 1
+	dw BoomBarrierSprite1 + 1
 
 Func_74f9:
 	push hl
@@ -19263,6 +19288,7 @@ Func_795e:
 	ld bc, 5
 	call AddScore
 	ret
+
 Func_7b8a:
 	ld hl, $ddd9
 	ld a, [hli]
@@ -19332,7 +19358,7 @@ HandleLadderEntity:
 	push hl
 	ld d, b
 	ld b, e
-	ld hl, $7dc2
+	ld hl, LadderSprite
 	call LoadOAMSpritesStandard
 	pop hl
 	pop de
@@ -19552,7 +19578,22 @@ HandleLadderEntity:
 .asm_7dbf
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $7dc2, $7dfc - $7dc2
+LadderSprite:
+	dw Load14SubSprites
+	sub_sprite $66, $05, 14, -64
+	sub_sprite $68, $05, 22, -64
+	sub_sprite $68, $25,  6, -64
+	sub_sprite $66, $05, 14, -48
+	sub_sprite $68, $05, 22, -48
+	sub_sprite $68, $25,  6, -48
+	sub_sprite $66, $05, 14, -32
+	sub_sprite $68, $05, 22, -32
+	sub_sprite $68, $25,  6, -32
+	sub_sprite $66, $05, 14, -16
+	sub_sprite $68, $05, 22, -16
+	sub_sprite $68, $25,  6, -16
+	sub_sprite $6A, $05, 18,   0
+	sub_sprite $6A, $25, 10,   0
 
 ResetInitialData:
 	call WaitUntilSafeToAccessVRAM
@@ -27100,7 +27141,14 @@ DirtPathDestructionTiles2:
 DirtPathDestructionTiles3:
 	INCBIN "gfx/entities/dirt_path_destruction/frame_3.interleave.2bpp"
 
-INCBIN "baserom.gbc", $20b40, $20d60 - $20b40
+BoomBarrierTiles0:
+	INCBIN "gfx/entities/boom_barrier/frame_0.interleave.2bpp"
+BoomBarrierTiles1:
+	INCBIN "gfx/entities/boom_barrier/frame_1.interleave.2bpp"
+BoomBarrierTiles2:
+	INCBIN "gfx/entities/boom_barrier/frame_2.interleave.2bpp"
+BoomBarrierTiles3:
+	INCBIN "gfx/entities/boom_barrier/frame_3.interleave.2bpp"
 
 SpaceStationLevelTiles:
 	INCBIN "gfx/space_station/level_tiles.2bpp.lz"
@@ -30197,7 +30245,34 @@ DirtPathDestructionSprite3:
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
-INCBIN "baserom.gbc", $33ab0, $34000 - $33ab0
+BoomBarrierSprite0:
+	dynamic_sprite 2, BoomBarrierTiles0, 1, 0
+	dynamic_sprite_offsets 8,  1, 0
+	dynamic_sprite_offsets 8, 17, 0
+
+BoomBarrierSprite1:
+	dynamic_sprite 4, BoomBarrierTiles1, 1, 0
+	dynamic_sprite_offsets 8, -31, 0
+	dynamic_sprite_offsets 8, -15, 0
+	dynamic_sprite_offsets 8,   1, 0
+	dynamic_sprite_offsets 8,  17, 0
+
+BoomBarrierSprite2:
+	dynamic_sprite 5, BoomBarrierTiles2, 1, 0
+	dynamic_sprite_offsets 8, -47, 0
+	dynamic_sprite_offsets 8, -31, 0
+	dynamic_sprite_offsets 8, -15, 0
+	dynamic_sprite_offsets 8,   1, 0
+	dynamic_sprite_offsets 8,  17, 0
+
+BoomBarrierSprite3:
+	dynamic_sprite 6, BoomBarrierTiles3, 1, 0
+	dynamic_sprite_offsets 8, -63, 0
+	dynamic_sprite_offsets 8, -47, 0
+	dynamic_sprite_offsets 8, -31, 0
+	dynamic_sprite_offsets 8, -15, 0
+	dynamic_sprite_offsets 8,   1, 0
+	dynamic_sprite_offsets 8,  17, 0
 
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
