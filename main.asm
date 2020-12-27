@@ -30294,7 +30294,43 @@ TreasureIslandBossBackgroundTilemap:
 
 SECTION "ROM Bank $0E", ROMX[$4000], BANK[$E]
 
-INCBIN "baserom.gbc", $38000, $3b9ea - $38000
+INCBIN "baserom.gbc", $38000, $3b62d - $38000
+
+Data_3b62d:
+	db $18
+	dbw Bank(BugsPushingSprite7), BugsPushingSprite7 + 1
+	db $18
+	dbw Bank(BugsPushingSprite9), BugsPushingSprite9 + 1
+	db $18
+	dbw Bank(BugsPushingSprite11), BugsPushingSprite11 + 1
+	db $18
+	dbw Bank(BugsPushingSprite13), BugsPushingSprite13 + 1
+
+INCBIN "baserom.gbc", $3b63d, $3b846 - $3b63d
+
+Data_3b846:
+	db $08
+	dbw Bank(BugsDiggingSprite0), BugsDiggingSprite0 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite1), BugsDiggingSprite1 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite0), BugsDiggingSprite0 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite1), BugsDiggingSprite1 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite2), BugsDiggingSprite2 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite3), BugsDiggingSprite3 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite4), BugsDiggingSprite4 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite5), BugsDiggingSprite5 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite6), BugsDiggingSprite6 + 1
+	db $08
+	dbw Bank(BugsDiggingSprite7), BugsDiggingSprite7 + 1
+
+INCBIN "baserom.gbc", $3b86e, $3b9ea - $3b86e
 
 TreasureIslandBossWaterLogTiles:
 	INCBIN "gfx/treasure_island/boss_water_log.2bpp.lz"
@@ -30313,7 +30349,217 @@ InfogramesCopyrightTilemap:
 
 SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
-INCBIN "baserom.gbc", $3C000, $3eec7 - $3C000
+BugsDiggingTiles0:
+	INCBIN "gfx/player/bugs_digging/frame_0.interleave.2bpp"
+BugsDiggingTiles1:
+	INCBIN "gfx/player/bugs_digging/frame_1.interleave.2bpp"
+BugsDiggingTiles2:
+	INCBIN "gfx/player/bugs_digging/frame_2.interleave.2bpp"
+BugsDiggingTiles3:
+	INCBIN "gfx/player/bugs_digging/frame_3.interleave.2bpp"
+BugsDiggingTiles4:
+	INCBIN "gfx/player/bugs_digging/frame_4.interleave.2bpp"
+BugsDiggingTiles5:
+	INCBIN "gfx/player/bugs_digging/frame_5.interleave.2bpp"
+BugsDiggingTiles6:
+	INCBIN "gfx/player/bugs_digging/frame_6.interleave.2bpp"
+BugsDiggingTiles7:
+	INCBIN "gfx/player/bugs_digging/frame_7.interleave.2bpp"
+
+BugsPushingTiles0:
+	INCBIN "gfx/player/bugs_pushing/frame_0.interleave.2bpp"
+BugsPushingTiles1:
+	INCBIN "gfx/player/bugs_pushing/frame_1.interleave.2bpp"
+BugsPushingTiles2:
+	INCBIN "gfx/player/bugs_pushing/frame_2.interleave.2bpp"
+BugsPushingTiles3:
+	INCBIN "gfx/player/bugs_pushing/frame_3.interleave.2bpp"
+
+LolaUmbrellaTiles0:
+	INCBIN "gfx/player/lola_umbrella/frame_0.interleave.2bpp"
+LolaUmbrellaTiles1:
+	INCBIN "gfx/player/lola_umbrella/frame_1.interleave.2bpp"
+LolaUmbrellaTiles2:
+	INCBIN "gfx/player/lola_umbrella/frame_2.interleave.2bpp"
+
+INCBIN "baserom.gbc", $3cc20, $3ea20 - $3cc20
+
+BugsDiggingSprite0:
+	dynamic_sprite_2 6, BugsDiggingTiles0, 5, 0
+	dynamic_sprite_offsets -7,   0, 24
+	dynamic_sprite_offsets  1,   0, 16
+	dynamic_sprite_offsets  9,   0,  8
+	dynamic_sprite_offsets 17,   0,  0
+	dynamic_sprite_offsets  7, -16, 10
+	dynamic_sprite_offsets 15, -16,  2
+
+BugsDiggingSprite1:
+	dynamic_sprite_2 6, BugsDiggingTiles1, 5, 0
+	dynamic_sprite_offsets -7,   0, 24
+	dynamic_sprite_offsets  1,   0, 16
+	dynamic_sprite_offsets  9,   0,  8
+	dynamic_sprite_offsets 17,   0,  0
+	dynamic_sprite_offsets  7, -16, 10
+	dynamic_sprite_offsets 15, -16,  2
+
+BugsDiggingSprite2:
+	dynamic_sprite_2 5, BugsDiggingTiles2, 5, 0
+	dynamic_sprite_offsets  -4,  0, 21
+	dynamic_sprite_offsets   4,  0, 13
+	dynamic_sprite_offsets  12,  0,  5
+	dynamic_sprite_offsets  20,  0, -3
+	dynamic_sprite_offsets -12, 13, 29
+
+BugsDiggingSprite3:
+	dynamic_sprite_2 4, BugsDiggingTiles3, 5, 0
+	dynamic_sprite_offsets -10, 0, 27
+	dynamic_sprite_offsets  -2, 0, 19
+	dynamic_sprite_offsets   6, 0, 11
+	dynamic_sprite_offsets  14, 0,  3
+
+BugsDiggingSprite4:
+	dynamic_sprite_2 3, BugsDiggingTiles4, 5, 0
+	dynamic_sprite_offsets -2, 0, 19
+	dynamic_sprite_offsets  6, 0, 11
+	dynamic_sprite_offsets 14, 0,  3
+
+BugsDiggingSprite5:
+	dynamic_sprite_2 3, BugsDiggingTiles5, 5, 0
+	dynamic_sprite_offsets -1, 0, 18
+	dynamic_sprite_offsets  7, 0, 10
+	dynamic_sprite_offsets 15, 0,  2
+
+BugsDiggingSprite6:
+	dynamic_sprite_2 4, BugsDiggingTiles6, 5, 0
+	dynamic_sprite_offsets -4, 1, 21
+	dynamic_sprite_offsets  4, 1, 13
+	dynamic_sprite_offsets 12, 1,  5
+	dynamic_sprite_offsets 20, 1, -3
+
+BugsDiggingSprite7:
+	dynamic_sprite_2 4, BugsDiggingTiles7, 5, 0
+	dynamic_sprite_offsets -4, 1, 21
+	dynamic_sprite_offsets  4, 1, 13
+	dynamic_sprite_offsets 12, 1,  5
+	dynamic_sprite_offsets 20, 1, -3
+
+BugsPushingSprite0:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite1:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite2:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite3:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite4:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite5:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite6:
+	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+
+BugsPushingSprite7:
+	dynamic_sprite_2 9, BugsPushingTiles0, 5, 0
+	dynamic_sprite_offsets -23,   1, 40
+	dynamic_sprite_offsets -15,   1, 32
+	dynamic_sprite_offsets  -7,   1, 24
+	dynamic_sprite_offsets   1,   1, 16
+	dynamic_sprite_offsets  -9, -15, 26
+	dynamic_sprite_offsets  -1, -15, 18
+	dynamic_sprite_offsets   7, -15, 10
+	dynamic_sprite_offsets  15, -15,  2
+	dynamic_sprite_offsets   6, -31, 11
+
+BugsPushingSprite8:
+	dynamic_sprite_2 0, BugsPushingTiles1, 5, 0
+
+BugsPushingSprite9:
+	dynamic_sprite_2 8, BugsPushingTiles1, 5, 0
+	dynamic_sprite_offsets  -8, -15, 25
+	dynamic_sprite_offsets   0, -15, 17
+	dynamic_sprite_offsets   8, -15,  9
+	dynamic_sprite_offsets  16, -15,  1
+	dynamic_sprite_offsets -11,   1, 28
+	dynamic_sprite_offsets  -3,   1, 20
+	dynamic_sprite_offsets  -1, -31, 18
+	dynamic_sprite_offsets   7, -31, 10
+
+BugsPushingSprite10:
+	dynamic_sprite_2 0, BugsPushingTiles2, 5, 0
+
+BugsPushingSprite11:
+	dynamic_sprite_2 9, BugsPushingTiles2, 5, 0
+	dynamic_sprite_offsets -23,   1, 40
+	dynamic_sprite_offsets -15,   1, 32
+	dynamic_sprite_offsets  -7,   1, 24
+	dynamic_sprite_offsets   1,   1, 16
+	dynamic_sprite_offsets  -9, -15, 26
+	dynamic_sprite_offsets  -1, -15, 18
+	dynamic_sprite_offsets   7, -15, 10
+	dynamic_sprite_offsets  15, -15,  2
+	dynamic_sprite_offsets   6, -31, 11
+
+BugsPushingSprite12:
+	dynamic_sprite_2 0, BugsPushingTiles3, 5, 0
+
+BugsPushingSprite13:
+	dynamic_sprite_2 8, BugsPushingTiles3, 5, 0
+	dynamic_sprite_offsets -11, -15, 28
+	dynamic_sprite_offsets  -3, -15, 20
+	dynamic_sprite_offsets   5, -15, 12
+	dynamic_sprite_offsets  13, -15,  4
+	dynamic_sprite_offsets -11,   1, 28
+	dynamic_sprite_offsets  -3,   1, 20
+	dynamic_sprite_offsets  -1, -31, 18
+	dynamic_sprite_offsets   7, -31, 10
+
+LolaUmbrellaSprite0:
+	dynamic_sprite_2 0, LolaUmbrellaTiles0, 5, 0
+
+LolaUmbrellaSprite1:
+	dynamic_sprite_2 8, LolaUmbrellaTiles0, 5, 0
+	dynamic_sprite_offsets  7, -17, 10
+	dynamic_sprite_offsets 15, -17,  2
+	dynamic_sprite_offsets  7,  -1, 10
+	dynamic_sprite_offsets 15,  -1,  2
+	dynamic_sprite_offsets 16, -26,  1
+	dynamic_sprite_offsets 24, -26, -7
+	dynamic_sprite_offsets  0, -33, 17
+	dynamic_sprite_offsets  8, -33,  9
+
+LolaUmbrellaSprite2:
+	dynamic_sprite_2 10, LolaUmbrellaTiles1, 5, 0
+	dynamic_sprite_offsets  5, -14, 12
+	dynamic_sprite_offsets 13, -14,  4
+	dynamic_sprite_offsets  5,   2, 12
+	dynamic_sprite_offsets 13,   2,  4
+	dynamic_sprite_offsets  1, -30, 16
+	dynamic_sprite_offsets  9, -30,  8
+	dynamic_sprite_offsets 17, -30,  0
+	dynamic_sprite_offsets  8, -46,  9
+	dynamic_sprite_offsets 16, -46,  1
+	dynamic_sprite_offsets 24, -46, -7
+
+LolaUmbrellaSprite3:
+	dynamic_sprite_2 10, LolaUmbrellaTiles2, 5, 0
+	dynamic_sprite_offsets  4, -12, 13
+	dynamic_sprite_offsets 12, -12,  5
+	dynamic_sprite_offsets  4,   4, 13
+	dynamic_sprite_offsets 12,   4,  5
+	dynamic_sprite_offsets  1, -28, 16
+	dynamic_sprite_offsets  9, -28,  8
+	dynamic_sprite_offsets 17, -28,  0
+	dynamic_sprite_offsets  8, -44,  9
+	dynamic_sprite_offsets 16, -44,  1
+	dynamic_sprite_offsets 24, -44, -7
+
+INCBIN "baserom.gbc", $3eb91, $3eec7 - $3eb91
 
 FuddForestBossLevelTiles:
 	INCBIN "gfx/fudd_forest/boss_level_tiles.2bpp.lz"
