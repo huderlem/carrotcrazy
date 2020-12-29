@@ -70,7 +70,7 @@ sub_sprite: MACRO
 ; \2: gfx address
 ; \3: gbc palette id
 ; \4: gb palette id
-dynamic_sprite: MACRO
+dynamic_sprite_8: MACRO
 	db ((\4 & $1) << 4) | (\3 & $7)
 	dw ((Bank(\2) - $8) << 14) | ((\2) & $3ff0) | (\1)
 	ENDM
@@ -79,9 +79,9 @@ dynamic_sprite: MACRO
 ; \2: gfx address
 ; \3: gbc palette id
 ; \4: gb palette id
-dynamic_sprite_2: MACRO
+dynamic_sprite: MACRO
 	db ((\4 & $1) << 4) | (\3 & $7)
-	dw ((Bank(\2) - $e) << 14) | ((\2) & $3ff0) | (\1)
+	dw ((\2) & $fff0) | (\1)
 	ENDM
 
 ; \1: x offset

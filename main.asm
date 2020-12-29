@@ -28238,112 +28238,112 @@ TazZooBossMap:
 	INCBIN "data/levels/taz_zoo_boss.vdmap.lz"
 
 TweetyESprite0:
-	dynamic_sprite 2, TweetyLetterETiles, 5, 0
+	dynamic_sprite_8 2, TweetyLetterETiles, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyXSprite0:
-	dynamic_sprite 2, TweetyLetterXTiles, 5, 0
+	dynamic_sprite_8 2, TweetyLetterXTiles, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyTSprite0:
-	dynamic_sprite 2, TweetyLetterTTiles, 5, 0
+	dynamic_sprite_8 2, TweetyLetterTTiles, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyRSprite0:
-	dynamic_sprite 2, TweetyLetterRTiles, 5, 0
+	dynamic_sprite_8 2, TweetyLetterRTiles, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyASprite0:
-	dynamic_sprite 2, TweetyLetterATiles, 5, 0
+	dynamic_sprite_8 2, TweetyLetterATiles, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 TweetyHeartSprite0:
-	dynamic_sprite 2, TweetyHeartTiles, 7, 0
+	dynamic_sprite_8 2, TweetyHeartTiles, 7, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 Tweety1UpSprite0:
-	dynamic_sprite 2, Tweety1UpTiles, 5, 0
+	dynamic_sprite_8 2, Tweety1UpTiles, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite0:
-	dynamic_sprite 2, ClapboardTiles0, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles0, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite1:
-	dynamic_sprite 2, ClapboardTiles1, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles1, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite2:
-	dynamic_sprite 2, ClapboardTiles2, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles2, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite3:
-	dynamic_sprite 2, ClapboardTiles3, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles3, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite4:
-	dynamic_sprite 2, ClapboardTiles4, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles4, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite5:
-	dynamic_sprite 2, ClapboardTiles5, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles5, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite6:
-	dynamic_sprite 2, ClapboardTiles6, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles6, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite7:
-	dynamic_sprite 2, ClapboardTiles7, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles7, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 ClapboardSprite8:
-	dynamic_sprite 2, ClapboardTiles8, 5, 0
+	dynamic_sprite_8 2, ClapboardTiles8, 5, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 HabaneroCarrotSprite0:
-	dynamic_sprite 2, HabaneroCarrotTiles0, 6, 0
+	dynamic_sprite_8 2, HabaneroCarrotTiles0, 6, 0
 	dynamic_sprite_offsets  8, 0, 16
 	dynamic_sprite_offsets 16, 0,  8
 
 SuperCarrotSprite0:
-	dynamic_sprite 2, SuperCarrotTiles0, 7, 0
+	dynamic_sprite_8 2, SuperCarrotTiles0, 7, 0
 	dynamic_sprite_offsets  8, -3, 16
 	dynamic_sprite_offsets 16, -3,  8
 
 SuperCarrotSprite1:
-	dynamic_sprite 2, SuperCarrotTiles1, 7, 0
+	dynamic_sprite_8 2, SuperCarrotTiles1, 7, 0
 	dynamic_sprite_offsets  8, -2, 16
 	dynamic_sprite_offsets 16, -2,  8
 
 SuperCarrotSprite2:
-	dynamic_sprite 2, SuperCarrotTiles2, 7, 0
+	dynamic_sprite_8 2, SuperCarrotTiles2, 7, 0
 	dynamic_sprite_offsets  8, -1, 16
 	dynamic_sprite_offsets 16, -1,  8
 
 SuperCarrotSprite3:
-	dynamic_sprite 2, SuperCarrotTiles3, 7, 0
+	dynamic_sprite_8 2, SuperCarrotTiles3, 7, 0
 	dynamic_sprite_offsets  8,  0, 16
 	dynamic_sprite_offsets 16,  0,  8
 
 DaffyDuckSprite0:
-	dynamic_sprite 6, DaffyDuckTiles0, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles0, 1, 0
 	dynamic_sprite_offsets 18, -15, 16
 	dynamic_sprite_offsets 26, -14,  8
 	dynamic_sprite_offsets 32, -12,  2
@@ -28352,7 +28352,7 @@ DaffyDuckSprite0:
 	dynamic_sprite_offsets 24,   1, 10
 
 DaffyDuckSprite1:
-	dynamic_sprite 6, DaffyDuckTiles1, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles1, 1, 0
 	dynamic_sprite_offsets 21, -15, 13
 	dynamic_sprite_offsets 29, -15,  5
 	dynamic_sprite_offsets 37, -15, -3
@@ -28361,7 +28361,7 @@ DaffyDuckSprite1:
 	dynamic_sprite_offsets 28,   1,  6
 
 DaffyDuckSprite2:
-	dynamic_sprite 6, DaffyDuckTiles2, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles2, 1, 0
 	dynamic_sprite_offsets 18, -15, 16
 	dynamic_sprite_offsets 26, -15,  8
 	dynamic_sprite_offsets 34, -15,  0
@@ -28370,7 +28370,7 @@ DaffyDuckSprite2:
 	dynamic_sprite_offsets 26,   1,  8
 
 DaffyDuckSprite3:
-	dynamic_sprite 6, DaffyDuckTiles3, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles3, 1, 0
 	dynamic_sprite_offsets 18, -15, 16
 	dynamic_sprite_offsets 26, -15,  8
 	dynamic_sprite_offsets 30, -11,  4
@@ -28379,7 +28379,7 @@ DaffyDuckSprite3:
 	dynamic_sprite_offsets 24,   1, 10
 
 DaffyDuckSprite4:
-	dynamic_sprite 6, DaffyDuckTiles4, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles4, 1, 0
 	dynamic_sprite_offsets 19, -15, 15
 	dynamic_sprite_offsets 27, -15,  7
 	dynamic_sprite_offsets 35, -15, -1
@@ -28388,7 +28388,7 @@ DaffyDuckSprite4:
 	dynamic_sprite_offsets 29,   1,  5
 
 DaffyDuckSprite5:
-	dynamic_sprite 6, DaffyDuckTiles5, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles5, 1, 0
 	dynamic_sprite_offsets 20, -15, 14
 	dynamic_sprite_offsets 28, -15,  6
 	dynamic_sprite_offsets 36, -15, -2
@@ -28397,14 +28397,14 @@ DaffyDuckSprite5:
 	dynamic_sprite_offsets 27,   1,  7
 
 DaffyDuckSprite6:
-	dynamic_sprite 4, DaffyDuckTiles6, 1, 0
+	dynamic_sprite_8 4, DaffyDuckTiles6, 1, 0
 	dynamic_sprite_offsets 16, -15, 18
 	dynamic_sprite_offsets 10,   1, 24
 	dynamic_sprite_offsets 18,   1, 16
 	dynamic_sprite_offsets 26,   1,  8
 
 DaffyDuckSprite7:
-	dynamic_sprite 6, DaffyDuckTiles7, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles7, 1, 0
 	dynamic_sprite_offsets 12, -15, 22
 	dynamic_sprite_offsets 20, -15, 14
 	dynamic_sprite_offsets 28, -15,  6
@@ -28413,7 +28413,7 @@ DaffyDuckSprite7:
 	dynamic_sprite_offsets 28,   1,  6
 
 DaffyDuckSprite8:
-	dynamic_sprite 6, DaffyDuckTiles8, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles8, 1, 0
 	dynamic_sprite_offsets 11, -15, 23
 	dynamic_sprite_offsets 19, -15, 15
 	dynamic_sprite_offsets 27, -15,  7
@@ -28422,7 +28422,7 @@ DaffyDuckSprite8:
 	dynamic_sprite_offsets 27,   1,  7
 
 DaffyDuckSprite9:
-	dynamic_sprite 6, DaffyDuckTiles9, 1, 0
+	dynamic_sprite_8 6, DaffyDuckTiles9, 1, 0
 	dynamic_sprite_offsets 10, -15, 24
 	dynamic_sprite_offsets 18, -15, 16
 	dynamic_sprite_offsets 26, -15,  8
@@ -28431,19 +28431,19 @@ DaffyDuckSprite9:
 	dynamic_sprite_offsets 26,   1,  8
 
 DaffyDuckSprite10:
-	dynamic_sprite 3, DaffyDuckTiles10, 1, 0
+	dynamic_sprite_8 3, DaffyDuckTiles10, 1, 0
 	dynamic_sprite_offsets  9, 1, 25
 	dynamic_sprite_offsets 17, 1, 17
 	dynamic_sprite_offsets 25, 1,  9
 
 DaffyDuckSprite11:
-	dynamic_sprite 3, DaffyDuckTiles11, 1, 0
+	dynamic_sprite_8 3, DaffyDuckTiles11, 1, 0
 	dynamic_sprite_offsets  8, -15, 26
 	dynamic_sprite_offsets 16, -15, 18
 	dynamic_sprite_offsets  8,  1, 26
 
 DaffyDuckSprite12:
-	dynamic_sprite 5, DaffyDuckTiles12, 1, 0
+	dynamic_sprite_8 5, DaffyDuckTiles12, 1, 0
 	dynamic_sprite_offsets  8, -15, 26
 	dynamic_sprite_offsets 16, -15, 18
 	dynamic_sprite_offsets  8,   1, 26
@@ -28453,21 +28453,21 @@ DaffyDuckSprite12:
 INCBIN "baserom.gbc", $329d6, $329d6 - $329d6
 
 FireHydrantWaterSprite0:
-	dynamic_sprite 4, FireHydrantWaterTiles0, 4, 0
+	dynamic_sprite_8 4, FireHydrantWaterTiles0, 4, 0
 	dynamic_sprite_offsets  8, 14, 32
 	dynamic_sprite_offsets 16, 14, 24
 	dynamic_sprite_offsets 24, 14, 16
 	dynamic_sprite_offsets 32, 14,  8
 
 FireHydrantWaterSprite1:
-	dynamic_sprite 4, FireHydrantWaterTiles1, 4, 0
+	dynamic_sprite_8 4, FireHydrantWaterTiles1, 4, 0
 	dynamic_sprite_offsets  8, 14, 32
 	dynamic_sprite_offsets 16, 14, 24
 	dynamic_sprite_offsets 24, 14, 16
 	dynamic_sprite_offsets 32, 14,  8
 
 FireHydrantWaterSprite2:
-	dynamic_sprite 4, FireHydrantWaterTiles2, 4, 0
+	dynamic_sprite_8 4, FireHydrantWaterTiles2, 4, 0
 	dynamic_sprite_offsets  8, 14, 32
 	dynamic_sprite_offsets 16, 14, 24
 	dynamic_sprite_offsets 24, 14, 16
@@ -28476,18 +28476,18 @@ FireHydrantWaterSprite2:
 INCBIN "baserom.gbc", $32a03, $32a15 - $32a03
 
 BrickThrowerSprite0:
-	dynamic_sprite 2, BrickThrowerTiles0, 3, 0
+	dynamic_sprite_8 2, BrickThrowerTiles0, 3, 0
 	dynamic_sprite_offsets 11, 1, 15
 	dynamic_sprite_offsets 19, 1,  7
 
 BrickThrowerSprite1:
-	dynamic_sprite 3, BrickThrowerTiles1, 3, 0
+	dynamic_sprite_8 3, BrickThrowerTiles1, 3, 0
 	dynamic_sprite_offsets  3, 1, 23
 	dynamic_sprite_offsets 11, 1, 15
 	dynamic_sprite_offsets 19, 1,  7
 
 BrickThrowerSprite2:
-	dynamic_sprite 5, BrickThrowerTiles2, 3, 0
+	dynamic_sprite_8 5, BrickThrowerTiles2, 3, 0
 	dynamic_sprite_offsets 11, -15, 15
 	dynamic_sprite_offsets 19, -15,  7
 	dynamic_sprite_offsets  3,   1, 23
@@ -28495,7 +28495,7 @@ BrickThrowerSprite2:
 	dynamic_sprite_offsets 19,   1,  7
 
 BrickThrowerSprite3:
-	dynamic_sprite 5, BrickThrowerTiles3, 3, 0
+	dynamic_sprite_8 5, BrickThrowerTiles3, 3, 0
 	dynamic_sprite_offsets  8, -15, 18
 	dynamic_sprite_offsets 16, -15, 10
 	dynamic_sprite_offsets  8,   1, 18
@@ -28503,7 +28503,7 @@ BrickThrowerSprite3:
 	dynamic_sprite_offsets 24,   1,  2
 
 BrickThrowerSprite4:
-	dynamic_sprite 5, BrickThrowerTiles4, 3, 0
+	dynamic_sprite_8 5, BrickThrowerTiles4, 3, 0
 	dynamic_sprite_offsets 10, -15, 16
 	dynamic_sprite_offsets 18, -15,  8
 	dynamic_sprite_offsets 26, -15,  0
@@ -28511,26 +28511,26 @@ BrickThrowerSprite4:
 	dynamic_sprite_offsets 18,   1,  8
 
 BrickThrowerSprite5:
-	dynamic_sprite 3, BrickThrowerTiles5, 3, 0
+	dynamic_sprite_8 3, BrickThrowerTiles5, 3, 0
 	dynamic_sprite_offsets  6, 1, 20
 	dynamic_sprite_offsets 14, 1, 12
 	dynamic_sprite_offsets 22, 1,  4
 
 EmptySprite_32a6c:
-	dynamic_sprite 0, SylvesterTiles0, 3, 0
+	dynamic_sprite_8 0, SylvesterTiles0, 3, 0
 
 SylvesterSprite0:
-	dynamic_sprite 2, SylvesterTiles0, 5, 0
+	dynamic_sprite_8 2, SylvesterTiles0, 5, 0
 	dynamic_sprite_offsets 13, 1,  -5
 	dynamic_sprite_offsets 21, 1, -13
 
 SylvesterSprite1:
-	dynamic_sprite 2, SylvesterTiles1, 5, 0
+	dynamic_sprite_8 2, SylvesterTiles1, 5, 0
 	dynamic_sprite_offsets 12, 1,  -4
 	dynamic_sprite_offsets 20, 1, -12
 
 SylvesterSprite2:
-	dynamic_sprite 5, SylvesterTiles2, 5, 0
+	dynamic_sprite_8 5, SylvesterTiles2, 5, 0
 	dynamic_sprite_offsets  9,   3,  -1
 	dynamic_sprite_offsets 17,   3,  -9
 	dynamic_sprite_offsets 25,   3, -17
@@ -28538,7 +28538,7 @@ SylvesterSprite2:
 	dynamic_sprite_offsets 20, -13, -12
 
 SylvesterSprite3:
-	dynamic_sprite 5, SylvesterTiles3, 5, 0
+	dynamic_sprite_8 5, SylvesterTiles3, 5, 0
 	dynamic_sprite_offsets  8,   3,   0
 	dynamic_sprite_offsets 16,   3,  -8
 	dynamic_sprite_offsets 24,   3, -16
@@ -28546,13 +28546,13 @@ SylvesterSprite3:
 	dynamic_sprite_offsets 20, -13, -12
 
 SylvesterSprite4:
-	dynamic_sprite 3, SylvesterTiles4, 5, 0
+	dynamic_sprite_8 3, SylvesterTiles4, 5, 0
 	dynamic_sprite_offsets 11, 1,  -3
 	dynamic_sprite_offsets 19, 1, -11
 	dynamic_sprite_offsets 27, 1, -19
 
 SylvesterSprite5:
-	dynamic_sprite 5, SylvesterTiles5, 5, 0
+	dynamic_sprite_8 5, SylvesterTiles5, 5, 0
 	dynamic_sprite_offsets 11, -15,  -3
 	dynamic_sprite_offsets 19, -15, -11
 	dynamic_sprite_offsets 11,   1,  -3
@@ -28560,7 +28560,7 @@ SylvesterSprite5:
 	dynamic_sprite_offsets 27,   1, -19
 
 YosemiteSamSprite0:
-	dynamic_sprite 7, YosemiteSamTiles0, 0, 0
+	dynamic_sprite_8 7, YosemiteSamTiles0, 0, 0
 	dynamic_sprite_offsets  9,   1, 23
 	dynamic_sprite_offsets 17,   1, 15
 	dynamic_sprite_offsets 25,   1,  7
@@ -28570,7 +28570,7 @@ YosemiteSamSprite0:
 	dynamic_sprite_offsets 17, -31, 15
 
 YosemiteSamSprite1:
-	dynamic_sprite 7, YosemiteSamTiles1, 0, 0
+	dynamic_sprite_8 7, YosemiteSamTiles1, 0, 0
 	dynamic_sprite_offsets 10,   1, 22
 	dynamic_sprite_offsets 18,   1, 14
 	dynamic_sprite_offsets 26,   1,  6
@@ -28580,7 +28580,7 @@ YosemiteSamSprite1:
 	dynamic_sprite_offsets 18, -31, 14
 
 YosemiteSamSprite2:
-	dynamic_sprite 7, YosemiteSamTiles2, 0, 0
+	dynamic_sprite_8 7, YosemiteSamTiles2, 0, 0
 	dynamic_sprite_offsets  9,   1, 23
 	dynamic_sprite_offsets 17,   1, 15
 	dynamic_sprite_offsets 25,   1,  7
@@ -28590,7 +28590,7 @@ YosemiteSamSprite2:
 	dynamic_sprite_offsets 17, -31, 15
 
 YosemiteSamSprite3:
-	dynamic_sprite 7, YosemiteSamTiles3, 0, 0
+	dynamic_sprite_8 7, YosemiteSamTiles3, 0, 0
 	dynamic_sprite_offsets  9,   1, 23
 	dynamic_sprite_offsets 17,   1, 15
 	dynamic_sprite_offsets 25,   1,  7
@@ -28600,7 +28600,7 @@ YosemiteSamSprite3:
 	dynamic_sprite_offsets 17, -31, 15
 
 YosemiteSamSprite4:
-	dynamic_sprite 7, YosemiteSamTiles4, 0, 0
+	dynamic_sprite_8 7, YosemiteSamTiles4, 0, 0
 	dynamic_sprite_offsets 10,   1, 22
 	dynamic_sprite_offsets 18,   1, 14
 	dynamic_sprite_offsets 26,   1,  6
@@ -28610,7 +28610,7 @@ YosemiteSamSprite4:
 	dynamic_sprite_offsets 18, -31, 14
 
 YosemiteSamSprite5:
-	dynamic_sprite 7, YosemiteSamTiles5, 0, 0
+	dynamic_sprite_8 7, YosemiteSamTiles5, 0, 0
 	dynamic_sprite_offsets  9,   1, 23
 	dynamic_sprite_offsets 17,   1, 15
 	dynamic_sprite_offsets 25,   1,  7
@@ -28620,7 +28620,7 @@ YosemiteSamSprite5:
 	dynamic_sprite_offsets 17, -31, 15
 
 YosemiteSamSprite6:
-	dynamic_sprite 8, YosemiteSamTiles6, 0, 0
+	dynamic_sprite_8 8, YosemiteSamTiles6, 0, 0
 	dynamic_sprite_offsets 11,   6, 21
 	dynamic_sprite_offsets 19,   6, 13
 	dynamic_sprite_offsets  9, -26, 23
@@ -28634,7 +28634,7 @@ EmptySprite_32b6e:
 	db $00, $A0, $56 ; TODO:
 
 YosemiteSamSprite7:
-	dynamic_sprite 8, YosemiteSamTiles7, 0, 0
+	dynamic_sprite_8 8, YosemiteSamTiles7, 0, 0
 	dynamic_sprite_offsets 10, -27, 22
 	dynamic_sprite_offsets 18, -27, 14
 	dynamic_sprite_offsets 10, -11, 22
@@ -28645,7 +28645,7 @@ YosemiteSamSprite7:
 	dynamic_sprite_offsets 32,  -4,  0
 
 YosemiteSamSprite8:
-	dynamic_sprite 6, YosemiteSamTiles8, 0, 0
+	dynamic_sprite_8 6, YosemiteSamTiles8, 0, 0
 	dynamic_sprite_offsets  8,   5, 24
 	dynamic_sprite_offsets 16,   5, 16
 	dynamic_sprite_offsets 24,   5,  8
@@ -28654,7 +28654,7 @@ YosemiteSamSprite8:
 	dynamic_sprite_offsets 26, -11,  6
 
 YosemiteSamSprite9:
-	dynamic_sprite 6, YosemiteSamTiles9, 0, 0
+	dynamic_sprite_8 6, YosemiteSamTiles9, 0, 0
 	dynamic_sprite_offsets  6,   1, 26
 	dynamic_sprite_offsets 14,   1, 18
 	dynamic_sprite_offsets 22,   1, 10
@@ -28663,19 +28663,19 @@ YosemiteSamSprite9:
 	dynamic_sprite_offsets 19, -15, 13
 
 YosemiteSamSprite10:
-	dynamic_sprite 3, YosemiteSamTiles10, 0, 0
+	dynamic_sprite_8 3, YosemiteSamTiles10, 0, 0
 	dynamic_sprite_offsets  8,  1, 24
 	dynamic_sprite_offsets 16,  1, 16
 	dynamic_sprite_offsets 24,  1,  8
 
 YosemiteSamSprite11:
-	dynamic_sprite 3, YosemiteSamTiles11, 0, 0
+	dynamic_sprite_8 3, YosemiteSamTiles11, 0, 0
 	dynamic_sprite_offsets 8, -34, 24
 	dynamic_sprite_offsets 8, -18, 24
 	dynamic_sprite_offsets 8,  -2, 24
 
 YosemiteSamSprite12:
-	dynamic_sprite 5, YosemiteSamTiles12, 0, 0
+	dynamic_sprite_8 5, YosemiteSamTiles12, 0, 0
 	dynamic_sprite_offsets  8, -32, 24
 	dynamic_sprite_offsets  8, -16, 24
 	dynamic_sprite_offsets 16, -16, 16
@@ -28683,7 +28683,7 @@ YosemiteSamSprite12:
 	dynamic_sprite_offsets 16,   0, 16
 
 YosemiteSamSprite13:
-	dynamic_sprite 8, YosemiteSamTiles13, 0, 0
+	dynamic_sprite_8 8, YosemiteSamTiles13, 0, 0
 	dynamic_sprite_offsets 11, -26, 21
 	dynamic_sprite_offsets 19, -26, 13
 	dynamic_sprite_offsets 11, -10, 21
@@ -28694,17 +28694,17 @@ YosemiteSamSprite13:
 	dynamic_sprite_offsets 27, -10,  5
 
 RockThrowerSprite0:
-	dynamic_sprite 2, RockThrowerTiles0, 3, 0
+	dynamic_sprite_8 2, RockThrowerTiles0, 3, 0
 	dynamic_sprite_offsets 10, 1, 19
 	dynamic_sprite_offsets 18, 1, 11
 
 RockThrowerSprite1:
-	dynamic_sprite 2, RockThrowerTiles1, 3, 0
+	dynamic_sprite_8 2, RockThrowerTiles1, 3, 0
 	dynamic_sprite_offsets 10, 1, 19
 	dynamic_sprite_offsets 18, 1, 11
 
 RockThrowerSprite2:
-	dynamic_sprite 5, RockThrowerTiles2, 3, 0
+	dynamic_sprite_8 5, RockThrowerTiles2, 3, 0
 	dynamic_sprite_offsets  9,   1, 20
 	dynamic_sprite_offsets 17,   1, 12
 	dynamic_sprite_offsets 25,   1,  4
@@ -28712,7 +28712,7 @@ RockThrowerSprite2:
 	dynamic_sprite_offsets 18, -15, 11
 
 RockThrowerSprite3:
-	dynamic_sprite 6, RockThrowerTiles3, 3, 0
+	dynamic_sprite_8 6, RockThrowerTiles3, 3, 0
 	dynamic_sprite_offsets  8, -15, 21
 	dynamic_sprite_offsets 16, -15, 13
 	dynamic_sprite_offsets  8,   1, 21
@@ -28721,7 +28721,7 @@ RockThrowerSprite3:
 	dynamic_sprite_offsets 32,   1, -3
 
 RockThrowerSprite4:
-	dynamic_sprite 6, RockThrowerTiles4, 3, 0
+	dynamic_sprite_8 6, RockThrowerTiles4, 3, 0
 	dynamic_sprite_offsets  8, -15, 21
 	dynamic_sprite_offsets 16, -15, 13
 	dynamic_sprite_offsets 24, -15,  5
@@ -28732,7 +28732,7 @@ RockThrowerSprite4:
 INCBIN "baserom.gbc", $32c49, $32c6d - $32c49
 
 CannonSprite0:
-	dynamic_sprite 6, CannonTiles0, 1, 1
+	dynamic_sprite_8 6, CannonTiles0, 1, 1
 	dynamic_sprite_offsets 11,   1, 27
 	dynamic_sprite_offsets 19,   1, 19
 	dynamic_sprite_offsets 27,   1, 11
@@ -28741,7 +28741,7 @@ CannonSprite0:
 	dynamic_sprite_offsets 24, -15, 14
 
 CannonSprite1:
-	dynamic_sprite 6, CannonTiles1, 1, 1
+	dynamic_sprite_8 6, CannonTiles1, 1, 1
 	dynamic_sprite_offsets 11,   1, 27
 	dynamic_sprite_offsets 19,   1, 19
 	dynamic_sprite_offsets 27,   1, 11
@@ -28750,7 +28750,7 @@ CannonSprite1:
 	dynamic_sprite_offsets 26, -15, 12
 
 CannonSprite2:
-	dynamic_sprite 6, CannonTiles2, 1, 1
+	dynamic_sprite_8 6, CannonTiles2, 1, 1
 	dynamic_sprite_offsets 11, -15, 27
 	dynamic_sprite_offsets 19, -15, 19
 	dynamic_sprite_offsets 27, -15, 11
@@ -28759,7 +28759,7 @@ CannonSprite2:
 	dynamic_sprite_offsets 27,   1, 11
 
 SeagullSprite0:
-	dynamic_sprite 6, SeagullTiles0, 4, 0
+	dynamic_sprite_8 6, SeagullTiles0, 4, 0
 	dynamic_sprite_offsets  9, -12, 31
 	dynamic_sprite_offsets 17, -12, 23
 	dynamic_sprite_offsets 25, -12, 15
@@ -28768,7 +28768,7 @@ SeagullSprite0:
 	dynamic_sprite_offsets 17,   4, 23
 
 SeagullSprite1:
-	dynamic_sprite 5, SeagullTiles1, 4, 0
+	dynamic_sprite_8 5, SeagullTiles1, 4, 0
 	dynamic_sprite_offsets 10, -11, 30
 	dynamic_sprite_offsets 18, -11, 22
 	dynamic_sprite_offsets 26, -11, 14
@@ -28776,7 +28776,7 @@ SeagullSprite1:
 	dynamic_sprite_offsets 10,  5, 30
 
 SeagullSprite2:
-	dynamic_sprite 6, SeagullTiles2, 4, 0
+	dynamic_sprite_8 6, SeagullTiles2, 4, 0
 	dynamic_sprite_offsets  9, -12, 31
 	dynamic_sprite_offsets 17, -12, 23
 	dynamic_sprite_offsets  9,   4, 31
@@ -28785,7 +28785,7 @@ SeagullSprite2:
 	dynamic_sprite_offsets 33, -12,  7
 
 SeagullSprite3:
-	dynamic_sprite 5, SeagullTiles3, 4, 0
+	dynamic_sprite_8 5, SeagullTiles3, 4, 0
 	dynamic_sprite_offsets  9, -13, 31
 	dynamic_sprite_offsets 17, -13, 23
 	dynamic_sprite_offsets 25, -13, 15
@@ -28793,7 +28793,7 @@ SeagullSprite3:
 	dynamic_sprite_offsets 10,   3, 30
 
 SeagullSprite4:
-	dynamic_sprite 6, SeagullTiles4, 4, 0
+	dynamic_sprite_8 6, SeagullTiles4, 4, 0
 	dynamic_sprite_offsets 11, -14, 29
 	dynamic_sprite_offsets 19, -14, 21
 	dynamic_sprite_offsets 27, -14, 13
@@ -28802,7 +28802,7 @@ SeagullSprite4:
 	dynamic_sprite_offsets 19,   2, 21
 
 SeagullSprite5:
-	dynamic_sprite 6, SeagullTiles5, 4, 0
+	dynamic_sprite_8 6, SeagullTiles5, 4, 0
 	dynamic_sprite_offsets  9, -18, 31
 	dynamic_sprite_offsets 17, -18, 23
 	dynamic_sprite_offsets 25, -18, 15
@@ -28811,7 +28811,7 @@ SeagullSprite5:
 	dynamic_sprite_offsets 25,  -2, 15
 
 SeagullSprite6:
-	dynamic_sprite 6, SeagullTiles6, 4, 0
+	dynamic_sprite_8 6, SeagullTiles6, 4, 0
 	dynamic_sprite_offsets  9, -19, 31
 	dynamic_sprite_offsets 17, -19, 23
 	dynamic_sprite_offsets 25, -19, 15
@@ -28820,7 +28820,7 @@ SeagullSprite6:
 	dynamic_sprite_offsets 25,  -3, 15
 
 SeagullSprite7:
-	dynamic_sprite 6, SeagullTiles7, 4, 0
+	dynamic_sprite_8 6, SeagullTiles7, 4, 0
 	dynamic_sprite_offsets  9, -17, 31
 	dynamic_sprite_offsets 17, -17, 23
 	dynamic_sprite_offsets 25, -17, 15
@@ -28829,29 +28829,29 @@ SeagullSprite7:
 	dynamic_sprite_offsets 33, -17,  7
 
 SeagullSprite8:
-	dynamic_sprite 2, SeagullTiles8, 4, 0
+	dynamic_sprite_8 2, SeagullTiles8, 4, 0
 	dynamic_sprite_offsets 20, -12, 20
 	dynamic_sprite_offsets 28, -12, 12
 
 SeagullSprite9:
-	dynamic_sprite 2, SeagullTiles9, 4, 0
+	dynamic_sprite_8 2, SeagullTiles9, 4, 0
 	dynamic_sprite_offsets 18, -10, 22
 	dynamic_sprite_offsets 26, -10, 14
 
 SeagullSprite10:
-	dynamic_sprite 2, SeagullTiles10, 4, 0
+	dynamic_sprite_8 2, SeagullTiles10, 4, 0
 	dynamic_sprite_offsets 17, -9, 23
 	dynamic_sprite_offsets 25, -9, 15
 
 SeagullSprite11:
-	dynamic_sprite 4, SeagullTiles11, 4, 0
+	dynamic_sprite_8 4, SeagullTiles11, 4, 0
 	dynamic_sprite_offsets 14, -8, 26
 	dynamic_sprite_offsets 22, -8, 18
 	dynamic_sprite_offsets 30, -8, 10
 	dynamic_sprite_offsets 21,  8, 19
 
 SeagullSprite12:
-	dynamic_sprite 6, SeagullTiles12, 4, 0
+	dynamic_sprite_8 6, SeagullTiles12, 4, 0
 	dynamic_sprite_offsets 11, -10, 29
 	dynamic_sprite_offsets 19, -10, 21
 	dynamic_sprite_offsets 27, -10, 13
@@ -28860,25 +28860,25 @@ SeagullSprite12:
 	dynamic_sprite_offsets 22,   6, 18
 
 SeagullSprite13:
-	dynamic_sprite 3, SeagullTiles13, 4, 0
+	dynamic_sprite_8 3, SeagullTiles13, 4, 0
 	dynamic_sprite_offsets  8, -13, 32
 	dynamic_sprite_offsets 23, -24, 17
 	dynamic_sprite_offsets 28,   1, 12
 
 SeagullSprite14:
-	dynamic_sprite 3, SeagullTiles14, 4, 0
+	dynamic_sprite_8 3, SeagullTiles14, 4, 0
 	dynamic_sprite_offsets 25,   3, 15
 	dynamic_sprite_offsets 11, -12, 29
 	dynamic_sprite_offsets 20, -24, 20
 
 SeagullSprite15:
-	dynamic_sprite 3, SeagullTiles15, 4, 0
+	dynamic_sprite_8 3, SeagullTiles15, 4, 0
 	dynamic_sprite_offsets 16, -26, 24
 	dynamic_sprite_offsets 15, -11, 25
 	dynamic_sprite_offsets 21,   5, 19
 
 SeagullSprite16:
-	dynamic_sprite 3, SeagullTiles16, 4, 0
+	dynamic_sprite_8 3, SeagullTiles16, 4, 0
 	dynamic_sprite_offsets 13, -26, 27
 	dynamic_sprite_offsets 19, -12, 21
 	dynamic_sprite_offsets 16,   4, 24
@@ -28886,7 +28886,7 @@ SeagullSprite16:
 INCBIN "baserom.gbc", $32dbd, $32dcc - $32dbd
 
 BouncingOilDrumSprite0:
-	dynamic_sprite 6, BouncingOilDrumTiles0, 2, 0
+	dynamic_sprite_8 6, BouncingOilDrumTiles0, 2, 0
 	dynamic_sprite_offsets  8, -7,   0
 	dynamic_sprite_offsets 16, -7,  -8
 	dynamic_sprite_offsets 24, -7, -16
@@ -28895,52 +28895,52 @@ BouncingOilDrumSprite0:
 	dynamic_sprite_offsets 24,  9, -16
 
 RaftSprite0:
-	dynamic_sprite 3, RaftTiles0, 0, 0
+	dynamic_sprite_8 3, RaftTiles0, 0, 0
 	dynamic_sprite_offsets  8, 16,   0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite1:
-	dynamic_sprite 3, RaftTiles1, 0, 0
+	dynamic_sprite_8 3, RaftTiles1, 0, 0
 	dynamic_sprite_offsets  8, 16,   0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite2:
-	dynamic_sprite 3, RaftTiles2, 0, 0
+	dynamic_sprite_8 3, RaftTiles2, 0, 0
 	dynamic_sprite_offsets  8, 16,   0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite3:
-	dynamic_sprite 3, RaftTiles3, 0, 0
+	dynamic_sprite_8 3, RaftTiles3, 0, 0
 	dynamic_sprite_offsets  8, 16,   0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite4:
-	dynamic_sprite 2, RaftTiles4, 0, 0
+	dynamic_sprite_8 2, RaftTiles4, 0, 0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite5:
-	dynamic_sprite 2, RaftTiles5, 0, 0
+	dynamic_sprite_8 2, RaftTiles5, 0, 0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite6:
-	dynamic_sprite 2, RaftTiles6, 0, 0
+	dynamic_sprite_8 2, RaftTiles6, 0, 0
 	dynamic_sprite_offsets 16, 16,  -8
 	dynamic_sprite_offsets 24, 16, -16
 
 RaftSprite7:
-	dynamic_sprite 1, RaftTiles7, 0, 0
+	dynamic_sprite_8 1, RaftTiles7, 0, 0
 	dynamic_sprite_offsets 24, 16, -16
 
 INCBIN "baserom.gbc", $32e32, $32e35 - $32e32
 
 TNTBarrelSprite0:
-	dynamic_sprite 6, TNTBarrelTiles0, 0, 0
+	dynamic_sprite_8 6, TNTBarrelTiles0, 0, 0
 	dynamic_sprite_offsets  8, 11,   0
 	dynamic_sprite_offsets 16, 11,  -8
 	dynamic_sprite_offsets 24, 11, -16
@@ -28949,10 +28949,10 @@ TNTBarrelSprite0:
 	dynamic_sprite_offsets 25, -5, -17
 
 EmptySprite_32e4a:
-	dynamic_sprite 0, TNTBarrelTiles1, 0, 0
+	dynamic_sprite_8 0, TNTBarrelTiles1, 0, 0
 
 TNTBarrelSprite1:
-	dynamic_sprite 6, TNTBarrelTiles1, 0, 0
+	dynamic_sprite_8 6, TNTBarrelTiles1, 0, 0
 	dynamic_sprite_offsets  8,  8,   0
 	dynamic_sprite_offsets 16,  8,  -8
 	dynamic_sprite_offsets 24,  8, -16
@@ -28961,10 +28961,10 @@ TNTBarrelSprite1:
 	dynamic_sprite_offsets 25, -8, -17
 
 EmptySprite_32e62:
-	dynamic_sprite 0, TNTBarrelTiles2, 0, 0
+	dynamic_sprite_8 0, TNTBarrelTiles2, 0, 0
 
 TNTBarrelSprite2:
-	dynamic_sprite 6, TNTBarrelTiles2, 0, 0
+	dynamic_sprite_8 6, TNTBarrelTiles2, 0, 0
 	dynamic_sprite_offsets  8, -6,   0
 	dynamic_sprite_offsets 16, -6,  -8
 	dynamic_sprite_offsets 24, -6, -16
@@ -28973,10 +28973,10 @@ TNTBarrelSprite2:
 	dynamic_sprite_offsets 24, 10, -16
 
 EmptySprite_32e7a:
-	dynamic_sprite 0, TNTBarrelTiles3, 0, 0
+	dynamic_sprite_8 0, TNTBarrelTiles3, 0, 0
 
 TNTBarrelSprite3:
-	dynamic_sprite 6, TNTBarrelTiles3, 0, 0
+	dynamic_sprite_8 6, TNTBarrelTiles3, 0, 0
 	dynamic_sprite_offsets  8, 10,   0
 	dynamic_sprite_offsets 16, 10,  -8
 	dynamic_sprite_offsets 24, 10, -16
@@ -28985,10 +28985,10 @@ TNTBarrelSprite3:
 	dynamic_sprite_offsets 23, -6, -15
 
 EmptySprite_32e92:
-	dynamic_sprite 0, TNTBarrelTiles4, 0, 0
+	dynamic_sprite_8 0, TNTBarrelTiles4, 0, 0
 
 TNTBarrelSprite4:
-	dynamic_sprite 6, TNTBarrelTiles4, 0, 0
+	dynamic_sprite_8 6, TNTBarrelTiles4, 0, 0
 	dynamic_sprite_offsets  7,  8,   1
 	dynamic_sprite_offsets 15,  8,  -7
 	dynamic_sprite_offsets 23,  8, -15
@@ -28997,18 +28997,18 @@ TNTBarrelSprite4:
 	dynamic_sprite_offsets 22, -8, -14
 
 SharkEmergeSprite0:
-	dynamic_sprite 2, SharkEmergeTiles0, 3, 0
+	dynamic_sprite_8 2, SharkEmergeTiles0, 3, 0
 	dynamic_sprite_offsets 12, 1,  -4
 	dynamic_sprite_offsets 20, 1, -12
 
 SharkEmergeSprite1:
-	dynamic_sprite 3, SharkEmergeTiles1, 3, 0
+	dynamic_sprite_8 3, SharkEmergeTiles1, 3, 0
 	dynamic_sprite_offsets 11, 1,  -3
 	dynamic_sprite_offsets 19, 1, -11
 	dynamic_sprite_offsets 27, 1, -19
 
 SharkEmergeSprite2:
-	dynamic_sprite 5, SharkEmergeTiles2, 3, 0
+	dynamic_sprite_8 5, SharkEmergeTiles2, 3, 0
 	dynamic_sprite_offsets 11,   1,  -3
 	dynamic_sprite_offsets 19,   1, -11
 	dynamic_sprite_offsets 27,   1, -19
@@ -29016,7 +29016,7 @@ SharkEmergeSprite2:
 	dynamic_sprite_offsets 23, -15, -15
 
 SharkEmergeSprite3:
-	dynamic_sprite 6, SharkEmergeTiles3, 3, 0
+	dynamic_sprite_8 6, SharkEmergeTiles3, 3, 0
 	dynamic_sprite_offsets  8, -15,   0
 	dynamic_sprite_offsets 16, -15,  -8
 	dynamic_sprite_offsets 24, -15, -16
@@ -29025,7 +29025,7 @@ SharkEmergeSprite3:
 	dynamic_sprite_offsets 24,   1, -16
 
 SharkEmergeSprite4:
-	dynamic_sprite 6, SharkEmergeTiles4, 3, 0
+	dynamic_sprite_8 6, SharkEmergeTiles4, 3, 0
 	dynamic_sprite_offsets  9,   1,  -1
 	dynamic_sprite_offsets 17,   1,  -9
 	dynamic_sprite_offsets 25,   1, -17
@@ -29034,7 +29034,7 @@ SharkEmergeSprite4:
 	dynamic_sprite_offsets 32, -15, -24
 
 SharkEmergeSprite5:
-	dynamic_sprite 6, SharkEmergeTiles5, 3, 0
+	dynamic_sprite_8 6, SharkEmergeTiles5, 3, 0
 	dynamic_sprite_offsets 10,   5,  -2
 	dynamic_sprite_offsets 18,   5, -10
 	dynamic_sprite_offsets 26,   5, -18
@@ -29043,7 +29043,7 @@ SharkEmergeSprite5:
 	dynamic_sprite_offsets 31, -11, -23
 
 SharkEmergeSprite6:
-	dynamic_sprite 6, SharkEmergeTiles6, 3, 0
+	dynamic_sprite_8 6, SharkEmergeTiles6, 3, 0
 	dynamic_sprite_offsets 11, 13,  -3
 	dynamic_sprite_offsets 19, 13, -11
 	dynamic_sprite_offsets 27, 13, -19
@@ -29052,81 +29052,81 @@ SharkEmergeSprite6:
 	dynamic_sprite_offsets 32, -3, -24
 
 SharkEmergeSprite7:
-	dynamic_sprite 3, SharkEmergeTiles7, 3, 0
+	dynamic_sprite_8 3, SharkEmergeTiles7, 3, 0
 	dynamic_sprite_offsets 17, 5,  -9
 	dynamic_sprite_offsets 25, 5, -17
 	dynamic_sprite_offsets 33, 5, -25
 
 SharkSwimSprite0:
-	dynamic_sprite 2, SharkSwimTiles0, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles0, 3, 0
 	dynamic_sprite_offsets 17, 1,  -9
 	dynamic_sprite_offsets 25, 1, -17
 
 SharkSwimSprite1:
-	dynamic_sprite 2, SharkSwimTiles1, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles1, 3, 0
 	dynamic_sprite_offsets 17, 1,  -9
 	dynamic_sprite_offsets 25, 1, -17
 
 SharkSwimSprite2:
-	dynamic_sprite 2, SharkSwimTiles2, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles2, 3, 0
 	dynamic_sprite_offsets 15, 1,  -7
 	dynamic_sprite_offsets 23, 1, -15
 
 SharkSwimSprite3:
-	dynamic_sprite 1, SharkSwimTiles3, 3, 0
+	dynamic_sprite_8 1, SharkSwimTiles3, 3, 0
 	dynamic_sprite_offsets 21, 1, -13
 
 SharkSwimSprite4:
-	dynamic_sprite 2, SharkSwimTiles4, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles4, 3, 0
 	dynamic_sprite_offsets 19, 1, -11
 	dynamic_sprite_offsets 27, 1, -19
 
 SharkSwimSprite5:
-	dynamic_sprite 2, SharkSwimTiles5, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles5, 3, 0
 	dynamic_sprite_offsets 17, 1,  -9
 	dynamic_sprite_offsets 25, 1, -17
 
 SharkSwimSprite6:
-	dynamic_sprite 2, SharkSwimTiles6, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles6, 3, 0
 	dynamic_sprite_offsets 17, 1,  -9
 	dynamic_sprite_offsets 25, 1, -17
 
 SharkSwimSprite7:
-	dynamic_sprite 2, SharkSwimTiles7, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles7, 3, 0
 	dynamic_sprite_offsets 19, 1, -11
 	dynamic_sprite_offsets 27, 1, -19
 
 SharkSwimSprite8:
-	dynamic_sprite 1, SharkSwimTiles8, 3, 0
+	dynamic_sprite_8 1, SharkSwimTiles8, 3, 0
 	dynamic_sprite_offsets 21, 1, -13
 
 SharkSwimSprite9:
-	dynamic_sprite 2, SharkSwimTiles9, 3, 0
+	dynamic_sprite_8 2, SharkSwimTiles9, 3, 0
 	dynamic_sprite_offsets 15, 1,  -7
 	dynamic_sprite_offsets 23, 1, -15
 
 LogDestructionSprite0:
-	dynamic_sprite 2, LogDestructionTiles0, 2, 1
+	dynamic_sprite_8 2, LogDestructionTiles0, 2, 1
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 LogDestructionSprite1:
-	dynamic_sprite 2, LogDestructionTiles1, 2, 1
+	dynamic_sprite_8 2, LogDestructionTiles1, 2, 1
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 LogDestructionSprite2:
-	dynamic_sprite 2, LogDestructionTiles2, 2, 1
+	dynamic_sprite_8 2, LogDestructionTiles2, 2, 1
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 LogDestructionSprite3:
-	dynamic_sprite 2, LogDestructionTiles3, 2, 1
+	dynamic_sprite_8 2, LogDestructionTiles3, 2, 1
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 TazSprite0:
-	dynamic_sprite 6, TazTiles0, 2, 0
+	dynamic_sprite_8 6, TazTiles0, 2, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29135,7 +29135,7 @@ TazSprite0:
 	dynamic_sprite_offsets 24,   1,  6
 
 TazSprite1:
-	dynamic_sprite 6, TazTiles1, 2, 0
+	dynamic_sprite_8 6, TazTiles1, 2, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29144,7 +29144,7 @@ TazSprite1:
 	dynamic_sprite_offsets 24,   1,  6
 
 TazSprite2:
-	dynamic_sprite 6, TazTiles2, 2, 0
+	dynamic_sprite_8 6, TazTiles2, 2, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29153,7 +29153,7 @@ TazSprite2:
 	dynamic_sprite_offsets 24,   1,  6
 
 TazSprite3:
-	dynamic_sprite 6, TazTiles3, 2, 0
+	dynamic_sprite_8 6, TazTiles3, 2, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29162,7 +29162,7 @@ TazSprite3:
 	dynamic_sprite_offsets 24,   1,  6
 
 TazSprite4:
-	dynamic_sprite 6, TazTiles4, 2, 0
+	dynamic_sprite_8 6, TazTiles4, 2, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29171,7 +29171,7 @@ TazSprite4:
 	dynamic_sprite_offsets 24,   1,  6
 
 TazSprite5:
-	dynamic_sprite 6, TazTiles5, 2, 0
+	dynamic_sprite_8 6, TazTiles5, 2, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29180,7 +29180,7 @@ TazSprite5:
 	dynamic_sprite_offsets 24,   1,  6
 
 TazSprite6:
-	dynamic_sprite 6, TazTiles6, 2, 0
+	dynamic_sprite_8 6, TazTiles6, 2, 0
 	dynamic_sprite_offsets  8,   1, 22
 	dynamic_sprite_offsets 16,   1, 14
 	dynamic_sprite_offsets 24,   1,  6
@@ -29192,7 +29192,7 @@ EmptySprite_3303c:
 	db $02, $E0, $8F ; TODO:
 
 TazSprite7:
-	dynamic_sprite 6, TazTiles7, 2, 0
+	dynamic_sprite_8 6, TazTiles7, 2, 0
 	dynamic_sprite_offsets  6,   1, 24
 	dynamic_sprite_offsets 14,   1, 16
 	dynamic_sprite_offsets 22,   1,  8
@@ -29201,7 +29201,7 @@ TazSprite7:
 	dynamic_sprite_offsets 21, -15,  9
 
 TazSprite8:
-	dynamic_sprite 6, TazTiles8, 2, 0
+	dynamic_sprite_8 6, TazTiles8, 2, 0
 	dynamic_sprite_offsets  6, -15, 24
 	dynamic_sprite_offsets 14, -15, 16
 	dynamic_sprite_offsets 22, -15,  8
@@ -29210,7 +29210,7 @@ TazSprite8:
 	dynamic_sprite_offsets 22,   1,  8
 
 TazSprite9:
-	dynamic_sprite 6, TazTiles9, 2, 0
+	dynamic_sprite_8 6, TazTiles9, 2, 0
 	dynamic_sprite_offsets  2,   1, 28
 	dynamic_sprite_offsets 10,   1, 20
 	dynamic_sprite_offsets 18,   1, 12
@@ -29219,19 +29219,19 @@ TazSprite9:
 	dynamic_sprite_offsets 21, -15,  9
 
 TazSprite10:
-	dynamic_sprite 3, TazTiles10, 2, 0
+	dynamic_sprite_8 3, TazTiles10, 2, 0
 	dynamic_sprite_offsets  8, 1, 22
 	dynamic_sprite_offsets 16, 1, 14
 	dynamic_sprite_offsets 24, 1,  6
 
 TazSprite11:
-	dynamic_sprite 3, TazTiles11, 2, 0
+	dynamic_sprite_8 3, TazTiles11, 2, 0
 	dynamic_sprite_offsets  8,  5, 22
 	dynamic_sprite_offsets 16,  5, 14
 	dynamic_sprite_offsets 24,  5,  6
 
 TazSprite12:
-	dynamic_sprite 6, TazTiles12, 2, 0
+	dynamic_sprite_8 6, TazTiles12, 2, 0
 	dynamic_sprite_offsets  8, -5, 22
 	dynamic_sprite_offsets 16, -5, 14
 	dynamic_sprite_offsets 24, -5,  6
@@ -29240,7 +29240,7 @@ TazSprite12:
 	dynamic_sprite_offsets 24, 11,  6
 
 HippoSprite0:
-	dynamic_sprite 7, HippoTiles0, 5, 0
+	dynamic_sprite_8 7, HippoTiles0, 5, 0
 	dynamic_sprite_offsets  9, 1,  56
 	dynamic_sprite_offsets 17, 1,  48
 	dynamic_sprite_offsets 25, 1,  40
@@ -29251,7 +29251,7 @@ HippoSprite0:
 	dynamic_sprite_offsets 64, 5, 112
 
 GiraffeSprite0:
-	dynamic_sprite 12, GiraffeTiles0, 0, 0
+	dynamic_sprite_8 12, GiraffeTiles0, 0, 0
 	dynamic_sprite_offsets 40,   1, -32
 	dynamic_sprite_offsets 48,   1, -40
 	dynamic_sprite_offsets 56,   1, -48
@@ -29266,7 +29266,7 @@ GiraffeSprite0:
 	dynamic_sprite_offsets 41, -31, -33
 
 GiraffeSprite1:
-	dynamic_sprite 13, GiraffeTiles1, 0, 0
+	dynamic_sprite_8 13, GiraffeTiles1, 0, 0
 	dynamic_sprite_offsets 38,  17, -30
 	dynamic_sprite_offsets 24,   1, -16
 	dynamic_sprite_offsets 32,   1, -24
@@ -29282,7 +29282,7 @@ GiraffeSprite1:
 	dynamic_sprite_offsets 13, -31,  -5
 
 GiraffeSprite2:
-	dynamic_sprite 11, GiraffeTiles2, 0, 0
+	dynamic_sprite_8 11, GiraffeTiles2, 0, 0
 	dynamic_sprite_offsets 48,  1, -40
 	dynamic_sprite_offsets 56,  1, -48
 	dynamic_sprite_offsets 32,  7, -24
@@ -29296,7 +29296,7 @@ GiraffeSprite2:
 	dynamic_sprite_offsets  0, 23,   8
 
 GiraffeSprite3:
-	dynamic_sprite 10, GiraffeTiles3, 0, 0
+	dynamic_sprite_8 10, GiraffeTiles3, 0, 0
 	dynamic_sprite_offsets 24,  8, -16
 	dynamic_sprite_offsets 32,  8, -24
 	dynamic_sprite_offsets 40,  8, -32
@@ -29309,20 +29309,20 @@ GiraffeSprite3:
 	dynamic_sprite_offsets 35, 24, -27
 
 MonkeySprite0:
-	dynamic_sprite 3, MonkeyTiles0, 1, 0
+	dynamic_sprite_8 3, MonkeyTiles0, 1, 0
 	dynamic_sprite_offsets 15, 1, 11
 	dynamic_sprite_offsets 23, 1,  3
 	dynamic_sprite_offsets 31, 1, -5
 
 MonkeySprite1:
-	dynamic_sprite 4, MonkeyTiles1, 1, 0
+	dynamic_sprite_8 4, MonkeyTiles1, 1, 0
 	dynamic_sprite_offsets 10, 1, 16
 	dynamic_sprite_offsets 18, 1,  8
 	dynamic_sprite_offsets 26, 1,  0
 	dynamic_sprite_offsets 34, 1, -8
 
 MonkeySprite2:
-	dynamic_sprite 6, MonkeyTiles2, 1, 0
+	dynamic_sprite_8 6, MonkeyTiles2, 1, 0
 	dynamic_sprite_offsets  8,   1, 18
 	dynamic_sprite_offsets 16,   1, 10
 	dynamic_sprite_offsets 24,   1,  2
@@ -29331,7 +29331,7 @@ MonkeySprite2:
 	dynamic_sprite_offsets 25, -15,  1
 
 MonkeySprite3:
-	dynamic_sprite 8, MonkeyTiles3, 1, 0
+	dynamic_sprite_8 8, MonkeyTiles3, 1, 0
 	dynamic_sprite_offsets  9, -15,  17
 	dynamic_sprite_offsets 17, -15,   9
 	dynamic_sprite_offsets 25, -15,   1
@@ -29342,7 +29342,7 @@ MonkeySprite3:
 	dynamic_sprite_offsets 41,  -7, -15
 
 MonkeySprite4:
-	dynamic_sprite 9, MonkeyTiles4, 1, 0
+	dynamic_sprite_8 9, MonkeyTiles4, 1, 0
 	dynamic_sprite_offsets  7, -15, 19
 	dynamic_sprite_offsets 15, -15, 11
 	dynamic_sprite_offsets 23, -15,  3
@@ -29354,7 +29354,7 @@ MonkeySprite4:
 	dynamic_sprite_offsets 31, -15, -5
 
 MonkeySprite5:
-	dynamic_sprite 8, MonkeyTiles5, 1, 0
+	dynamic_sprite_8 8, MonkeyTiles5, 1, 0
 	dynamic_sprite_offsets  8, -15, 18
 	dynamic_sprite_offsets 16, -15, 10
 	dynamic_sprite_offsets 24, -15,  2
@@ -29365,7 +29365,7 @@ MonkeySprite5:
 	dynamic_sprite_offsets 32,  -7, -6
 
 MonkeySprite6:
-	dynamic_sprite 4, MonkeyTiles6, 1, 0
+	dynamic_sprite_8 4, MonkeyTiles6, 1, 0
 	dynamic_sprite_offsets  8, 1, 18
 	dynamic_sprite_offsets 16, 1, 10
 	dynamic_sprite_offsets 24, 1,  2
@@ -29374,16 +29374,16 @@ MonkeySprite6:
 INCBIN "baserom.gbc", $331ef, $331f5 - $331ef
 
 TazFemaleSprite0:
-	dynamic_sprite 3, TazFemaleTiles0, 2, 0
+	dynamic_sprite_8 3, TazFemaleTiles0, 2, 0
 	dynamic_sprite_offsets  8, 1, 28
 	dynamic_sprite_offsets 16, 1, 20
 	dynamic_sprite_offsets 24, 1, 12
 
 EmptySprite_33201:
-	dynamic_sprite 0, TazFemaleTiles1, 2, 0
+	dynamic_sprite_8 0, TazFemaleTiles1, 2, 0
 
 TazFemaleSprite1:
-	dynamic_sprite 6, TazFemaleTiles1, 2, 0
+	dynamic_sprite_8 6, TazFemaleTiles1, 2, 0
 	dynamic_sprite_offsets  8, -15, 28
 	dynamic_sprite_offsets 16, -15, 20
 	dynamic_sprite_offsets 24, -15, 12
@@ -29392,10 +29392,10 @@ TazFemaleSprite1:
 	dynamic_sprite_offsets 24,   1, 12
 
 EmptySprite_33219:
-	dynamic_sprite 0, TazFemaleTiles2, 2, 0
+	dynamic_sprite_8 0, TazFemaleTiles2, 2, 0
 
 TazFemaleSprite2:
-	dynamic_sprite 6, TazFemaleTiles2, 2, 0
+	dynamic_sprite_8 6, TazFemaleTiles2, 2, 0
 	dynamic_sprite_offsets  8, -15, 28
 	dynamic_sprite_offsets 16, -15, 20
 	dynamic_sprite_offsets 24, -15, 12
@@ -29404,7 +29404,7 @@ TazFemaleSprite2:
 	dynamic_sprite_offsets 24,   1, 12
 
 TazFemaleSprite3:
-	dynamic_sprite 6, TazFemaleTiles3, 2, 0
+	dynamic_sprite_8 6, TazFemaleTiles3, 2, 0
 	dynamic_sprite_offsets  8,   1, 28
 	dynamic_sprite_offsets 16,   1, 20
 	dynamic_sprite_offsets 24,   1, 12
@@ -29413,7 +29413,7 @@ TazFemaleSprite3:
 	dynamic_sprite_offsets 24, -15, 12
 
 TazFemaleSprite4:
-	dynamic_sprite 6, TazFemaleTiles4, 2, 0
+	dynamic_sprite_8 6, TazFemaleTiles4, 2, 0
 	dynamic_sprite_offsets  8, -15, 28
 	dynamic_sprite_offsets 16, -15, 20
 	dynamic_sprite_offsets 24, -15, 12
@@ -29422,19 +29422,19 @@ TazFemaleSprite4:
 	dynamic_sprite_offsets 24,   1, 12
 
 TazFemaleSprite5:
-	dynamic_sprite 3, TazFemaleTiles5, 2, 0
+	dynamic_sprite_8 3, TazFemaleTiles5, 2, 0
 	dynamic_sprite_offsets  8, 1, 28
 	dynamic_sprite_offsets 16, 1, 20
 	dynamic_sprite_offsets 24, 1, 12
 
 TazFemaleSprite6:
-	dynamic_sprite 3, TazFemaleTiles6, 2, 0
+	dynamic_sprite_8 3, TazFemaleTiles6, 2, 0
 	dynamic_sprite_offsets  7, 3, 29
 	dynamic_sprite_offsets 15, 3, 21
 	dynamic_sprite_offsets 23, 3, 13
 
 TazFemaleSprite7:
-	dynamic_sprite 3, TazFemaleTiles7, 2, 0
+	dynamic_sprite_8 3, TazFemaleTiles7, 2, 0
 	dynamic_sprite_offsets  7, 3, 29
 	dynamic_sprite_offsets 15, 3, 21
 	dynamic_sprite_offsets 23, 3, 13
@@ -29442,7 +29442,7 @@ TazFemaleSprite7:
 INCBIN "baserom.gbc", $3327f, $33294 - $3327f
 
 BicycleSprite0:
-	dynamic_sprite 9, BicycleTiles0, 5, 0
+	dynamic_sprite_8 9, BicycleTiles0, 5, 0
 	dynamic_sprite_offsets   0, -15, -15
 	dynamic_sprite_offsets   8, -15, -23
 	dynamic_sprite_offsets  16, -15, -31
@@ -29456,14 +29456,14 @@ BicycleSprite0:
 INCBIN "baserom.gbc", $332b2, $332b5 - $332b2
 
 BalloonSprite0:
-	dynamic_sprite 4, BalloonTiles0, 1, 0
+	dynamic_sprite_8 4, BalloonTiles0, 1, 0
 	dynamic_sprite_offsets 1, -17,  0
 	dynamic_sprite_offsets 9, -17, -8
 	dynamic_sprite_offsets 1,  -1,  0
 	dynamic_sprite_offsets 9,  -1, -8
 
 BalloonSprite1:
-	dynamic_sprite 5, BalloonTiles1, 1, 0
+	dynamic_sprite_8 5, BalloonTiles1, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
 	dynamic_sprite_offsets -3, -17,   4
@@ -29471,7 +29471,7 @@ BalloonSprite1:
 	dynamic_sprite_offsets 13, -17, -12
 
 BalloonSprite2:
-	dynamic_sprite 5, BalloonTiles2, 1, 0
+	dynamic_sprite_8 5, BalloonTiles2, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
 	dynamic_sprite_offsets -3, -17,   4
@@ -29479,7 +29479,7 @@ BalloonSprite2:
 	dynamic_sprite_offsets 13, -17, -12
 
 BalloonSprite3:
-	dynamic_sprite 5, BalloonTiles3, 1, 0
+	dynamic_sprite_8 5, BalloonTiles3, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
 	dynamic_sprite_offsets -3, -17,   4
@@ -29487,7 +29487,7 @@ BalloonSprite3:
 	dynamic_sprite_offsets 13, -17, -12
 
 BalloonSprite4:
-	dynamic_sprite 5, BalloonTiles4, 1, 0
+	dynamic_sprite_8 5, BalloonTiles4, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
 	dynamic_sprite_offsets -3, -17,   4
@@ -29495,14 +29495,14 @@ BalloonSprite4:
 	dynamic_sprite_offsets 14, -17, -13
 
 BalloonSprite5:
-	dynamic_sprite 4, BalloonTiles5, 1, 0
+	dynamic_sprite_8 4, BalloonTiles5, 1, 0
 	dynamic_sprite_offsets 1, -17,  0
 	dynamic_sprite_offsets 9, -17, -8
 	dynamic_sprite_offsets 1,  -1,  0
 	dynamic_sprite_offsets 9,  -1, -8
 
 TazFemaleBossSprite0:
-	dynamic_sprite 6, TazFemaleBossTiles0, 2, 0
+	dynamic_sprite_8 6, TazFemaleBossTiles0, 2, 0
 	dynamic_sprite_offsets  8, -15, 28
 	dynamic_sprite_offsets 16, -15, 20
 	dynamic_sprite_offsets 24, -15, 12
@@ -29511,42 +29511,42 @@ TazFemaleBossSprite0:
 	dynamic_sprite_offsets 24,   1, 12
 
 TazFemaleBossSprite1:
-	dynamic_sprite 4, TazFemaleBossTiles1, 3, 1
+	dynamic_sprite_8 4, TazFemaleBossTiles1, 3, 1
 	dynamic_sprite_offsets  0, 17,   0
 	dynamic_sprite_offsets  8, 17,  -8
 	dynamic_sprite_offsets 16, 17, -16
 	dynamic_sprite_offsets 24, 17, -24
 
 TazFemaleBossSprite2:
-	dynamic_sprite 4, TazFemaleBossTiles2, 3, 1
+	dynamic_sprite_8 4, TazFemaleBossTiles2, 3, 1
 	dynamic_sprite_offsets  0, 17,   0
 	dynamic_sprite_offsets  8, 17,  -8
 	dynamic_sprite_offsets 16, 17, -16
 	dynamic_sprite_offsets 24, 17, -24
 
 TazFemaleBossSprite3:
-	dynamic_sprite 4, TazFemaleBossTiles3, 3, 1
+	dynamic_sprite_8 4, TazFemaleBossTiles3, 3, 1
 	dynamic_sprite_offsets  0, 17,   0
 	dynamic_sprite_offsets  8, 17,  -8
 	dynamic_sprite_offsets 16, 17, -16
 	dynamic_sprite_offsets 24, 17, -24
 
 TazFemaleBossSprite4:
-	dynamic_sprite 4, TazFemaleBossTiles4, 3, 1
+	dynamic_sprite_8 4, TazFemaleBossTiles4, 3, 1
 	dynamic_sprite_offsets  0, 17,   0
 	dynamic_sprite_offsets  8, 17,  -8
 	dynamic_sprite_offsets 16, 17, -16
 	dynamic_sprite_offsets 24, 17, -24
 
 TazFemaleBossSprite5:
-	dynamic_sprite 4, TazFemaleBossTiles5, 3, 1
+	dynamic_sprite_8 4, TazFemaleBossTiles5, 3, 1
 	dynamic_sprite_offsets  0, 17,   0
 	dynamic_sprite_offsets  8, 17,  -8
 	dynamic_sprite_offsets 16, 17, -16
 	dynamic_sprite_offsets 24, 17, -24
 
 TazFemaleBossSprite6:
-	dynamic_sprite 4, TazFemaleBossTiles6, 3, 1
+	dynamic_sprite_8 4, TazFemaleBossTiles6, 3, 1
 	dynamic_sprite_offsets  0, 17,   0
 	dynamic_sprite_offsets  8, 17,  -8
 	dynamic_sprite_offsets 16, 17, -16
@@ -29555,7 +29555,7 @@ TazFemaleBossSprite6:
 INCBIN "baserom.gbc", $3338a, $333c0 - $3338a
 
 MarvinMartianSprite0:
-	dynamic_sprite 6, MarvinMartianTiles0, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles0, 3, 0
 	dynamic_sprite_offsets  9, -15, 21
 	dynamic_sprite_offsets 17, -15, 13
 	dynamic_sprite_offsets 25, -15,  5
@@ -29564,7 +29564,7 @@ MarvinMartianSprite0:
 	dynamic_sprite_offsets 25,   1,  5
 
 MarvinMartianSprite1:
-	dynamic_sprite 6, MarvinMartianTiles1, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles1, 3, 0
 	dynamic_sprite_offsets 10, -15, 20
 	dynamic_sprite_offsets 18, -15, 12
 	dynamic_sprite_offsets 26, -15,  4
@@ -29573,7 +29573,7 @@ MarvinMartianSprite1:
 	dynamic_sprite_offsets 26,   1,  4
 
 MarvinMartianSprite2:
-	dynamic_sprite 6, MarvinMartianTiles2, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles2, 3, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29582,7 +29582,7 @@ MarvinMartianSprite2:
 	dynamic_sprite_offsets 24,   1,  6
 
 MarvinMartianSprite3:
-	dynamic_sprite 5, MarvinMartianTiles3, 3, 0
+	dynamic_sprite_8 5, MarvinMartianTiles3, 3, 0
 	dynamic_sprite_offsets 10, -15, 20
 	dynamic_sprite_offsets 18, -15, 12
 	dynamic_sprite_offsets 26, -15,  4
@@ -29590,7 +29590,7 @@ MarvinMartianSprite3:
 	dynamic_sprite_offsets 18,   1, 12
 
 MarvinMartianSprite4:
-	dynamic_sprite 6, MarvinMartianTiles4, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles4, 3, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets 24, -15,  6
@@ -29602,7 +29602,7 @@ EmptySprite_33426:
 	db $03, $E0, $B1 ; TODO:
 
 MarvinMartianSprite5:
-	dynamic_sprite 6, MarvinMartianTiles5, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles5, 3, 0
 	dynamic_sprite_offsets 10, -15, 20
 	dynamic_sprite_offsets 18, -15, 12
 	dynamic_sprite_offsets 10,   1, 20
@@ -29611,7 +29611,7 @@ MarvinMartianSprite5:
 	dynamic_sprite_offsets 34,  -9, -4
 
 MarvinMartianSprite6:
-	dynamic_sprite 6, MarvinMartianTiles6, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles6, 3, 0
 	dynamic_sprite_offsets 10,   1, 20
 	dynamic_sprite_offsets 18,   1, 12
 	dynamic_sprite_offsets  6, -15, 24
@@ -29620,7 +29620,7 @@ MarvinMartianSprite6:
 	dynamic_sprite_offsets 26,  -8,  4
 
 MarvinMartianSprite7:
-	dynamic_sprite 5, MarvinMartianTiles7, 3, 0
+	dynamic_sprite_8 5, MarvinMartianTiles7, 3, 0
 	dynamic_sprite_offsets  8,   1, 22
 	dynamic_sprite_offsets 16,   1, 14
 	dynamic_sprite_offsets 24,   1,  6
@@ -29628,25 +29628,25 @@ MarvinMartianSprite7:
 	dynamic_sprite_offsets 20, -15, 10
 
 MarvinMartianSprite8:
-	dynamic_sprite 3, MarvinMartianTiles8, 3, 0
+	dynamic_sprite_8 3, MarvinMartianTiles8, 3, 0
 	dynamic_sprite_offsets  8, 1, 22
 	dynamic_sprite_offsets 16, 1, 14
 	dynamic_sprite_offsets 24, 1,  6
 
 MarvinMartianSprite9:
-	dynamic_sprite 2, MarvinMartianTiles9, 3, 0
+	dynamic_sprite_8 2, MarvinMartianTiles9, 3, 0
 	dynamic_sprite_offsets 8, -16, 22
 	dynamic_sprite_offsets 8,   0, 22
 
 MarvinMartianSprite10:
-	dynamic_sprite 4, MarvinMartianTiles10, 3, 0
+	dynamic_sprite_8 4, MarvinMartianTiles10, 3, 0
 	dynamic_sprite_offsets  8, -15, 22
 	dynamic_sprite_offsets 16, -15, 14
 	dynamic_sprite_offsets  8,   1, 22
 	dynamic_sprite_offsets 16,   1, 14
 
 MarvinMartianSprite11:
-	dynamic_sprite 6, MarvinMartianTiles11, 3, 0
+	dynamic_sprite_8 6, MarvinMartianTiles11, 3, 0
 	dynamic_sprite_offsets 10,   1, 20
 	dynamic_sprite_offsets 18,   1, 12
 	dynamic_sprite_offsets  6, -15, 24
@@ -29657,7 +29657,7 @@ MarvinMartianSprite11:
 INCBIN "baserom.gbc", $3349e, $3349e - $3349e
 
 InstantMartianSprite0:
-	dynamic_sprite 6, InstantMartianTiles0, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles0, 2, 0
 	dynamic_sprite_offsets  8,   1, 26
 	dynamic_sprite_offsets 16,   1, 18
 	dynamic_sprite_offsets 24,   1, 10
@@ -29666,7 +29666,7 @@ InstantMartianSprite0:
 	dynamic_sprite_offsets 27, -15,  7
 
 InstantMartianSprite1:
-	dynamic_sprite 6, InstantMartianTiles1, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles1, 2, 0
 	dynamic_sprite_offsets  8,   1, 26
 	dynamic_sprite_offsets 16,   1, 18
 	dynamic_sprite_offsets 24,   1, 10
@@ -29675,7 +29675,7 @@ InstantMartianSprite1:
 	dynamic_sprite_offsets 27, -15,  7
 
 InstantMartianSprite2:
-	dynamic_sprite 6, InstantMartianTiles2, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles2, 2, 0
 	dynamic_sprite_offsets  8,   1, 26
 	dynamic_sprite_offsets 16,   1, 18
 	dynamic_sprite_offsets 24,   1, 10
@@ -29684,21 +29684,21 @@ InstantMartianSprite2:
 	dynamic_sprite_offsets 27, -15,  7
 
 InstantMartianSprite3:
-	dynamic_sprite 4, InstantMartianTiles3, 2, 0
+	dynamic_sprite_8 4, InstantMartianTiles3, 2, 0
 	dynamic_sprite_offsets  2, -14, 32
 	dynamic_sprite_offsets 10, -14, 24
 	dynamic_sprite_offsets 18, -14, 16
 	dynamic_sprite_offsets 26, -14,  8
 
 InstantMartianSprite4:
-	dynamic_sprite 4, InstantMartianTiles4, 2, 0
+	dynamic_sprite_8 4, InstantMartianTiles4, 2, 0
 	dynamic_sprite_offsets  6, -14, 28
 	dynamic_sprite_offsets 14, -14, 20
 	dynamic_sprite_offsets 22, -14, 12
 	dynamic_sprite_offsets 30, -14,  4
 
 InstantMartianSprite5:
-	dynamic_sprite 6, InstantMartianTiles5, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles5, 2, 0
 	dynamic_sprite_offsets  8, -11, 26
 	dynamic_sprite_offsets 16, -11, 18
 	dynamic_sprite_offsets 24, -11, 10
@@ -29707,7 +29707,7 @@ InstantMartianSprite5:
 	dynamic_sprite_offsets 24, -27, 10
 
 InstantMartianSprite6:
-	dynamic_sprite 6, InstantMartianTiles6, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles6, 2, 0
 	dynamic_sprite_offsets  8,  -5, 26
 	dynamic_sprite_offsets 16,  -5, 18
 	dynamic_sprite_offsets 24,  -5, 10
@@ -29716,7 +29716,7 @@ InstantMartianSprite6:
 	dynamic_sprite_offsets 27, -21,  7
 
 InstantMartianSprite7:
-	dynamic_sprite 6, InstantMartianTiles7, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles7, 2, 0
 	dynamic_sprite_offsets 16, -15, 18
 	dynamic_sprite_offsets 24, -15, 10
 	dynamic_sprite_offsets  8,   1, 26
@@ -29725,7 +29725,7 @@ InstantMartianSprite7:
 	dynamic_sprite_offsets 32,   0,  2
 
 InstantMartianSprite8:
-	dynamic_sprite 5, InstantMartianTiles8, 2, 0
+	dynamic_sprite_8 5, InstantMartianTiles8, 2, 0
 	dynamic_sprite_offsets 13,   1, 21
 	dynamic_sprite_offsets 21,   1, 13
 	dynamic_sprite_offsets 29,   1,  5
@@ -29733,14 +29733,14 @@ InstantMartianSprite8:
 	dynamic_sprite_offsets 24, -15, 10
 
 InstantMartianSprite9:
-	dynamic_sprite 4, InstantMartianTiles9, 2, 0
+	dynamic_sprite_8 4, InstantMartianTiles9, 2, 0
 	dynamic_sprite_offsets 14, -15, 20
 	dynamic_sprite_offsets 22, -15, 12
 	dynamic_sprite_offsets 14,   1, 20
 	dynamic_sprite_offsets 22,   1, 12
 
 InstantMartianSprite10:
-	dynamic_sprite 5, InstantMartianTiles10, 2, 0
+	dynamic_sprite_8 5, InstantMartianTiles10, 2, 0
 	dynamic_sprite_offsets  5,   1, 29
 	dynamic_sprite_offsets 13,   1, 21
 	dynamic_sprite_offsets 21,   1, 13
@@ -29748,7 +29748,7 @@ InstantMartianSprite10:
 	dynamic_sprite_offsets 18, -15, 16
 
 InstantMartianSprite11:
-	dynamic_sprite 6, InstantMartianTiles11, 2, 0
+	dynamic_sprite_8 6, InstantMartianTiles11, 2, 0
 	dynamic_sprite_offsets 10,   1, 24
 	dynamic_sprite_offsets 18,   1, 16
 	dynamic_sprite_offsets 26,   1,  8
@@ -29757,7 +29757,7 @@ InstantMartianSprite11:
 	dynamic_sprite_offsets 15, -15, 19
 
 K9Sprite0:
-	dynamic_sprite 8, K9Tiles0, 0, 0
+	dynamic_sprite_8 8, K9Tiles0, 0, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -29768,7 +29768,7 @@ K9Sprite0:
 	dynamic_sprite_offsets 32,   1,  8
 
 K9Sprite1:
-	dynamic_sprite 6, K9Tiles1, 0, 0
+	dynamic_sprite_8 6, K9Tiles1, 0, 0
 	dynamic_sprite_offsets 13, -15, 27
 	dynamic_sprite_offsets 21, -15, 19
 	dynamic_sprite_offsets 29, -15, 11
@@ -29777,7 +29777,7 @@ K9Sprite1:
 	dynamic_sprite_offsets 28,   1, 12
 
 K9Sprite2:
-	dynamic_sprite 7, K9Tiles2, 0, 0
+	dynamic_sprite_8 7, K9Tiles2, 0, 0
 	dynamic_sprite_offsets 14, -15, 26
 	dynamic_sprite_offsets 22, -15, 18
 	dynamic_sprite_offsets 30, -15, 10
@@ -29787,7 +29787,7 @@ K9Sprite2:
 	dynamic_sprite_offsets 30,   1, 10
 
 K9Sprite3:
-	dynamic_sprite 8, K9Tiles3, 0, 0
+	dynamic_sprite_8 8, K9Tiles3, 0, 0
 	dynamic_sprite_offsets  7, -15, 33
 	dynamic_sprite_offsets 15, -15, 25
 	dynamic_sprite_offsets 23, -15, 17
@@ -29798,7 +29798,7 @@ K9Sprite3:
 	dynamic_sprite_offsets 31,   1,  9
 
 K9Sprite4:
-	dynamic_sprite 6, K9Tiles4, 0, 0
+	dynamic_sprite_8 6, K9Tiles4, 0, 0
 	dynamic_sprite_offsets 13, -15, 27
 	dynamic_sprite_offsets 21, -15, 19
 	dynamic_sprite_offsets 29, -15, 11
@@ -29807,7 +29807,7 @@ K9Sprite4:
 	dynamic_sprite_offsets 29,   1, 11
 
 K9Sprite5:
-	dynamic_sprite 7, K9Tiles5, 0, 0
+	dynamic_sprite_8 7, K9Tiles5, 0, 0
 	dynamic_sprite_offsets 14, -15, 26
 	dynamic_sprite_offsets 22, -15, 18
 	dynamic_sprite_offsets 30, -15, 10
@@ -29817,19 +29817,19 @@ K9Sprite5:
 	dynamic_sprite_offsets 33,   1,  7
 
 K9Sprite6:
-	dynamic_sprite 2, K9Tiles6, 0, 0
+	dynamic_sprite_8 2, K9Tiles6, 0, 0
 	dynamic_sprite_offsets 8, -19, 32
 	dynamic_sprite_offsets 8,  -3, 32
 
 K9Sprite7:
-	dynamic_sprite 4, K9Tiles7, 0, 0
+	dynamic_sprite_8 4, K9Tiles7, 0, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets  8,   1, 32
 	dynamic_sprite_offsets 16,   1, 24
 
 K9Sprite8:
-	dynamic_sprite 5, K9Tiles8, 0, 0
+	dynamic_sprite_8 5, K9Tiles8, 0, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -29837,7 +29837,7 @@ K9Sprite8:
 	dynamic_sprite_offsets 16,   1, 24
 
 K9Sprite9:
-	dynamic_sprite 7, K9Tiles9, 0, 0
+	dynamic_sprite_8 7, K9Tiles9, 0, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -29847,14 +29847,14 @@ K9Sprite9:
 	dynamic_sprite_offsets 24,   1, 16
 
 K9Sprite10:
-	dynamic_sprite 4, K9Tiles10, 0, 0
+	dynamic_sprite_8 4, K9Tiles10, 0, 0
 	dynamic_sprite_offsets  8, 1, 32
 	dynamic_sprite_offsets 16, 1, 24
 	dynamic_sprite_offsets 24, 1, 16
 	dynamic_sprite_offsets 32, 1,  8
 
 K9Sprite11:
-	dynamic_sprite 4, K9Tiles11, 0, 0
+	dynamic_sprite_8 4, K9Tiles11, 0, 0
 	dynamic_sprite_offsets  8, 1, 32
 	dynamic_sprite_offsets 16, 1, 24
 	dynamic_sprite_offsets 24, 1, 16
@@ -29863,7 +29863,7 @@ K9Sprite11:
 INCBIN "baserom.gbc", $33672, $33714 - $33672
 
 ElmerFuddSprite0:
-	dynamic_sprite 8, ElmerFuddTiles0, 4, 0
+	dynamic_sprite_8 8, ElmerFuddTiles0, 4, 0
 	dynamic_sprite_offsets -1,  -1, 37
 	dynamic_sprite_offsets  7,  -1, 29
 	dynamic_sprite_offsets 15,  -1, 21
@@ -29874,7 +29874,7 @@ ElmerFuddSprite0:
 	dynamic_sprite_offsets 37, -13, -1
 
 ElmerFuddSprite1:
-	dynamic_sprite 7, ElmerFuddTiles1, 4, 0
+	dynamic_sprite_8 7, ElmerFuddTiles1, 4, 0
 	dynamic_sprite_offsets 17,   1, 19
 	dynamic_sprite_offsets 25,   1, 11
 	dynamic_sprite_offsets 14, -15, 22
@@ -29884,7 +29884,7 @@ ElmerFuddSprite1:
 	dynamic_sprite_offsets 38, -12, -2
 
 ElmerFuddSprite2:
-	dynamic_sprite 8, ElmerFuddTiles2, 4, 0
+	dynamic_sprite_8 8, ElmerFuddTiles2, 4, 0
 	dynamic_sprite_offsets  6,   1, 30
 	dynamic_sprite_offsets 14,   1, 22
 	dynamic_sprite_offsets 22,   1, 14
@@ -29895,7 +29895,7 @@ ElmerFuddSprite2:
 	dynamic_sprite_offsets 36,  -7,  0
 
 ElmerFuddSprite3:
-	dynamic_sprite 8, ElmerFuddTiles3, 4, 0
+	dynamic_sprite_8 8, ElmerFuddTiles3, 4, 0
 	dynamic_sprite_offsets  1,  -1, 35
 	dynamic_sprite_offsets  9,  -1, 27
 	dynamic_sprite_offsets 17,  -1, 19
@@ -29906,7 +29906,7 @@ ElmerFuddSprite3:
 	dynamic_sprite_offsets 30, -17,  6
 
 ElmerFuddSprite4:
-	dynamic_sprite 7, ElmerFuddTiles4, 4, 0
+	dynamic_sprite_8 7, ElmerFuddTiles4, 4, 0
 	dynamic_sprite_offsets 10,   1, 26
 	dynamic_sprite_offsets 18,   1, 18
 	dynamic_sprite_offsets 26,   1, 10
@@ -29916,7 +29916,7 @@ ElmerFuddSprite4:
 	dynamic_sprite_offsets 34,   0,  2
 
 ElmerFuddSprite5:
-	dynamic_sprite 7, ElmerFuddTiles5, 4, 0
+	dynamic_sprite_8 7, ElmerFuddTiles5, 4, 0
 	dynamic_sprite_offsets  9,   1, 27
 	dynamic_sprite_offsets 17,   1, 19
 	dynamic_sprite_offsets 25,   1, 11
@@ -29926,7 +29926,7 @@ ElmerFuddSprite5:
 	dynamic_sprite_offsets 33,   0,  3
 
 ElmerFuddSprite6:
-	dynamic_sprite 8, ElmerFuddTiles6, 4, 0
+	dynamic_sprite_8 8, ElmerFuddTiles6, 4, 0
 	dynamic_sprite_offsets  6, -15, 30
 	dynamic_sprite_offsets 14, -15, 22
 	dynamic_sprite_offsets 22, -15, 14
@@ -29940,7 +29940,7 @@ EmptySprite_337c8:
 	db $04, $E0, $76 ; TODO:
 
 ElmerFuddSprite7:
-	dynamic_sprite 8, ElmerFuddTiles7, 4, 0
+	dynamic_sprite_8 8, ElmerFuddTiles7, 4, 0
 	dynamic_sprite_offsets 14,   1, 22
 	dynamic_sprite_offsets 22,   1, 14
 	dynamic_sprite_offsets 18, -15, 18
@@ -29951,7 +29951,7 @@ ElmerFuddSprite7:
 	dynamic_sprite_offsets 38,  -5, -2
 
 ElmerFuddSprite8:
-	dynamic_sprite 7, ElmerFuddTiles8, 4, 0
+	dynamic_sprite_8 7, ElmerFuddTiles8, 4, 0
 	dynamic_sprite_offsets 20, -31, 16
 	dynamic_sprite_offsets 12, -15, 24
 	dynamic_sprite_offsets 20, -15, 16
@@ -29961,7 +29961,7 @@ ElmerFuddSprite8:
 	dynamic_sprite_offsets 28,   1,  8
 
 ElmerFuddSprite9:
-	dynamic_sprite 6, ElmerFuddTiles9, 4, 0
+	dynamic_sprite_8 6, ElmerFuddTiles9, 4, 0
 	dynamic_sprite_offsets 10,   1, 26
 	dynamic_sprite_offsets 18,   1, 18
 	dynamic_sprite_offsets 26,   1, 10
@@ -29970,20 +29970,20 @@ ElmerFuddSprite9:
 	dynamic_sprite_offsets 30, -15,  6
 
 ElmerFuddSprite10:
-	dynamic_sprite 4, ElmerFuddTiles10, 4, 0
+	dynamic_sprite_8 4, ElmerFuddTiles10, 4, 0
 	dynamic_sprite_offsets 11, 1, 25
 	dynamic_sprite_offsets 19, 1, 17
 	dynamic_sprite_offsets 27, 1,  9
 	dynamic_sprite_offsets 35, 1,  1
 
 ElmerFuddSprite11:
-	dynamic_sprite 3, ElmerFuddTiles11, 4, 0
+	dynamic_sprite_8 3, ElmerFuddTiles11, 4, 0
 	dynamic_sprite_offsets  8, -25, 28
 	dynamic_sprite_offsets  8,  -9, 28
 	dynamic_sprite_offsets 16,  -9, 20
 
 ElmerFuddSprite12:
-	dynamic_sprite 5, ElmerFuddTiles12, 4, 0
+	dynamic_sprite_8 5, ElmerFuddTiles12, 4, 0
 	dynamic_sprite_offsets  8,   1, 28
 	dynamic_sprite_offsets 16,   1, 20
 	dynamic_sprite_offsets  8, -15, 28
@@ -29991,7 +29991,7 @@ ElmerFuddSprite12:
 	dynamic_sprite_offsets 24, -10, 12
 
 ElmerFuddSprite13:
-	dynamic_sprite 8, ElmerFuddTiles13, 4, 0
+	dynamic_sprite_8 8, ElmerFuddTiles13, 4, 0
 	dynamic_sprite_offsets 14,   1, 22
 	dynamic_sprite_offsets 22,   1, 14
 	dynamic_sprite_offsets 17, -15, 19
@@ -30002,7 +30002,7 @@ ElmerFuddSprite13:
 	dynamic_sprite_offsets 22, -27, 14
 
 HuntingDogSprite0:
-	dynamic_sprite 8, HuntingDogTiles0, 0, 0
+	dynamic_sprite_8 8, HuntingDogTiles0, 0, 0
 	dynamic_sprite_offsets 10,  -6, 38
 	dynamic_sprite_offsets 18,  -6, 30
 	dynamic_sprite_offsets 26,  -6, 22
@@ -30013,7 +30013,7 @@ HuntingDogSprite0:
 	dynamic_sprite_offsets 34, -21, 14
 
 HuntingDogSprite1:
-	dynamic_sprite 8, HuntingDogTiles1, 0, 0
+	dynamic_sprite_8 8, HuntingDogTiles1, 0, 0
 	dynamic_sprite_offsets 14, -21, 34
 	dynamic_sprite_offsets 22, -21, 26
 	dynamic_sprite_offsets 14,  -5, 34
@@ -30024,7 +30024,7 @@ HuntingDogSprite1:
 	dynamic_sprite_offsets 34, -20, 14
 
 HuntingDogSprite2:
-	dynamic_sprite 8, HuntingDogTiles2, 0, 0
+	dynamic_sprite_8 8, HuntingDogTiles2, 0, 0
 	dynamic_sprite_offsets 15, -19, 33
 	dynamic_sprite_offsets 15,  -3, 33
 	dynamic_sprite_offsets 23, -19, 25
@@ -30035,7 +30035,7 @@ HuntingDogSprite2:
 	dynamic_sprite_offsets 39,  -7,  9
 
 HuntingDogSprite3:
-	dynamic_sprite 7, HuntingDogTiles3, 0, 0
+	dynamic_sprite_8 7, HuntingDogTiles3, 0, 0
 	dynamic_sprite_offsets  7, -4, 41
 	dynamic_sprite_offsets 15, -4, 33
 	dynamic_sprite_offsets 23, -4, 25
@@ -30045,7 +30045,7 @@ HuntingDogSprite3:
 	dynamic_sprite_offsets 23, 12, 25
 
 HuntingDogSprite4:
-	dynamic_sprite 8, HuntingDogTiles4, 0, 0
+	dynamic_sprite_8 8, HuntingDogTiles4, 0, 0
 	dynamic_sprite_offsets  9, -6, 39
 	dynamic_sprite_offsets 17, -6, 31
 	dynamic_sprite_offsets 25, -6, 23
@@ -30056,7 +30056,7 @@ HuntingDogSprite4:
 	dynamic_sprite_offsets 28, 10, 20
 
 HuntingDogSprite5:
-	dynamic_sprite 8, HuntingDogTiles5, 0, 0
+	dynamic_sprite_8 8, HuntingDogTiles5, 0, 0
 	dynamic_sprite_offsets 10, -9, 38
 	dynamic_sprite_offsets 18, -9, 30
 	dynamic_sprite_offsets  8,  7, 40
@@ -30067,16 +30067,16 @@ HuntingDogSprite5:
 	dynamic_sprite_offsets 42, -7,  6
 
 HuntingDogSprite6:
-	dynamic_sprite 1, HuntingDogTiles6, 0, 0
+	dynamic_sprite_8 1, HuntingDogTiles6, 0, 0
 	dynamic_sprite_offsets 8, -10, 40
 
 HuntingDogSprite7:
-	dynamic_sprite 2, HuntingDogTiles7, 0, 0
+	dynamic_sprite_8 2, HuntingDogTiles7, 0, 0
 	dynamic_sprite_offsets  8, -3, 40
 	dynamic_sprite_offsets 16, -3, 32
 
 HuntingDogSprite8:
-	dynamic_sprite 5, HuntingDogTiles8, 0, 0
+	dynamic_sprite_8 5, HuntingDogTiles8, 0, 0
 	dynamic_sprite_offsets  8, -6, 40
 	dynamic_sprite_offsets 16, -6, 32
 	dynamic_sprite_offsets 24, -6, 24
@@ -30084,7 +30084,7 @@ HuntingDogSprite8:
 	dynamic_sprite_offsets 13, 10, 35
 
 HuntingDogSprite9:
-	dynamic_sprite 7, HuntingDogTiles9, 0, 0
+	dynamic_sprite_8 7, HuntingDogTiles9, 0, 0
 	dynamic_sprite_offsets  8, -10, 40
 	dynamic_sprite_offsets 16, -10, 32
 	dynamic_sprite_offsets  8,   6, 40
@@ -30094,7 +30094,7 @@ HuntingDogSprite9:
 	dynamic_sprite_offsets 40,  -8,  8
 
 HuntingDogSprite10:
-	dynamic_sprite 5, HuntingDogTiles10, 0, 0
+	dynamic_sprite_8 5, HuntingDogTiles10, 0, 0
 	dynamic_sprite_offsets  9, 1, 39
 	dynamic_sprite_offsets 17, 1, 31
 	dynamic_sprite_offsets 25, 1, 23
@@ -30102,7 +30102,7 @@ HuntingDogSprite10:
 	dynamic_sprite_offsets 41, 1,  7
 
 HuntingDogSprite11:
-	dynamic_sprite 5, HuntingDogTiles11, 0, 0
+	dynamic_sprite_8 5, HuntingDogTiles11, 0, 0
 	dynamic_sprite_offsets  7, 1, 41
 	dynamic_sprite_offsets 15, 1, 33
 	dynamic_sprite_offsets 23, 1, 25
@@ -30112,7 +30112,7 @@ HuntingDogSprite11:
 INCBIN "baserom.gbc", $33957, $33972 - $33957
 
 DisguisedHunterSprite0:
-	dynamic_sprite 5, DisguisedHunterTiles0, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles0, 2, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -30120,7 +30120,7 @@ DisguisedHunterSprite0:
 	dynamic_sprite_offsets 24,   1, 16
 
 DisguisedHunterSprite1:
-	dynamic_sprite 5, DisguisedHunterTiles1, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles1, 2, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -30128,7 +30128,7 @@ DisguisedHunterSprite1:
 	dynamic_sprite_offsets 24,   1, 16
 
 DisguisedHunterSprite2:
-	dynamic_sprite 5, DisguisedHunterTiles2, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles2, 2, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -30136,7 +30136,7 @@ DisguisedHunterSprite2:
 	dynamic_sprite_offsets 24,   1, 16
 
 DisguisedHunterSprite3:
-	dynamic_sprite 5, DisguisedHunterTiles3, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles3, 2, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -30144,7 +30144,7 @@ DisguisedHunterSprite3:
 	dynamic_sprite_offsets 24,   1, 16
 
 DisguisedHunterSprite4:
-	dynamic_sprite 5, DisguisedHunterTiles4, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles4, 2, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -30152,7 +30152,7 @@ DisguisedHunterSprite4:
 	dynamic_sprite_offsets 24,   1, 16
 
 DisguisedHunterSprite5:
-	dynamic_sprite 5, DisguisedHunterTiles5, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles5, 2, 0
 	dynamic_sprite_offsets  8, -15, 32
 	dynamic_sprite_offsets 16, -15, 24
 	dynamic_sprite_offsets 24, -15, 16
@@ -30160,7 +30160,7 @@ DisguisedHunterSprite5:
 	dynamic_sprite_offsets 24,   1, 16
 
 DisguisedHunterShootingSprite0:
-	dynamic_sprite 5, DisguisedHunterTiles6, 2, 0
+	dynamic_sprite_8 5, DisguisedHunterTiles6, 2, 0
 	dynamic_sprite_offsets  8, -6, 32
 	dynamic_sprite_offsets 16, -6, 24
 	dynamic_sprite_offsets 24, -6, 16
@@ -30168,7 +30168,7 @@ DisguisedHunterShootingSprite0:
 	dynamic_sprite_offsets 24, 10, 16
 
 DisguisedHunterShootingSprite1:
-	dynamic_sprite 6, DisguisedHunterTiles7, 2, 0
+	dynamic_sprite_8 6, DisguisedHunterTiles7, 2, 0
 	dynamic_sprite_offsets  8, -6, 32
 	dynamic_sprite_offsets 16, -6, 24
 	dynamic_sprite_offsets 24, -6, 16
@@ -30177,7 +30177,7 @@ DisguisedHunterShootingSprite1:
 	dynamic_sprite_offsets 24, 10, 16
 
 DisguisedHunterShootingSprite2:
-	dynamic_sprite 6, DisguisedHunterTiles8, 2, 0
+	dynamic_sprite_8 6, DisguisedHunterTiles8, 2, 0
 	dynamic_sprite_offsets  8, -6, 32
 	dynamic_sprite_offsets 16, -6, 24
 	dynamic_sprite_offsets 24, -6, 16
@@ -30188,82 +30188,82 @@ DisguisedHunterShootingSprite2:
 INCBIN "baserom.gbc", $33a1a, $33a3b - $33a1a
 
 TrainTrackDollySprite0:
-	dynamic_sprite 3, TrainTrackDollyTiles0, 4, 0
+	dynamic_sprite_8 3, TrainTrackDollyTiles0, 4, 0
 	dynamic_sprite_offsets  8, 15,   0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite1:
-	dynamic_sprite 3, TrainTrackDollyTiles1, 4, 0
+	dynamic_sprite_8 3, TrainTrackDollyTiles1, 4, 0
 	dynamic_sprite_offsets  8, 15,   0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite2:
-	dynamic_sprite 3, TrainTrackDollyTiles2, 4, 0
+	dynamic_sprite_8 3, TrainTrackDollyTiles2, 4, 0
 	dynamic_sprite_offsets  8, 15,   0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite3:
-	dynamic_sprite 3, TrainTrackDollyTiles3, 4, 0
+	dynamic_sprite_8 3, TrainTrackDollyTiles3, 4, 0
 	dynamic_sprite_offsets  8, 15,   0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite4:
-	dynamic_sprite 2, TrainTrackDollyTiles4, 4, 0
+	dynamic_sprite_8 2, TrainTrackDollyTiles4, 4, 0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite5:
-	dynamic_sprite 2, TrainTrackDollyTiles5, 4, 0
+	dynamic_sprite_8 2, TrainTrackDollyTiles5, 4, 0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite6:
-	dynamic_sprite 2, TrainTrackDollyTiles6, 4, 0
+	dynamic_sprite_8 2, TrainTrackDollyTiles6, 4, 0
 	dynamic_sprite_offsets 16, 15,  -8
 	dynamic_sprite_offsets 24, 15, -16
 
 TrainTrackDollySprite7:
-	dynamic_sprite 1, TrainTrackDollyTiles7, 4, 0
+	dynamic_sprite_8 1, TrainTrackDollyTiles7, 4, 0
 	dynamic_sprite_offsets $18, 15, $F0
 
 DirtPathDestructionSprite0:
-	dynamic_sprite 2, DirtPathDestructionTiles0, 2, 0
+	dynamic_sprite_8 2, DirtPathDestructionTiles0, 2, 0
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 DirtPathDestructionSprite1:
-	dynamic_sprite 2, DirtPathDestructionTiles1, 2, 0
+	dynamic_sprite_8 2, DirtPathDestructionTiles1, 2, 0
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 DirtPathDestructionSprite2:
-	dynamic_sprite 2, DirtPathDestructionTiles2, 2, 0
+	dynamic_sprite_8 2, DirtPathDestructionTiles2, 2, 0
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 DirtPathDestructionSprite3:
-	dynamic_sprite 2, DirtPathDestructionTiles3, 2, 0
+	dynamic_sprite_8 2, DirtPathDestructionTiles3, 2, 0
 	dynamic_sprite_offsets  8, 1,  0
 	dynamic_sprite_offsets 16, 1, -8
 
 BoomBarrierSprite0:
-	dynamic_sprite 2, BoomBarrierTiles0, 1, 0
+	dynamic_sprite_8 2, BoomBarrierTiles0, 1, 0
 	dynamic_sprite_offsets 8,  1, 0
 	dynamic_sprite_offsets 8, 17, 0
 
 BoomBarrierSprite1:
-	dynamic_sprite 4, BoomBarrierTiles1, 1, 0
+	dynamic_sprite_8 4, BoomBarrierTiles1, 1, 0
 	dynamic_sprite_offsets 8, -31, 0
 	dynamic_sprite_offsets 8, -15, 0
 	dynamic_sprite_offsets 8,   1, 0
 	dynamic_sprite_offsets 8,  17, 0
 
 BoomBarrierSprite2:
-	dynamic_sprite 5, BoomBarrierTiles2, 1, 0
+	dynamic_sprite_8 5, BoomBarrierTiles2, 1, 0
 	dynamic_sprite_offsets 8, -47, 0
 	dynamic_sprite_offsets 8, -31, 0
 	dynamic_sprite_offsets 8, -15, 0
@@ -30271,7 +30271,7 @@ BoomBarrierSprite2:
 	dynamic_sprite_offsets 8,  17, 0
 
 BoomBarrierSprite3:
-	dynamic_sprite 6, BoomBarrierTiles3, 1, 0
+	dynamic_sprite_8 6, BoomBarrierTiles3, 1, 0
 	dynamic_sprite_offsets 8, -63, 0
 	dynamic_sprite_offsets 8, -47, 0
 	dynamic_sprite_offsets 8, -31, 0
@@ -30294,7 +30294,675 @@ TreasureIslandBossBackgroundTilemap:
 
 SECTION "ROM Bank $0E", ROMX[$4000], BANK[$E]
 
-INCBIN "baserom.gbc", $38000, $3b62d - $38000
+LolaMovementTiles0:
+	INCBIN "gfx/player/lola_movement/frame_0.interleave.2bpp"
+LolaMovementTiles1:
+	INCBIN "gfx/player/lola_movement/frame_1.interleave.2bpp"
+LolaMovementTiles2:
+	INCBIN "gfx/player/lola_movement/frame_2.interleave.2bpp"
+LolaMovementTiles3:
+	INCBIN "gfx/player/lola_movement/frame_3.interleave.2bpp"
+LolaMovementTiles4:
+	INCBIN "gfx/player/lola_movement/frame_4.interleave.2bpp"
+LolaMovementTiles5:
+	INCBIN "gfx/player/lola_movement/frame_5.interleave.2bpp"
+LolaMovementTiles6:
+	INCBIN "gfx/player/lola_movement/frame_6.interleave.2bpp"
+LolaMovementTiles7:
+	INCBIN "gfx/player/lola_movement/frame_7.interleave.2bpp"
+LolaMovementTiles8:
+	INCBIN "gfx/player/lola_movement/frame_8.interleave.2bpp"
+LolaMovementTiles9:
+	INCBIN "gfx/player/lola_movement/frame_9.interleave.2bpp"
+LolaMovementTiles10:
+	INCBIN "gfx/player/lola_movement/frame_10.interleave.2bpp"
+LolaMovementTiles11:
+	INCBIN "gfx/player/lola_movement/frame_11.interleave.2bpp"
+LolaMovementTiles12:
+	INCBIN "gfx/player/lola_movement/frame_12.interleave.2bpp"
+LolaMovementTiles13:
+	INCBIN "gfx/player/lola_movement/frame_13.interleave.2bpp"
+LolaMovementTiles14:
+	INCBIN "gfx/player/lola_movement/frame_14.interleave.2bpp"
+LolaMovementTiles15:
+	INCBIN "gfx/player/lola_movement/frame_15.interleave.2bpp"
+LolaMovementTiles16:
+	INCBIN "gfx/player/lola_movement/frame_16.interleave.2bpp"
+LolaMovementTiles17:
+	INCBIN "gfx/player/lola_movement/frame_17.interleave.2bpp"
+LolaMovementTiles18:
+	INCBIN "gfx/player/lola_movement/frame_18.interleave.2bpp"
+LolaMovementTiles19:
+	INCBIN "gfx/player/lola_movement/frame_19.interleave.2bpp"
+LolaMovementTiles20:
+	INCBIN "gfx/player/lola_movement/frame_20.interleave.2bpp"
+LolaMovementTiles21:
+	INCBIN "gfx/player/lola_movement/frame_21.interleave.2bpp"
+LolaMovementTiles22:
+	INCBIN "gfx/player/lola_movement/frame_22.interleave.2bpp"
+LolaMovementTiles23:
+	INCBIN "gfx/player/lola_movement/frame_23.interleave.2bpp"
+LolaMovementTiles24:
+	INCBIN "gfx/player/lola_movement/frame_24.interleave.2bpp"
+LolaMovementTiles25:
+	INCBIN "gfx/player/lola_movement/frame_25.interleave.2bpp"
+LolaMovementTiles26:
+	INCBIN "gfx/player/lola_movement/frame_26.interleave.2bpp"
+LolaMovementTiles27:
+	INCBIN "gfx/player/lola_movement/frame_27.interleave.2bpp"
+LolaMovementTiles28:
+	INCBIN "gfx/player/lola_movement/frame_28.interleave.2bpp"
+LolaMovementTiles29:
+	INCBIN "gfx/player/lola_movement/frame_29.interleave.2bpp"
+LolaMovementTiles30:
+	INCBIN "gfx/player/lola_movement/frame_30.interleave.2bpp"
+LolaMovementTiles31:
+	INCBIN "gfx/player/lola_movement/frame_31.interleave.2bpp"
+LolaMovementTiles32:
+	INCBIN "gfx/player/lola_movement/frame_32.interleave.2bpp"
+LolaMovementTiles33:
+	INCBIN "gfx/player/lola_movement/frame_33.interleave.2bpp"
+LolaMovementTiles34:
+	INCBIN "gfx/player/lola_movement/frame_34.interleave.2bpp"
+LolaMovementTiles35:
+	INCBIN "gfx/player/lola_movement/frame_35.interleave.2bpp"
+LolaMovementTiles36:
+	INCBIN "gfx/player/lola_movement/frame_36.interleave.2bpp"
+LolaMovementTiles37:
+	INCBIN "gfx/player/lola_movement/frame_37.interleave.2bpp"
+LolaMovementTiles38:
+	INCBIN "gfx/player/lola_movement/frame_38.interleave.2bpp"
+LolaMovementTiles39:
+	INCBIN "gfx/player/lola_movement/frame_39.interleave.2bpp"
+LolaMovementTiles40:
+	INCBIN "gfx/player/lola_movement/frame_40.interleave.2bpp"
+LolaMovementTiles41:
+	INCBIN "gfx/player/lola_movement/frame_41.interleave.2bpp"
+LolaMovementTiles42:
+	INCBIN "gfx/player/lola_movement/frame_42.interleave.2bpp"
+LolaMovementTiles43:
+	INCBIN "gfx/player/lola_movement/frame_43.interleave.2bpp"
+LolaMovementTiles44:
+	INCBIN "gfx/player/lola_movement/frame_44.interleave.2bpp"
+LolaMovementTiles45:
+	INCBIN "gfx/player/lola_movement/frame_45.interleave.2bpp"
+LolaMovementTiles46:
+	INCBIN "gfx/player/lola_movement/frame_46.interleave.2bpp"
+LolaMovementTiles47:
+	INCBIN "gfx/player/lola_movement/frame_47.interleave.2bpp"
+LolaMovementTiles48:
+	INCBIN "gfx/player/lola_movement/frame_48.interleave.2bpp"
+LolaMovementTiles49:
+	INCBIN "gfx/player/lola_movement/frame_49.interleave.2bpp"
+LolaMovementTiles50:
+	INCBIN "gfx/player/lola_movement/frame_50.interleave.2bpp"
+LolaMovementTiles51:
+	INCBIN "gfx/player/lola_movement/frame_51.interleave.2bpp"
+LolaMovementTiles52:
+	INCBIN "gfx/player/lola_movement/frame_52.interleave.2bpp"
+LolaMovementTiles53:
+	INCBIN "gfx/player/lola_movement/frame_53.interleave.2bpp"
+
+LolaMovementSprite0:
+	dynamic_sprite 6, LolaMovementTiles0, 5, 0
+	dynamic_sprite_offsets  5, -14, 12
+	dynamic_sprite_offsets 13, -14,  4
+	dynamic_sprite_offsets  5,   2, 12
+	dynamic_sprite_offsets 13,   2,  4
+	dynamic_sprite_offsets 10, -30,  7
+	dynamic_sprite_offsets  2, -27, 15
+
+LolaMovementSprite1:
+	dynamic_sprite 7, LolaMovementTiles1, 5, 0
+	dynamic_sprite_offsets  1, -25, 16
+	dynamic_sprite_offsets  9, -25,  8
+	dynamic_sprite_offsets 17, -25,  0
+	dynamic_sprite_offsets  1,  -9, 16
+	dynamic_sprite_offsets  9,  -9,  8
+	dynamic_sprite_offsets 17,  -9,  0
+	dynamic_sprite_offsets  1,   7, 16
+
+LolaMovementSprite2:
+	dynamic_sprite 8, LolaMovementTiles2, 5, 0
+	dynamic_sprite_offsets  1, -28, 16
+	dynamic_sprite_offsets  9, -28,  8
+	dynamic_sprite_offsets 17, -28,  0
+	dynamic_sprite_offsets  1, -12, 16
+	dynamic_sprite_offsets  9, -12,  8
+	dynamic_sprite_offsets 17, -12,  0
+	dynamic_sprite_offsets  1,   4, 16
+	dynamic_sprite_offsets 25, -24, -8
+
+LolaMovementSprite3:
+	dynamic_sprite 8, LolaMovementTiles3, 5, 0
+	dynamic_sprite_offsets  3, -10, 14
+	dynamic_sprite_offsets 11, -10,  6
+	dynamic_sprite_offsets -5,   2, 22
+	dynamic_sprite_offsets 19,  -2, -2
+	dynamic_sprite_offsets  1, -26, 16
+	dynamic_sprite_offsets  9, -26,  8
+	dynamic_sprite_offsets 17, -26,  0
+	dynamic_sprite_offsets 19, -18, -2
+
+LolaMovementSprite4:
+	dynamic_sprite 8, LolaMovementTiles4, 5, 0
+	dynamic_sprite_offsets  2,  -1, 15
+	dynamic_sprite_offsets 10,  -1,  7
+	dynamic_sprite_offsets  4, -17, 13
+	dynamic_sprite_offsets 12, -17,  5
+	dynamic_sprite_offsets 20, -17, -3
+	dynamic_sprite_offsets -4, -33, 21
+	dynamic_sprite_offsets  4, -33, 13
+	dynamic_sprite_offsets 12, -33,  5
+
+LolaMovementSprite5:
+	dynamic_sprite 7, LolaMovementTiles5, 5, 0
+	dynamic_sprite_offsets  2,   1, 15
+	dynamic_sprite_offsets 10,   1,  7
+	dynamic_sprite_offsets  5, -31, 12
+	dynamic_sprite_offsets 13, -31,  4
+	dynamic_sprite_offsets  5, -15, 12
+	dynamic_sprite_offsets 13, -15,  4
+	dynamic_sprite_offsets  0, -35, 17
+
+LolaMovementSprite6:
+	dynamic_sprite 7, LolaMovementTiles6, 5, 0
+	dynamic_sprite_offsets  5, -14, 12
+	dynamic_sprite_offsets 13, -14,  4
+	dynamic_sprite_offsets 21, -14, -4
+	dynamic_sprite_offsets  5,   2, 12
+	dynamic_sprite_offsets 13,   2,  4
+	dynamic_sprite_offsets 10, -30,  7
+	dynamic_sprite_offsets  2, -27, 15
+
+LolaMovementSprite7:
+	dynamic_sprite 7, LolaMovementTiles7, 5, 0
+	dynamic_sprite_offsets  5, -14, 12
+	dynamic_sprite_offsets 13, -14,  4
+	dynamic_sprite_offsets  5,   2, 12
+	dynamic_sprite_offsets 13,   2,  4
+	dynamic_sprite_offsets 21, -14, -4
+	dynamic_sprite_offsets  9, -30,  8
+	dynamic_sprite_offsets  1, -27, 16
+
+LolaMovementSprite8:
+	dynamic_sprite 7, LolaMovementTiles8, 5, 0
+	dynamic_sprite_offsets  5,   2, 12
+	dynamic_sprite_offsets 13,   2,  4
+	dynamic_sprite_offsets  3, -14, 14
+	dynamic_sprite_offsets 11, -14,  6
+	dynamic_sprite_offsets  9, -30,  8
+	dynamic_sprite_offsets  1, -29, 16
+	dynamic_sprite_offsets 19, -18, -2
+
+LolaMovementSprite9:
+	dynamic_sprite 7, LolaMovementTiles9, 5, 0
+	dynamic_sprite_offsets  4,   2, 13
+	dynamic_sprite_offsets 12,   2,  5
+	dynamic_sprite_offsets  2, -14, 15
+	dynamic_sprite_offsets 10, -14,  7
+	dynamic_sprite_offsets  2, -30, 15
+	dynamic_sprite_offsets 10, -30,  7
+	dynamic_sprite_offsets 18, -18, -1
+
+LolaMovementSprite10:
+	dynamic_sprite 5, LolaMovementTiles10, 5, 0
+	dynamic_sprite_offsets  0,   1, 17
+	dynamic_sprite_offsets  8,   1,  9
+	dynamic_sprite_offsets 16,   1,  1
+	dynamic_sprite_offsets 19, -10, -2
+	dynamic_sprite_offsets 11, -15,  6
+
+LolaMovementSprite11:
+	dynamic_sprite 6, LolaMovementTiles11, 5, 0
+	dynamic_sprite_offsets -3,   1, 20
+	dynamic_sprite_offsets  5,   1, 12
+	dynamic_sprite_offsets 13,   1,  4
+	dynamic_sprite_offsets 21,   1, -4
+	dynamic_sprite_offsets -1, -15, 18
+	dynamic_sprite_offsets  7, -15, 10
+
+LolaMovementSprite12:
+	dynamic_sprite 9, LolaMovementTiles12, 5, 0
+	dynamic_sprite_offsets  3,   1, 14
+	dynamic_sprite_offsets 11,   1,  6
+	dynamic_sprite_offsets 19,   1, -2
+	dynamic_sprite_offsets -3,   0, 20
+	dynamic_sprite_offsets  5, -15, 12
+	dynamic_sprite_offsets 13, -15,  4
+	dynamic_sprite_offsets 21, -15, -4
+	dynamic_sprite_offsets 10, -31,  7
+	dynamic_sprite_offsets 18, -31, -1
+
+LolaMovementSprite13:
+	dynamic_sprite 7, LolaMovementTiles13, 5, 0
+	dynamic_sprite_offsets  2,   1, 15
+	dynamic_sprite_offsets 10,   1,  7
+	dynamic_sprite_offsets 17, -12,  0
+	dynamic_sprite_offsets  1, -15, 16
+	dynamic_sprite_offsets  9, -15,  8
+	dynamic_sprite_offsets 10, -28,  7
+	dynamic_sprite_offsets 18, -28, -1
+
+LolaMovementSprite14:
+	dynamic_sprite 7, LolaMovementTiles14, 5, 0
+	dynamic_sprite_offsets -2,   1, 19
+	dynamic_sprite_offsets  6, -17, 11
+	dynamic_sprite_offsets  6,  -1, 11
+	dynamic_sprite_offsets 14,  -6,  3
+	dynamic_sprite_offsets 22,  -6, -5
+	dynamic_sprite_offsets 11, -22,  6
+	dynamic_sprite_offsets 19, -22, -2
+
+LolaMovementSprite15:
+	dynamic_sprite 8, LolaMovementTiles15, 5, 0
+	dynamic_sprite_offsets -3,   3,  20
+	dynamic_sprite_offsets  5,  -4,  12
+	dynamic_sprite_offsets 13,  -6,   4
+	dynamic_sprite_offsets 21,  -6,  -4
+	dynamic_sprite_offsets  5, -22,  12
+	dynamic_sprite_offsets 13, -22,   4
+	dynamic_sprite_offsets 21, -22,  -4
+	dynamic_sprite_offsets 29, -20, -12
+
+LolaMovementSprite16:
+	dynamic_sprite 9, LolaMovementTiles16, 5, 0
+	dynamic_sprite_offsets -1,  -7, 18
+	dynamic_sprite_offsets  7,  -7, 10
+	dynamic_sprite_offsets  9,   1,  8
+	dynamic_sprite_offsets 17,   1,  0
+	dynamic_sprite_offsets 15, -15,  2
+	dynamic_sprite_offsets 23, -15, -6
+	dynamic_sprite_offsets  2, -23, 15
+	dynamic_sprite_offsets 10, -23,  7
+	dynamic_sprite_offsets 18, -31, -1
+
+LolaMovementSprite17:
+	dynamic_sprite 8, LolaMovementTiles17, 5, 0
+	dynamic_sprite_offsets -4,   1, 21
+	dynamic_sprite_offsets  4,   1, 13
+	dynamic_sprite_offsets 12,   1,  5
+	dynamic_sprite_offsets  4, -15, 13
+	dynamic_sprite_offsets 12, -15,  5
+	dynamic_sprite_offsets 20, -12, -3
+	dynamic_sprite_offsets 12, -28,  5
+	dynamic_sprite_offsets 20, -28, -3
+
+LolaMovementSprite18:
+	dynamic_sprite 7, LolaMovementTiles18, 5, 0
+	dynamic_sprite_offsets 12,  -4,  5
+	dynamic_sprite_offsets 20,  -4, -3
+	dynamic_sprite_offsets  4,  -2, 13
+	dynamic_sprite_offsets -4,   1, 21
+	dynamic_sprite_offsets 15, -20,  2
+	dynamic_sprite_offsets 23, -20, -6
+	dynamic_sprite_offsets  7, -18, 10
+
+LolaMovementSprite19:
+	dynamic_sprite 7, LolaMovementTiles19, 5, 0
+	dynamic_sprite_offsets  5,  -5, 12
+	dynamic_sprite_offsets 13,  -5,  4
+	dynamic_sprite_offsets 21,  -5, -4
+	dynamic_sprite_offsets -3,   3, 20
+	dynamic_sprite_offsets 10, -21,  7
+	dynamic_sprite_offsets 18, -21, -1
+	dynamic_sprite_offsets 26, -19, -9
+
+LolaMovementSprite20:
+	dynamic_sprite 7, LolaMovementTiles20, 5, 0
+	dynamic_sprite_offsets  4,   1, 13
+	dynamic_sprite_offsets 12,   1,  5
+	dynamic_sprite_offsets  7, -15, 10
+	dynamic_sprite_offsets 15, -15,  2
+	dynamic_sprite_offsets 14, -31,  3
+	dynamic_sprite_offsets  6, -26, 11
+	dynamic_sprite_offsets -2, -31, 19
+
+LolaMovementSprite21:
+	dynamic_sprite 10, LolaMovementTiles21, 5, 0
+	dynamic_sprite_offsets  4,   0,  13
+	dynamic_sprite_offsets 12,   0,   5
+	dynamic_sprite_offsets 15, -32,   2
+	dynamic_sprite_offsets 23, -32,  -6
+	dynamic_sprite_offsets 31, -32, -14
+	dynamic_sprite_offsets  7, -16,  10
+	dynamic_sprite_offsets 15, -16,   2
+	dynamic_sprite_offsets 23, -16,  -6
+	dynamic_sprite_offsets 31, -16, -14
+	dynamic_sprite_offsets  7, -32,  10
+
+LolaMovementSprite22:
+	dynamic_sprite 10, LolaMovementTiles22, 5, 0
+	dynamic_sprite_offsets 10,  -2,  7
+	dynamic_sprite_offsets 18,  -2, -1
+	dynamic_sprite_offsets 26,  -2, -9
+	dynamic_sprite_offsets 34,   5, -17
+	dynamic_sprite_offsets  6, -18, 11
+	dynamic_sprite_offsets 14, -18,  3
+	dynamic_sprite_offsets 22, -18, -5
+	dynamic_sprite_offsets  2,  -9, 15
+	dynamic_sprite_offsets  6, -34, 11
+	dynamic_sprite_offsets 14, -34,  3
+
+LolaMovementSprite23:
+	dynamic_sprite 7, LolaMovementTiles23, 5, 0
+	dynamic_sprite_offsets -8,  -2, 25
+	dynamic_sprite_offsets  0,  -2, 17
+	dynamic_sprite_offsets -5, -18, 22
+	dynamic_sprite_offsets  3, -18, 14
+	dynamic_sprite_offsets -3, -34, 20
+	dynamic_sprite_offsets  5, -34, 12
+	dynamic_sprite_offsets 11, -27,  6
+
+LolaMovementSprite24:
+	dynamic_sprite 7, LolaMovementTiles24, 5, 0
+	dynamic_sprite_offsets -6,  -1, 23
+	dynamic_sprite_offsets  2,  -1, 15
+	dynamic_sprite_offsets -3, -17, 20
+	dynamic_sprite_offsets  5, -17, 12
+	dynamic_sprite_offsets  0, -33, 17
+	dynamic_sprite_offsets  8, -33,  9
+	dynamic_sprite_offsets -8, -25, 25
+
+LolaMovementSprite25:
+	dynamic_sprite 7, LolaMovementTiles25, 5, 0
+	dynamic_sprite_offsets -1, -15, 18
+	dynamic_sprite_offsets  7, -15, 10
+	dynamic_sprite_offsets -1,   1, 18
+	dynamic_sprite_offsets  7,   1, 10
+	dynamic_sprite_offsets -8, -31, 25
+	dynamic_sprite_offsets  0, -31, 17
+	dynamic_sprite_offsets  8, -31,  9
+
+LolaMovementSprite26:
+	dynamic_sprite 7, LolaMovementTiles26, 5, 0
+	dynamic_sprite_offsets  5,   0, 12
+	dynamic_sprite_offsets 13,   0,  4
+	dynamic_sprite_offsets  0, -32, 17
+	dynamic_sprite_offsets  8, -32,  9
+	dynamic_sprite_offsets  0, -16, 17
+	dynamic_sprite_offsets  8, -16,  9
+	dynamic_sprite_offsets -8, -32, 25
+
+LolaMovementSprite27:
+	dynamic_sprite 6, LolaMovementTiles27, 5, 0
+	dynamic_sprite_offsets  3, -28, 14
+	dynamic_sprite_offsets 11, -28,  6
+	dynamic_sprite_offsets 19, -28, -2
+	dynamic_sprite_offsets  3, -12, 14
+	dynamic_sprite_offsets 11, -12,  6
+	dynamic_sprite_offsets  6,   4, 11
+
+LolaMovementSprite28:
+	dynamic_sprite 6, LolaMovementTiles28, 5, 0
+	dynamic_sprite_offsets  3,  -9, 14
+	dynamic_sprite_offsets 11,  -9,  6
+	dynamic_sprite_offsets -2, -25, 19
+	dynamic_sprite_offsets  6, -25, 11
+	dynamic_sprite_offsets 14, -25,  3
+	dynamic_sprite_offsets  1,   7, 16
+
+LolaMovementSprite29:
+	dynamic_sprite 6, LolaMovementTiles29, 5, 0
+	dynamic_sprite_offsets  6, -22, 11
+	dynamic_sprite_offsets 14, -22,  3
+	dynamic_sprite_offsets -2, -25, 19
+	dynamic_sprite_offsets  3,  -6, 14
+	dynamic_sprite_offsets 11,  -6,  6
+	dynamic_sprite_offsets 10, -38,  7
+
+LolaMovementSprite30:
+	dynamic_sprite 6, LolaMovementTiles30, 5, 0
+	dynamic_sprite_offsets  6, -12, 11
+	dynamic_sprite_offsets 14, -12,  3
+	dynamic_sprite_offsets 13,   4,  4
+	dynamic_sprite_offsets  3, -28, 14
+	dynamic_sprite_offsets 11, -28,  6
+	dynamic_sprite_offsets 19, -28, -2
+
+LolaMovementSprite31:
+	dynamic_sprite 6, LolaMovementTiles31, 5, 0
+	dynamic_sprite_offsets  3, -25, 14
+	dynamic_sprite_offsets 11, -25,  6
+	dynamic_sprite_offsets 19, -25, -2
+	dynamic_sprite_offsets  6,  -9, 11
+	dynamic_sprite_offsets 14,  -9,  3
+	dynamic_sprite_offsets 16,   7,  1
+
+LolaMovementSprite32:
+	dynamic_sprite 6, LolaMovementTiles32, 5, 0
+	dynamic_sprite_offsets  3, -22, 14
+	dynamic_sprite_offsets 11, -22,  6
+	dynamic_sprite_offsets 19, -28, -2
+	dynamic_sprite_offsets  6,  -6, 11
+	dynamic_sprite_offsets 14,  -6,  3
+	dynamic_sprite_offsets  9, -38,  8
+
+LolaMovementSprite33:
+	dynamic_sprite 3, LolaMovementTiles33, 5, 0
+	dynamic_sprite_offsets  0, 2, 17
+	dynamic_sprite_offsets  8, 2,  9
+	dynamic_sprite_offsets 16, 2,  1
+
+LolaMovementSprite34:
+	dynamic_sprite 0, LolaMovementTiles34, 5, 0
+
+LolaMovementSprite35:
+	dynamic_sprite 3, LolaMovementTiles34, 5, 0
+	dynamic_sprite_offsets  0, 2, 17
+	dynamic_sprite_offsets  8, 2,  9
+	dynamic_sprite_offsets 16, 2,  1
+
+LolaMovementSprite36:
+	dynamic_sprite 3, LolaMovementTiles35, 5, 0
+	dynamic_sprite_offsets  0, 2, 17
+	dynamic_sprite_offsets  8, 2,  9
+	dynamic_sprite_offsets 16, 2,  1
+
+LolaMovementSprite37:
+	dynamic_sprite 5, LolaMovementTiles36, 5, 0
+	dynamic_sprite_offsets  0,   2, 17
+	dynamic_sprite_offsets  8,   2,  9
+	dynamic_sprite_offsets 16,   2,  1
+	dynamic_sprite_offsets  1, -14, 16
+	dynamic_sprite_offsets  9, -14,  8
+
+LolaMovementSprite38:
+	dynamic_sprite 6, LolaMovementTiles37, 5, 0
+	dynamic_sprite_offsets  0, -14, 17
+	dynamic_sprite_offsets  8, -14,  9
+	dynamic_sprite_offsets 16, -14,  1
+	dynamic_sprite_offsets  0,   2, 17
+	dynamic_sprite_offsets  8,   2,  9
+	dynamic_sprite_offsets 16,   2,  1
+
+LolaMovementSprite39:
+	dynamic_sprite 6, LolaMovementTiles38, 5, 0
+	dynamic_sprite_offsets -2, -15, 19
+	dynamic_sprite_offsets  6, -15, 11
+	dynamic_sprite_offsets 14, -15,  3
+	dynamic_sprite_offsets -2,   1, 19
+	dynamic_sprite_offsets  6,   1, 11
+	dynamic_sprite_offsets 14,   1,  3
+
+LolaMovementSprite40:
+	dynamic_sprite 8, LolaMovementTiles39, 5, 0
+	dynamic_sprite_offsets  8, -23,  9
+	dynamic_sprite_offsets 16, -23,  1
+	dynamic_sprite_offsets  8,  -7,  9
+	dynamic_sprite_offsets 16,  -7,  1
+	dynamic_sprite_offsets  0,  -3, 17
+	dynamic_sprite_offsets  0, -19, 17
+	dynamic_sprite_offsets 24, -19, -7
+	dynamic_sprite_offsets 24,  -3, -7
+
+LolaMovementSprite41:
+	dynamic_sprite 8, LolaMovementTiles40, 5, 0
+	dynamic_sprite_offsets  1, -21, 16
+	dynamic_sprite_offsets  9, -21,  8
+	dynamic_sprite_offsets  1,  -5, 16
+	dynamic_sprite_offsets  9,  -5,  8
+	dynamic_sprite_offsets 17, -22,  0
+	dynamic_sprite_offsets 17,  -6,  0
+	dynamic_sprite_offsets 17,  10,  0
+	dynamic_sprite_offsets 25, -16, -8
+
+LolaMovementSprite42:
+	dynamic_sprite 8, LolaMovementTiles41, 5, 0
+	dynamic_sprite_offsets  4, -31, 13
+	dynamic_sprite_offsets 12, -31,  5
+	dynamic_sprite_offsets 20, -31, -3
+	dynamic_sprite_offsets  4, -15, 13
+	dynamic_sprite_offsets 12, -15,  5
+	dynamic_sprite_offsets 20, -15, -3
+	dynamic_sprite_offsets  4,   1, 13
+	dynamic_sprite_offsets 12,   1,  5
+
+LolaMovementSprite43:
+	dynamic_sprite 8, LolaMovementTiles42, 5, 0
+	dynamic_sprite_offsets  1,  -7, 16
+	dynamic_sprite_offsets  9,  -7,  8
+	dynamic_sprite_offsets 17,  -7,  0
+	dynamic_sprite_offsets  0,   5, 17
+	dynamic_sprite_offsets -1, -23, 18
+	dynamic_sprite_offsets  7, -23, 10
+	dynamic_sprite_offsets 15, -23,  2
+	dynamic_sprite_offsets 23, -23, -6
+
+LolaMovementSprite44:
+	dynamic_sprite 8, LolaMovementTiles43, 5, 0
+	dynamic_sprite_offsets  1, -21, 16
+	dynamic_sprite_offsets  9, -21,  8
+	dynamic_sprite_offsets  1,  -5, 16
+	dynamic_sprite_offsets  9,  -5,  8
+	dynamic_sprite_offsets 17, -22,  0
+	dynamic_sprite_offsets 17,  -6,  0
+	dynamic_sprite_offsets 25, -15, -8
+	dynamic_sprite_offsets 17,  10,  0
+
+LolaMovementSprite45:
+	dynamic_sprite 8, LolaMovementTiles44, 5, 0
+	dynamic_sprite_offsets  5, -31, 12
+	dynamic_sprite_offsets 13, -31,  4
+	dynamic_sprite_offsets 21, -31, -4
+	dynamic_sprite_offsets  5, -15, 12
+	dynamic_sprite_offsets 13, -15,  4
+	dynamic_sprite_offsets 21, -15, -4
+	dynamic_sprite_offsets  4,   1, 13
+	dynamic_sprite_offsets 12,   1,  5
+
+LolaMovementSprite46:
+	dynamic_sprite 10, LolaMovementTiles45, 5, 0
+	dynamic_sprite_offsets  4,  -2,  13
+	dynamic_sprite_offsets 11,  -1,   6
+	dynamic_sprite_offsets 14, -31,   3
+	dynamic_sprite_offsets 22, -31,  -5
+	dynamic_sprite_offsets 14, -15,   3
+	dynamic_sprite_offsets 22, -15,  -5
+	dynamic_sprite_offsets 19,   1,  -2
+	dynamic_sprite_offsets 27,   1, -10
+	dynamic_sprite_offsets 30, -20, -13
+	dynamic_sprite_offsets 38, -20, -21
+
+LolaMovementSprite47:
+	dynamic_sprite 10, LolaMovementTiles46, 5, 0
+	dynamic_sprite_offsets 31, -19, -14
+	dynamic_sprite_offsets 39, -19, -22
+	dynamic_sprite_offsets 16, -31,   1
+	dynamic_sprite_offsets 24, -31,  -7
+	dynamic_sprite_offsets 15, -15,   2
+	dynamic_sprite_offsets 23, -15,  -6
+	dynamic_sprite_offsets  6,   1,  11
+	dynamic_sprite_offsets 14,   1,   3
+	dynamic_sprite_offsets 22,   1,  -5
+	dynamic_sprite_offsets 30,   1, -13
+
+LolaMovementSprite48:
+	dynamic_sprite 10, LolaMovementTiles47, 5, 0
+	dynamic_sprite_offsets  5,  -2,  12
+	dynamic_sprite_offsets 11,  -1,   6
+	dynamic_sprite_offsets 13, -15,   4
+	dynamic_sprite_offsets 21, -15,  -4
+	dynamic_sprite_offsets 15, -31,   2
+	dynamic_sprite_offsets 23, -31,  -6
+	dynamic_sprite_offsets 29, -19, -12
+	dynamic_sprite_offsets 37, -19, -20
+	dynamic_sprite_offsets 19,   1,  -2
+	dynamic_sprite_offsets 27,   1, -10
+
+LolaMovementSprite49:
+	dynamic_sprite 0, LolaMovementTiles48, 5, 0
+
+LolaMovementSprite50:
+	dynamic_sprite 9, LolaMovementTiles48, 5, 0
+	dynamic_sprite_offsets  8,  -1,  9
+	dynamic_sprite_offsets 16,  -1,  1
+	dynamic_sprite_offsets 24,  -1, -7
+	dynamic_sprite_offsets  7, -17, 10
+	dynamic_sprite_offsets 15, -17,  2
+	dynamic_sprite_offsets -4, -30, 21
+	dynamic_sprite_offsets  4, -30, 13
+	dynamic_sprite_offsets 12, -30,  5
+	dynamic_sprite_offsets 20, -30, -3
+
+LolaMovementSprite51:
+	dynamic_sprite 0, LolaMovementTiles49, 5, 0
+
+LolaMovementSprite52:
+	dynamic_sprite 9, LolaMovementTiles49, 5, 0
+	dynamic_sprite_offsets  8,  -2,  9
+	dynamic_sprite_offsets 16,  -2,  1
+	dynamic_sprite_offsets 24,  -2, -7
+	dynamic_sprite_offsets  7, -18, 10
+	dynamic_sprite_offsets 15, -18,  2
+	dynamic_sprite_offsets -4, -31, 21
+	dynamic_sprite_offsets  4, -31, 13
+	dynamic_sprite_offsets 12, -31,  5
+	dynamic_sprite_offsets 20, -31, -3
+
+LolaMovementSprite53:
+	dynamic_sprite 0, LolaMovementTiles50, 5, 0
+
+LolaMovementSprite54:
+	dynamic_sprite 10, LolaMovementTiles50, 5, 0
+	dynamic_sprite_offsets -1, -17, 18
+	dynamic_sprite_offsets  7, -17, 10
+	dynamic_sprite_offsets 15, -17,  2
+	dynamic_sprite_offsets -1,  -1, 18
+	dynamic_sprite_offsets  7,  -1, 10
+	dynamic_sprite_offsets 15,  -1,  2
+	dynamic_sprite_offsets -5, -33, 22
+	dynamic_sprite_offsets  3, -33, 14
+	dynamic_sprite_offsets 11, -33,  6
+	dynamic_sprite_offsets 19, -33, -2
+
+LolaMovementSprite55:
+	dynamic_sprite 7, LolaMovementTiles51, 5, 0
+	dynamic_sprite_offsets  3, -15, 14
+	dynamic_sprite_offsets 11, -15,  6
+	dynamic_sprite_offsets 19, -15, -2
+	dynamic_sprite_offsets  3,   1, 14
+	dynamic_sprite_offsets 11,   1,  6
+	dynamic_sprite_offsets 19,   1, -2
+	dynamic_sprite_offsets 10, -31,  7
+
+LolaMovementSprite56:
+	dynamic_sprite 9, LolaMovementTiles52, 5, 0
+	dynamic_sprite_offsets  0, -29, 17
+	dynamic_sprite_offsets  8, -29,  9
+	dynamic_sprite_offsets 16, -29,  1
+	dynamic_sprite_offsets  0, -13, 17
+	dynamic_sprite_offsets  8, -13,  9
+	dynamic_sprite_offsets 16, -13,  1
+	dynamic_sprite_offsets  6,   3, 11
+	dynamic_sprite_offsets 14,   3,  3
+	dynamic_sprite_offsets 24, -13, -7
+
+LolaMovementSprite57:
+	dynamic_sprite 1, LolaMovementTiles53, 5, 0
+	dynamic_sprite_offsets 4, 1, 13
+
+INCBIN "baserom.gbc", $3b551, $3b62d - $3b551
 
 Data_3b62d:
 	db $18
@@ -30582,7 +31250,7 @@ BugsBikingTiles2:
 	INCBIN "gfx/player/bugs_biking/frame_2.interleave.2bpp"
 
 BugsDiggingSprite0:
-	dynamic_sprite_2 6, BugsDiggingTiles0, 5, 0
+	dynamic_sprite 6, BugsDiggingTiles0, 5, 0
 	dynamic_sprite_offsets -7,   0, 24
 	dynamic_sprite_offsets  1,   0, 16
 	dynamic_sprite_offsets  9,   0,  8
@@ -30591,7 +31259,7 @@ BugsDiggingSprite0:
 	dynamic_sprite_offsets 15, -16,  2
 
 BugsDiggingSprite1:
-	dynamic_sprite_2 6, BugsDiggingTiles1, 5, 0
+	dynamic_sprite 6, BugsDiggingTiles1, 5, 0
 	dynamic_sprite_offsets -7,   0, 24
 	dynamic_sprite_offsets  1,   0, 16
 	dynamic_sprite_offsets  9,   0,  8
@@ -30600,7 +31268,7 @@ BugsDiggingSprite1:
 	dynamic_sprite_offsets 15, -16,  2
 
 BugsDiggingSprite2:
-	dynamic_sprite_2 5, BugsDiggingTiles2, 5, 0
+	dynamic_sprite 5, BugsDiggingTiles2, 5, 0
 	dynamic_sprite_offsets  -4,  0, 21
 	dynamic_sprite_offsets   4,  0, 13
 	dynamic_sprite_offsets  12,  0,  5
@@ -30608,61 +31276,61 @@ BugsDiggingSprite2:
 	dynamic_sprite_offsets -12, 13, 29
 
 BugsDiggingSprite3:
-	dynamic_sprite_2 4, BugsDiggingTiles3, 5, 0
+	dynamic_sprite 4, BugsDiggingTiles3, 5, 0
 	dynamic_sprite_offsets -10, 0, 27
 	dynamic_sprite_offsets  -2, 0, 19
 	dynamic_sprite_offsets   6, 0, 11
 	dynamic_sprite_offsets  14, 0,  3
 
 BugsDiggingSprite4:
-	dynamic_sprite_2 3, BugsDiggingTiles4, 5, 0
+	dynamic_sprite 3, BugsDiggingTiles4, 5, 0
 	dynamic_sprite_offsets -2, 0, 19
 	dynamic_sprite_offsets  6, 0, 11
 	dynamic_sprite_offsets 14, 0,  3
 
 BugsDiggingSprite5:
-	dynamic_sprite_2 3, BugsDiggingTiles5, 5, 0
+	dynamic_sprite 3, BugsDiggingTiles5, 5, 0
 	dynamic_sprite_offsets -1, 0, 18
 	dynamic_sprite_offsets  7, 0, 10
 	dynamic_sprite_offsets 15, 0,  2
 
 BugsDiggingSprite6:
-	dynamic_sprite_2 4, BugsDiggingTiles6, 5, 0
+	dynamic_sprite 4, BugsDiggingTiles6, 5, 0
 	dynamic_sprite_offsets -4, 1, 21
 	dynamic_sprite_offsets  4, 1, 13
 	dynamic_sprite_offsets 12, 1,  5
 	dynamic_sprite_offsets 20, 1, -3
 
 BugsDiggingSprite7:
-	dynamic_sprite_2 4, BugsDiggingTiles7, 5, 0
+	dynamic_sprite 4, BugsDiggingTiles7, 5, 0
 	dynamic_sprite_offsets -4, 1, 21
 	dynamic_sprite_offsets  4, 1, 13
 	dynamic_sprite_offsets 12, 1,  5
 	dynamic_sprite_offsets 20, 1, -3
 
 BugsPushingSprite0:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite1:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite2:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite3:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite4:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite5:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite6:
-	dynamic_sprite_2 0, BugsPushingTiles0, 5, 0
+	dynamic_sprite 0, BugsPushingTiles0, 5, 0
 
 BugsPushingSprite7:
-	dynamic_sprite_2 9, BugsPushingTiles0, 5, 0
+	dynamic_sprite 9, BugsPushingTiles0, 5, 0
 	dynamic_sprite_offsets -23,   1, 40
 	dynamic_sprite_offsets -15,   1, 32
 	dynamic_sprite_offsets  -7,   1, 24
@@ -30674,10 +31342,10 @@ BugsPushingSprite7:
 	dynamic_sprite_offsets   6, -31, 11
 
 BugsPushingSprite8:
-	dynamic_sprite_2 0, BugsPushingTiles1, 5, 0
+	dynamic_sprite 0, BugsPushingTiles1, 5, 0
 
 BugsPushingSprite9:
-	dynamic_sprite_2 8, BugsPushingTiles1, 5, 0
+	dynamic_sprite 8, BugsPushingTiles1, 5, 0
 	dynamic_sprite_offsets  -8, -15, 25
 	dynamic_sprite_offsets   0, -15, 17
 	dynamic_sprite_offsets   8, -15,  9
@@ -30688,10 +31356,10 @@ BugsPushingSprite9:
 	dynamic_sprite_offsets   7, -31, 10
 
 BugsPushingSprite10:
-	dynamic_sprite_2 0, BugsPushingTiles2, 5, 0
+	dynamic_sprite 0, BugsPushingTiles2, 5, 0
 
 BugsPushingSprite11:
-	dynamic_sprite_2 9, BugsPushingTiles2, 5, 0
+	dynamic_sprite 9, BugsPushingTiles2, 5, 0
 	dynamic_sprite_offsets -23,   1, 40
 	dynamic_sprite_offsets -15,   1, 32
 	dynamic_sprite_offsets  -7,   1, 24
@@ -30703,10 +31371,10 @@ BugsPushingSprite11:
 	dynamic_sprite_offsets   6, -31, 11
 
 BugsPushingSprite12:
-	dynamic_sprite_2 0, BugsPushingTiles3, 5, 0
+	dynamic_sprite 0, BugsPushingTiles3, 5, 0
 
 BugsPushingSprite13:
-	dynamic_sprite_2 8, BugsPushingTiles3, 5, 0
+	dynamic_sprite 8, BugsPushingTiles3, 5, 0
 	dynamic_sprite_offsets -11, -15, 28
 	dynamic_sprite_offsets  -3, -15, 20
 	dynamic_sprite_offsets   5, -15, 12
@@ -30717,10 +31385,10 @@ BugsPushingSprite13:
 	dynamic_sprite_offsets   7, -31, 10
 
 LolaUmbrellaSprite0:
-	dynamic_sprite_2 0, LolaUmbrellaTiles0, 5, 0
+	dynamic_sprite 0, LolaUmbrellaTiles0, 5, 0
 
 LolaUmbrellaSprite1:
-	dynamic_sprite_2 8, LolaUmbrellaTiles0, 5, 0
+	dynamic_sprite 8, LolaUmbrellaTiles0, 5, 0
 	dynamic_sprite_offsets  7, -17, 10
 	dynamic_sprite_offsets 15, -17,  2
 	dynamic_sprite_offsets  7,  -1, 10
@@ -30731,7 +31399,7 @@ LolaUmbrellaSprite1:
 	dynamic_sprite_offsets  8, -33,  9
 
 LolaUmbrellaSprite2:
-	dynamic_sprite_2 10, LolaUmbrellaTiles1, 5, 0
+	dynamic_sprite 10, LolaUmbrellaTiles1, 5, 0
 	dynamic_sprite_offsets  5, -14, 12
 	dynamic_sprite_offsets 13, -14,  4
 	dynamic_sprite_offsets  5,   2, 12
@@ -30744,7 +31412,7 @@ LolaUmbrellaSprite2:
 	dynamic_sprite_offsets 24, -46, -7
 
 LolaUmbrellaSprite3:
-	dynamic_sprite_2 10, LolaUmbrellaTiles2, 5, 0
+	dynamic_sprite 10, LolaUmbrellaTiles2, 5, 0
 	dynamic_sprite_offsets  4, -12, 13
 	dynamic_sprite_offsets 12, -12,  5
 	dynamic_sprite_offsets  4,   4, 13
@@ -30757,17 +31425,17 @@ LolaUmbrellaSprite3:
 	dynamic_sprite_offsets 24, -44, -7
 
 LevelCompleteClapboardSprite0:
-	dynamic_sprite_2 2, LevelCompleteClapboardTiles0, 5, 0
+	dynamic_sprite 2, LevelCompleteClapboardTiles0, 5, 0
 	dynamic_sprite_offsets  6, -9, 11
 	dynamic_sprite_offsets 14, -9,  3
 
 LevelCompleteClapboardSprite1:
-	dynamic_sprite_2 2, LevelCompleteClapboardTiles1, 5, 0
+	dynamic_sprite 2, LevelCompleteClapboardTiles1, 5, 0
 	dynamic_sprite_offsets  4, -11, 13
 	dynamic_sprite_offsets 12, -11,  5
 
 LevelCompleteClapboardSprite2:
-	dynamic_sprite_2 6, LevelCompleteClapboardTiles2, 5, 0
+	dynamic_sprite 6, LevelCompleteClapboardTiles2, 5, 0
 	dynamic_sprite_offsets  1, -15, 16
 	dynamic_sprite_offsets  9, -15,  8
 	dynamic_sprite_offsets 17, -15,  0
@@ -30776,7 +31444,7 @@ LevelCompleteClapboardSprite2:
 	dynamic_sprite_offsets 17,   1,  0
 
 LevelCompleteClapboardSprite3:
-	dynamic_sprite_2 10, LevelCompleteClapboardTiles3, 5, 0
+	dynamic_sprite 10, LevelCompleteClapboardTiles3, 5, 0
 	dynamic_sprite_offsets -4, -20, 21
 	dynamic_sprite_offsets  4, -20, 13
 	dynamic_sprite_offsets 12, -20,  5
@@ -30789,7 +31457,7 @@ LevelCompleteClapboardSprite3:
 	dynamic_sprite_offsets 20,  12, -3
 
 LevelCompleteClapboardSprite4:
-	dynamic_sprite_2 8, LevelCompleteClapboardTiles4, 5, 0
+	dynamic_sprite 8, LevelCompleteClapboardTiles4, 5, 0
 	dynamic_sprite_offsets -4, -20, 21
 	dynamic_sprite_offsets  4, -20, 13
 	dynamic_sprite_offsets 12, -20,  5
@@ -30800,7 +31468,7 @@ LevelCompleteClapboardSprite4:
 	dynamic_sprite_offsets 20,  -4, -3
 
 LevelCompleteClapboardSprite5:
-	dynamic_sprite_2 8, LevelCompleteClapboardTiles5, 5, 0
+	dynamic_sprite 8, LevelCompleteClapboardTiles5, 5, 0
 	dynamic_sprite_offsets -4, -20, 21
 	dynamic_sprite_offsets  4, -20, 13
 	dynamic_sprite_offsets 12, -20,  5
@@ -30811,7 +31479,7 @@ LevelCompleteClapboardSprite5:
 	dynamic_sprite_offsets 20,  -4, -3
 
 LolaPushingSprite0:
-	dynamic_sprite_2 9, LolaPushingTiles0, 5, 0
+	dynamic_sprite 9, LolaPushingTiles0, 5, 0
 	dynamic_sprite_offsets -17,   1, 34
 	dynamic_sprite_offsets  -9,   1, 26
 	dynamic_sprite_offsets  -1,   1, 18
@@ -30823,7 +31491,7 @@ LolaPushingSprite0:
 	dynamic_sprite_offsets  -7, -31, 24
 
 LolaPushingSprite1:
-	dynamic_sprite_2 9, LolaPushingTiles1, 5, 0
+	dynamic_sprite 9, LolaPushingTiles1, 5, 0
 	dynamic_sprite_offsets -13,   1, 30
 	dynamic_sprite_offsets  -5,   1, 22
 	dynamic_sprite_offsets   3,   1, 14
@@ -30835,7 +31503,7 @@ LolaPushingSprite1:
 	dynamic_sprite_offsets   5, -31, 12
 
 BugsSkateboardingSprite0:
-	dynamic_sprite_2 10, BugsSkateboardingTiles0, 5, 0
+	dynamic_sprite 10, BugsSkateboardingTiles0, 5, 0
 	dynamic_sprite_offsets -4,   1, 21
 	dynamic_sprite_offsets  4,   1, 13
 	dynamic_sprite_offsets 12,   1,  5
@@ -30848,7 +31516,7 @@ BugsSkateboardingSprite0:
 	dynamic_sprite_offsets  7, -31, 10
 
 BugsSkateboardingSprite1:
-	dynamic_sprite_2 10, BugsSkateboardingTiles1, 5, 0
+	dynamic_sprite 10, BugsSkateboardingTiles1, 5, 0
 	dynamic_sprite_offsets -4,   1, 21
 	dynamic_sprite_offsets  4,   1, 13
 	dynamic_sprite_offsets 12,   1,  5
@@ -30861,10 +31529,10 @@ BugsSkateboardingSprite1:
 	dynamic_sprite_offsets  8, -31,  9
 
 LolaSkateboardingSprite0:
-	dynamic_sprite_2 0, LolaSkateboardingTiles0, 5, 0
+	dynamic_sprite 0, LolaSkateboardingTiles0, 5, 0
 
 LolaSkateboardingSprite1:
-	dynamic_sprite_2 10, LolaSkateboardingTiles0, 5, 0
+	dynamic_sprite 10, LolaSkateboardingTiles0, 5, 0
 	dynamic_sprite_offsets -4,   1, 21
 	dynamic_sprite_offsets  4,   1, 13
 	dynamic_sprite_offsets 12,   1,  5
@@ -30877,7 +31545,7 @@ LolaSkateboardingSprite1:
 	dynamic_sprite_offsets -8, -25, 25
 
 LolaSkateboardingSprite2:
-	dynamic_sprite_2 10, LolaSkateboardingTiles1, 5, 0
+	dynamic_sprite 10, LolaSkateboardingTiles1, 5, 0
 	dynamic_sprite_offsets -4,   1, 21
 	dynamic_sprite_offsets  4,   1, 13
 	dynamic_sprite_offsets 12,   1,  5
@@ -30890,10 +31558,10 @@ LolaSkateboardingSprite2:
 	dynamic_sprite_offsets -8, -28, 25
 
 BugsJackhammerSprite0:
-	dynamic_sprite_2 0, BugsJackhammerTiles0, 5, 0
+	dynamic_sprite 0, BugsJackhammerTiles0, 5, 0
 
 BugsJackhammerSprite1:
-	dynamic_sprite_2 8, BugsJackhammerTiles0, 5, 0
+	dynamic_sprite 8, BugsJackhammerTiles0, 5, 0
 	dynamic_sprite_offsets  2, -31, 15
 	dynamic_sprite_offsets 10, -31,  7
 	dynamic_sprite_offsets  2, -15, 15
@@ -30904,7 +31572,7 @@ BugsJackhammerSprite1:
 	dynamic_sprite_offsets 18,   1, -1
 
 BugsJackhammerSprite2:
-	dynamic_sprite_2 9, BugsJackhammerTiles1, 5, 0
+	dynamic_sprite 9, BugsJackhammerTiles1, 5, 0
 	dynamic_sprite_offsets  2, -21, 15
 	dynamic_sprite_offsets 10, -21,  7
 	dynamic_sprite_offsets 18, -21, -1
@@ -30916,7 +31584,7 @@ BugsJackhammerSprite2:
 	dynamic_sprite_offsets 13, -37,  4
 
 BugsJackhammerSprite3:
-	dynamic_sprite_2 9, BugsJackhammerTiles2, 5, 0
+	dynamic_sprite 9, BugsJackhammerTiles2, 5, 0
 	dynamic_sprite_offsets  2, -19, 15
 	dynamic_sprite_offsets 10, -19,  7
 	dynamic_sprite_offsets 18, -19, -1
@@ -30928,7 +31596,7 @@ BugsJackhammerSprite3:
 	dynamic_sprite_offsets 13, -35,  4
 
 BugsBarrelSprite0:
-	dynamic_sprite_2 9, BugsBarrelTiles0, 5, 0
+	dynamic_sprite 9, BugsBarrelTiles0, 5, 0
 	dynamic_sprite_offsets  0,  -4, 17
 	dynamic_sprite_offsets  8,  -4,  9
 	dynamic_sprite_offsets 16,  -4,  1
@@ -30940,7 +31608,7 @@ BugsBarrelSprite0:
 	dynamic_sprite_offsets 15, -20,  2
 
 BugsBarrelSprite1:
-	dynamic_sprite_2 9, BugsBarrelTiles1, 5, 0
+	dynamic_sprite 9, BugsBarrelTiles1, 5, 0
 	dynamic_sprite_offsets  0,  -4, 17
 	dynamic_sprite_offsets  8,  -4,  9
 	dynamic_sprite_offsets 16,  -4,  1
@@ -30952,7 +31620,7 @@ BugsBarrelSprite1:
 	dynamic_sprite_offsets 15, -20,  2
 
 BugsBarrelSprite2:
-	dynamic_sprite_2 9, BugsBarrelTiles2, 5, 0
+	dynamic_sprite 9, BugsBarrelTiles2, 5, 0
 	dynamic_sprite_offsets  0, -20, 17
 	dynamic_sprite_offsets  8, -20,  9
 	dynamic_sprite_offsets 16, -20,  1
@@ -30964,7 +31632,7 @@ BugsBarrelSprite2:
 	dynamic_sprite_offsets 16,  12,  1
 
 LolaBarrelSprite0:
-	dynamic_sprite_2 9, LolaBarrelTiles0, 5, 0
+	dynamic_sprite 9, LolaBarrelTiles0, 5, 0
 	dynamic_sprite_offsets  0, -20, 17
 	dynamic_sprite_offsets  8, -20,  9
 	dynamic_sprite_offsets 16, -20,  1
@@ -30976,7 +31644,7 @@ LolaBarrelSprite0:
 	dynamic_sprite_offsets 16,  12,  1
 
 LolaBarrelSprite1:
-	dynamic_sprite_2 9, LolaBarrelTiles1, 5, 0
+	dynamic_sprite 9, LolaBarrelTiles1, 5, 0
 	dynamic_sprite_offsets  0, -20, 17
 	dynamic_sprite_offsets  8, -20,  9
 	dynamic_sprite_offsets 16, -20,  1
@@ -30988,7 +31656,7 @@ LolaBarrelSprite1:
 	dynamic_sprite_offsets 16,  12,  1
 
 LolaBarrelSprite2:
-	dynamic_sprite_2 9, LolaBarrelTiles2, 5, 0
+	dynamic_sprite 9, LolaBarrelTiles2, 5, 0
 	dynamic_sprite_offsets  0, -20, 17
 	dynamic_sprite_offsets  8, -20,  9
 	dynamic_sprite_offsets 16, -20,  1
@@ -31000,7 +31668,7 @@ LolaBarrelSprite2:
 	dynamic_sprite_offsets 16,  12,  1
 
 BugsSurfingSprite0:
-	dynamic_sprite_2 8, BugsSurfingTiles0, 5, 0
+	dynamic_sprite 8, BugsSurfingTiles0, 5, 0
 	dynamic_sprite_offsets  4, -15, 13
 	dynamic_sprite_offsets 12, -15,  5
 	dynamic_sprite_offsets 20, -15, -3
@@ -31011,7 +31679,7 @@ BugsSurfingSprite0:
 	dynamic_sprite_offsets 11, -31,  6
 
 BugsSurfingSprite1:
-	dynamic_sprite_2 8, BugsSurfingTiles1, 5, 0
+	dynamic_sprite 8, BugsSurfingTiles1, 5, 0
 	dynamic_sprite_offsets  3, -31, 14
 	dynamic_sprite_offsets 11, -31,  6
 	dynamic_sprite_offsets  3, -15, 14
@@ -31022,7 +31690,7 @@ BugsSurfingSprite1:
 	dynamic_sprite_offsets 19,   1, -2
 
 BugsHippoSprite0:
-	dynamic_sprite_2 10, BugsHippoTiles0, 5, 0
+	dynamic_sprite 10, BugsHippoTiles0, 5, 0
 	dynamic_sprite_offsets -15,   1,  32
 	dynamic_sprite_offsets  -7,   1,  24
 	dynamic_sprite_offsets   1,   1,  16
@@ -31035,10 +31703,10 @@ BugsHippoSprite0:
 	dynamic_sprite_offsets  15, -15,   2
 
 LolaHippoSprite0:
-	dynamic_sprite_2 0, LolaHippoTiles0, 5, 0
+	dynamic_sprite 0, LolaHippoTiles0, 5, 0
 
 LolaHippoSprite1:
-	dynamic_sprite_2 10, LolaHippoTiles0, 5, 0
+	dynamic_sprite 10, LolaHippoTiles0, 5, 0
 	dynamic_sprite_offsets -15,   1,  32
 	dynamic_sprite_offsets  -7,   1,  24
 	dynamic_sprite_offsets   1,   1,  16
@@ -31051,10 +31719,10 @@ LolaHippoSprite1:
 	dynamic_sprite_offsets  17, -15,   0
 
 BugsBikingSprite0:
-	dynamic_sprite_2 0, BugsBikingTiles0, 5, 0
+	dynamic_sprite 0, BugsBikingTiles0, 5, 0
 
 BugsBikingSprite1:
-	dynamic_sprite_2 10, BugsBikingTiles0, 5, 0
+	dynamic_sprite 10, BugsBikingTiles0, 5, 0
 	dynamic_sprite_offsets -8,   1, 25
 	dynamic_sprite_offsets  0,   1, 17
 	dynamic_sprite_offsets  8,   1,  9
@@ -31067,10 +31735,10 @@ BugsBikingSprite1:
 	dynamic_sprite_offsets 12, -31,  5
 
 BugsBikingSprite2:
-	dynamic_sprite_2 0, BugsBikingTiles1, 5, 0
+	dynamic_sprite 0, BugsBikingTiles1, 5, 0
 
 BugsBikingSprite3:
-	dynamic_sprite_2 10, BugsBikingTiles1, 5, 0
+	dynamic_sprite 10, BugsBikingTiles1, 5, 0
 	dynamic_sprite_offsets -8,   1, 25
 	dynamic_sprite_offsets  0,   1, 17
 	dynamic_sprite_offsets  8,   1,  9
@@ -31083,7 +31751,7 @@ BugsBikingSprite3:
 	dynamic_sprite_offsets 12, -31,  5
 
 BugsBikingSprite4:
-	dynamic_sprite_2 10, BugsBikingTiles2, 5, 0
+	dynamic_sprite 10, BugsBikingTiles2, 5, 0
 	dynamic_sprite_offsets -8,   1, 25
 	dynamic_sprite_offsets  0,   1, 17
 	dynamic_sprite_offsets  8,   1,  9
@@ -31098,7 +31766,7 @@ BugsBikingSprite4:
 ; This seems to be leftover player sprite data.
 ; The pointer here is pointing directly after BugsBikingTiles2,
 ; which isn't tile gfx data.
-	dynamic_sprite_2 0, BugsDiggingSprite0, 5, 0
+	dynamic_sprite 0, BugsDiggingSprite0, 5, 0
 
 FuddForestBossLevelTiles:
 	INCBIN "gfx/fudd_forest/boss_level_tiles.2bpp.lz"
