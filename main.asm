@@ -11652,7 +11652,7 @@ HandleSkateboardEntity:
 	call Func_2326
 	pop hl
 .asm_4870
-	ld bc, $6a04
+	ld bc, SkateboardSprite0 + 1
 	call Func_792d
 	jr .asm_48be
 .asm_4878
@@ -27529,7 +27529,8 @@ FireHydrantWaterTiles1:
 FireHydrantWaterTiles2:
 	INCBIN "gfx/entities/fire_hydrant_water/frame_2.interleave.2bpp"
 
-INCBIN "baserom.gbc", $24a20, $24ac0 - $24a20
+SkateboardTiles0:
+	INCBIN "gfx/entities/skateboard/frame_0.interleave.2bpp"
 
 BrickThrowerTiles0:
 	INCBIN "gfx/entities/brick_thrower/frame_0.interleave.2bpp"
@@ -28722,8 +28723,6 @@ DaffyDuckSprite12:
 	dynamic_sprite_offsets 16,   1, 18
 	dynamic_sprite_offsets 24, -12, 10
 
-INCBIN "baserom.gbc", $329d6, $329d6 - $329d6
-
 FireHydrantWaterSprite0:
 	dynamic_sprite_8 4, FireHydrantWaterTiles0, 4, 0
 	dynamic_sprite_offsets  8, 14, 32
@@ -28745,7 +28744,13 @@ FireHydrantWaterSprite2:
 	dynamic_sprite_offsets 24, 14, 16
 	dynamic_sprite_offsets 32, 14,  8
 
-INCBIN "baserom.gbc", $32a03, $32a15 - $32a03
+SkateboardSprite0:
+	dynamic_sprite 5, SkateboardTiles0, 5, 0
+	dynamic_sprite_offsets -4,   1, 21
+	dynamic_sprite_offsets  4,   1, 13
+	dynamic_sprite_offsets 12,   1,  5
+	dynamic_sprite_offsets 20,   1, -3
+	dynamic_sprite_offsets 17, -15,  0
 
 BrickThrowerSprite0:
 	dynamic_sprite_8 2, BrickThrowerTiles0, 3, 0
