@@ -12882,7 +12882,7 @@ HandleRockThrowerEntity:
 	inc hl
 	jr .asm_5056
 .asm_5051
-	ld bc, $6c4a
+	ld bc, RockThrowerSprite5 + 1
 	jr .asm_50a7
 .asm_5056
 	inc [hl]
@@ -13067,7 +13067,7 @@ HandleBarrelBoatEntity:
 	call Func_2326
 	pop hl
 .asm_5173
-	ld bc, $6c59
+	ld bc, BarrelBoatSprite1 + 1
 	call Func_792d
 	jr .exit
 .asm_517b
@@ -13900,7 +13900,7 @@ HandleJackhammerEntity:
 	call Func_2326
 	pop hl
 .asm_56bc
-	ld bc, $6dbe
+	ld bc, JackhammerSprite0 + 1
 	call Func_792d
 	jr .asm_570a
 .asm_56c4
@@ -15787,7 +15787,7 @@ HandleTazFemaleEntity:
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_63d8
-	ld bc, $7280
+	ld bc, TazFemaleSprite8 + 1
 	jp .asm_63d4
 .asm_62ef
 	add a
@@ -16397,21 +16397,21 @@ HandleBalloonEntity:
 	jp ExitEntityHandler
 
 BalloonSprites:
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
-	dw BalloonSprite0 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
+	dw BalloonSprite1 + 1
 	dw BalloonSprite1 + 1
 	dw BalloonSprite2 + 1
 	dw BalloonSprite3 + 1
 	dw BalloonSprite4 + 1
 	dw BalloonSprite5 + 1
+	dw BalloonSprite6 + 1
 
 HandleTazFemaleBossEntity:
 	push hl
@@ -16436,7 +16436,7 @@ HandleTazFemaleBossEntity:
 	pop hl
 	bit 3, [hl]
 	jp z, .asm_681c
-	ld bc, $7280
+	ld bc, TazFemaleSprite8 + 1
 	jp .asm_6818
 .asm_670a
 	add a
@@ -16858,7 +16858,7 @@ HandleCageDropEntity:
 	call PlaySoundEffectHome
 	jr .asm_6981
 .asm_6965
-	ld bc, $73a6
+	ld bc, CageDropSprite1 + 1
 	call Func_792d
 	jr .asm_6981
 .asm_696d
@@ -16870,7 +16870,7 @@ HandleCageDropEntity:
 	ld a, $09
 	call PlaySoundEffectHome
 .asm_697b
-	ld bc, $738b
+	ld bc, CageDropSprite0 + 1
 	call Func_792d
 .asm_6981
 	jp ExitEntityHandler
@@ -27532,8 +27532,6 @@ DaffyDuckTiles11:
 DaffyDuckTiles12:
 	INCBIN "gfx/entities/daffy_duck/frame_12.interleave.2bpp"
 
-INCBIN "baserom.gbc", $248a0, $248a0 - $248a0
-
 FireHydrantWaterTiles0:
 	INCBIN "gfx/entities/fire_hydrant_water/frame_0.interleave.2bpp"
 FireHydrantWaterTiles1:
@@ -27609,8 +27607,11 @@ RockThrowerTiles3:
 	INCBIN "gfx/entities/rock_thrower/frame_3.interleave.2bpp"
 RockThrowerTiles4:
 	INCBIN "gfx/entities/rock_thrower/frame_4.interleave.2bpp"
+RockThrowerTiles5:
+	INCBIN "gfx/entities/rock_thrower/frame_5.interleave.2bpp"
 
-INCBIN "baserom.gbc", $25e20, $25f40 - $25e20
+BarrelBoatTiles0:
+	INCBIN "gfx/entities/barrel_boat/frame_0.interleave.2bpp"
 
 CannonTiles0:
 	INCBIN "gfx/entities/cannon/frame_0.interleave.2bpp"
@@ -27654,7 +27655,8 @@ SeagullTiles15:
 SeagullTiles16:
 	INCBIN "gfx/entities/seagull/frame_16.interleave.2bpp"
 
-INCBIN "baserom.gbc", $26ac0, $26b40 - $26ac0
+JackhammerTiles0:
+	INCBIN "gfx/entities/jackhammer/frame_0.interleave.2bpp"
 
 BouncingOilDrumTiles0:
 	INCBIN "gfx/entities/bouncing_oil_drum/frame_0.interleave.2bpp"
@@ -27843,8 +27845,8 @@ TazFemaleTiles6:
 	INCBIN "gfx/entities/taz_female/frame_6.interleave.2bpp"
 TazFemaleTiles7:
 	INCBIN "gfx/entities/taz_female/frame_7.interleave.2bpp"
-
-INCBIN "baserom.gbc", $2a320, $2a3e0 - $2a320
+TazFemaleTiles8:
+	INCBIN "gfx/entities/taz_female/frame_8.interleave.2bpp"
 
 BicycleTiles0:
 	INCBIN "gfx/entities/bicycle/frame_0.interleave.2bpp"
@@ -27877,7 +27879,10 @@ TazFemaleBossTiles5:
 TazFemaleBossTiles6:
 	INCBIN "gfx/entities/taz_female_boss/frame_6.interleave.2bpp"
 
-INCBIN "baserom.gbc", $2ac40, $2ae40 - $2ac40
+CageDropTiles0:
+	INCBIN "gfx/entities/cage_drop/frame_0.interleave.2bpp"
+CageDropTiles1:
+	INCBIN "gfx/entities/cage_drop/frame_1.interleave.2bpp"
 
 MarvinMartianTiles0:
 	INCBIN "gfx/entities/marvin_martian/frame_0.interleave.2bpp"
@@ -29032,7 +29037,23 @@ RockThrowerSprite4:
 	dynamic_sprite_offsets 16,   1, 13
 	dynamic_sprite_offsets 24,   1,  5
 
-INCBIN "baserom.gbc", $32c49, $32c6d - $32c49
+RockThrowerSprite5:
+	dynamic_sprite_8 3, RockThrowerTiles5, 3, 0
+	dynamic_sprite_offsets  7, 1, 22
+	dynamic_sprite_offsets 15, 1, 14
+	dynamic_sprite_offsets 23, 1,  6
+
+BarrelBoatSprite0:
+	dynamic_sprite_8 0, BarrelBoatTiles0, 3, 0
+
+BarrelBoatSprite1:
+	dynamic_sprite_8 6, BarrelBoatTiles0, 5, 0
+	dynamic_sprite_offsets  8,  0, 25
+	dynamic_sprite_offsets 16,  0, 17
+	dynamic_sprite_offsets 24,  0,  9
+	dynamic_sprite_offsets  8, 16, 25
+	dynamic_sprite_offsets 16, 16, 17
+	dynamic_sprite_offsets 24, 16,  9
 
 CannonSprite0:
 	dynamic_sprite_8 6, CannonTiles0, 1, 1
@@ -29186,7 +29207,12 @@ SeagullSprite16:
 	dynamic_sprite_offsets 19, -12, 21
 	dynamic_sprite_offsets 16,   4, 24
 
-INCBIN "baserom.gbc", $32dbd, $32dcc - $32dbd
+JackhammerSprite0:
+	dynamic_sprite_8 4, JackhammerTiles0, 5, 0
+	dynamic_sprite_offsets  2, -4, 15
+	dynamic_sprite_offsets 10, -4,  7
+	dynamic_sprite_offsets 18, -4, -1
+	dynamic_sprite_offsets 10, 12,  7
 
 BouncingOilDrumSprite0:
 	dynamic_sprite_8 6, BouncingOilDrumTiles0, 2, 0
@@ -29240,7 +29266,8 @@ RaftSprite7:
 	dynamic_sprite_8 1, RaftTiles7, 0, 0
 	dynamic_sprite_offsets 24, 16, -16
 
-INCBIN "baserom.gbc", $32e32, $32e35 - $32e32
+EmptySprite_32e32:
+	dynamic_sprite_8 0, TNTBarrelTiles0, 0, 0
 
 TNTBarrelSprite0:
 	dynamic_sprite_8 6, TNTBarrelTiles0, 0, 0
@@ -29674,7 +29701,11 @@ MonkeySprite6:
 	dynamic_sprite_offsets 24, 1,  2
 	dynamic_sprite_offsets 32, 1, -6
 
-INCBIN "baserom.gbc", $331ef, $331f5 - $331ef
+EmptySprite_331ef:
+	dynamic_sprite_8 0, TazFemaleTiles0, 1, 0
+
+EmptySprite_331f2:
+	dynamic_sprite_8 0, TazFemaleTiles0, 2, 0
 
 TazFemaleSprite0:
 	dynamic_sprite_8 3, TazFemaleTiles0, 2, 0
@@ -29742,7 +29773,14 @@ TazFemaleSprite7:
 	dynamic_sprite_offsets 15, 3, 21
 	dynamic_sprite_offsets 23, 3, 13
 
-INCBIN "baserom.gbc", $3327f, $33294 - $3327f
+TazFemaleSprite8:
+	dynamic_sprite_8 6, TazFemaleTiles8, 2, 0
+	dynamic_sprite_offsets  2,   1, 34
+	dynamic_sprite_offsets 10,   1, 26
+	dynamic_sprite_offsets 18,   1, 18
+	dynamic_sprite_offsets 26,   1, 10
+	dynamic_sprite_offsets 13, -15, 23
+	dynamic_sprite_offsets 21, -15, 15
 
 BicycleSprite0:
 	dynamic_sprite_8 9, BicycleTiles0, 5, 0
@@ -29756,16 +29794,17 @@ BicycleSprite0:
 	dynamic_sprite_offsets  16,   1, -31
 	dynamic_sprite_offsets  24,   1, -39
 
-INCBIN "baserom.gbc", $332b2, $332b5 - $332b2
-
 BalloonSprite0:
+	dynamic_sprite_8 0, BalloonTiles0, 1, 0
+
+BalloonSprite1:
 	dynamic_sprite_8 4, BalloonTiles0, 1, 0
 	dynamic_sprite_offsets 1, -17,  0
 	dynamic_sprite_offsets 9, -17, -8
 	dynamic_sprite_offsets 1,  -1,  0
 	dynamic_sprite_offsets 9,  -1, -8
 
-BalloonSprite1:
+BalloonSprite2:
 	dynamic_sprite_8 5, BalloonTiles1, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
@@ -29773,7 +29812,7 @@ BalloonSprite1:
 	dynamic_sprite_offsets  5, -17,  -4
 	dynamic_sprite_offsets 13, -17, -12
 
-BalloonSprite2:
+BalloonSprite3:
 	dynamic_sprite_8 5, BalloonTiles2, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
@@ -29781,7 +29820,7 @@ BalloonSprite2:
 	dynamic_sprite_offsets  5, -17,  -4
 	dynamic_sprite_offsets 13, -17, -12
 
-BalloonSprite3:
+BalloonSprite4:
 	dynamic_sprite_8 5, BalloonTiles3, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
@@ -29789,7 +29828,7 @@ BalloonSprite3:
 	dynamic_sprite_offsets  5, -17,  -4
 	dynamic_sprite_offsets 13, -17, -12
 
-BalloonSprite4:
+BalloonSprite5:
 	dynamic_sprite_8 5, BalloonTiles4, 1, 0
 	dynamic_sprite_offsets  1,  -1,   0
 	dynamic_sprite_offsets  9,  -1,  -8
@@ -29797,7 +29836,7 @@ BalloonSprite4:
 	dynamic_sprite_offsets  5, -17,  -4
 	dynamic_sprite_offsets 14, -17, -13
 
-BalloonSprite5:
+BalloonSprite6:
 	dynamic_sprite_8 4, BalloonTiles5, 1, 0
 	dynamic_sprite_offsets 1, -17,  0
 	dynamic_sprite_offsets 9, -17, -8
@@ -29855,7 +29894,27 @@ TazFemaleBossSprite6:
 	dynamic_sprite_offsets 16, 17, -16
 	dynamic_sprite_offsets 24, 17, -24
 
-INCBIN "baserom.gbc", $3338a, $333c0 - $3338a
+CageDropSprite0:
+	dynamic_sprite_8 8, CageDropTiles0, 4, 0
+	dynamic_sprite_offsets  8, -15,   0
+	dynamic_sprite_offsets 16, -15,  -8
+	dynamic_sprite_offsets 24, -15, -16
+	dynamic_sprite_offsets 32, -15, -24
+	dynamic_sprite_offsets  8,   1,   0
+	dynamic_sprite_offsets 16,   1,  -8
+	dynamic_sprite_offsets 24,   1, -16
+	dynamic_sprite_offsets 32,   1, -24
+
+CageDropSprite1:
+	dynamic_sprite_8 8, CageDropTiles1, 4, 0
+	dynamic_sprite_offsets 12, -13,  -4
+	dynamic_sprite_offsets 20, -13, -12
+	dynamic_sprite_offsets 12,   3,  -4
+	dynamic_sprite_offsets 20,   3, -12
+	dynamic_sprite_offsets 28, -11, -20
+	dynamic_sprite_offsets 28,   5, -20
+	dynamic_sprite_offsets 36,  -2, -28
+	dynamic_sprite_offsets  4,  -5,   4
 
 MarvinMartianSprite0:
 	dynamic_sprite_8 6, MarvinMartianTiles0, 3, 0
@@ -29956,8 +30015,6 @@ MarvinMartianSprite11:
 	dynamic_sprite_offsets 14, -15, 16
 	dynamic_sprite_offsets 22, -15,  8
 	dynamic_sprite_offsets 26,  -7,  4
-
-INCBIN "baserom.gbc", $3349e, $3349e - $3349e
 
 InstantMartianSprite0:
 	dynamic_sprite_8 6, InstantMartianTiles0, 2, 0
