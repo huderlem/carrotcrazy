@@ -17696,10 +17696,10 @@ HandleLeverSpringEntity:
 	call Func_1948
 .asm_6e73
 	push hl
-	ld bc, $7673
+	ld bc, LeverSpringSprite0 + 1
 	bit 7, [hl]
 	jr nz, .asm_6e7e
-	ld bc, $7682
+	ld bc, LeverSpringSprite1 + 1
 .asm_6e7e
 	call Func_792d
 	pop hl
@@ -17842,7 +17842,7 @@ HandleHoverShipEntity:
 	call Func_2326
 	pop hl
 .asm_6f60
-	ld bc, $7697
+	ld bc, HovershipSprite0 + 1
 	push hl
 	call Func_792d
 	pop hl
@@ -17983,7 +17983,7 @@ HandleSpaceScooterEntity:
 	call Func_2326
 	pop hl
 .asm_7045
-	ld bc, $76ac
+	ld bc, SpaceScooterSprite0 + 1
 	call Func_792d
 .asm_704b
 	jp ExitEntityHandler
@@ -18024,7 +18024,7 @@ HandleFallingAsteroidEntity:
 	ld [$ffad], a
 .asm_7082
 	pop hl
-	ld bc, $76be
+	ld bc, FallingAsteroidSprite0 + 1
 	call Func_792d
 	jp ExitEntityHandler
 
@@ -18070,7 +18070,7 @@ HandleFuelCanisterEntity:
 	jr .asm_70d3
 .asm_70cc
 	pop hl
-	ld bc, $76d3
+	ld bc, FuelCanisterSprite0 + 1
 	call Func_792d
 .asm_70d3
 	jp ExitEntityHandler
@@ -18082,16 +18082,16 @@ HandleActionHintEntity:
 	ld bc, $4
 	add hl, bc
 	push hl
-	ld bc, $76e8
+	ld bc, ActionHintSprite0 + 1
 	call Func_792d
 	pop hl
 	ld a, [hFrameCounter]
 	bit 4, a
 	jr z, .asm_70fc
 	bit 7, [hl]
-	ld bc, $76fd
+	ld bc, ActionHintSprite5 + 1
 	jr z, .asm_70f9
-	ld bc, $7709
+	ld bc, ActionHintSprite6 + 1
 .asm_70f9
 	call Func_792d
 .asm_70fc
@@ -18137,9 +18137,9 @@ HandleBearTrapEntity:
 	pop hl
 	ld a, [hFrameCounter]
 	bit 5, a
-	ld bc, $7958
+	ld bc, BearTrapSprite0 + 1
 	jr z, .asm_7142
-	ld bc, $7967
+	ld bc, BearTrapSprite1 + 1
 .asm_7142
 	call Func_792d
 	jp ExitEntityHandler
@@ -18180,7 +18180,7 @@ HandleDisguisedHunterEntity:
 	ld a, [hFrameCounter]
 	bit 3, a
 	jp z, .asm_7211
-	ld bc, $7a2a
+	ld bc, DisguisedHunterDeathSprite1 + 1
 	call Func_792d
 	jp .asm_7211
 .asm_7185
@@ -18216,7 +18216,7 @@ HandleDisguisedHunterEntity:
 	and $20
 	ld [hl], a
 .asm_71b2
-	ld bc, $7a1b
+	ld bc, DisguisedHunterDeathSprite0 + 1
 	call Func_792d
 	jr .asm_7211
 .asm_71ba
@@ -26571,8 +26571,7 @@ ScreenDataGBC_PrologueScene:
 	compressed_data TitlescreenTileAttributesGBC, $DA4B
 	db $ff
 	dw RunPrologueSceneScreen
-
-INCBIN "baserom.gbc", $1bcde, $1bce0 - $1bcde
+	dw Func_8065
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 
@@ -27118,7 +27117,20 @@ SuperCarrotTiles2:
 SuperCarrotTiles3:
 	INCBIN "gfx/entities/super_carrot/frame_3.interleave.2bpp"
 
-INCBIN "baserom.gbc", $20540, $207e0 - $20540
+ActionHintTiles0:
+	INCBIN "gfx/entities/action_hint/frame_0.interleave.2bpp"
+ActionHintTiles1:
+	INCBIN "gfx/entities/action_hint/frame_1.interleave.2bpp"
+ActionHintTiles2:
+	INCBIN "gfx/entities/action_hint/frame_2.interleave.2bpp"
+
+HovershipTiles0:
+	INCBIN "gfx/entities/hovership/frame_0.interleave.2bpp"
+
+BearTrapTiles0:
+	INCBIN "gfx/entities/bear_trap/frame_0.interleave.2bpp"
+BearTrapTiles1:
+	INCBIN "gfx/entities/bear_trap/frame_1.interleave.2bpp"
 
 TrainTrackDollyTiles0:
 	INCBIN "gfx/entities/train_track_dolly/frame_0.interleave.2bpp"
@@ -27978,7 +27990,19 @@ K9Tiles10:
 K9Tiles11:
 	INCBIN "gfx/entities/k9/frame_11.interleave.2bpp"
 
-INCBIN "baserom.gbc", $2d080, $2d3e0 - $2d080
+LeverSpringTiles0:
+	INCBIN "gfx/entities/lever_spring/frame_0.interleave.2bpp"
+LeverSpringTiles1:
+	INCBIN "gfx/entities/lever_spring/frame_1.interleave.2bpp"
+
+SpaceScooterTiles0:
+	INCBIN "gfx/entities/space_scooter/frame_0.interleave.2bpp"
+
+FallingAsteroidTiles0:
+	INCBIN "gfx/entities/falling_asteroid/frame_0.interleave.2bpp"
+
+FuelCanisterTiles0:
+	INCBIN "gfx/entities/fuel_canister/frame_0.interleave.2bpp"
 
 DisguisedHunterTiles0:
 	INCBIN "gfx/entities/disguised_hunter/frame_0.interleave.2bpp"
@@ -27998,8 +28022,10 @@ DisguisedHunterTiles7:
 	INCBIN "gfx/entities/disguised_hunter/frame_7.interleave.2bpp"
 DisguisedHunterTiles8:
 	INCBIN "gfx/entities/disguised_hunter/frame_8.interleave.2bpp"
-
-INCBIN "baserom.gbc", $2d9c0, $2dae0 - $2d9c0
+DisguisedHunterTiles9:
+	INCBIN "gfx/entities/disguised_hunter/frame_9.interleave.2bpp"
+DisguisedHunterTiles10:
+	INCBIN "gfx/entities/disguised_hunter/frame_10.interleave.2bpp"
 
 SpaceStationBossShipTiles:
 	INCBIN "gfx/space_station/boss_ship_tiles.2bpp.lz"
@@ -28221,19 +28247,19 @@ TreasureIslandBossCollisionAttributes:
 
 SECTION "ROM Bank $0C", ROMX[$4000], BANK[$C]
 
-BugsSpaceShipTiles0:
-	INCBIN "gfx/player/bugs_spaceship/frame_0.interleave.2bpp"
-BugsSpaceShipTiles1:
-	INCBIN "gfx/player/bugs_spaceship/frame_1.interleave.2bpp"
-BugsSpaceShipTiles2:
-	INCBIN "gfx/player/bugs_spaceship/frame_2.interleave.2bpp"
+BugsHoverShipTiles0:
+	INCBIN "gfx/player/bugs_hovership/frame_0.interleave.2bpp"
+BugsHoverShipTiles1:
+	INCBIN "gfx/player/bugs_hovership/frame_1.interleave.2bpp"
+BugsHoverShipTiles2:
+	INCBIN "gfx/player/bugs_hovership/frame_2.interleave.2bpp"
 
-LolaSpaceShipTiles0:
-	INCBIN "gfx/player/lola_spaceship/frame_0.interleave.2bpp"
-LolaSpaceShipTiles1:
-	INCBIN "gfx/player/lola_spaceship/frame_1.interleave.2bpp"
-LolaSpaceShipTiles2:
-	INCBIN "gfx/player/lola_spaceship/frame_2.interleave.2bpp"
+LolaHovershipTiles0:
+	INCBIN "gfx/player/lola_hovership/frame_0.interleave.2bpp"
+LolaHovershipTiles1:
+	INCBIN "gfx/player/lola_hovership/frame_1.interleave.2bpp"
+LolaHovershipTiles2:
+	INCBIN "gfx/player/lola_hovership/frame_2.interleave.2bpp"
 
 BugsTeleportTiles0:
 	INCBIN "gfx/player/bugs_teleport/frame_0.interleave.2bpp"
@@ -28265,8 +28291,8 @@ BugsHelicopterTiles1:
 LolaHelicopterTiles1:
 	INCBIN "gfx/player/lola_helicopter/frame_1.interleave.2bpp"
 
-BugsSpaceshipSprite0:
-	dynamic_sprite 10, BugsSpaceShipTiles0, 5, 0
+BugsHovershipSprite0:
+	dynamic_sprite 10, BugsHoverShipTiles0, 5, 0
 	dynamic_sprite_offsets -1,   1, 18
 	dynamic_sprite_offsets  7,   1, 10
 	dynamic_sprite_offsets 15,   1,  2
@@ -28278,11 +28304,11 @@ BugsSpaceshipSprite0:
 	dynamic_sprite_offsets -7, -38, 24
 	dynamic_sprite_offsets  1, -47, 16
 
-BugsSpaceshipSprite1:
-	dynamic_sprite 0, BugsSpaceShipTiles1, 5, 0
+BugsHovershipSprite1:
+	dynamic_sprite 0, BugsHoverShipTiles1, 5, 0
 
-BugsSpaceshipSprite2:
-	dynamic_sprite 10, BugsSpaceShipTiles1, 5, 0
+BugsHovershipSprite2:
+	dynamic_sprite 10, BugsHoverShipTiles1, 5, 0
 	dynamic_sprite_offsets  0,   1, 17
 	dynamic_sprite_offsets  8,   1,  9
 	dynamic_sprite_offsets 16,   1,  1
@@ -28294,11 +28320,11 @@ BugsSpaceshipSprite2:
 	dynamic_sprite_offsets  6, -15, 11
 	dynamic_sprite_offsets 14, -15,  3
 
-BugsSpaceshipSprite3:
-	dynamic_sprite 0, BugsSpaceShipTiles2, 5, 0
+BugsHovershipSprite3:
+	dynamic_sprite 0, BugsHoverShipTiles2, 5, 0
 
-BugsSpaceshipSprite4:
-	dynamic_sprite 10, BugsSpaceShipTiles2, 5, 0
+BugsHovershipSprite4:
+	dynamic_sprite 10, BugsHoverShipTiles2, 5, 0
 	dynamic_sprite_offsets  2, -16, 15
 	dynamic_sprite_offsets 10, -16,  7
 	dynamic_sprite_offsets 18, -16, -1
@@ -28310,8 +28336,8 @@ BugsSpaceshipSprite4:
 	dynamic_sprite_offsets  6, -32, 11
 	dynamic_sprite_offsets 14, -32,  3
 
-LolaSpaceshipSprite0:
-	dynamic_sprite 9, LolaSpaceShipTiles0, 5, 0
+LolaHovershipSprite0:
+	dynamic_sprite 9, LolaHovershipTiles0, 5, 0
 	dynamic_sprite_offsets -1,   1, 18
 	dynamic_sprite_offsets  7,   1, 10
 	dynamic_sprite_offsets 15,   1,  2
@@ -28322,11 +28348,11 @@ LolaSpaceshipSprite0:
 	dynamic_sprite_offsets 13, -15,  4
 	dynamic_sprite_offsets -9,  -4, 26
 
-LolaSpaceshipSprite1:
-	dynamic_sprite 0, LolaSpaceShipTiles1, 5, 0
+LolaHovershipSprite1:
+	dynamic_sprite 0, LolaHovershipTiles1, 5, 0
 
-LolaSpaceshipSprite2:
-	dynamic_sprite 9, LolaSpaceShipTiles1, 5, 0
+LolaHovershipSprite2:
+	dynamic_sprite 9, LolaHovershipTiles1, 5, 0
 	dynamic_sprite_offsets -8,   1, 25
 	dynamic_sprite_offsets  0,   1, 17
 	dynamic_sprite_offsets  8,   1,  9
@@ -28337,11 +28363,11 @@ LolaSpaceshipSprite2:
 	dynamic_sprite_offsets  3, -31, 14
 	dynamic_sprite_offsets 11, -31,  6
 
-LolaSpaceshipSprite3:
-	dynamic_sprite 0, LolaSpaceShipTiles2, 5, 0
+LolaHovershipSprite3:
+	dynamic_sprite 0, LolaHovershipTiles2, 5, 0
 
-LolaSpaceshipSprite4:
-	dynamic_sprite 8, LolaSpaceShipTiles2, 5, 0
+LolaHovershipSprite4:
+	dynamic_sprite 8, LolaHovershipTiles2, 5, 0
 	dynamic_sprite_offsets  2, -16, 15
 	dynamic_sprite_offsets 10, -16,  7
 	dynamic_sprite_offsets 18, -16, -1
@@ -30137,7 +30163,85 @@ K9Sprite11:
 	dynamic_sprite_offsets 24, 1, 16
 	dynamic_sprite_offsets 32, 1,  8
 
-INCBIN "baserom.gbc", $33672, $33714 - $33672
+LeverSpringSprite0:
+	dynamic_sprite_8 4, LeverSpringTiles0, 5, 0
+	dynamic_sprite_offsets  8, 16,   0
+	dynamic_sprite_offsets 16, 16,  -8
+	dynamic_sprite_offsets 24, 16, -16
+	dynamic_sprite_offsets 32, 16, -24
+
+LeverSpringSprite1:
+	dynamic_sprite_8 6, LeverSpringTiles1, 5, 0
+	dynamic_sprite_offsets  8,  4,   0
+	dynamic_sprite_offsets 16,  4,  -8
+	dynamic_sprite_offsets 24,  4, -16
+	dynamic_sprite_offsets 32,  4, -24
+	dynamic_sprite_offsets 16, 20,  -8
+	dynamic_sprite_offsets 24, 20, -16
+
+HovershipSprite0:
+	dynamic_sprite_8 6, HovershipTiles0, 5, 0
+	dynamic_sprite_offsets  7, -7,   0
+	dynamic_sprite_offsets 15, -7,  -8
+	dynamic_sprite_offsets 23, -7, -16
+	dynamic_sprite_offsets  7,  9,   0
+	dynamic_sprite_offsets 15,  9,  -8
+	dynamic_sprite_offsets 23,  9, -16
+
+SpaceScooterSprite0:
+	dynamic_sprite_8 5, SpaceScooterTiles0, 5, 0
+	dynamic_sprite_offsets  8,   1, 32
+	dynamic_sprite_offsets 16,   1, 24
+	dynamic_sprite_offsets 24,   1, 16
+	dynamic_sprite_offsets 32,   1,  8
+	dynamic_sprite_offsets 27, -15, 13
+
+FallingAsteroidSprite0:
+	dynamic_sprite_8 6, FallingAsteroidTiles0, 4, 0
+	dynamic_sprite_offsets  8, -15,   0
+	dynamic_sprite_offsets 16, -15,  -8
+	dynamic_sprite_offsets 24, -15, -16
+	dynamic_sprite_offsets  8,   1,   0
+	dynamic_sprite_offsets 16,   1,  -8
+	dynamic_sprite_offsets 24,   1, -16
+
+FuelCanisterSprite0:
+	dynamic_sprite_8 6, FuelCanisterTiles0, 1, 0
+	dynamic_sprite_offsets  6, -8,   2
+	dynamic_sprite_offsets 14, -8,  -6
+	dynamic_sprite_offsets 22, -8, -14
+	dynamic_sprite_offsets  6,  8,   2
+	dynamic_sprite_offsets 14,  8,  -6
+	dynamic_sprite_offsets 22,  8, -14
+
+ActionHintSprite0:
+	dynamic_sprite_8 2, ActionHintTiles0, 6, 0
+	dynamic_sprite_offsets  8, 21,  0
+	dynamic_sprite_offsets 16, 21, -8
+
+ActionHintSprite1:
+	dynamic_sprite_8 0, ActionHintTiles1, 6, 0
+
+ActionHintSprite2:
+	dynamic_sprite_8 0, ActionHintTiles1, 6, 0
+
+ActionHintSprite3:
+	dynamic_sprite_8 0, ActionHintTiles1, 6, 0
+
+ActionHintSprite4:
+	dynamic_sprite_8 0, ActionHintTiles1, 6, 0
+
+ActionHintSprite5:
+	dynamic_sprite_8 3, ActionHintTiles1, 6, 0
+	dynamic_sprite_offsets  6, 1,   2
+	dynamic_sprite_offsets 14, 1,  -6
+	dynamic_sprite_offsets 22, 1, -14
+
+ActionHintSprite6:
+	dynamic_sprite_8 3, ActionHintTiles2, 6, 0
+	dynamic_sprite_offsets  4,  1,   4
+	dynamic_sprite_offsets 12,  1,  -4
+	dynamic_sprite_offsets 20, -7, -12
 
 ElmerFuddSprite0:
 	dynamic_sprite_8 8, ElmerFuddTiles0, 4, 0
@@ -30386,7 +30490,18 @@ HuntingDogSprite11:
 	dynamic_sprite_offsets 31, 1, 17
 	dynamic_sprite_offsets 39, 1,  9
 
-INCBIN "baserom.gbc", $33957, $33972 - $33957
+BearTrapSprite0:
+	dynamic_sprite_8 4, BearTrapTiles0, 5, 0
+	dynamic_sprite_offsets  8, 8,   0
+	dynamic_sprite_offsets 16, 8,  -8
+	dynamic_sprite_offsets 24, 8, -16
+	dynamic_sprite_offsets 32, 8, -24
+
+BearTrapSprite1:
+	dynamic_sprite_8 3, BearTrapTiles1, 5, 0
+	dynamic_sprite_offsets 16,  8,  -8
+	dynamic_sprite_offsets 24,  8, -16
+	dynamic_sprite_offsets 19, -8, -11
 
 DisguisedHunterSprite0:
 	dynamic_sprite_8 5, DisguisedHunterTiles0, 2, 0
@@ -30462,7 +30577,20 @@ DisguisedHunterShootingSprite2:
 	dynamic_sprite_offsets 16, 10, 24
 	dynamic_sprite_offsets 24, 10, 16
 
-INCBIN "baserom.gbc", $33a1a, $33a3b - $33a1a
+DisguisedHunterDeathSprite0:
+	dynamic_sprite_8 4, DisguisedHunterTiles9, 2, 0
+	dynamic_sprite_offsets  6, 1, 34
+	dynamic_sprite_offsets 14, 1, 26
+	dynamic_sprite_offsets 22, 1, 18
+	dynamic_sprite_offsets 30, 1, 10
+
+DisguisedHunterDeathSprite1:
+	dynamic_sprite_8 5, DisguisedHunterTiles10, 2, 0
+	dynamic_sprite_offsets 13, -15, 27
+	dynamic_sprite_offsets 21, -15, 19
+	dynamic_sprite_offsets 13,   1, 27
+	dynamic_sprite_offsets 21,   1, 19
+	dynamic_sprite_offsets 29,   1, 11
 
 TrainTrackDollySprite0:
 	dynamic_sprite_8 3, TrainTrackDollyTiles0, 4, 0
