@@ -34,6 +34,7 @@ tidy:
 	rm -f $(ROM) $(OBJS) $(ROM:.gbc=.sym) $(ROM:.gbc=.map)
 	$(MAKE) -C tools clean
 
+# TODO: need to clean up spritesheet artifacts
 clean: tidy
 	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.lz' \) -exec rm {} +
 
@@ -49,5 +50,8 @@ clean: tidy
 
 %.lz: %
 	tools/rnc q p $< $@ -m=2
+
+%.inc %.spritesheet.interleave.png: %.spritesheet.png %.ms
+	tools/metasprite compile $^ $*.spritesheet.interleave.png $*.inc
 
 include graphics_rules.mk
