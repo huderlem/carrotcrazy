@@ -54,8 +54,9 @@ Select the following packages:
 * make
 * git
 * gcc-core
+* libpng-devel
 
-The latest compatible version of **rgbds** is  [**0.3.8**](https://github.com/rednex/rgbds/releases/download/v0.3.8/rgbds-0.3.8-win32.zip). To install, put each of the files in the download in `C:\cygwin\usr\local\bin`.
+The latest compatible version of **rgbds** is  [**0.4.0**](https://github.com/rednex/rgbds/releases/download/v0.4.0/rgbds-0.4.0-win32.zip). To install, put each of the files in the download in `C:\cygwin\usr\local\bin`.
 
 Then set up the repository. In the **Cygwin terminal**:
 
