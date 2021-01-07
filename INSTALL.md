@@ -19,6 +19,8 @@ Set up the repository.
 	git clone https://github.com/huderlem/carrotcrazy
 	cd carrotcrazy
 
+Install `libpng` becaause `tools/metasprite.c` depends on it for image processing.
+
 This project is incomplete and requires the user to provide an original Looney Tunes: Carrot Crazy GBC ROM.  Name this file `baserom.gbc` and place it in the root `carrotcrazy` directory.
 
 To build `carrotcrazy.gbc`:
