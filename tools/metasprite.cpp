@@ -601,7 +601,7 @@ void renderMetaspriteTiles(std::string spritesheetFile, std::string outTilesFile
                         destX += 8 * k;
                     }
                     int destY = j;
-                    int pixelKey = srcY * outImg.width + srcX;
+                    int pixelKey = destY * outImg.width + destX;
                     if (usedPixels.find(pixelKey) == usedPixels.end() || usedSlices.find(sliceKey) != usedSlices.end()) {
                         // Pixel isn't used already.
                         setPixel(pixel, outImg.pixels, destX, destY, outImg.width);
@@ -701,7 +701,8 @@ void processLayout(std::string layoutFilepath, std::string outTilesPath) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 16; j++) {
                     int srcX = slice[0] + i;
-                    int srcY = slice[1] + j;
+                    int srcY = slice[1] + j + (srcX / img.width) * 16;
+                    srcX %= img.width;
                     int pixel = getPixel(img.pixels, srcX, srcY, img.width);
                     int destX = slice[2] + i;
                     int destY = slice[3] + j;
