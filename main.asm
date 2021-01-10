@@ -28252,279 +28252,25 @@ TreasureIslandBossCollisionAttributes:
 
 SECTION "ROM Bank $0C", ROMX[$4000], BANK[$C]
 
-BugsHoverShipTiles0:
-	INCBIN "gfx/player/bugs_hovership/frame_0.interleave.2bpp"
-BugsHoverShipTiles1:
-	INCBIN "gfx/player/bugs_hovership/frame_1.interleave.2bpp"
-BugsHoverShipTiles2:
-	INCBIN "gfx/player/bugs_hovership/frame_2.interleave.2bpp"
+BugsHovershipTiles:
+	INCBIN "gfx/player/bugs_hovership.spritesheet.interleave.2bpp"
+LolaHovershipTiles:
+	INCBIN "gfx/player/lola_hovership.spritesheet.interleave.2bpp"
+BugsTeleportTiles:
+	INCBIN "gfx/player/bugs_teleport.spritesheet.interleave.2bpp"
+LolaTeleportTiles:
+	INCBIN "gfx/player/lola_teleport.spritesheet.interleave.2bpp"
+BugsSpaceScooterTiles:
+	INCBIN "gfx/player/bugs_space_scooter.spritesheet.interleave.2bpp"
+PlayerHelicopterTiles:
+	INCBIN "gfx/player/helicopter.spritesheet.interleave.2bpp"
 
-LolaHovershipTiles0:
-	INCBIN "gfx/player/lola_hovership/frame_0.interleave.2bpp"
-LolaHovershipTiles1:
-	INCBIN "gfx/player/lola_hovership/frame_1.interleave.2bpp"
-LolaHovershipTiles2:
-	INCBIN "gfx/player/lola_hovership/frame_2.interleave.2bpp"
-
-BugsTeleportTiles0:
-	INCBIN "gfx/player/bugs_teleport/frame_0.interleave.2bpp"
-BugsTeleportTiles1:
-	INCBIN "gfx/player/bugs_teleport/frame_1.interleave.2bpp"
-BugsTeleportTiles2:
-	INCBIN "gfx/player/bugs_teleport/frame_2.interleave.2bpp"
-
-LolaTeleportTiles0:
-	INCBIN "gfx/player/lola_teleport/frame_0.interleave.2bpp"
-LolaTeleportTiles1:
-	INCBIN "gfx/player/lola_teleport/frame_1.interleave.2bpp"
-LolaTeleportTiles2:
-	INCBIN "gfx/player/lola_teleport/frame_2.interleave.2bpp"
-
-BugsSpaceScooterTiles0:
-	INCBIN "gfx/player/bugs_space_scooter/frame_0.interleave.2bpp"
-BugsSpaceScooterTiles1:
-	INCBIN "gfx/player/bugs_space_scooter/frame_1.interleave.2bpp"
-BugsSpaceScooterTiles2:
-	INCBIN "gfx/player/bugs_space_scooter/frame_2.interleave.2bpp"
-
-BugsHelicopterTiles0:
-	INCBIN "gfx/player/bugs_helicopter/frame_0.interleave.2bpp"
-LolaHelicopterTiles0:
-	INCBIN "gfx/player/lola_helicopter/frame_0.interleave.2bpp"
-BugsHelicopterTiles1:
-	INCBIN "gfx/player/bugs_helicopter/frame_1.interleave.2bpp"
-LolaHelicopterTiles1:
-	INCBIN "gfx/player/lola_helicopter/frame_1.interleave.2bpp"
-
-BugsHovershipSprite0:
-	dynamic_sprite 10, BugsHoverShipTiles0, 5, 0
-	dynamic_sprite_offsets -1,   1, 18
-	dynamic_sprite_offsets  7,   1, 10
-	dynamic_sprite_offsets 15,   1,  2
-	dynamic_sprite_offsets -4,  -6, 21
-	dynamic_sprite_offsets  4, -15, 13
-	dynamic_sprite_offsets 12, -15,  5
-	dynamic_sprite_offsets -4, -22, 21
-	dynamic_sprite_offsets  1, -31, 16
-	dynamic_sprite_offsets -7, -38, 24
-	dynamic_sprite_offsets  1, -47, 16
-
-BugsHovershipSprite1:
-	dynamic_sprite 0, BugsHoverShipTiles1, 5, 0
-
-BugsHovershipSprite2:
-	dynamic_sprite 10, BugsHoverShipTiles1, 5, 0
-	dynamic_sprite_offsets  0,   1, 17
-	dynamic_sprite_offsets  8,   1,  9
-	dynamic_sprite_offsets 16,   1,  1
-	dynamic_sprite_offsets -2, -41, 19
-	dynamic_sprite_offsets -2, -25, 19
-	dynamic_sprite_offsets -2,  -9, 19
-	dynamic_sprite_offsets  6, -47, 11
-	dynamic_sprite_offsets  6, -31, 11
-	dynamic_sprite_offsets  6, -15, 11
-	dynamic_sprite_offsets 14, -15,  3
-
-BugsHovershipSprite3:
-	dynamic_sprite 0, BugsHoverShipTiles2, 5, 0
-
-BugsHovershipSprite4:
-	dynamic_sprite 10, BugsHoverShipTiles2, 5, 0
-	dynamic_sprite_offsets  2, -16, 15
-	dynamic_sprite_offsets 10, -16,  7
-	dynamic_sprite_offsets 18, -16, -1
-	dynamic_sprite_offsets  2,   0, 15
-	dynamic_sprite_offsets 10,   0,  7
-	dynamic_sprite_offsets 18,   0, -1
-	dynamic_sprite_offsets  6, -48, 11
-	dynamic_sprite_offsets 14, -48,  3
-	dynamic_sprite_offsets  6, -32, 11
-	dynamic_sprite_offsets 14, -32,  3
-
-LolaHovershipSprite0:
-	dynamic_sprite 9, LolaHovershipTiles0, 5, 0
-	dynamic_sprite_offsets -1,   1, 18
-	dynamic_sprite_offsets  7,   1, 10
-	dynamic_sprite_offsets 15,   1,  2
-	dynamic_sprite_offsets -3, -31, 20
-	dynamic_sprite_offsets  5, -31, 12
-	dynamic_sprite_offsets -3, -15, 20
-	dynamic_sprite_offsets  5, -15, 12
-	dynamic_sprite_offsets 13, -15,  4
-	dynamic_sprite_offsets -9,  -4, 26
-
-LolaHovershipSprite1:
-	dynamic_sprite 0, LolaHovershipTiles1, 5, 0
-
-LolaHovershipSprite2:
-	dynamic_sprite 9, LolaHovershipTiles1, 5, 0
-	dynamic_sprite_offsets -8,   1, 25
-	dynamic_sprite_offsets  0,   1, 17
-	dynamic_sprite_offsets  8,   1,  9
-	dynamic_sprite_offsets 16,   1,  1
-	dynamic_sprite_offsets -2, -15, 19
-	dynamic_sprite_offsets  6, -15, 11
-	dynamic_sprite_offsets 14, -15,  3
-	dynamic_sprite_offsets  3, -31, 14
-	dynamic_sprite_offsets 11, -31,  6
-
-LolaHovershipSprite3:
-	dynamic_sprite 0, LolaHovershipTiles2, 5, 0
-
-LolaHovershipSprite4:
-	dynamic_sprite 8, LolaHovershipTiles2, 5, 0
-	dynamic_sprite_offsets  2, -16, 15
-	dynamic_sprite_offsets 10, -16,  7
-	dynamic_sprite_offsets 18, -16, -1
-	dynamic_sprite_offsets  2,   0, 15
-	dynamic_sprite_offsets 10,   0,  7
-	dynamic_sprite_offsets 18,   0, -1
-	dynamic_sprite_offsets  8, -32,  9
-	dynamic_sprite_offsets 16, -32,  1
-
-BugsTeleportSprite0:
-	dynamic_sprite 0, BugsTeleportTiles0, 5, 0
-
-BugsTeleportSprite1:
-	dynamic_sprite 7, BugsTeleportTiles0, 5, 0
-	dynamic_sprite_offsets  3,   2, 14
-	dynamic_sprite_offsets 11,   2,  6
-	dynamic_sprite_offsets  6, -30, 11
-	dynamic_sprite_offsets 14, -30,  3
-	dynamic_sprite_offsets  6, -14, 11
-	dynamic_sprite_offsets 14, -14,  3
-	dynamic_sprite_offsets 19,   2, -2
-
-BugsTeleportSprite2:
-	dynamic_sprite 7, BugsTeleportTiles1, 5, 0
-	dynamic_sprite_offsets  3,   2, 14
-	dynamic_sprite_offsets 11,   2,  6
-	dynamic_sprite_offsets  6, -30, 11
-	dynamic_sprite_offsets 14, -30,  3
-	dynamic_sprite_offsets  6, -14, 11
-	dynamic_sprite_offsets 14, -14,  3
-	dynamic_sprite_offsets 19,   2, -2
-
-BugsTeleportSprite3:
-	dynamic_sprite 7, BugsTeleportTiles2, 5, 0
-	dynamic_sprite_offsets  3,   2, 14
-	dynamic_sprite_offsets 11,   2,  6
-	dynamic_sprite_offsets  6, -30, 11
-	dynamic_sprite_offsets 14, -30,  3
-	dynamic_sprite_offsets  6, -14, 11
-	dynamic_sprite_offsets 14, -14,  3
-	dynamic_sprite_offsets 19,   2, -2
-
-LolaTeleportSprite0:
-	dynamic_sprite 0, LolaTeleportTiles0, 5, 0
-
-LolaTeleportSprite1:
-	dynamic_sprite 0, LolaTeleportTiles0, 5, 0
-
-LolaTeleportSprite2:
-	dynamic_sprite 6, LolaTeleportTiles0, 5, 0
-	dynamic_sprite_offsets  5, -14, 12
-	dynamic_sprite_offsets 13, -14,  4
-	dynamic_sprite_offsets  5,   2, 12
-	dynamic_sprite_offsets 13,   2,  4
-	dynamic_sprite_offsets 10, -30,  7
-	dynamic_sprite_offsets  2, -27, 15
-
-LolaTeleportSprite3:
-	dynamic_sprite 6, LolaTeleportTiles1, 5, 0
-	dynamic_sprite_offsets  5, -14, 12
-	dynamic_sprite_offsets 13, -14,  4
-	dynamic_sprite_offsets  5,   2, 12
-	dynamic_sprite_offsets 13,   2,  4
-	dynamic_sprite_offsets 10, -30,  7
-	dynamic_sprite_offsets  2, -27, 15
-
-LolaTeleportSprite4:
-	dynamic_sprite 6, LolaTeleportTiles2, 5, 0
-	dynamic_sprite_offsets  5, -14, 12
-	dynamic_sprite_offsets 13, -14,  4
-	dynamic_sprite_offsets  5,   2, 12
-	dynamic_sprite_offsets 13,   2,  4
-	dynamic_sprite_offsets 10, -30,  7
-	dynamic_sprite_offsets  2, -27, 15
-
-BugsSpaceScooterSprite0:
-	dynamic_sprite 0, BugsSpaceScooterTiles0, 5, 0
-
-BugsSpaceScooterSprite1:
-	dynamic_sprite 10, BugsSpaceScooterTiles0, 5, 0
-	dynamic_sprite_offsets -4,   2, 21
-	dynamic_sprite_offsets  4,   2, 13
-	dynamic_sprite_offsets 12,   2,  5
-	dynamic_sprite_offsets 20,   2, -3
-	dynamic_sprite_offsets -1, -14, 18
-	dynamic_sprite_offsets  7, -14, 10
-	dynamic_sprite_offsets 15, -14,  2
-	dynamic_sprite_offsets -7, -30, 24
-	dynamic_sprite_offsets  1, -30, 16
-	dynamic_sprite_offsets  9, -30,  8
-
-BugsSpaceScooterSprite2:
-	dynamic_sprite 10, BugsSpaceScooterTiles1, 5, 0
-	dynamic_sprite_offsets -4,   1, 21
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-	dynamic_sprite_offsets 20,   1, -3
-	dynamic_sprite_offsets -1, -15, 18
-	dynamic_sprite_offsets  7, -15, 10
-	dynamic_sprite_offsets 15, -15,  2
-	dynamic_sprite_offsets -8, -31, 25
-	dynamic_sprite_offsets  0, -31, 17
-	dynamic_sprite_offsets  8, -31,  9
-
-BugsSpaceScooterSprite3:
-	dynamic_sprite 10, BugsSpaceScooterTiles2, 5, 0
-	dynamic_sprite_offsets -4,   0, 21
-	dynamic_sprite_offsets  4,   0, 13
-	dynamic_sprite_offsets 12,   0,  5
-	dynamic_sprite_offsets 20,   0, -3
-	dynamic_sprite_offsets -1, -16, 18
-	dynamic_sprite_offsets  7, -16, 10
-	dynamic_sprite_offsets 15, -16,  2
-	dynamic_sprite_offsets -8, -32, 25
-	dynamic_sprite_offsets  0, -32, 17
-	dynamic_sprite_offsets  8, -32,  9
-
-BugsHelicopterSprite0:
-	dynamic_sprite 6, BugsHelicopterTiles0, 5, 0
-	dynamic_sprite_offsets  4, -31, 13
-	dynamic_sprite_offsets 12, -31,  5
-	dynamic_sprite_offsets  4, -15, 13
-	dynamic_sprite_offsets 12, -15,  5
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-
-LolaHelicopterSprite0:
-	dynamic_sprite 6, LolaHelicopterTiles0, 5, 0
-	dynamic_sprite_offsets  4, -31, 13
-	dynamic_sprite_offsets 12, -31,  5
-	dynamic_sprite_offsets  4, -15, 13
-	dynamic_sprite_offsets 12, -15,  5
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-
-BugsHelicopterSprite1:
-	dynamic_sprite 6, BugsHelicopterTiles1, 5, 0
-	dynamic_sprite_offsets  4, -31, 13
-	dynamic_sprite_offsets 12, -31,  5
-	dynamic_sprite_offsets  4, -15, 13
-	dynamic_sprite_offsets 12, -15,  5
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-
-LolaHelicopterSprite1:
-	dynamic_sprite 6, LolaHelicopterTiles1, 5, 0
-	dynamic_sprite_offsets  4, -31, 13
-	dynamic_sprite_offsets 12, -31,  5
-	dynamic_sprite_offsets  4, -15, 13
-	dynamic_sprite_offsets 12, -15,  5
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
+INCLUDE "gfx/player/bugs_hovership.inc"
+INCLUDE "gfx/player/lola_hovership.inc"
+INCLUDE "gfx/player/bugs_teleport.inc"
+INCLUDE "gfx/player/lola_teleport.inc"
+INCLUDE "gfx/player/bugs_space_scooter.inc"
+INCLUDE "gfx/player/helicopter.inc"
 
 GameText:
 	INCBIN "data/game_text.bin.lz"
@@ -30744,9 +30490,9 @@ BoomBarrierSprite3:
 SECTION "ROM Bank $0D", ROMX[$4000], BANK[$D]
 
 BugsMovementTiles:
-	INCBIN "gfx/player/bugs_movement/bugs_movement.spritesheet.interleave.2bpp"
+	INCBIN "gfx/player/bugs_movement.spritesheet.interleave.2bpp"
 
-INCLUDE "gfx/player/bugs_movement/bugs_movement.inc"
+INCLUDE "gfx/player/bugs_movement.inc"
 
 FuddForestMetatiles:
 	INCBIN "data/levels/fudd_forest_metatiles.bin.lz"
@@ -30760,9 +30506,9 @@ TreasureIslandBossBackgroundTilemap:
 SECTION "ROM Bank $0E", ROMX[$4000], BANK[$E]
 
 LolaMovementTiles:
-	INCBIN "gfx/player/lola_movement/lola_movement.spritesheet.interleave.2bpp"
+	INCBIN "gfx/player/lola_movement.spritesheet.interleave.2bpp"
 
-INCLUDE "gfx/player/lola_movement/lola_movement.inc"
+INCLUDE "gfx/player/lola_movement.inc"
 
 INCBIN "baserom.gbc", $3b551, $3b62d - $3b551
 
@@ -30952,423 +30698,48 @@ InfogramesCopyrightTilemap:
 SECTION "ROM Bank $0F", ROMX[$4000], BANK[$F]
 
 BugsDiggingTiles:
-	INCBIN "gfx/player/bugs_digging/bugs_digging.spritesheet.interleave.2bpp"
-
-BugsPushingTiles0:
-	INCBIN "gfx/player/bugs_pushing/frame_0.interleave.2bpp"
-BugsPushingTiles1:
-	INCBIN "gfx/player/bugs_pushing/frame_1.interleave.2bpp"
-BugsPushingTiles2:
-	INCBIN "gfx/player/bugs_pushing/frame_2.interleave.2bpp"
-BugsPushingTiles3:
-	INCBIN "gfx/player/bugs_pushing/frame_3.interleave.2bpp"
-
-LolaUmbrellaTiles0:
-	INCBIN "gfx/player/lola_umbrella/frame_0.interleave.2bpp"
-LolaUmbrellaTiles1:
-	INCBIN "gfx/player/lola_umbrella/frame_1.interleave.2bpp"
-LolaUmbrellaTiles2:
-	INCBIN "gfx/player/lola_umbrella/frame_2.interleave.2bpp"
-
-LevelCompleteClapboardTiles0:
-	INCBIN "gfx/player/level_complete_clapboard/frame_0.interleave.2bpp"
-LevelCompleteClapboardTiles1:
-	INCBIN "gfx/player/level_complete_clapboard/frame_1.interleave.2bpp"
-LevelCompleteClapboardTiles2:
-	INCBIN "gfx/player/level_complete_clapboard/frame_2.interleave.2bpp"
-LevelCompleteClapboardTiles3:
-	INCBIN "gfx/player/level_complete_clapboard/frame_3.interleave.2bpp"
-LevelCompleteClapboardTiles4:
-	INCBIN "gfx/player/level_complete_clapboard/frame_4.interleave.2bpp"
-LevelCompleteClapboardTiles5:
-	INCBIN "gfx/player/level_complete_clapboard/frame_5.interleave.2bpp"
-
-LolaPushingTiles0:
-	INCBIN "gfx/player/lola_pushing/frame_0.interleave.2bpp"
-LolaPushingTiles1:
-	INCBIN "gfx/player/lola_pushing/frame_1.interleave.2bpp"
-
-BugsSkateboardingTiles0:
-	INCBIN "gfx/player/bugs_skateboarding/frame_0.interleave.2bpp"
-BugsSkateboardingTiles1:
-	INCBIN "gfx/player/bugs_skateboarding/frame_1.interleave.2bpp"
-
-LolaSkateboardingTiles0:
-	INCBIN "gfx/player/lola_skateboarding/frame_0.interleave.2bpp"
-LolaSkateboardingTiles1:
-	INCBIN "gfx/player/lola_skateboarding/frame_1.interleave.2bpp"
-
-BugsJackhammerTiles0:
-	INCBIN "gfx/player/bugs_jackhammer/frame_0.interleave.2bpp"
-BugsJackhammerTiles1:
-	INCBIN "gfx/player/bugs_jackhammer/frame_1.interleave.2bpp"
-BugsJackhammerTiles2:
-	INCBIN "gfx/player/bugs_jackhammer/frame_2.interleave.2bpp"
-
+	INCBIN "gfx/player/bugs_digging.spritesheet.interleave.2bpp"
+BugsPushingTiles:
+	INCBIN "gfx/player/bugs_pushing.spritesheet.interleave.2bpp"
+LolaUmbrellaTiles:
+	INCBIN "gfx/player/lola_umbrella.spritesheet.interleave.2bpp"
+LevelCompleteClapboardTiles:
+	INCBIN "gfx/player/level_complete_clapboard.spritesheet.interleave.2bpp"
+LolaPushingTiles:
+	INCBIN "gfx/player/lola_pushing.spritesheet.interleave.2bpp"
+BugsSkateboardingTiles:
+	INCBIN "gfx/player/bugs_skateboarding.spritesheet.interleave.2bpp"
+LolaSkateboardingTiles:
+	INCBIN "gfx/player/lola_skateboarding.spritesheet.interleave.2bpp"
+BugsJackhammerTiles:
+	INCBIN "gfx/player/bugs_jackhammer.spritesheet.interleave.2bpp"
 BugsBarrelTiles:
-	INCBIN "gfx/player/bugs_barrel/bugs_barrel.spritesheet.interleave.2bpp"
-
+	INCBIN "gfx/player/bugs_barrel.spritesheet.interleave.2bpp"
 LolaBarrelTiles:
-	INCBIN "gfx/player/lola_barrel/lola_barrel.spritesheet.interleave.2bpp"
-
-BugsSurfingTiles0:
-	INCBIN "gfx/player/bugs_surfing/frame_0.interleave.2bpp"
-BugsSurfingTiles1:
-	INCBIN "gfx/player/bugs_surfing/frame_1.interleave.2bpp"
-
-BugsHippoTiles0:
-	INCBIN "gfx/player/bugs_hippo/frame_0.interleave.2bpp"
-
-LolaHippoTiles0:
-	INCBIN "gfx/player/lola_hippo/frame_0.interleave.2bpp"
-
+	INCBIN "gfx/player/lola_barrel.spritesheet.interleave.2bpp"
+BugsSurfingTiles:
+	INCBIN "gfx/player/bugs_surfing.spritesheet.interleave.2bpp"
+BugsHippoTiles:
+	INCBIN "gfx/player/bugs_hippo.spritesheet.interleave.2bpp"
+LolaHippoTiles:
+	INCBIN "gfx/player/lola_hippo.spritesheet.interleave.2bpp"
 BugsBikingTiles:
-	INCBIN "gfx/player/bugs_biking/bugs_biking.spritesheet.interleave.2bpp"
+	INCBIN "gfx/player/bugs_biking.spritesheet.interleave.2bpp"
 
-INCLUDE "gfx/player/bugs_digging/bugs_digging.inc"
-
-BugsPushingSprite0:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite1:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite2:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite3:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite4:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite5:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite6:
-	dynamic_sprite 0, BugsPushingTiles0, 5, 0
-
-BugsPushingSprite7:
-	dynamic_sprite 9, BugsPushingTiles0, 5, 0
-	dynamic_sprite_offsets -23,   1, 40
-	dynamic_sprite_offsets -15,   1, 32
-	dynamic_sprite_offsets  -7,   1, 24
-	dynamic_sprite_offsets   1,   1, 16
-	dynamic_sprite_offsets  -9, -15, 26
-	dynamic_sprite_offsets  -1, -15, 18
-	dynamic_sprite_offsets   7, -15, 10
-	dynamic_sprite_offsets  15, -15,  2
-	dynamic_sprite_offsets   6, -31, 11
-
-BugsPushingSprite8:
-	dynamic_sprite 0, BugsPushingTiles1, 5, 0
-
-BugsPushingSprite9:
-	dynamic_sprite 8, BugsPushingTiles1, 5, 0
-	dynamic_sprite_offsets  -8, -15, 25
-	dynamic_sprite_offsets   0, -15, 17
-	dynamic_sprite_offsets   8, -15,  9
-	dynamic_sprite_offsets  16, -15,  1
-	dynamic_sprite_offsets -11,   1, 28
-	dynamic_sprite_offsets  -3,   1, 20
-	dynamic_sprite_offsets  -1, -31, 18
-	dynamic_sprite_offsets   7, -31, 10
-
-BugsPushingSprite10:
-	dynamic_sprite 0, BugsPushingTiles2, 5, 0
-
-BugsPushingSprite11:
-	dynamic_sprite 9, BugsPushingTiles2, 5, 0
-	dynamic_sprite_offsets -23,   1, 40
-	dynamic_sprite_offsets -15,   1, 32
-	dynamic_sprite_offsets  -7,   1, 24
-	dynamic_sprite_offsets   1,   1, 16
-	dynamic_sprite_offsets  -9, -15, 26
-	dynamic_sprite_offsets  -1, -15, 18
-	dynamic_sprite_offsets   7, -15, 10
-	dynamic_sprite_offsets  15, -15,  2
-	dynamic_sprite_offsets   6, -31, 11
-
-BugsPushingSprite12:
-	dynamic_sprite 0, BugsPushingTiles3, 5, 0
-
-BugsPushingSprite13:
-	dynamic_sprite 8, BugsPushingTiles3, 5, 0
-	dynamic_sprite_offsets -11, -15, 28
-	dynamic_sprite_offsets  -3, -15, 20
-	dynamic_sprite_offsets   5, -15, 12
-	dynamic_sprite_offsets  13, -15,  4
-	dynamic_sprite_offsets -11,   1, 28
-	dynamic_sprite_offsets  -3,   1, 20
-	dynamic_sprite_offsets  -1, -31, 18
-	dynamic_sprite_offsets   7, -31, 10
-
-LolaUmbrellaSprite0:
-	dynamic_sprite 0, LolaUmbrellaTiles0, 5, 0
-
-LolaUmbrellaSprite1:
-	dynamic_sprite 8, LolaUmbrellaTiles0, 5, 0
-	dynamic_sprite_offsets  7, -17, 10
-	dynamic_sprite_offsets 15, -17,  2
-	dynamic_sprite_offsets  7,  -1, 10
-	dynamic_sprite_offsets 15,  -1,  2
-	dynamic_sprite_offsets 16, -26,  1
-	dynamic_sprite_offsets 24, -26, -7
-	dynamic_sprite_offsets  0, -33, 17
-	dynamic_sprite_offsets  8, -33,  9
-
-LolaUmbrellaSprite2:
-	dynamic_sprite 10, LolaUmbrellaTiles1, 5, 0
-	dynamic_sprite_offsets  5, -14, 12
-	dynamic_sprite_offsets 13, -14,  4
-	dynamic_sprite_offsets  5,   2, 12
-	dynamic_sprite_offsets 13,   2,  4
-	dynamic_sprite_offsets  1, -30, 16
-	dynamic_sprite_offsets  9, -30,  8
-	dynamic_sprite_offsets 17, -30,  0
-	dynamic_sprite_offsets  8, -46,  9
-	dynamic_sprite_offsets 16, -46,  1
-	dynamic_sprite_offsets 24, -46, -7
-
-LolaUmbrellaSprite3:
-	dynamic_sprite 10, LolaUmbrellaTiles2, 5, 0
-	dynamic_sprite_offsets  4, -12, 13
-	dynamic_sprite_offsets 12, -12,  5
-	dynamic_sprite_offsets  4,   4, 13
-	dynamic_sprite_offsets 12,   4,  5
-	dynamic_sprite_offsets  1, -28, 16
-	dynamic_sprite_offsets  9, -28,  8
-	dynamic_sprite_offsets 17, -28,  0
-	dynamic_sprite_offsets  8, -44,  9
-	dynamic_sprite_offsets 16, -44,  1
-	dynamic_sprite_offsets 24, -44, -7
-
-LevelCompleteClapboardSprite0:
-	dynamic_sprite 2, LevelCompleteClapboardTiles0, 5, 0
-	dynamic_sprite_offsets  6, -9, 11
-	dynamic_sprite_offsets 14, -9,  3
-
-LevelCompleteClapboardSprite1:
-	dynamic_sprite 2, LevelCompleteClapboardTiles1, 5, 0
-	dynamic_sprite_offsets  4, -11, 13
-	dynamic_sprite_offsets 12, -11,  5
-
-LevelCompleteClapboardSprite2:
-	dynamic_sprite 6, LevelCompleteClapboardTiles2, 5, 0
-	dynamic_sprite_offsets  1, -15, 16
-	dynamic_sprite_offsets  9, -15,  8
-	dynamic_sprite_offsets 17, -15,  0
-	dynamic_sprite_offsets  1,   1, 16
-	dynamic_sprite_offsets  9,   1,  8
-	dynamic_sprite_offsets 17,   1,  0
-
-LevelCompleteClapboardSprite3:
-	dynamic_sprite 10, LevelCompleteClapboardTiles3, 5, 0
-	dynamic_sprite_offsets -4, -20, 21
-	dynamic_sprite_offsets  4, -20, 13
-	dynamic_sprite_offsets 12, -20,  5
-	dynamic_sprite_offsets 20, -20, -3
-	dynamic_sprite_offsets -4,  -4, 21
-	dynamic_sprite_offsets  4,  -4, 13
-	dynamic_sprite_offsets 12,  -4,  5
-	dynamic_sprite_offsets 20,  -4, -3
-	dynamic_sprite_offsets 12,  12,  5
-	dynamic_sprite_offsets 20,  12, -3
-
-LevelCompleteClapboardSprite4:
-	dynamic_sprite 8, LevelCompleteClapboardTiles4, 5, 0
-	dynamic_sprite_offsets -4, -20, 21
-	dynamic_sprite_offsets  4, -20, 13
-	dynamic_sprite_offsets 12, -20,  5
-	dynamic_sprite_offsets 20, -20, -3
-	dynamic_sprite_offsets -4,  -4, 21
-	dynamic_sprite_offsets  4,  -4, 13
-	dynamic_sprite_offsets 12,  -4,  5
-	dynamic_sprite_offsets 20,  -4, -3
-
-LevelCompleteClapboardSprite5:
-	dynamic_sprite 8, LevelCompleteClapboardTiles5, 5, 0
-	dynamic_sprite_offsets -4, -20, 21
-	dynamic_sprite_offsets  4, -20, 13
-	dynamic_sprite_offsets 12, -20,  5
-	dynamic_sprite_offsets 20, -20, -3
-	dynamic_sprite_offsets -4,  -4, 21
-	dynamic_sprite_offsets  4,  -4, 13
-	dynamic_sprite_offsets 12,  -4,  5
-	dynamic_sprite_offsets 20,  -4, -3
-
-LolaPushingSprite0:
-	dynamic_sprite 9, LolaPushingTiles0, 5, 0
-	dynamic_sprite_offsets -17,   1, 34
-	dynamic_sprite_offsets  -9,   1, 26
-	dynamic_sprite_offsets  -1,   1, 18
-	dynamic_sprite_offsets  -8, -15, 25
-	dynamic_sprite_offsets   0, -15, 17
-	dynamic_sprite_offsets   8, -15,  9
-	dynamic_sprite_offsets  16, -15,  1
-	dynamic_sprite_offsets   1, -31, 16
-	dynamic_sprite_offsets  -7, -31, 24
-
-LolaPushingSprite1:
-	dynamic_sprite 9, LolaPushingTiles1, 5, 0
-	dynamic_sprite_offsets -13,   1, 30
-	dynamic_sprite_offsets  -5,   1, 22
-	dynamic_sprite_offsets   3,   1, 14
-	dynamic_sprite_offsets  -8, -15, 25
-	dynamic_sprite_offsets   0, -15, 17
-	dynamic_sprite_offsets   8, -15,  9
-	dynamic_sprite_offsets  16, -15,  1
-	dynamic_sprite_offsets  -3, -31, 20
-	dynamic_sprite_offsets   5, -31, 12
-
-BugsSkateboardingSprite0:
-	dynamic_sprite 10, BugsSkateboardingTiles0, 5, 0
-	dynamic_sprite_offsets -4,   1, 21
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-	dynamic_sprite_offsets 20,   1, -3
-	dynamic_sprite_offsets -1, -15, 18
-	dynamic_sprite_offsets  7, -15, 10
-	dynamic_sprite_offsets 15, -15,  2
-	dynamic_sprite_offsets -9, -31, 26
-	dynamic_sprite_offsets -1, -31, 18
-	dynamic_sprite_offsets  7, -31, 10
-
-BugsSkateboardingSprite1:
-	dynamic_sprite 10, BugsSkateboardingTiles1, 5, 0
-	dynamic_sprite_offsets -4,   1, 21
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-	dynamic_sprite_offsets 20,   1, -3
-	dynamic_sprite_offsets  0, -15, 17
-	dynamic_sprite_offsets  8, -15,  9
-	dynamic_sprite_offsets 16, -15,  1
-	dynamic_sprite_offsets -8, -31, 25
-	dynamic_sprite_offsets  0, -31, 17
-	dynamic_sprite_offsets  8, -31,  9
-
-LolaSkateboardingSprite0:
-	dynamic_sprite 0, LolaSkateboardingTiles0, 5, 0
-
-LolaSkateboardingSprite1:
-	dynamic_sprite 10, LolaSkateboardingTiles0, 5, 0
-	dynamic_sprite_offsets -4,   1, 21
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-	dynamic_sprite_offsets 20,   1, -3
-	dynamic_sprite_offsets -1, -15, 18
-	dynamic_sprite_offsets  7, -15, 10
-	dynamic_sprite_offsets 15, -15,  2
-	dynamic_sprite_offsets  0, -31, 17
-	dynamic_sprite_offsets  8, -31,  9
-	dynamic_sprite_offsets -8, -25, 25
-
-LolaSkateboardingSprite2:
-	dynamic_sprite 10, LolaSkateboardingTiles1, 5, 0
-	dynamic_sprite_offsets -4,   1, 21
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-	dynamic_sprite_offsets 20,   1, -3
-	dynamic_sprite_offsets  0, -31, 17
-	dynamic_sprite_offsets  8, -31,  9
-	dynamic_sprite_offsets  0, -15, 17
-	dynamic_sprite_offsets  8, -15,  9
-	dynamic_sprite_offsets 16, -15,  1
-	dynamic_sprite_offsets -8, -28, 25
-
-BugsJackhammerSprite0:
-	dynamic_sprite 0, BugsJackhammerTiles0, 5, 0
-
-BugsJackhammerSprite1:
-	dynamic_sprite 8, BugsJackhammerTiles0, 5, 0
-	dynamic_sprite_offsets  2, -31, 15
-	dynamic_sprite_offsets 10, -31,  7
-	dynamic_sprite_offsets  2, -15, 15
-	dynamic_sprite_offsets 10, -15,  7
-	dynamic_sprite_offsets 18, -15, -1
-	dynamic_sprite_offsets  2,   1, 15
-	dynamic_sprite_offsets 10,   1,  7
-	dynamic_sprite_offsets 18,   1, -1
-
-BugsJackhammerSprite2:
-	dynamic_sprite 9, BugsJackhammerTiles1, 5, 0
-	dynamic_sprite_offsets  2, -21, 15
-	dynamic_sprite_offsets 10, -21,  7
-	dynamic_sprite_offsets 18, -21, -1
-	dynamic_sprite_offsets  2,  -5, 15
-	dynamic_sprite_offsets 10,  -5,  7
-	dynamic_sprite_offsets 18,  -5, -1
-	dynamic_sprite_offsets 10,  11,  7
-	dynamic_sprite_offsets  5, -37, 12
-	dynamic_sprite_offsets 13, -37,  4
-
-BugsJackhammerSprite3:
-	dynamic_sprite 9, BugsJackhammerTiles2, 5, 0
-	dynamic_sprite_offsets  2, -19, 15
-	dynamic_sprite_offsets 10, -19,  7
-	dynamic_sprite_offsets 18, -19, -1
-	dynamic_sprite_offsets  2,  -3, 15
-	dynamic_sprite_offsets 10,  -3,  7
-	dynamic_sprite_offsets 18,  -3, -1
-	dynamic_sprite_offsets 10,  13,  7
-	dynamic_sprite_offsets  5, -35, 12
-	dynamic_sprite_offsets 13, -35,  4
-
-INCLUDE "gfx/player/bugs_barrel/bugs_barrel.inc"
-INCLUDE "gfx/player/lola_barrel/lola_barrel.inc"
-
-BugsSurfingSprite0:
-	dynamic_sprite 8, BugsSurfingTiles0, 5, 0
-	dynamic_sprite_offsets  4, -15, 13
-	dynamic_sprite_offsets 12, -15,  5
-	dynamic_sprite_offsets 20, -15, -3
-	dynamic_sprite_offsets  4,   1, 13
-	dynamic_sprite_offsets 12,   1,  5
-	dynamic_sprite_offsets 20,   1, -3
-	dynamic_sprite_offsets  3, -31, 14
-	dynamic_sprite_offsets 11, -31,  6
-
-BugsSurfingSprite1:
-	dynamic_sprite 8, BugsSurfingTiles1, 5, 0
-	dynamic_sprite_offsets  3, -31, 14
-	dynamic_sprite_offsets 11, -31,  6
-	dynamic_sprite_offsets  3, -15, 14
-	dynamic_sprite_offsets 11, -15,  6
-	dynamic_sprite_offsets 19, -15, -2
-	dynamic_sprite_offsets  3,   1, 14
-	dynamic_sprite_offsets 11,   1,  6
-	dynamic_sprite_offsets 19,   1, -2
-
-BugsHippoSprite0:
-	dynamic_sprite 10, BugsHippoTiles0, 5, 0
-	dynamic_sprite_offsets -15,   1,  32
-	dynamic_sprite_offsets  -7,   1,  24
-	dynamic_sprite_offsets   1,   1,  16
-	dynamic_sprite_offsets   9,   1,   8
-	dynamic_sprite_offsets  17,   1,   0
-	dynamic_sprite_offsets  25,   1,  -8
-	dynamic_sprite_offsets  33,   1, -16
-	dynamic_sprite_offsets  -1, -15,  18
-	dynamic_sprite_offsets   7, -15,  10
-	dynamic_sprite_offsets  15, -15,   2
-
-LolaHippoSprite0:
-	dynamic_sprite 0, LolaHippoTiles0, 5, 0
-
-LolaHippoSprite1:
-	dynamic_sprite 10, LolaHippoTiles0, 5, 0
-	dynamic_sprite_offsets -15,   1,  32
-	dynamic_sprite_offsets  -7,   1,  24
-	dynamic_sprite_offsets   1,   1,  16
-	dynamic_sprite_offsets   9,   1,   8
-	dynamic_sprite_offsets  17,   1,   0
-	dynamic_sprite_offsets  25,   1,  -8
-	dynamic_sprite_offsets  33,   1, -16
-	dynamic_sprite_offsets   1, -15,  16
-	dynamic_sprite_offsets   9, -15,   8
-	dynamic_sprite_offsets  17, -15,   0
-
-INCLUDE "gfx/player/bugs_biking/bugs_biking.inc"
+INCLUDE "gfx/player/bugs_digging.inc"
+INCLUDE "gfx/player/bugs_pushing.inc"
+INCLUDE "gfx/player/lola_umbrella.inc"
+INCLUDE "gfx/player/level_complete_clapboard.inc"
+INCLUDE "gfx/player/lola_pushing.inc"
+INCLUDE "gfx/player/bugs_skateboarding.inc"
+INCLUDE "gfx/player/lola_skateboarding.inc"
+INCLUDE "gfx/player/bugs_jackhammer.inc"
+INCLUDE "gfx/player/bugs_barrel.inc"
+INCLUDE "gfx/player/lola_barrel.inc"
+INCLUDE "gfx/player/bugs_surfing.inc"
+INCLUDE "gfx/player/bugs_hippo.inc"
+INCLUDE "gfx/player/lola_hippo.inc"
+INCLUDE "gfx/player/bugs_biking.inc"
 
 ; This seems to be leftover player sprite data.
 ; The pointer here is pointing directly after BugsBikingTiles,
