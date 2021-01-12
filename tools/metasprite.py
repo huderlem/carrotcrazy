@@ -55,8 +55,8 @@ def parse_metasprite_definitions(file):
             else:
                 params = [x.strip() for x in line[14:].split(',')]
                 cur_metasprite['tiles_label'] = params[1]
-                cur_metasprite['gbc_pal'] = params[2]
-                cur_metasprite['gb_pal'] = params[3]
+                cur_metasprite['gbc_pal'] = params[3]
+                cur_metasprite['gb_pal'] = params[4]
     if 'name' in cur_metasprite:
         metasprites.append(cur_metasprite)
     return tile_files, metasprites

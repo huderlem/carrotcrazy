@@ -464,9 +464,10 @@ void renderSpriteDefinitions(std::vector<Metasprite> metasprites, std::string ou
     unsigned int tilesOffset = 0;
     for (unsigned int i = 0; i < metasprites.size(); i++) {
         Metasprite metasprite = metasprites[i];
+        std::string tilesLabel = metasprite.name + "Tiles";
         result += metasprite.name + "Sprite" + std::to_string(i) + ":\n";
-        result += "\tdynamic_sprite " + std::to_string(metasprite.slices.size()) + ", "
-                    + metasprite.name + "Tiles + " + std::to_string(tilesOffset) + ", "
+        result += "\tdynamic_sprite_8 " + std::to_string(metasprite.slices.size()) + ", "
+                    + tilesLabel + ", " + tilesLabel + " + " + std::to_string(tilesOffset) + ", "
                     + std::to_string(metasprite.gbcPal) + ", " + std::to_string(metasprite.gbPal) + "\n";
         for (unsigned int j = 0; j < metasprite.slices.size(); j++) {
             Slice slice = metasprite.slices[j];
