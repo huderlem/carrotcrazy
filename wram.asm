@@ -26,7 +26,12 @@ wLevelEntities:: ; $d500
 wGBCTileAttributes:: ; $da00
 	ds $100
 
-	ds $2a3
+	ds $42
+
+wMusicPaused:: ; $db42
+	ds 1
+
+	ds $260
 
 wAnimatedTilesPointer:: ; $dda3
 	ds 2
@@ -49,7 +54,24 @@ wEnableLevelSkip:: ; $dde8
 wHUDTileAttribute:: ; $dde9
 	ds 1
 
-	ds $9c
+	ds $18
+
+; Pointer to the current music command for the active sound effect.
+wSoundEffectCommandPointer:: ; $de02
+	ds 2
+
+	ds $6
+
+wSoundEffectDuration:: ; $de0a
+	ds 1
+
+	ds $1c
+
+; ID of the active sound effect.
+wActiveSoundEffect:: ; $de27
+	ds 1
+
+	ds $5e
 
 wQueuedTileGfx:: ; $de86
 	ds 16 * 3

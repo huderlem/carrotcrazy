@@ -10318,10 +10318,10 @@ PlaySoundEffectHome:
 	push de
 	push hl
 	ld b, a
-	ld a, Bank(Func_8056)
+	ld a, Bank(PlaySoundEffect)
 	ld [MBC5RomBank], a
 	ld a, b
-	call Func_8056
+	call PlaySoundEffect
 	pop hl
 	pop de
 	pop bc
@@ -19645,7 +19645,44 @@ TazZooBossCollisionAttributes:
 
 SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
-INCBIN "baserom.gbc", $8000, $804a - $8000
+Data_8000:
+	dw Func_84c9
+	dw Func_84cf
+	dw Func_8502
+	dw Func_84d4
+	dw Func_84e8
+	dw Func_8502
+	dw Func_84ef
+	dw Func_853d
+	dw Func_857a
+	dw Func_85be
+	dw Func_85e6
+	dw Func_8615
+	dw Func_8968
+	dw Func_8963
+	dw Func_8655
+	dw Func_865a
+	dw Func_865f
+	dw Func_8686
+	dw Func_868a
+	dw Func_868e
+	dw Func_861b
+	dw Func_8633
+	dw Func_8664
+	dw Func_86aa
+	dw Func_86c5
+	dw Func_8711
+	dw Func_84c1
+	dw Func_84ac
+	dw Func_843e
+	dw Func_85df
+	dw Func_85d2
+	dw Func_8435
+	dw Func_8302
+	dw Func_842f
+	dw Func_8407
+	dw Func_841a
+	dw Func_80c8
 
 TickMusicEngine:
 	jp TickMusicEngine_
@@ -19659,8 +19696,8 @@ ResumeMusic:
 Func_8053:
 	jp Func_853d
 
-Func_8056:
-	jp Func_891a
+PlaySoundEffect:
+	jp PlaySoundEffect_
 
 Func_8059:
 	jp Func_8522
@@ -19725,12 +19762,12 @@ Func_8092:
 Func_8095:
 	jp $6f8f
 
-Func_8098:
-	jp Func_891d
+PlaySoundEffect__:
+	jp PlaySoundEffect___
 
 ResumeMusic_:
 	xor a
-	ld [$db42], a
+	ld [wMusicPaused], a
 	jp Func_876e
 
 PauseMusic_:
@@ -19739,8 +19776,8 @@ PauseMusic_:
 	ld [rNR22], a
 	ld [rNR42], a
 	inc a
-	ld [$db42], a
-	ld a, [$de27]
+	ld [wMusicPaused], a
+	ld a, [wActiveSoundEffect]
 	and a
 	jr nz, .asm_80b6
 	xor a
@@ -19750,27 +19787,55 @@ PauseMusic_:
 	ld [rNR14], a
 	ld [rNR24], a
 	ld [rNR44], a
-	ld a, [$de27]
+	ld a, [wActiveSoundEffect]
 	and a
 	ret nz
 	ld a, $80
 	ld [rNR34], a
 	ret
 
-INCBIN "baserom.gbc", $80c8, $80e6 - $80c8
+Func_80c8:
+	ld l, $3c
+	xor a
+	ld [hli], a
+	ld [hli], a
+	ld a, [de]
+	inc de
+	and a
+	jr z, .asm_80e1
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hl], a
+	ld l, $04
+	set 5, [hl]
+	ret
+.asm_80e1
+	ld l, $04
+	res 5, [hl]
+	ret
 
 TickMusicEngine_:
-	ld a, [$db42]
+	; The active sound effect is played to completion,
+	; even when the player pauses the game, which pauses
+	; the rest of the music.
+	ld a, [wMusicPaused]
 	and a
-	jp nz, Func_81c1
+	jp nz, TickSoundEffectChannel
 	ld h, $db
-	call Func_81de
+	call TickMusicChannel
 	inc h
-	call Func_81de
+	call TickMusicChannel
 	inc h
-	call Func_81de
+	call TickMusicChannel
 	inc h
-	call Func_81de
+	call TickMusicChannel
 	call Func_8a7f
 	ld hl, $db25
 	ld l, $25
@@ -19845,10 +19910,10 @@ Func_8158:
 	ld [rNR22], a
 	ld a, b
 	or $80
-Func_8161
+Func_8161:
 	ld [rNR24], a
-Func_asm_8163
-	ld hl, $de27
+Func_asm_8163:
+	ld hl, wActiveSoundEffect
 	ld a, [hl]
 	and a
 	jr nz, Func_816b
@@ -19891,7 +19956,7 @@ Func_8193:
 	or c
 	ld c, a
 	inc h
-	ld a, [$de27]
+	ld a, [wActiveSoundEffect]
 	and a
 	jr z, .asm_81a5
 	inc h
@@ -19914,20 +19979,20 @@ Func_8193:
 	ld [$ff25], a
 	jp Func_86ca
 
-Func_81c1:
+TickSoundEffectChannel:
 	call Func_86ca
 	ld h, $de
-	call Func_81de
+	call TickMusicChannel
 	call Func_816b
 	jr Func_8193
 
 INCBIN "baserom.gbc", $81ce, $81de - $81ce
 
-Func_81de:
+TickMusicChannel:
 	ld l, $27
 	ld a, [hl]
 	and a
-	ret z
+	ret z ; exit if the channel is disabled
 	ld l, $2f
 	ld a, [hl]
 	and a
@@ -19939,10 +20004,10 @@ Func_81de:
 	ld l, $02
 	ld e, [hl]
 	inc l
-	ld d, [hl]
+	ld d, [hl] ; de holds the pointer to the channel's current command
 	ld l, $0a
-	dec [hl]
-	call z, $427f
+	dec [hl]   ; decrement the current command's duration
+	call z, TryReadMusicCommand
 	ld l, $04
 	bit 0, [hl]
 	jr nz, .asm_8266
@@ -20044,7 +20109,356 @@ Func_81de:
 	ld [hl], a
 	jr .asm_8202
 
-INCBIN "baserom.gbc", $827f, $8447 - $827f
+TryReadMusicCommand:
+	ld a, [$db45]
+	and a
+	jp nz, Func_83f8
+ReadMusicCommand:
+	; de = pointer to music command
+	ld a, [de]
+	inc de
+	cp $60
+	jp nc, ReadMusicMetaCommand
+	ld l, $04
+	bit 5, [hl]
+	jr z, Func_82a5
+	ld b, a
+	ld l, $3d
+	ld a, [hld]
+	ld [hli], a
+	ld a, b
+	push af
+	ld [hl], a
+	ld l, $3e
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld b, a
+	call JumpToBC
+	pop af
+Func_82a5:
+	ld l, $02
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld l, $0c
+	ld [hl], a
+	xor a
+	ld l, $1f
+	ld [hl], a
+	ld l, $09
+	ld a, [hli]
+	ld [hl], a
+	xor a
+	ld l, $26
+	ld [hld], a
+	ld [hld], a
+	ld a, [hld]
+	srl a
+	ld [hl], a
+	ld l, $20
+	ld a, [hli]
+	ld [hl], a
+	ld l, $04
+	res 4, [hl]
+	bit 1, [hl]
+	jr z, .asm_82d3
+	res 2, [hl]
+	ld l, $17
+	ld a, [hl]
+	ld l, $1a
+	ld [hli], a
+	ld [hli], a
+.asm_82d3
+	ld a, h
+	cp $dd
+	jr c, .asm_82f5
+	ld l, $10
+	ld a, [hli]
+	ld c, a
+	and $0f
+	ld [hli], a
+	ld a, c
+	swap a
+	and $0f
+	ld [hli], a
+	ld a, [hli]
+	ld c, a
+	and $0f
+	ld [hli], a
+	ld a, c
+	swap a
+	and $0f
+	ld [hli], a
+	ld a, [hl]
+	ld l, $08
+	ld [hl], a
+	ret
+.asm_82f5
+	ld l, $28
+	ld a, [hl]
+	ld l, $32
+	ld [hli], a
+	ld [hl], $01
+	ld l, $29
+	ld a, [hli]
+	ld [hl], a
+	ret
+
+Func_8302:
+	ld l, $39
+	ld a, [hl]
+	dec a
+	ret z
+	ld [hli], a
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ret
+
+ReadMusicMetaCommand_F:
+	sub $ee
+	ld l, $39
+	ld [hli], a
+	ld [hl], e
+	inc l
+	ld [hl], d
+	jp ReadMusicCommand
+
+ReadMusicMetaCommand:
+	cp $f0
+	jr nc, ReadMusicMetaCommand_F
+	cp $c0
+	jr nc, ReadMusicMetaCommand_C
+	cp $b0
+	jr nc, ReadMusicMetaCommand_B
+	cp $94
+	jr nc, ReadMusicMetaCommand_94
+	cp $85
+	jp nc, ReadMusicMetaCommand_85
+	sub $60
+	add a
+	ld c, a
+	ld b, (Data_8000 >> 8)
+	ld a, [bc]
+	ld l, a
+	inc c
+	ld a, [bc]
+	ld b, a
+	ld c, l
+	call JumpToBC
+	jp TryReadMusicCommand
+
+JumpToBC:
+	push bc
+	ret
+
+ReadMusicMetaCommand_C:
+	sub $bf
+	ld l, $09
+	ld [hl], a
+	jp TryReadMusicCommand
+
+ReadMusicMetaCommand_B:
+	sub $b0
+	ld l, $16
+	ld [hl], a
+	ld a, [de]
+	inc de
+	ld l, $10
+	ld [hl], a
+	ld a, [de]
+	inc de
+	ld l, $13
+	ld [hl], a
+	ld a, [de]
+	swap a
+	and $0f
+	ld l, $18
+	ld [hli], a
+	ld [hl], a
+	ld a, [de]
+	and $0f
+	ld l, $1a
+	ld [hli], a
+	ld [hl], a
+	ld l, $17
+	ld [hl], a
+	inc de
+	xor a
+	ld l, $11
+	ld [hl], a
+	jp TryReadMusicCommand
+
+Func_8372:
+	ld a, [bc]
+	inc bc
+	ld l, $16
+	ld [hl], a
+	ld a, [bc]
+	inc bc
+	ld l, $10
+	ld [hl], a
+	ld a, [bc]
+	inc bc
+	ld l, $13
+	ld [hl], a
+	ld a, [bc]
+	swap a
+	and $0f
+	ld l, $18
+	ld [hli], a
+	ld [hl], a
+	ld a, [bc]
+	and $0f
+	ld l, $1a
+	ld [hli], a
+	ld [hl], a
+	ld l, $17
+	ld [hl], a
+	xor a
+	ld l, $11
+	ld [hl], a
+	ret
+
+ReadMusicMetaCommand_94:
+	sub $94
+	add a
+	ld c, a
+	ld a, [$db4a]
+	add c
+	ld c, a
+	ld a, [$db4b]
+	adc c
+	sub c
+	ld b, a
+	ld a, [bc]
+	inc bc
+	ld l, $1d
+	ld [hli], a
+	ld a, [bc]
+	ld [hli], a
+	ld [hl], $00
+	ld l, $04
+	set 0, [hl]
+	jp TryReadMusicCommand
+
+ReadMusicMetaCommand_85:
+	push de
+	ld b, a
+	xor a
+	ld l, $04
+	res 0, [hl]
+	ld l, $0b
+	ld [hl], a
+	ld l, $0e
+	ld [hl], a
+	ld l, $2f
+	ld [hl], a
+	ld a, h
+	cp $dd
+	jr nc, .asm_83db
+	cp $db
+	jr nz, .asm_83d7
+	ld a, $80
+	ld [$ff11], a
+	jr .asm_83db
+.asm_83d7
+	ld a, $80
+	ld [$ff16], a
+.asm_83db
+	ld a, b
+	sub $84
+	add a
+	ld c, h
+	ld b, a
+	ld a, [$db48]
+	ld l, a
+	ld a, [$db49]
+	ld h, a
+	ld a, b
+	add l
+	ld l, a
+	adc h
+	sub l
+	ld h, a
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld h, c
+	ld a, $c9
+	ld [$db45], a
+Func_83f8:
+	ld a, [de]
+	inc de
+	cp $68
+	jp nz, ReadMusicMetaCommand
+	xor a
+	ld [$db45], a
+	pop de
+	jp ReadMusicCommand
+
+Func_8407:
+	xor a
+	ld l, $20
+	ld [hli], a
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, $01
+	ld [hli], a
+	ld [hli], a
+	ld l, $04
+	ld a, [hl]
+	or $18
+	ld [hl], a
+	ret
+
+Func_841a:
+	xor a
+	ld l, $20
+	ld [hli], a
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, $01
+	ld [hli], a
+	ld [hli], a
+	ld l, $04
+	ld a, [hl]
+	or $18
+	and $ef
+	ld [hl], a
+	ret
+
+Func_842f:
+	ld a, [de]
+	inc de
+	ld l, $16
+	ld [hl], a
+	ret
+
+Func_8435:
+	ld a, [de]
+	ld c, a
+	inc de
+	ld a, [de]
+	inc de
+	ld b, a
+	push bc
+	ret
+
+Func_843d:
+	ret
+
+Func_843e:
+	ld l, $04
+	res 0, [hl]
+	ld l, $0e
+	ld [hl], $00
+	ret
 
 Func_8447:
 	ld l, $34
@@ -20110,7 +20524,108 @@ Func_8447:
 	ld [$de08], a
 	jr .asm_847d
 
-INCBIN "baserom.gbc", $84ac, $8522 - $84ac
+Func_84ac:
+	ld l, $34
+	ld a, [de]
+	inc de
+	and a
+	jr z, .asm_84bc
+	ld [hli], a
+	ld a, [de]
+	ld [hl], a
+	inc de
+	ld l, $04
+	set 1, [hl]
+	ret
+.asm_84bc
+	ld l, $04
+	res 1, [hl]
+	ret
+
+Func_84c1:
+	ld l, $0d
+	ld a, [de]
+	add $f4
+	ld [hl], a
+	inc de
+	ret
+
+Func_84c9:
+	ld l, $0b
+	ld a, [de]
+	ld [hl], a
+	inc de
+	ret
+
+Func_84cf:
+	ld l, $0b
+	ld [hl], $00
+	ret
+
+Func_84d4:
+	ld a, [de]
+	inc de
+	ld l, $20
+	ld [hli], a
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld [hli], a
+	ld l, $04
+	ld a, [hl]
+	or $18
+	ld [hl], a
+	ret
+
+Func_84e8:
+	ld l, $04
+	ld a, [hl]
+	and $e7
+	ld [hl], a
+	ret
+
+Func_84ef:
+	pop af
+	ld l, $08
+	ld [hl], $00
+	ld a, h
+	cp $dd
+	jr nc, Func_8518
+	ld l, $32
+	xor a
+	ld [hli], a
+	inc a
+	ld [hl], a
+	jp Func_8518
+
+Func_8502:
+	pop af
+	ld l, $04
+	bit 5, [hl]
+	jr z, Func_8518
+	ld l, $40
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld b, a
+	call JumpToBC
+	ld l, $3c
+	ld a, [hl]
+	jp Func_82a5
+
+Func_8518:
+	ld l, $09
+	ld a, [hli]
+	ld [hl], a
+	ld l, $02
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ret
 
 Func_8522:
 	ld a, $ff
@@ -20121,7 +20636,7 @@ Func_8522:
 	ld [$db4a], a
 	xor a
 	ld [$db45], a
-	ld [$db42], a
+	ld [wMusicPaused], a
 	ld [$db47], a
 	ld [$db5d], a
 Func_853d:
@@ -20153,6 +20668,7 @@ Func_853d:
 	call Func_857b
 	inc h
 	jr Func_857b
+Func_857a:
 	pop af
 Func_857b:
 	ld a, h
@@ -20191,7 +20707,7 @@ Func_857b:
 	ret
 .asm_85aa
 	xor a
-	ld [$de27], a
+	ld [wActiveSoundEffect], a
 	ld [$de08], a
 	ld [$db5e], a
 	ld [$db5f], a
@@ -20199,7 +20715,128 @@ Func_857b:
 	ld [$db44], a
 	jp Func_876e
 
-INCBIN "baserom.gbc", $85be, $863c - $85be
+Func_85be:
+	ld a, [de]
+	ld [$db0f], a
+	ld [$dc0f], a
+	ld [$dd0f], a
+	inc de
+	ret
+
+Func_85ca:
+	ld l, $36
+	ld e, [hl]
+	inc l
+	ld d, [hl]
+	ld [hl], $00
+	ret
+
+Func_85d2:
+	ld l, $36
+	ld a, [de]
+	inc de
+	ld b, a
+	ld a, [de]
+	inc de
+	ld [hl], e
+	inc l
+	ld [hl], d
+	ld e, b
+	ld d, a
+	ret
+
+Func_85df:
+	ld a, [de]
+	inc de
+	ld l, a
+	ld a, [de]
+	ld d, a
+	ld e, l
+	ret
+
+Func_85e6:
+	ld l, $37
+	ld a, [hl]
+	and a
+	jr nz, Func_85ca
+	ld l, $00
+	ld c, [hl]
+	inc l
+	ld b, [hl]
+	ld a, [bc]
+	ld e, a
+	inc bc
+	ld a, [bc]
+	inc bc
+	ld d, a
+	or e
+	jr z, .asm_85fe
+	ld [hl], b
+	dec l
+	ld [hl], c
+	ret
+.asm_85fe
+	ld l, $00
+	ld a, [bc]
+	inc bc
+	ld [hli], a
+	ld a, [bc]
+	inc bc
+	ld [hl], a
+	ld l, $00
+	ld c, [hl]
+	inc l
+	ld b, [hl]
+	ld a, [bc]
+	ld e, a
+	inc bc
+	ld a, [bc]
+	inc bc
+	ld d, a
+	ld [hl], b
+	dec l
+	ld [hl], c
+	ret
+
+Func_8615:
+	ld a, [de]
+	ld l, $09
+	ld [hl], a
+	inc de
+	ret
+
+Func_861b:
+	ld a, [de]
+	ld l, $32
+	ld [hl], a
+	ld l, $28
+	ld [hli], a
+	inc de
+	ld a, [de]
+	and a
+	jr z, .asm_862f
+	inc a
+	ld [hli], a
+	inc l
+	inc de
+	ld a, [de]
+	inc de
+	ld [hl], a
+	ret
+.asm_862f
+	ld [hli], a
+	ld [hl], a
+	inc de
+	ret
+
+Func_8633:
+	ld a, [de]
+	inc de
+	ld l, $2c
+	ld [hli], a
+	ld [hli], a
+	ld [hl], $01
+	ret
 
 Func_863c:
 	ld l, $2d
@@ -20212,28 +20849,35 @@ Func_863c:
 	inc a
 	ld [hl], a
 	dec a
-	jr z, .asm_8655
+	jr z, Func_8655
 	dec a
-	jr z, .asm_865a
+	jr z, Func_865a
 	dec a
-	jr z, .asm_8655
+	jr z, Func_8655
 	dec a
-	jr z, .asm_865f
+	jr z, Func_865f
 	ld [hl], $01
-.asm_8655
+Func_8655:
 	ld l, $38
 	ld [hl], $11
 	ret
-.asm_865a
+Func_865a:
 	ld l, $38
 	ld [hl], $01
 	ret
-.asm_865f
+Func_865f:
 	ld l, $38
 	ld [hl], $10
 	ret
 
-INCBIN "baserom.gbc", $8664, $866d - $8664
+Func_8664:
+	ld a, [de]
+	inc de
+	ld l, $2f
+	ld [hli], a
+	ld [hli], a
+	ld [hl], $01
+	ret
 
 Func_866d:
 	ld l, $30
@@ -20246,23 +20890,23 @@ Func_866d:
 	inc a
 	ld [hl], a
 	dec a
-	jr z, .asm_8686
+	jr z, Func_8686
 	dec a
-	jr z, .asm_868a
+	jr z, Func_868a
 	dec a
-	jr z, .asm_868e
+	jr z, Func_868e
 	dec a
-	jr z, .asm_868a
+	jr z, Func_868a
 	ld [hl], $01
-.asm_8686
+Func_8686:
 	ld l, $80
-	jr .asm_8690
-.asm_868a
+	jr Func_8690
+Func_868a:
 	ld l, $c0
-	jr .asm_8690
-.asm_868e
+	jr Func_8690
+Func_868e:
 	ld l, $00
-.asm_8690
+Func_8690:
 	ld a, h
 	cp $db
 	jr nz, .asm_8699
@@ -20280,7 +20924,8 @@ Func_869d:
 	ld [$db60], a
 	ld a, h
 	ld [$db61], a
-	jr .asm_86b9
+	jr Func_86b9
+Func_86aa:
 	ld a, [de]
 	ld [$db64], a
 	inc de
@@ -20290,7 +20935,7 @@ Func_869d:
 	ld a, [de]
 	ld [$db61], a
 	inc de
-.asm_86b9
+Func_86b9:
 	xor a
 	ld [$db62], a
 	ld [$db63], a
@@ -20348,7 +20993,87 @@ Func_86ca:
 	ld [$db62], a
 	jr .asm_86e4
 
-INCBIN "baserom.gbc", $8711, $876e - $8711
+Func_8711:
+	ld a, h
+	cp $dd
+	jr nz, .asm_8728
+	ld a, [de]
+	inc de
+	ld [$db4c], a
+	ld a, [de]
+	ld [$db4d], a
+	ld a, [$de27]
+	and a
+	jr z, .asm_8727
+	inc de
+	ret
+.asm_8727
+	dec de
+.asm_8728
+	ld b, h
+	xor a
+	ld [$ff1a], a
+	ld c, $30
+	ld a, [de]
+	ld l, a
+	inc de
+	ld a, [de]
+	ld h, a
+	inc de
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	ld a, [hl]
+	ld [$ff00+c], a
+	ld h, b
+	ld l, $07
+	ld a, [hl]
+	or $80
+	ld [$ff1a], a
+	ld [$ff1e], a
+	ret
 
 Func_876e:
 	xor a
@@ -20405,7 +21130,7 @@ Func_876e:
 	inc c
 	ld a, [hl]
 	ld [$ff00+c], a
-	ld a, [$db42]
+	ld a, [wMusicPaused]
 	and a
 	ret nz
 	ld a, $80
@@ -20509,14 +21234,14 @@ asm_8905:
 	ld [hl], d
 	ret
 
-Func_891a:
-	jp Func_8098
+PlaySoundEffect_:
+	jp PlaySoundEffect__
 
-Func_891d:
-	ld [$de27], a
+PlaySoundEffect___:
+	ld [wActiveSoundEffect], a
 	ld c, a
 	ld a, $11
-	ld [$de38], a
+	ld [$de38], a ; unused?
 	xor a
 	ld [$de04], a
 	ld [$de0b], a
@@ -20524,15 +21249,15 @@ Func_891d:
 	ld [$de2c], a
 	ld [$de0e], a
 	inc a
-	ld [$de0a], a
+	ld [wSoundEffectDuration], a
 	ld a, $f4
 	ld [$de0d], a
 	ld a, c
-	ld de, $de02
+	ld de, wSoundEffectCommandPointer
 	add a
-	add $a4
+	add (SoundEffects & $FF)
 	ld l, a
-	adc $71
+	adc (SoundEffects >> 8)
 	sub l
 	ld h, a
 	ld a, [hli]
@@ -20556,7 +21281,179 @@ Func_895d:
 	ld hl, $77f7
 	jp Func_869d
 
-INCBIN "baserom.gbc", $8963, $8a7f - $8963
+Func_8963:
+	xor a
+	ld [$db52], a
+	ret
+
+Func_8968:
+	ld a, [de]
+	ld [$db53], a
+	inc de
+	ld a, [de]
+	ld [$db50], a
+	inc de
+	ld a, [de]
+	ld [$db4f], a
+	inc de
+	xor a
+	ld [$db51], a
+	ld [$db5d], a
+	ld [$db5e], a
+	ld [$db5f], a
+	ld [$db4e], a
+	inc a
+	ld [$db52], a
+	ld [$db54], a
+	ld a, $88
+	ld [$db46], a
+	ret
+
+Func_8994:
+	ld a, [$db52]
+	and a
+	ret z
+	ld a, [$db53]
+	ld [$db54], a
+Func_899f:
+	ld a, [$db51]
+Func_89a2:
+	ld e, a
+	inc a
+	ld [$db51], a
+	ld a, [$db50]
+	add e
+	ld l, a
+	ld a, [$db4f]
+	adc a, $00
+	ld h, a
+Func_89b2:
+	ld a, [hl]
+	and a
+	ret z
+	cp $ff
+	jr z, Func_8a13
+	cp $32
+	jr z, Func_8a2c
+	cp $33
+	jr z, Func_8a33
+	cp $34
+	jr z, Func_8a40
+	cp $35
+	jp z, Func_8a58
+	cp $36
+	jp z, Func_8a63
+	cp $c0
+	jr nc, Func_8a09
+	cp $5b
+	jp nc, Func_8a72
+	cp $47
+	jr nc, Func_8a4d
+	cp $37
+	jr nc, Func_8a19
+	ld e, a
+	ld a, [$db47]
+	and a
+	ret nz
+	ld a, e
+	add a
+	add a, (Data_89f3 - 2) & $ff
+	ld l, a
+	adc a, (Data_89f3 >> 8)
+	sub l
+	ld h, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp hl
+
+Data_89f3:
+	dw Func_b658
+	dw Func_b69d
+	dw Func_b6d1
+	dw Func_b6d1
+	dw Func_b6ee
+	dw Func_b70b
+	dw Func_b728
+	dw Func_b675
+	dw Func_b745
+	dw Func_b767
+	dw Func_b784
+
+Func_8a09:
+	sub $bf
+	ld [$db53], a
+	ld [$db54], a
+	jr Func_8a22
+Func_8a13:
+	xor a
+	ld [$db51], a
+	jr Func_899f
+
+Func_8a19:
+	sub $37
+	ld c, a
+	ld a, $0f
+	sub c
+	ld [$db5d], a
+Func_8a22:
+	ld a, [$db51]
+Func_8a25:
+	inc a
+	ld [$db51], a
+	inc hl
+	jr Func_89b2
+
+Func_8a2c:
+	ld a, $88
+	ld [$db46], a
+	jr Func_8a22
+
+Func_8a33:
+	ld a, [$db47]
+	and a
+	jr nz, Func_8a22
+	ld a, $08
+	ld [$db46], a
+	jr Func_8a22
+
+Func_8a40:
+	ld a, [$db47]
+	and a
+	jr nz, Func_8a22
+	ld a, $80
+	ld [$db46], a
+	jr Func_8a22
+
+Func_8a4d:
+	sub $47
+	ld [$db5f], a
+	xor a
+	ld [$db5e], a
+	jr Func_8a22
+
+Func_8a58:
+	inc hl
+	ld a, [hl]
+	ld [$db4e], a
+	ld a, [$db51]
+	inc a
+	jr Func_8a25
+
+Func_8a63:
+	ld a, [$db55]
+	dec a
+	jr z, Func_8a22
+	ld [$db55], a
+	ld a, [$db56]
+	jp Func_89a2
+
+Func_8a72:
+	sub $5a
+	ld [$db55], a
+	ld a, [$db51]
+	ld [$db56], a
+	jr Func_8a22
 
 Func_8a7f:
 	ld a, [$db47]
@@ -20567,7 +21464,7 @@ Func_8a7f:
 .asm_8a89
 	ld hl, $db54
 	dec [hl]
-	call z, $4994
+	call z, Func_8994
 	ld a, [$db5c]
 	and a
 	ret z
@@ -20881,7 +21778,216 @@ Func_ac37:
 	ld de, $6c7a
 	jp Func_88f4
 
-INCBIN "baserom.gbc", $ac56, $bc00 - $ac56
+INCBIN "baserom.gbc", $ac56, $b1a4 - $ac56
+
+SoundEffects:
+	dw $ff00
+	dw $71d0
+	dw $71e6
+	dw $721e
+	dw $722d
+	dw $723c
+	dw $7342
+	dw $7329
+	dw $7333
+	dw $7354
+	dw $7254
+	dw $72f0
+	dw $7265
+	dw $731a
+	dw $72fc
+	dw $7285
+	dw $729d
+	dw $72bb
+	dw $72d5
+	dw $7360
+	dw $71e2
+	dw $730b
+
+SoundEffect1:
+	db $BF, $11, $1F, $11
+	db $60, $FD
+	dbw $7F, Func_b3c6
+	db $C7, $79, $2A, $75, $3C, $81, $0A, $3C, $68
+
+INCBIN "baserom.gbc", $b1e2, $b3c6 - $b1e2
+
+Func_b3c6:
+	ld a, $0f
+	ld [$db47], a
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $73
+	ld [$db57], a
+	ld a, $e8
+	ld [$db58], a
+	ld a, $73
+	ld [$db59], a
+	ld a, $f5
+	ld [$db5a], a
+	ret
+
+INCBIN "baserom.gbc", $b3e8, $b658 - $b3e8
+
+Func_b658:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $75
+	ld [$db57], a
+	ld a, $fa
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $02
+	ld [$db5a], a
+	ret
+
+Func_b675:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $76
+	ld [$db57], a
+	ld a, $92
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $98
+	ld [$db5a], a
+	ret
+
+INCBIN "baserom.gbc", $b692, $b69d - $b692
+
+Func_b69d:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $76
+	ld [$db57], a
+	ld a, $ba
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $c6
+	ld [$db5a], a
+	ret
+
+INCBIN "baserom.gbc", $b6ba, $b6d1 - $b6ba
+
+Func_b6d1:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $76
+	ld [$db57], a
+	ld a, $32
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $3a
+	ld [$db5a], a
+	ret
+
+Func_b6ee:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $76
+	ld [$db57], a
+	ld a, $23
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $2b
+	ld [$db5a], a
+	ret
+
+Func_b70b:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $76
+	ld [$db57], a
+	ld a, $14
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $1c
+	ld [$db5a], a
+	ret
+
+Func_b728:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $76
+	ld [$db57], a
+	ld a, $09
+	ld [$db58], a
+	ld a, $76
+	ld [$db59], a
+	ld a, $0f
+	ld [$db5a], a
+	ret
+
+Func_b745:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $77
+	ld [$db57], a
+	ld a, $62
+	ld [$db58], a
+	ld a, $77
+	ld [$db59], a
+	ld a, $65
+	ld [$db5a], a
+	ret
+
+INCBIN "baserom.gbc", $b762, $b767 - $b762
+
+Func_b767:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $77
+	ld [$db57], a
+	ld a, $a1
+	ld [$db58], a
+	ld a, $77
+	ld [$db59], a
+	ld a, $a4
+	ld [$db5a], a
+	ret
+
+Func_b784:
+	xor a
+	ld [$db5b], a
+	inc a
+	ld [$db5c], a
+	ld a, $77
+	ld [$db57], a
+	ld a, $a6
+	ld [$db58], a
+	ld a, $77
+	ld [$db59], a
+	ld a, $ae
+	ld [$db5a], a
+	ret
+
+INCBIN "baserom.gbc", $b7a1, $bc00 - $b7a1
 
 FuddForestLevelSpriteTiles:
 	INCBIN "gfx/fudd_forest/level_sprites.interleave.2bpp.lz"
