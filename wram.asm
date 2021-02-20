@@ -42,7 +42,12 @@ wAnimatedTilesPointer:: ; $dda3
 wInCreditsScene:: ; $dde2
 	ds 1
 
-	ds 5
+	ds 2
+
+wCurCreditsText:: ; $dde5
+	ds 2
+
+	ds 1
 
 ; If this is set to non-zero, press start + select will skip the current level.
 ; This is enabled with a secret dev password. See data/passwords.asm

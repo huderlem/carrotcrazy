@@ -2114,10 +2114,10 @@ RunStudioCreditsScreen:
 	sub a
 	ld [bc], a
 	inc c
-	ld a, $56
+	ld a, (CreditsTexts & $ff)
 	ld [bc], a
 	inc c
-	ld a, $76
+	ld a, (CreditsTexts >> 8)
 	ld [bc], a
 	jr asm_e77
 RunStudioScreen:
@@ -2207,10 +2207,10 @@ asm_e77:
 	call TickMusicEngineHome
 	ld a, [wInCreditsScene]
 	and a
-	jr z, .asm_f49
-	ld a, Bank(Func_f610)
+	jr z, .notCreditsScene
+	ld a, Bank(DrawCreditsText)
 	ld [MBC5RomBank], a
-	call Func_f610
+	call DrawCreditsText
 	ld a, [hFrameCounter]
 	rra
 	jr c, .asm_f55
@@ -2228,7 +2228,7 @@ asm_e77:
 	inc a
 	ld [hl], a
 	jr .asm_f55
-.asm_f49
+.notCreditsScene
 	call HandlePlayerInput
 	call UpdatePlayerStateHome
 	call HandlePlayerCollision
@@ -10431,7 +10431,7 @@ INCLUDE "home/load.asm"
 
 SECTION "ROM Bank $01", ROMX[$4000], BANK[$1]
 
-Func_4000:
+HandleCreditsStudioCharacterEntity:
 	ld bc, $4
 	add hl, bc
 	res 5, [hl]
@@ -22295,8 +22295,8 @@ Func_f585:
 	ld [hl], b
 	ret
 
-Func_f610:
-	ld hl, $dde5
+DrawCreditsText:
+	ld hl, wCurCreditsText
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -22306,12 +22306,12 @@ Func_f610:
 	ld a, [hActiveSprites]
 	ld e, a
 	ld d, $df
-.asm_f621
+.loadWord
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
 	ld b, a
-.asm_f625
+.loadLetter
 	ld a, b
 	ld [de], a
 	inc e
@@ -22321,7 +22321,7 @@ Func_f610:
 	add $08
 	ld c, a
 	ld a, [hli]
-	sub $40
+	sub "@"
 	add a
 	add $34
 	ld [de], a
@@ -22333,10 +22333,10 @@ Func_f610:
 	and a
 	jr nz, .asm_f640
 	inc hl
-	jr .asm_f621
+	jr .loadWord
 .asm_f640
-	cp $01
-	jr nz, .asm_f625
+	cp 1
+	jr nz, .loadLetter
 	ld a, e
 	ld [hActiveSprites], a
 	ld a, [hFrameCounter]
@@ -22344,12 +22344,72 @@ Func_f610:
 	ret nz
 	inc hl
 	ld a, l
-	ld [$dde5], a
+	ld [wCurCreditsText], a
 	ld a, h
-	ld [$dde6], a
+	ld [wCurCreditsText + 1], a
 	ret
 
-INCBIN "baserom.gbc", $f656, $fb10 - $f656
+; First two bytes are the coords on screen for the first letter.
+; Next chunk is ASCII text characters, terminated by 0 or 1.
+; 0 signals another word should be loaded, while 1 terminates.
+; The whole list is terminated with $ff.
+CreditsTexts:
+	db 84, 52, "@", 1
+
+	db  44, 36, "PRODUCED", 0
+	db 116, 36, "BY",       0
+	db  68, 52, "BRUNO",    0
+	db  60, 68, "BONNELL",  1
+
+	db 52, 44, "DEVELOPED", 0
+	db 80, 60, "BY",        1
+
+	db 56, 44, "FERNANDO", 0
+	db 68, 60, "VELEZ",    1
+
+	db 52, 44, "GUILLAUME", 0
+	db 64, 60, "DUBAIL",    1
+
+	db 68, 44, "MUSIC", 0
+	db 80, 60, "BY",    1
+
+	db 76, 44, "BIT",      0
+	db 56, 60, "MANAGERS", 1
+
+	db 48, 52, "PRODUCTION", 1
+
+	db 60, 44, "YOLANDA", 0
+	db 64, 60, "ALONSO",  1
+
+	db 68, 44, "ERWAN",   0
+	db 60, 60, "KERGALL", 1
+
+	db 64, 44, "THANKS", 0
+	db 80, 60, "TO",     1
+
+	db 48, 36, "INFOGRAMES", 0
+	db 60, 52, "TESTING",    0
+	db 48, 68, "DEPARTMENT", 1
+
+	db $ff
+
+StudioCreditsEntityTriggers:
+	dw $FFFF, $0000, $5D9E
+	trigger $00, $64, 0, StudioCredits
+	trigger $0C, $E4, 1, StudioCredits
+	trigger $8C, $164, 2, StudioCredits
+	trigger $10C, $1E4, 3, StudioCredits
+	trigger $18C, $264, 4, StudioCredits
+	dw $7FFF, $0000, $5D9E
+
+StudioCreditsEntities:
+StudioCreditsEntity0: entity_credits_studio_elmer_fudd $4C, $6D
+StudioCreditsEntity1: entity_credits_studio_marvin_martian $CC, $6D
+StudioCreditsEntity2: entity_credits_studio_daffy_duck $14C, $6D
+StudioCreditsEntity3: entity_credits_studio_yosemite_sam $1CC, $6D
+StudioCreditsEntity4: entity_credits_studio_taz $24C, $6D
+
+INCBIN "baserom.gbc", $f78f, $fb10 - $f78f
 
 SpaceStationMetatiles:
 	INCBIN "data/levels/space_station_metatiles.bin.lz"
@@ -27310,8 +27370,12 @@ ScreenData_Credits:
 	compressed_data FontTiles, $8340
 	db $ff
 	dw RunStudioCreditsScreen
-
-INCBIN "baserom.gbc", $1b785, $1b794 - $1b785
+	dw $0000, $0000 ; initial camera offset
+	dw $0000, $0078 ; initial player x/y coords
+	db Bank(StudioCreditsEntityTriggers)
+	dw StudioCreditsEntityTriggers
+	dw StudioCreditsEntities
+	dw $7174 ; bugs bunny's digging metatile replacements
 
 ScreenData_TreasureIsland1Bonus:
 	db $ff

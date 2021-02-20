@@ -852,6 +852,15 @@ entity_studio_yosemite_sam: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
+entity_credits_studio_yosemite_sam: MACRO
+	dw HandleCreditsStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $6B54
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
 entity_studio_daffy_duck: MACRO
 	dw HandleStudioCharacterEntity
 	dw \2, \1
@@ -859,6 +868,15 @@ entity_studio_daffy_duck: MACRO
 	dw $696E
 	dw $696E
 	db $2C, $01
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_credits_studio_daffy_duck: MACRO
+	dw HandleCreditsStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $696E
 	ENDM
 
 ; \1: x pixel coord
@@ -874,6 +892,15 @@ entity_studio_taz: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
+entity_credits_studio_taz: MACRO
+	dw HandleCreditsStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $7028
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
 entity_studio_marvin_martian: MACRO
 	dw HandleStudioCharacterEntity
 	dw \2, \1
@@ -885,6 +912,15 @@ entity_studio_marvin_martian: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
+entity_credits_studio_marvin_martian: MACRO
+	dw HandleCreditsStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $7412
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
 entity_studio_elmer_fudd: MACRO
 	dw HandleStudioCharacterEntity
 	dw \2, \1
@@ -892,4 +928,13 @@ entity_studio_elmer_fudd: MACRO
 	dw $77AE
 	dw $77AE
 	db $2C, $00
+	ENDM
+
+; \1: x pixel coord
+; \2: y pixel coord
+entity_credits_studio_elmer_fudd: MACRO
+	dw HandleCreditsStudioCharacterEntity
+	dw \2, \1
+	db $00
+	dw $77AE
 	ENDM
