@@ -19845,7 +19845,7 @@ TickMusicEngine_:
 	ld l, $05
 	ld a, [hli]
 	add e
-	ld [$ff13], a
+	ld [rNR13], a
 	ld a, [hli]
 	adc d
 	ld b, [hl]
@@ -19883,7 +19883,7 @@ Func_8133:
 	ld l, $05
 	ld a, [hli]
 	add e
-	ld [$ff18], a
+	ld [rNR23], a
 	ld a, [hli]
 	adc d
 	ld b, [hl]
@@ -19926,7 +19926,7 @@ Func_816b:
 	ld l, $05
 	ld a, [hli]
 	add e
-	ld [$ff1d], a
+	ld [rNR33], a
 	ld a, [hli]
 	adc d
 	cp [hl]
@@ -19976,7 +19976,7 @@ Func_8193:
 	jr nz, .asm_81bc
 	ld a, $ff
 .asm_81bc
-	ld [$ff25], a
+	ld [rNR51], a
 	jp Func_86ca
 
 TickSoundEffectChannel:
@@ -20027,7 +20027,7 @@ TickMusicChannel:
 .asm_8211
 	add a
 	ld c, a
-	ld b, $48
+	ld b, (NoteFrequencies >> 8)
 	ld l, $05
 	ld a, [bc]
 	inc c
@@ -20361,11 +20361,11 @@ ReadMusicMetaCommand_85:
 	cp $db
 	jr nz, .asm_83d7
 	ld a, $80
-	ld [$ff11], a
+	ld [rNR11], a
 	jr .asm_83db
 .asm_83d7
 	ld a, $80
-	ld [$ff16], a
+	ld [rNR21], a
 .asm_83db
 	ld a, b
 	sub $84
@@ -21012,7 +21012,7 @@ Func_8711:
 .asm_8728
 	ld b, h
 	xor a
-	ld [$ff1a], a
+	ld [rNR30], a
 	ld c, $30
 	ld a, [de]
 	ld l, a
@@ -21071,8 +21071,8 @@ Func_8711:
 	ld l, $07
 	ld a, [hl]
 	or $80
-	ld [$ff1a], a
-	ld [$ff1e], a
+	ld [rNR30], a
+	ld [rNR34], a
 	ret
 
 Func_876e:
@@ -21139,7 +21139,90 @@ Func_876e:
 	ld [rNR34], a
 	ret
 
-INCBIN "baserom.gbc", $87b7, $88a2 - $87b7
+INCBIN "baserom.gbc", $87b7, $8800 - $87b7
+
+NoteFrequencies:
+	dw $002d
+	dw $009d
+	dw $0107
+	dw $016b
+	dw $01ca
+	dw $0223
+	dw $0277
+	dw $02c7
+	dw $0312
+	dw $0359
+	dw $039c
+	dw $03db
+	dw $0417
+	dw $044f
+	dw $0484
+	dw $04b6
+	dw $04e5
+	dw $0512
+	dw $053c
+	dw $0564
+	dw $0589
+	dw $05ad
+	dw $05ce
+	dw $05ee
+	dw $060c
+	dw $0628
+	dw $0642
+	dw $065b
+	dw $0673
+	dw $0689
+	dw $069e
+	dw $06b2
+	dw $06c5
+	dw $06d7
+	dw $06e7
+	dw $06f7
+	dw $0706
+	dw $0714
+	dw $0721
+	dw $072e
+	dw $073a
+	dw $0745
+	dw $074f
+	dw $0759
+	dw $0763
+	dw $076c
+	dw $0774
+	dw $077c
+	dw $0783
+	dw $078a
+	dw $0791
+	dw $0797
+	dw $079d
+	dw $07a3
+	dw $07a8
+	dw $07ad
+	dw $07b2
+	dw $07b6
+	dw $07ba
+	dw $07be
+	dw $07c2
+	dw $07c5
+	dw $07c9
+	dw $07cc
+	dw $07cf
+	dw $07d2
+	dw $07d4
+	dw $07d7
+	dw $07d9
+	dw $07db
+	dw $07dd
+	dw $07df
+	dw $07e1
+	dw $07e3
+	dw $07e5
+	dw $07e6
+	dw $07e2
+	dw $07e9
+	dw $07ea
+	dw $07ec
+	dw $07ed
 
 Func_88a2:
 	ld a, h
@@ -21490,7 +21573,7 @@ Func_8a7f:
 	ld a, [hl]
 	cp $ff
 	jr z, .asm_8b1b
-	ld [$ff22], a
+	ld [rNR43], a
 	ld a, [$db59]
 	and a
 	jr z, .asm_8aea
@@ -21697,14 +21780,63 @@ Func_a152:
 	ld [$db49], a
 	ld a, $93
 	ld [$db48], a
-	ld de, $6172
+	ld de, Data_a172
 	call Func_88f0
-	ld de, $6188
+	ld de, Data_a188
 	call Func_88f4
-	ld de, $619e
+	ld de, Data_a19e
 	jp Func_88f8
+	ret
 
-INCBIN "baserom.gbc", $a171, $a4c9 - $a171
+Data_a172: ; music chunk header? each seems to point to a 4-measure sequence
+	dw Data_a1d8
+	dw Data_a1d1
+	dw Data_a1d8
+	dw $61f8
+	dw $6246
+	dw Data_a1d1
+	dw Data_a1d8
+	dw $61f8
+	dw $6246
+	dw $0000
+	dw Data_a172
+
+Data_a188:
+	dw $6323
+	dw $631D
+	dw $6323
+	dw $62E3
+	dw $62F9
+	dw $631D
+	dw $6323
+	dw $62E3
+	dw $62F9
+	dw $0000
+	dw Data_a188
+
+Data_a19e:
+	dw $6448
+	dw $636C
+	dw $6390
+	dw $63BE
+	dw $643C
+	dw $636C
+	dw $6390
+	dw $63BE
+	dw $6442
+	dw $0000
+	dw Data_a19e
+
+Data_a1b4:
+	db $D3, $0C, $8A, $C9, $21, $8F, $0C, $D3, $13, $8A, $C9, $21, $8F, $13, $D3, $0E, $8A, $C9, $21, $8F, $0E, $D3, $13, $8A, $C9, $21, $8F, $13, $6A
+
+Data_a1d1:
+	db $8F, $F2, $7E, $B4, $61, $80, $6A
+
+Data_a1d8:
+	db $8F, $7B, $02, $10, $F1, $7E, $B4, $61, $80, $D3, $0C, $8A, $C9, $21, $8F, $D3, $15, $C9, $13, $8A, $21, $8F, $13, $D3, $0C, $8A, $E7, $21, $8F, $D3, $13, $6A
+
+INCBIN "baserom.gbc", $a1f8, $a4c9 - $a1f8
 
 Func_a4c9:
 	call Func_853d
@@ -22031,6 +22163,7 @@ InfogramesCopyrightTiles:
 StudioCameraArrowTiles:
 	INCBIN "gfx/studio/camera_arrow.interleave.2bpp.lz"
 
+; level intro screen oam data stuff
 INCBIN "baserom.gbc", $dde7, $e027 - $dde7
 
 FuddForestLevelTiles:

@@ -60,7 +60,12 @@ wHUDTileAttribute:: ; $dde9
 wSoundEffectCommandPointer:: ; $de02
 	ds 2
 
-	ds $6
+	ds $1
+
+wSoundEffectFrequency:: ; $de05
+	ds 2
+
+	ds $3
 
 wSoundEffectDuration:: ; $de0a
 	ds 1
