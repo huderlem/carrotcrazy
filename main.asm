@@ -69,29 +69,36 @@ WaitNextHBlank:
 SECTION "vblank", ROM0 [$40]
 	reti
 
-INCBIN "baserom.gbc", $41, $48 - $41
+HovershipSmokeBallSprite1:
+	dw Load1SubSprite
+	sub_sprite $7A, $25, 8, 0
 
 SECTION "hblank", ROM0 [$48]
 	reti
 
-INCBIN "baserom.gbc", $49, $50 - $49
+	; data related to boss stages? See screendata entries
+	db $02, $C0, $FF, $A0, $FF, $FF, $FF
 
 SECTION "timer",  ROM0 [$50]
 	reti
 
-INCBIN "baserom.gbc", $51, $58 - $51
+HovershipSmokeBallSprite0:
+	dw Load1SubSprite
+	sub_sprite $7A, $05, 8, 0
 
 SECTION "serial", ROM0 [$58]
 	reti
 
-INCBIN "baserom.gbc", $59, $60 - $59
+	; data related to boss stages? See screendata entries
+	db $02, $20, $00, $40, $00, $FF, $FF
 
 SECTION "joypad", ROM0 [$60]
 	reti
 
 SECTION "Home", ROM0 [$61]
 
-INCBIN "baserom.gbc", $61, $68 - $61
+	; data related to boss stages? See screendata entries
+	db $03, $C0, $FF, $B0, $FF, $A0, $FF
 
 ; Waits until the VBlank period is entered.
 WaitVBlank:
@@ -241,7 +248,7 @@ Start_:
 	call SetInitialScreen
 	jp InitNextScreen
 
-RunPrologueSceneScreen:
+RunEpilogueSceneScreen:
 	ld bc, $da00
 	ld de, $da80
 .asm_170
@@ -309,15 +316,15 @@ Func_1b9:
 	ld [rBGP], a
 	sub a
 	ld [rSCY], a
-	ld hl, $d37
+	ld hl, BugsPrologueSpritesData
 	ld c, $38
 	ld b, $8e
 	call Func_cdf
-	ld hl, $d4f
+	ld hl, LolaPrologueSpritesData
 	ld c, $18
 	ld b, $8e
 	call Func_cdf
-	ld hl, $d37
+	ld hl, BugsPrologueSpritesData
 	call Func_cae
 .asm_1f6
 	ld a, [rLY]
@@ -333,7 +340,7 @@ Func_1b9:
 	ld [rBGP], a
 	ld a, $70
 	ld [rSCY], a
-	ld hl, $d4f
+	ld hl, LolaPrologueSpritesData
 	call Func_cae
 	call ClearOAMBufferHome
 	call TickMusicEngineHome
@@ -544,7 +551,7 @@ RunLevelSummaryScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3a42
+	call DrawLocalizedText
 	ld hl, LevelSummaryScreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld a, Bank(Func_17c82)
@@ -655,7 +662,7 @@ RunPasswordScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3a42
+	call DrawLocalizedText
 	sub a
 	ld [rSCY], a
 	ld [rSCX], a
@@ -822,7 +829,7 @@ RunLanguageSelectScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3a4d
+	call DrawLocalizedWord
 	sub a
 	ld [rSCY], a
 	ld [rSCX], a
@@ -902,7 +909,7 @@ RunOptionsScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3a42
+	call DrawLocalizedText
 	ld hl, $dee6
 	sub a
 	ld [hli], a
@@ -1592,18 +1599,18 @@ RunIntroScene:
 	ld [rBGP], a
 	ld a, [$deb9]
 	ld [rSCY], a
-	ld hl, $d37
+	ld hl, BugsPrologueSpritesData
 	ld a, [$dec2]
 	add $24
 	ld c, a
 	ld b, $8e
 	call Func_cdf
-	ld hl, $d4f
+	ld hl, LolaPrologueSpritesData
 	ld a, [$dec2]
 	ld c, a
 	ld b, $8e
 	call Func_cdf
-	ld hl, $d37
+	ld hl, BugsPrologueSpritesData
 	call Func_cae
 .asm_b2d
 	ld a, [rLY]
@@ -1621,7 +1628,7 @@ RunIntroScene:
 	ld [rOBP0], a
 	ld a, 112
 	ld [rSCY], a
-	ld hl, $d4f
+	ld hl, LolaPrologueSpritesData
 	call Func_cae
 	ld hl, $deb7
 	ld a, [hli]
@@ -1967,7 +1974,35 @@ Func_d0f:
 	ld [hActiveSprites], a
 	ret
 
-INCBIN "baserom.gbc", $d37, $d67 - $d37
+BugsPrologueSpritesData:
+	dw $81C0
+	db $1C
+	db Bank(BugsMovementSprite0)
+	dw BugsMovementSprite54 + 1
+	dw BugsMovementSprite0 + 1
+	dw BugsMovementSprite12 + 1
+	dw BugsMovementSprite13 + 1
+	dw BugsMovementSprite14 + 1
+	dw BugsMovementSprite15 + 1
+	dw BugsMovementSprite16 + 1
+	dw BugsMovementSprite17 + 1
+	dw BugsMovementSprite18 + 1
+	dw BugsMovementSprite19 + 1
+
+LolaPrologueSpritesData:
+	dw $8300
+	db $30
+	db Bank(LolaMovementSprite0)
+	dw LolaMovementSprite54 + 1
+	dw LolaMovementSprite0 + 1
+	dw LolaMovementSprite16 + 1
+	dw LolaMovementSprite17 + 1
+	dw LolaMovementSprite18 + 1
+	dw LolaMovementSprite19 + 1
+	dw LolaMovementSprite12 + 1
+	dw LolaMovementSprite13 + 1
+	dw LolaMovementSprite14 + 1
+	dw LolaMovementSprite15 + 1
 
 Func_d67:
 	ld hl, vBGMap
@@ -2031,7 +2066,7 @@ RunLevelIntroScreen:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	call Func_3a42
+	call DrawLocalizedText
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	call InitKeysState
@@ -3555,7 +3590,47 @@ Func_18d1:
 	jr nz, .asm_18d7
 	ret
 
-INCBIN "baserom.gbc", $18dc, $1940 - $18dc
+ExplosionSprites:
+	dw ExplosionSprite0
+	dw ExplosionSprite1
+	dw ExplosionSprite2
+	dw ExplosionSprite3
+	dw ExplosionSprite4
+
+ExplosionSprite0:
+	dw Load2SubSprites
+	sub_sprite $48, $06,  9, 1
+	sub_sprite $48, $26, 17, 1
+
+ExplosionSprite1:
+	dw Load2SubSprites
+	sub_sprite $4A, $06,  9, 2
+	sub_sprite $4A, $66, 17, 2
+
+ExplosionSprite2:
+	dw Load6SubSprites
+	sub_sprite $4C, $06,  4, -8
+	sub_sprite $4E, $06, 12, -8
+	sub_sprite $4C, $26, 20, -8
+	sub_sprite $4C, $46,  4,  8
+	sub_sprite $4E, $66, 12,  8
+	sub_sprite $4C, $66, 20,  8
+
+ExplosionSprite3:
+	dw Load6SubSprites
+	sub_sprite $50, $06,  4, -8
+	sub_sprite $52, $06, 12, -8
+	sub_sprite $50, $26, 20, -8
+	sub_sprite $50, $46,  4,  8
+	sub_sprite $52, $66, 12,  8
+	sub_sprite $50, $66, 20,  8
+
+ExplosionSprite4:
+	dw Load4SubSprites
+	sub_sprite $54, $06,  4, -8
+	sub_sprite $54, $26, 20, -8
+	sub_sprite $54, $46,  4,  8
+	sub_sprite $54, $66, 20,  8
 
 UpdatePlayerStateHome:
 	ld a, Bank(UpdatePlayerState)
@@ -4963,9 +5038,9 @@ Func_2145:
 	ld a, [$ffeb]
 	add a
 	jr c, .asm_221a
-	add $48
+	add (HovershipSmokeBallOffsets0 & $ff)
 	ld l, a
-	ld a, $22
+	ld a, (HovershipSmokeBallOffsets0 >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -4976,12 +5051,12 @@ Func_2145:
 	add b
 	add $09
 	ld b, a
-	ld hl, $51
+	ld hl, HovershipSmokeBallSprite0
 	jr .asm_222f
 .asm_221a
-	add $5a
+	add (HovershipSmokeBallOffsets1 & $ff)
 	ld l, a
-	ld a, $22
+	ld a, (HovershipSmokeBallOffsets1 >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -4992,7 +5067,7 @@ Func_2145:
 	add b
 	add $07
 	ld b, a
-	ld hl, $41
+	ld hl, HovershipSmokeBallSprite1
 .asm_222f
 	ld a, [hFrameCounter]
 	bit 2, a
@@ -5009,7 +5084,27 @@ Func_2145:
 .asm_2245
 	jp Func_19e5
 
-INCBIN "baserom.gbc", $2248, $226c - $2248
+HovershipSmokeBallOffsets0:
+	db  0,  0
+	db -1, -1
+	db -1, -3
+	db -2, -4
+	db -3, -5
+	db -3, -6
+	db -3, -7
+	db -4, -7
+	db -4, -8
+
+HovershipSmokeBallOffsets1:
+	db 3, -7
+	db 3, -6
+	db 2, -6
+	db 2, -5
+	db 1, -4
+	db 1, -3
+	db 1, -3
+	db 1, -1
+	db 0,  0
 
 Func_226c:
 	call Func_2324
@@ -9511,7 +9606,7 @@ InitLevelEntities:
 	pop hl
 	ret
 
-Func_3a42:
+DrawLocalizedText:
 	ld a, [wLanguageSetting]
 	add a
 	ld c, a
@@ -9520,17 +9615,17 @@ Func_3a42:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-Func_3a4d:
+DrawLocalizedWord:
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
-.asm_3a51
+.drawWord
 	ld a, [hli]
 	cp $ff
 	ret z
 	and a
-	jr z, Func_3a4d
+	jr z, DrawLocalizedWord
 	push hl
 	sub $30
 	ld l, a
@@ -9543,7 +9638,7 @@ Func_3a4d:
 	add hl, bc
 	ld b, h
 	ld c, l
-.asm_3a68
+.drawLetter
 	ld a, [bc]
 	inc c
 	ld l, a
@@ -9564,9 +9659,9 @@ Func_3a4d:
 	inc de
 	ld a, c
 	and $0f
-	jr nz, .asm_3a68
+	jr nz, .drawLetter
 	pop hl
-	jr .asm_3a51
+	jr .drawWord
 
 Func_3a82:
 	ld a, $05
@@ -11936,9 +12031,9 @@ HandleSylvesterEntity:
 	and $f8
 	srl a
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -12101,9 +12196,9 @@ HandleSylvesterEntity:
 	jr .asm_4b5d
 .asm_4b40
 	and $0e
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -12354,9 +12449,9 @@ Func_4c1b:
 	and $f8
 	srl a
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -13376,9 +13471,9 @@ HandleSeagullEntity:
 	and $f8
 	srl a
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -13706,9 +13801,9 @@ HandleSeagullEntity:
 	jr .asm_559a
 .asm_557c
 	and $0e
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -13803,9 +13898,9 @@ HandleJackhammerEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -14281,9 +14376,9 @@ HandleBouncingOilDrumEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -14895,9 +14990,9 @@ HandleBossGroundTrap
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -16021,9 +16116,9 @@ HandleBicycleEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc 0
 	ld h, a
 	ld a, [hli]
@@ -16788,9 +16883,9 @@ HandleCageDropEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -16968,9 +17063,9 @@ HandleBombHazardEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -17197,9 +17292,9 @@ HandleInstantMartianEntity:
 	ld a, [hl]
 	and $07
 	add a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -17861,7 +17956,7 @@ HandleHoverShipEntity:
 	ld a, [hl]
 	sbc $00
 	ld d, a
-	ld hl, $51
+	ld hl, HovershipSmokeBallSprite0
 	jr .asm_6f8f
 .asm_6f84
 	ld a, [hli]
@@ -17870,7 +17965,7 @@ HandleHoverShipEntity:
 	ld a, [hl]
 	adc $00
 	ld d, a
-	ld hl, $41
+	ld hl, HovershipSmokeBallSprite1
 .asm_6f8f
 	call LoadOAMSpritesStandard
 	jr .asm_6fd7
@@ -18659,9 +18754,9 @@ HandleBoomBarrierEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $dc
+	add (ExplosionSprites & $ff)
 	ld l, a
-	ld a, $18
+	ld a, (ExplosionSprites >> 8)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -26653,7 +26748,7 @@ ScreenDataPointers:
 	dw ScreenData_FuddForestBossIntro     ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw ScreenData_FuddForestBoss          ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
-	dw ScreenData_PrologueScene           ; SCREEN_PROLOGUE_SCENE
+	dw ScreenData_EpilogueScene           ; SCREEN_EPILOGUE_SCENE
 	dw ScreenData_Credits                 ; SCREEN_CREDITS
 	dw $0000
 	dw ScreenData_GameOver                ; SCREEN_GAME_OVER
@@ -26733,7 +26828,7 @@ ScreenDataPointers_GBC:
 	dw ScreenData_FuddForestBossIntro     ; SCREEN_FUDD_FOREST_BOSS_INTRO
 	dw ScreenDataGBC_FuddForestBoss       ; SCREEN_FUDD_FOREST_BOSS
 	dw ScreenData_LevelSummary            ; SCREEN_FUDD_FOREST_BOSS_SUMMARY
-	dw ScreenDataGBC_PrologueScene        ; SCREEN_PROLOGUE_SCENE
+	dw ScreenDataGBC_EpilogueScene        ; SCREEN_EPILOGUE_SCENE
 	dw ScreenData_Credits                 ; SCREEN_CREDITS
 	dw $0000
 	dw ScreenData_GameOver                ; SCREEN_GAME_OVER
@@ -27357,13 +27452,13 @@ Data_1b75e:
 	dw $778F, $C000
 	db $ff
 
-ScreenData_PrologueScene:
+ScreenData_EpilogueScene:
 	compressed_data FarmSceneTiles, $8CB0
 	compressed_data TitlescreenBackgroundTilemap, $9800
 	compressed_data FontTiles, $8800
 	compressed_data GameText, $C500
 	db $ff
-	dw RunPrologueSceneScreen
+	dw RunEpilogueSceneScreen
 	dw Func_8065
 
 ScreenData_Credits:
@@ -27866,14 +27961,14 @@ ScreenDataGBC_InfogramesCopyright:
 	db $ff
 	dw RunInfogramesCopyrightScreen
 
-ScreenDataGBC_PrologueScene:
+ScreenDataGBC_EpilogueScene:
 	compressed_data FarmSceneTilesGBC, $8CB0
 	compressed_data TitlescreenBackgroundTilemapGBC, $9800
 	compressed_data FontTilesGBC, $8800
 	compressed_data GameText, $C500
 	compressed_data TitlescreenTileAttributesGBC, $DA4B
 	db $ff
-	dw RunPrologueSceneScreen
+	dw RunEpilogueSceneScreen
 	dw Func_8065
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
