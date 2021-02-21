@@ -2560,7 +2560,7 @@ RunCrazyTownBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, $2de5
+	ld hl, Data_2de5
 	call Func_2d62
 	ld hl, $9ba0
 	call Func_fd9
@@ -2696,7 +2696,7 @@ RunTreasureIslandBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, $2de5
+	ld hl, Data_2de5
 	call Func_2d62
 	ld hl, $9ba0
 	call Func_fd9
@@ -2840,7 +2840,7 @@ RunTazZooBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, $2de5
+	ld hl, Data_2de5
 	call Func_2d62
 	ld a, 144
 	ld [rWY], a
@@ -2942,7 +2942,7 @@ RunSpaceStationBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, $2de5
+	ld hl, Data_2de5
 	call Func_2d62
 	ld hl, $9ba0
 	call Func_fd9
@@ -3039,7 +3039,7 @@ RunFuddForestBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, $2de5
+	ld hl, Data_2de5
 	call Func_2d62
 	ld hl, $9ba0
 	call Func_fd9
@@ -3765,7 +3765,7 @@ asm_19f2:
 	ld [$ffc6], a
 	res 4, b
 	ld d, $20
-	ld hl, $2dbd
+	ld hl, Data_2dbd
 	call Func_2d62
 .asm_1a15
 	ld a, $13
@@ -3803,10 +3803,10 @@ Func_1a37:
 	cp 4
 	jr nz, .asm_1a55
 	res 5, b
-	ld hl, $2dc5
+	ld hl, Data_2dc5
 	jr .asm_1a58
 .asm_1a55
-	ld hl, $2dad
+	ld hl, Data_2dad
 .asm_1a58
 	call Func_2d62
 	ld hl, $406e
@@ -3828,7 +3828,7 @@ Func_1a73:
 	ld [$ffb7], a
 	bit 4, b
 	jr nz, .asm_1a84
-	ld hl, $2dbd
+	ld hl, Data_2dbd
 	call Func_2d62
 	jr .asm_1adf
 .asm_1a84
@@ -3846,7 +3846,7 @@ Func_1a73:
 	ld b, a
 	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesCameraOffset
-	ld hl, $2db9
+	ld hl, Data_2db9
 	call Func_2d62
 	ld hl, $ffb8
 	ld a, [hFrameCounter]
@@ -3941,7 +3941,7 @@ Func_1b2f:
 	bit 4, b
 	jr z, .asm_1b43
 	ld d, $01
-	ld hl, $2d89
+	ld hl, Data_2d89
 	jp Func_2d62
 .asm_1b43
 	res 0, d
@@ -3989,11 +3989,11 @@ Func_1b46:
 	bit 2, d
 	ret nz
 	ld d, $04
-	ld hl, $2d8d
+	ld hl, Data_2d8d
 	ld a, [$ffb6]
 	and a
 	jp z, Func_2d62
-	ld hl, $2d91
+	ld hl, Data_2d91
 	jp Func_2d62
 .asm_1b98
 	bit 3, d
@@ -4083,7 +4083,7 @@ Func_1bdc:
 	cp $1c
 	jr c, .asm_1c30
 	jr nz, .asm_1c28
-	ld hl, $2da5
+	ld hl, Data_2da5
 	call Func_2d62
 .asm_1c28
 	ld a, $f0
@@ -4133,26 +4133,26 @@ Func_1bdc:
 	bit 7, d
 	ret nz
 	ld d, $80
-	ld hl, $2dc1
+	ld hl, Data_2dc1
 	jp Func_2d62
 .asm_1c7b
 	ld a, [$ffc6]
 	cp $38
 	jr c, .asm_1c89
 	ld d, $00
-	ld hl, $2db5
+	ld hl, Data_2db5
 	jp Func_2d62
 .asm_1c89
 	bit 6, d
 	ret nz
 	ld d, $40
-	ld hl, $2da1
+	ld hl, Data_2da1
 	jp Func_2d62
 .asm_1c94
 	bit 5, d
 	ret nz
 	ld d, $20
-	ld hl, $2d9d
+	ld hl, Data_2d9d
 	jp Func_2d62
 
 Func_1c9f:
@@ -4192,7 +4192,7 @@ Func_1c9f:
 	ld [hl], $0e
 	ld a, $01
 	call PlaySoundEffectHome
-	ld hl, $2da9
+	ld hl, Data_2da9
 	jp Func_2d62
 
 Func_1cdc:
@@ -4213,13 +4213,13 @@ Func_1cdc:
 	ld a, $3c
 	ld [$ffb1], a
 	ld d, $10
-	ld hl, $2d99
+	ld hl, Data_2d99
 	jp Func_2d62
 .asm_1d00
 	bit 1, d
 	ret nz
 	ld d, $02
-	ld hl, $2d85
+	ld hl, PlayerIdleAnimations
 	jp Func_2d62
 .asm_1d0b
 	res 1, d
@@ -4339,7 +4339,7 @@ Func_1d61:
 	ld [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, $2dcd
+	ld hl, Data_2dcd
 	call Func_2d62
 .asm_1dc6
 	jp Func_19e5
@@ -4456,7 +4456,7 @@ Func_1e1e:
 	ld [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, $2dd5
+	ld hl, Data_2dd5
 	call Func_2d62
 .asm_1e83
 	jp Func_19e5
@@ -4522,7 +4522,7 @@ Func_1e8c:
 	jr z, .asm_1ef2
 	ld a, $2a
 	ld [$ffc1], a
-	ld hl, $2de1
+	ld hl, Data_2de1
 	call Func_2d62
 .asm_1ef2
 	push bc
@@ -4788,7 +4788,7 @@ Func_2045:
 	ld [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, $2df9
+	ld hl, Data_2df9
 	call Func_2d62
 .asm_207e
 	jp Func_19e5
@@ -4890,7 +4890,7 @@ Func_2081:
 	ld a, [$ff8a]
 	cp $02
 	jr nz, .asm_2142
-	ld hl, $2e01
+	ld hl, Data_2e01
 	call Func_2d62
 	jr .asm_2142
 .asm_2121
@@ -5190,7 +5190,7 @@ Func_22c9:
 	ld [$ffc6], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, $2e0d
+	ld hl, Data_2e0d
 	call Func_2d62
 .asm_22f5
 	push bc
@@ -5538,7 +5538,7 @@ HandlePlayerCollision:
 	ld a, [$ffad]
 	set 6, a
 	ld [$ffad], a
-	ld hl, $2ddd
+	ld hl, Data_2ddd
 	call Func_2d62
 	ld a, $58
 	ld [$ffc0], a
@@ -7065,7 +7065,7 @@ Func_2d62:
 	ret
 
 Func_2d73:
-	ld hl, $2d85
+	ld hl, PlayerIdleAnimations
 	call Func_2d62
 	ld hl, $ffd8
 	ld a, $0d
@@ -7075,7 +7075,145 @@ Func_2d73:
 	ld [hl], $74
 	ret
 
-INCBIN "baserom.gbc", $2d85, $2e11 - $2d85
+PlayerIdleAnimations:
+	dw BugsIdleAnimation
+	dw $7588
+
+Data_2d89:
+	dw $75bb
+	dw $75c2
+
+Data_2d8d:
+	dw $75c9
+	dw $75ec
+
+Data_2d91:
+	dw $760f
+	dw $761e
+
+Data_2d95:
+	dw $762d
+	dw $7640
+
+Data_2d99:
+	dw $764b
+	dw $767e
+
+Data_2d9d:
+	dw $76b1
+	dw $76bc
+
+Data_2da1:
+	dw $76c7
+	dw $76d2
+
+Data_2da5:
+	dw $76dd
+	dw $76f8
+
+Data_2da9:
+	dw $7713
+	dw $7722
+
+Data_2dad:
+	dw $7731
+	dw $7738
+
+Data_2db1:
+	dw $773f
+	dw $774a
+
+Data_2db5:
+	dw $7755
+	dw $775c
+
+Data_2db9:
+	dw $7763
+	dw $776a
+
+Data_2dbd:
+	dw $7771
+	dw $7778
+
+Data_2dc1:
+	dw $777f
+	dw $777f
+
+Data_2dc5:
+	dw $7792
+	dw $7792
+
+Data_2dc9:
+	dw $77ad
+	dw $77b4
+
+Data_2dcd:
+	dw $77bb
+	dw $77c2
+
+Data_2dd1:
+	dw $780f
+	dw $7816
+
+Data_2dd5:
+	dw $781d
+	dw $782c
+
+Data_2dd9:
+	dw $783b
+	dw $783b
+
+Data_2ddd:
+	dw $7842
+	dw $7842
+
+Data_2de1:
+	dw $7879
+	dw $7879
+
+Data_2de5:
+	dw $7898
+	dw $7898
+
+Data_2de9:
+	dw $78a3
+	dw $78a3
+
+Data_2ded:
+	dw $78b6
+	dw $78d1
+
+Data_2df1:
+	dw $78f7
+	dw $78fe
+
+Data_2df5:
+	dw $7905
+	dw $7905
+
+Data_2df9:
+	dw $790c
+	dw $790c
+
+Data_2dfd:
+	dw $792f
+	dw $793e
+
+Data_2e01:
+	dw $794d
+	dw $7960
+
+Data_2e05:
+	dw $7973
+	dw $799a
+
+Data_2e09:
+	dw $79c1
+	dw $79c1
+
+Data_2e0d:
+	dw $79d4
+	dw $79df
 
 Func_2e11:
 	call WaitHBlankStart
@@ -10907,7 +11045,7 @@ HandleCollectibleEntity:
 	ld [$ffb7], a
 	ld a, $03
 	ld [$ffb0], a
-	ld hl, $2db1
+	ld hl, Data_2db1
 	call Func_2d62
 	jr .asm_423b
 .collectClapboard0
@@ -11734,7 +11872,7 @@ HandleSkateboardEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2dc9
+	ld hl, Data_2dc9
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -13147,7 +13285,7 @@ HandleBarrelBoatEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2dd1
+	ld hl, Data_2dd1
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -13311,7 +13449,7 @@ HandleCannonEntity:
 	ld [$ffad], a
 	ld a, $0f
 	ld [$ffb0], a
-	ld hl, $2dd9
+	ld hl, Data_2dd9
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -13982,7 +14120,7 @@ HandleJackhammerEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2de9
+	ld hl, Data_2de9
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -14239,7 +14377,7 @@ HandleFixedPathEntity:
 	ld [$ffad], a
 	ld a, $18
 	ld [$ffb0], a
-	ld hl, $2ded
+	ld hl, Data_2ded
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -15514,7 +15652,7 @@ HandleHippoEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2df1
+	ld hl, Data_2df1
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -16196,7 +16334,7 @@ HandleBicycleEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2df5
+	ld hl, Data_2df5
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -16423,7 +16561,7 @@ HandleBalloonEntity:
 	ld [$ffad], a
 	ld a, $18
 	ld [$ffb0], a
-	ld hl, $2ded
+	ld hl, Data_2ded
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -17025,7 +17163,7 @@ HandleTeleporterEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2dfd
+	ld hl, Data_2dfd
 	call Func_2d62
 	call Func_2326
 	ld a, $08
@@ -18065,7 +18203,7 @@ HandleSpaceScooterEntity:
 	ld a, $bf
 	ld [$ffb7], a
 	push hl
-	ld hl, $2e09
+	ld hl, Data_2e09
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -18488,7 +18626,7 @@ HandleHelicopterChairEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, $2e0d
+	ld hl, Data_2e0d
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -19654,7 +19792,7 @@ HandleLadderEntity:
 	ld [hl], $10
 	ld a, $18
 	ld [$ffb0], a
-	ld hl, $2ded
+	ld hl, Data_2ded
 	call Func_2d62
 	ld hl, hPlayerXPos
 	ld a, c
@@ -29255,7 +29393,50 @@ LolaMovementTiles:
 
 INCLUDE "gfx/player/lola_movement.inc"
 
-INCBIN "baserom.gbc", $3b551, $3b62d - $3b551
+BugsIdleAnimation:
+.frame0
+	db 210
+	dbw Bank(BugsMovementSprite0), BugsMovementSprite0 + 1
+.frame1
+	db 10
+	dbw Bank(BugsMovementSprite6), BugsMovementSprite6 + 1
+.frame2
+	db 10
+	dbw Bank(BugsMovementSprite7), BugsMovementSprite7 + 1
+.frame3
+	db 10
+	dbw Bank(BugsMovementSprite8), BugsMovementSprite8 + 1
+.frame4
+	db 10
+	dbw Bank(BugsMovementSprite6), BugsMovementSprite6 + 1
+.frame5
+	db 10
+	dbw Bank(BugsMovementSprite9), BugsMovementSprite9 + 1
+.frame6
+	db 10
+	dbw Bank(BugsMovementSprite6), BugsMovementSprite6 + 1
+.frame7
+	db 10
+	dbw Bank(BugsMovementSprite9), BugsMovementSprite9 + 1
+.frame8
+	db 10
+	dbw Bank(BugsMovementSprite6), BugsMovementSprite6 + 1
+.frame9
+	db 10
+	dbw Bank(BugsMovementSprite9), BugsMovementSprite9 + 1
+.frame10
+	db 10
+	dbw Bank(BugsMovementSprite6), BugsMovementSprite6 + 1
+.frame11
+	db 10
+	dbw Bank(BugsMovementSprite9), BugsMovementSprite9 + 1
+.frame12
+	db 48
+	dbw Bank(BugsMovementSprite6), BugsMovementSprite6 + 1
+.end
+	dbw 0, .frame1
+
+INCBIN "baserom.gbc", $3b588, $3b62d - $3b588
 
 Data_3b62d:
 	db $18
