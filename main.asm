@@ -300,7 +300,7 @@ Func_1b9:
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
-	ld hl, $3def
+	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hl]
 	and $0c
@@ -316,15 +316,15 @@ Func_1b9:
 	ld [rBGP], a
 	sub a
 	ld [rSCY], a
-	ld hl, BugsPrologueSpritesData
+	ld hl, BugsEpilogueSpritesData
 	ld c, $38
 	ld b, $8e
 	call Func_cdf
-	ld hl, LolaPrologueSpritesData
+	ld hl, LolaEpilogueSpritesData
 	ld c, $18
 	ld b, $8e
 	call Func_cdf
-	ld hl, BugsPrologueSpritesData
+	ld hl, BugsEpilogueSpritesData
 	call Func_cae
 .asm_1f6
 	ld a, [rLY]
@@ -334,13 +334,13 @@ Func_1b9:
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
-	ld hl, $3def
+	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hli]
 	ld [rBGP], a
 	ld a, $70
 	ld [rSCY], a
-	ld hl, LolaPrologueSpritesData
+	ld hl, LolaEpilogueSpritesData
 	call Func_cae
 	call ClearOAMBufferHome
 	call TickMusicEngineHome
@@ -1155,7 +1155,7 @@ RunTitlescreen:
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
-	ld hl, $3def
+	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hl]
 	and $0c
@@ -1255,7 +1255,7 @@ RunTitlescreen:
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
-	ld hl, $3def
+	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hl]
 	ld [rBGP], a
@@ -1583,7 +1583,7 @@ RunIntroScene:
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
-	ld hl, $3def
+	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hl]
 	and $0c
@@ -1599,18 +1599,18 @@ RunIntroScene:
 	ld [rBGP], a
 	ld a, [$deb9]
 	ld [rSCY], a
-	ld hl, BugsPrologueSpritesData
+	ld hl, BugsEpilogueSpritesData
 	ld a, [$dec2]
 	add $24
 	ld c, a
 	ld b, $8e
 	call Func_cdf
-	ld hl, LolaPrologueSpritesData
+	ld hl, LolaEpilogueSpritesData
 	ld a, [$dec2]
 	ld c, a
 	ld b, $8e
 	call Func_cdf
-	ld hl, BugsPrologueSpritesData
+	ld hl, BugsEpilogueSpritesData
 	call Func_cae
 .asm_b2d
 	ld a, [rLY]
@@ -1620,7 +1620,7 @@ RunIntroScene:
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
-	ld hl, $3def
+	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hli]
 	ld [rBGP], a
@@ -1628,7 +1628,7 @@ RunIntroScene:
 	ld [rOBP0], a
 	ld a, 112
 	ld [rSCY], a
-	ld hl, LolaPrologueSpritesData
+	ld hl, LolaEpilogueSpritesData
 	call Func_cae
 	ld hl, $deb7
 	ld a, [hli]
@@ -1974,7 +1974,7 @@ Func_d0f:
 	ld [hActiveSprites], a
 	ret
 
-BugsPrologueSpritesData:
+BugsEpilogueSpritesData:
 	dw $81C0
 	db $1C
 	db Bank(BugsMovementSprite0)
@@ -1989,7 +1989,7 @@ BugsPrologueSpritesData:
 	dw BugsMovementSprite18 + 1
 	dw BugsMovementSprite19 + 1
 
-LolaPrologueSpritesData:
+LolaEpilogueSpritesData:
 	dw $8300
 	db $30
 	db Bank(LolaMovementSprite0)
@@ -2560,8 +2560,8 @@ RunCrazyTownBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, Data_2de5
-	call Func_2d62
+	ld hl, PlayerEyePopAnimations
+	call InitPlayerAnimation
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -2696,8 +2696,8 @@ RunTreasureIslandBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, Data_2de5
-	call Func_2d62
+	ld hl, PlayerEyePopAnimations
+	call InitPlayerAnimation
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -2840,8 +2840,8 @@ RunTazZooBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, Data_2de5
-	call Func_2d62
+	ld hl, PlayerEyePopAnimations
+	call InitPlayerAnimation
 	ld a, 144
 	ld [rWY], a
 	ld a, 7
@@ -2942,8 +2942,8 @@ RunSpaceStationBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, Data_2de5
-	call Func_2d62
+	ld hl, PlayerEyePopAnimations
+	call InitPlayerAnimation
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -3039,8 +3039,8 @@ RunFuddForestBossScreen:
 	ld [$de81], a
 	ld a, $78
 	ld [$de84], a
-	ld hl, Data_2de5
-	call Func_2d62
+	ld hl, PlayerEyePopAnimations
+	call InitPlayerAnimation
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -3765,8 +3765,8 @@ asm_19f2:
 	ld [$ffc6], a
 	res 4, b
 	ld d, $20
-	ld hl, Data_2dbd
-	call Func_2d62
+	ld hl, PlayerDamagedAnimations
+	call InitPlayerAnimation
 .asm_1a15
 	ld a, $13
 	call PlaySoundEffectHome
@@ -3803,12 +3803,12 @@ Func_1a37:
 	cp 4
 	jr nz, .asm_1a55
 	res 5, b
-	ld hl, Data_2dc5
+	ld hl, LevelCompleteClapboardAnimations
 	jr .asm_1a58
 .asm_1a55
-	ld hl, Data_2dad
+	ld hl, PlayerFaceAwayAnimations
 .asm_1a58
-	call Func_2d62
+	call InitPlayerAnimation
 	ld hl, $406e
 	call Func_3e71
 	jp Func_19e9
@@ -3828,8 +3828,8 @@ Func_1a73:
 	ld [$ffb7], a
 	bit 4, b
 	jr nz, .asm_1a84
-	ld hl, Data_2dbd
-	call Func_2d62
+	ld hl, PlayerDamagedAnimations
+	call InitPlayerAnimation
 	jr .asm_1adf
 .asm_1a84
 	push bc
@@ -3846,8 +3846,8 @@ Func_1a73:
 	ld b, a
 	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesCameraOffset
-	ld hl, Data_2db9
-	call Func_2d62
+	ld hl, PlayerDeathAnimations
+	call InitPlayerAnimation
 	ld hl, $ffb8
 	ld a, [hFrameCounter]
 	rra
@@ -3941,8 +3941,8 @@ Func_1b2f:
 	bit 4, b
 	jr z, .asm_1b43
 	ld d, $01
-	ld hl, Data_2d89
-	jp Func_2d62
+	ld hl, PlayerCrouchingAnimations
+	jp InitPlayerAnimation
 .asm_1b43
 	res 0, d
 	ret
@@ -3989,18 +3989,18 @@ Func_1b46:
 	bit 2, d
 	ret nz
 	ld d, $04
-	ld hl, Data_2d8d
+	ld hl, PlayerRunningAnimations
 	ld a, [$ffb6]
 	and a
-	jp z, Func_2d62
-	ld hl, Data_2d91
-	jp Func_2d62
+	jp z, InitPlayerAnimation
+	ld hl, PlayerHabaneroAnimations
+	jp InitPlayerAnimation
 .asm_1b98
 	bit 3, d
 	ret nz
 	ld d, $08
-	ld hl, $2d95
-	jp Func_2d62
+	ld hl, PlayerPushingAnimations
+	jp InitPlayerAnimation
 .asm_1ba3
 	res 2, d
 	res 3, d
@@ -4024,7 +4024,7 @@ Func_1b46:
 	ret nz
 	bit 0, d
 	ret nz
-	ld hl, $78ec
+	ld hl, BugsSurfingAnimation
 	ld a, [hFrameCounter]
 	bit 5, a
 	jr z, .asm_1bd2
@@ -4083,8 +4083,8 @@ Func_1bdc:
 	cp $1c
 	jr c, .asm_1c30
 	jr nz, .asm_1c28
-	ld hl, Data_2da5
-	call Func_2d62
+	ld hl, PlayerHoverAnimations
+	call InitPlayerAnimation
 .asm_1c28
 	ld a, $f0
 	ld [$ffc6], a
@@ -4133,27 +4133,27 @@ Func_1bdc:
 	bit 7, d
 	ret nz
 	ld d, $80
-	ld hl, Data_2dc1
-	jp Func_2d62
+	ld hl, PlayerUmbrellaAnimations
+	jp InitPlayerAnimation
 .asm_1c7b
 	ld a, [$ffc6]
 	cp $38
 	jr c, .asm_1c89
 	ld d, $00
-	ld hl, Data_2db5
-	jp Func_2d62
+	ld hl, PlayerFallingAnimations
+	jp InitPlayerAnimation
 .asm_1c89
 	bit 6, d
 	ret nz
 	ld d, $40
-	ld hl, Data_2da1
-	jp Func_2d62
+	ld hl, PlayerJumpDownAnimations
+	jp InitPlayerAnimation
 .asm_1c94
 	bit 5, d
 	ret nz
 	ld d, $20
-	ld hl, Data_2d9d
-	jp Func_2d62
+	ld hl, PlayerJumpUpAnimations
+	jp InitPlayerAnimation
 
 Func_1c9f:
 	ld hl, $ffb4
@@ -4192,8 +4192,8 @@ Func_1c9f:
 	ld [hl], $0e
 	ld a, $01
 	call PlaySoundEffectHome
-	ld hl, Data_2da9
-	jp Func_2d62
+	ld hl, PlayerHammerAnimations
+	jp InitPlayerAnimation
 
 Func_1cdc:
 	ld a, [$ffb4]
@@ -4213,14 +4213,14 @@ Func_1cdc:
 	ld a, $3c
 	ld [$ffb1], a
 	ld d, $10
-	ld hl, Data_2d99
-	jp Func_2d62
+	ld hl, PlayerTransformationAnimations
+	jp InitPlayerAnimation
 .asm_1d00
 	bit 1, d
 	ret nz
 	ld d, $02
 	ld hl, PlayerIdleAnimations
-	jp Func_2d62
+	jp InitPlayerAnimation
 .asm_1d0b
 	res 1, d
 	ret
@@ -4339,8 +4339,8 @@ Func_1d61:
 	ld [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, Data_2dcd
-	call Func_2d62
+	ld hl, PlayerSkateboardingPushAnimations
+	call InitPlayerAnimation
 .asm_1dc6
 	jp Func_19e5
 
@@ -4357,10 +4357,10 @@ Func_1dc9:
 	ld a, $0c
 .asm_1ddb
 	ld [$ffc6], a
-	ld hl, $77c9
+	ld hl, BugsClimbingAnimation
 	bit 7, b
 	jr z, .asm_1de7
-	ld hl, $77ec
+	ld hl, LolaClimbingAnimation
 .asm_1de7
 	and a
 	ld a, $0c
@@ -4456,8 +4456,8 @@ Func_1e1e:
 	ld [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, Data_2dd5
-	call Func_2d62
+	ld hl, PlayerBarrelPaddleAnimations
+	call InitPlayerAnimation
 .asm_1e83
 	jp Func_19e5
 
@@ -4522,8 +4522,8 @@ Func_1e8c:
 	jr z, .asm_1ef2
 	ld a, $2a
 	ld [$ffc1], a
-	ld hl, Data_2de1
-	call Func_2d62
+	ld hl, PlayerDiggingEmergeAnimations
+	call InitPlayerAnimation
 .asm_1ef2
 	push bc
 	push de
@@ -4788,8 +4788,8 @@ Func_2045:
 	ld [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, Data_2df9
-	call Func_2d62
+	ld hl, PlayerBicyclePedalAnimations
+	call InitPlayerAnimation
 .asm_207e
 	jp Func_19e5
 
@@ -4890,8 +4890,8 @@ Func_2081:
 	ld a, [$ff8a]
 	cp $02
 	jr nz, .asm_2142
-	ld hl, Data_2e01
-	call Func_2d62
+	ld hl, PlayerTeleportInAnimations
+	call InitPlayerAnimation
 	jr .asm_2142
 .asm_2121
 	ld a, [$ffd6]
@@ -4995,10 +4995,10 @@ Func_2145:
 	jr z, .asm_21bf
 	inc [hl]
 .asm_21bf
-	ld hl, $7973
+	ld hl, BugsHovershipAnimation
 	bit 7, b
 	jr z, .asm_21c9
-	ld hl, $799a
+	ld hl, LolaHovershipAnimation
 .asm_21c9
 	ld a, [$ffeb]
 	and $7f
@@ -5190,8 +5190,8 @@ Func_22c9:
 	ld [$ffc6], a
 	ld a, $04
 	call PlaySoundEffectHome
-	ld hl, Data_2e0d
-	call Func_2d62
+	ld hl, PlayerHelicopterAnimations
+	call InitPlayerAnimation
 .asm_22f5
 	push bc
 	push de
@@ -5538,8 +5538,8 @@ HandlePlayerCollision:
 	ld a, [$ffad]
 	set 6, a
 	ld [$ffad], a
-	ld hl, Data_2ddd
-	call Func_2d62
+	ld hl, PlayerDiggingAnimations
+	call InitPlayerAnimation
 	ld a, $58
 	ld [$ffc0], a
 	sub a
@@ -7049,13 +7049,13 @@ DrawPlayerSprite:
 	ld [hActiveSprites], a
 	ret
 
-Func_2d62:
+InitPlayerAnimation:
 	ld a, [$ffad]
 	add a
-	jr nc, .asm_2d69
+	jr nc, .load
 	inc hl
 	inc hl
-.asm_2d69
+.load
 	ld a, [hli]
 	ld [$ffd6], a
 	ld a, [hl]
@@ -7066,7 +7066,7 @@ Func_2d62:
 
 Func_2d73:
 	ld hl, PlayerIdleAnimations
-	call Func_2d62
+	call InitPlayerAnimation
 	ld hl, $ffd8
 	ld a, $0d
 	ld [hli], a
@@ -7077,143 +7077,143 @@ Func_2d73:
 
 PlayerIdleAnimations:
 	dw BugsIdleAnimation
-	dw $7588
+	dw LolaIdleAnimation
 
-Data_2d89:
-	dw $75bb
-	dw $75c2
+PlayerCrouchingAnimations:
+	dw BugsCrouchingAnimation
+	dw LolaCrouchingAnimation
 
-Data_2d8d:
-	dw $75c9
-	dw $75ec
+PlayerRunningAnimations:
+	dw BugsRunningAnimation
+	dw LolaRunningAnimation
 
-Data_2d91:
-	dw $760f
-	dw $761e
+PlayerHabaneroAnimations:
+	dw BugsHabaneroAnimation
+	dw LolaHabaneroAnimation
 
-Data_2d95:
-	dw $762d
-	dw $7640
+PlayerPushingAnimations:
+	dw BugsPushingAnimation
+	dw LolaPushingAnimation
 
-Data_2d99:
-	dw $764b
-	dw $767e
+PlayerTransformationAnimations:
+	dw BugsTransformationAnimation
+	dw LolaTransformationAnimation
 
-Data_2d9d:
-	dw $76b1
-	dw $76bc
+PlayerJumpUpAnimations:
+	dw BugsJumpUpAnimation
+	dw LolaJumpUpAnimation
 
-Data_2da1:
-	dw $76c7
-	dw $76d2
+PlayerJumpDownAnimations:
+	dw BugsJumpDownAnimation
+	dw LolaJumpDownAnimation
 
-Data_2da5:
-	dw $76dd
-	dw $76f8
+PlayerHoverAnimations:
+	dw BugsHoverAnimation
+	dw LolaHoverAnimation
 
-Data_2da9:
-	dw $7713
-	dw $7722
+PlayerHammerAnimations:
+	dw BugsHammerAnimation
+	dw LolaHammerAnimation
 
-Data_2dad:
-	dw $7731
-	dw $7738
+PlayerFaceAwayAnimations:
+	dw BugsFaceAwayAnimation
+	dw LolaFaceAwayAnimation
 
-Data_2db1:
-	dw $773f
-	dw $774a
+PlayerFlyingAnimations:
+	dw BugsFlyingAnimation
+	dw LolaFlyingAnimation
 
-Data_2db5:
-	dw $7755
-	dw $775c
+PlayerFallingAnimations:
+	dw BugsFallingAnimation
+	dw LolaFallingAnimation
 
-Data_2db9:
-	dw $7763
-	dw $776a
+PlayerDeathAnimations:
+	dw BugsDeathAnimation
+	dw LolaDeathAnimation
 
-Data_2dbd:
-	dw $7771
-	dw $7778
+PlayerDamagedAnimations:
+	dw BugsDamagedAnimation
+	dw LolaDamagedAnimation
 
-Data_2dc1:
-	dw $777f
-	dw $777f
+PlayerUmbrellaAnimations:
+	dw LolaUmbrellaAnimation
+	dw LolaUmbrellaAnimation
 
-Data_2dc5:
-	dw $7792
-	dw $7792
+LevelCompleteClapboardAnimations:
+	dw LevelCompleteClapboardAnimation
+	dw LevelCompleteClapboardAnimation
 
-Data_2dc9:
-	dw $77ad
-	dw $77b4
+PlayerSkateboardingAnimations:
+	dw BugsSkateboardingAnimation
+	dw LolaSkateboardingAnimation
 
-Data_2dcd:
-	dw $77bb
-	dw $77c2
+PlayerSkateboardingPushAnimations:
+	dw BugsSkateboardingPushAnimation
+	dw LolaSkateboardingPushAnimation
 
-Data_2dd1:
-	dw $780f
-	dw $7816
+PlayerBarrelIdleAnimations:
+	dw BugsBarrelIdleAnimation
+	dw LolaBarrelIdleAnimation
 
-Data_2dd5:
-	dw $781d
-	dw $782c
+PlayerBarrelPaddleAnimations:
+	dw BugsBarrelPaddleAnimation
+	dw LolaBarrelPaddleAnimation
 
-Data_2dd9:
-	dw $783b
-	dw $783b
+PlayerInvisibleAnimations:
+	dw BugsInvisibleAnimation
+	dw BugsInvisibleAnimation
 
-Data_2ddd:
-	dw $7842
-	dw $7842
+PlayerDiggingAnimations:
+	dw BugsDiggingAnimation
+	dw BugsDiggingAnimation
 
-Data_2de1:
-	dw $7879
-	dw $7879
+PlayerDiggingEmergeAnimations:
+	dw BugsDiggingEmergeAnimation
+	dw BugsDiggingEmergeAnimation
 
-Data_2de5:
-	dw $7898
-	dw $7898
+PlayerEyePopAnimations:
+	dw BugsEyePopAnimation
+	dw BugsEyePopAnimation
 
-Data_2de9:
-	dw $78a3
-	dw $78a3
+PlayerJackhammerAnimations:
+	dw BugsJackhammerAnimation
+	dw BugsJackhammerAnimation
 
-Data_2ded:
-	dw $78b6
-	dw $78d1
+PlayerSwingingAnimations:
+	dw BugsSwingingAnimation
+	dw LolaSwingingAnimation
 
-Data_2df1:
-	dw $78f7
-	dw $78fe
+PlayerHippoAnimations:
+	dw BugsHippoAnimation
+	dw LolaHippoAnimation
 
-Data_2df5:
-	dw $7905
-	dw $7905
+PlayerBicycleStationaryAnimations:
+	dw BugsBicycleStationaryAnimation
+	dw BugsBicycleStationaryAnimation
 
-Data_2df9:
-	dw $790c
-	dw $790c
+PlayerBicyclePedalAnimations:
+	dw BugsBicyclePedalAnimation
+	dw BugsBicyclePedalAnimation
 
-Data_2dfd:
-	dw $792f
-	dw $793e
+PlayerTeleportOutAnimations:
+	dw BugsTeleportOutAnimation
+	dw LolaTeleportOutAnimation
 
-Data_2e01:
-	dw $794d
-	dw $7960
+PlayerTeleportInAnimations:
+	dw BugsTeleportInAnimation
+	dw LolaTeleportInAnimation
 
-Data_2e05:
-	dw $7973
-	dw $799a
+PlayerHovershipAnimations:
+	dw BugsHovershipAnimation
+	dw LolaHovershipAnimation
 
-Data_2e09:
-	dw $79c1
-	dw $79c1
+PlayerSpaceScooterAnimations:
+	dw BugsSpaceScooterAnimation
+	dw BugsSpaceScooterAnimation
 
-Data_2e0d:
-	dw $79d4
-	dw $79df
+PlayerHelicopterAnimations:
+	dw BugsHelicopterAnimation
+	dw LolaHelicopterAnimation
 
 Func_2e11:
 	call WaitHBlankStart
@@ -7785,7 +7785,7 @@ DrawHUDCarrotMeterRow:
 	and $03
 	ld e, a
 	ld d, $00
-	ld hl, $324e
+	ld hl, CarrotMeterSliceMasks
 	add hl, de
 	ld d, [hl]
 	ld a, b
@@ -8030,7 +8030,11 @@ ResetPlayerData:
 	ld [hScore + 1], a
 	ret
 
-INCBIN "baserom.gbc", $324e, $3252 - $324e
+CarrotMeterSliceMasks:
+	db %11111100
+	db %11110000
+	db %11000000
+	db %00000000
 
 LoadDynamicEntitySprites:
 	ld a, [hPaused]
@@ -10524,7 +10528,19 @@ Func_3ddc:
 	ld bc, $ff0c
 	jp Func_1759b
 
-INCBIN "baserom.gbc", $3def, $3dfb - $3def
+rBGPSettings:
+	db %00000000
+	db %00000000
+	db %00000000
+	db %01010100
+	db %01010000
+	db %01010100
+	db %10100100
+	db %10010000
+	db %10100100
+	db %11100100
+	db %11010000
+	db %11100100
 
 TickMusicEngineHome:
 	ld a, Bank(TickMusicEngine)
@@ -10596,14 +10612,16 @@ InitScreenMusic:
 	ld a, [hli]
 	ld b, a
 	push hl
-	ld a, $02
+	ld a, Bank(TickMusicEngine)
 	ld [MBC5RomBank], a
-	ld de, $3e6f
+	ld de, Func_3e6f
 	push de
 	push bc
 	ret
 
-INCBIN "baserom.gbc", $3e6f, $3e71 - $3e6f
+Func_3e6f:
+	pop hl
+	ret
 
 Func_3e71:
 	ld a, [wDisableMusic]
@@ -10611,14 +10629,19 @@ Func_3e71:
 	ret nz
 	push bc
 	push de
-	ld a, $02
+	ld a, Bank(TickMusicEngine)
 	ld [MBC5RomBank], a
-	ld bc, $3e83
+	ld bc, Func_3e83
 	push bc
 	push hl
 	ret
 
-INCBIN "baserom.gbc", $3e83, $3e8b - $3e83
+Func_3e83:
+	pop de
+	pop bc
+	ld a, $01
+	ld [MBC5RomBank], a
+	ret
 
 InitNextScreen:
 	sub a
@@ -10758,7 +10781,15 @@ StudioCameraAndArrowSprite:
 	sub_sprite $70, $06, 49, -50
 	sub_sprite $72, $06, 57, -50
 
-INCBIN "baserom.gbc", $40af, $40b6 - $40af
+; This is an unused function that disables collectibles when
+; in hard mnode. This is rather strange because a lot of
+; the game requires the player to collect carrots and powerups
+; to successfully advance in the various levels.
+HandleCollectibleEntityUnused:
+	ld a, [wDifficultySetting]
+	and a
+	jp nz, HandleCollectibleEntity.asm_423b
+	; fall through
 
 HandleCollectibleEntity:
 	ld a, [hli]
@@ -11045,8 +11076,8 @@ HandleCollectibleEntity:
 	ld [$ffb7], a
 	ld a, $03
 	ld [$ffb0], a
-	ld hl, Data_2db1
-	call Func_2d62
+	ld hl, PlayerFlyingAnimations
+	call InitPlayerAnimation
 	jr .asm_423b
 .collectClapboard0
 	ld bc, $8800
@@ -11872,8 +11903,8 @@ HandleSkateboardEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2dc9
-	call Func_2d62
+	ld hl, PlayerSkateboardingAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -13285,8 +13316,8 @@ HandleBarrelBoatEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2dd1
-	call Func_2d62
+	ld hl, PlayerBarrelIdleAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	add $08
@@ -13449,8 +13480,8 @@ HandleCannonEntity:
 	ld [$ffad], a
 	ld a, $0f
 	ld [$ffb0], a
-	ld hl, Data_2dd9
-	call Func_2d62
+	ld hl, PlayerInvisibleAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -14120,8 +14151,8 @@ HandleJackhammerEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2de9
-	call Func_2d62
+	ld hl, PlayerJackhammerAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -14377,8 +14408,8 @@ HandleFixedPathEntity:
 	ld [$ffad], a
 	ld a, $18
 	ld [$ffb0], a
-	ld hl, Data_2ded
-	call Func_2d62
+	ld hl, PlayerSwingingAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	sub $04
@@ -15652,8 +15683,8 @@ HandleHippoEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2df1
-	call Func_2d62
+	ld hl, PlayerHippoAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	add $18
@@ -16334,8 +16365,8 @@ HandleBicycleEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2df5
-	call Func_2d62
+	ld hl, PlayerBicycleStationaryAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -16561,8 +16592,8 @@ HandleBalloonEntity:
 	ld [$ffad], a
 	ld a, $18
 	ld [$ffb0], a
-	ld hl, Data_2ded
-	call Func_2d62
+	ld hl, PlayerSwingingAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	sub $04
@@ -17163,8 +17194,8 @@ HandleTeleporterEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2dfd
-	call Func_2d62
+	ld hl, PlayerTeleportOutAnimations
+	call InitPlayerAnimation
 	call Func_2326
 	ld a, $08
 	call PlaySoundEffectHome
@@ -18203,8 +18234,8 @@ HandleSpaceScooterEntity:
 	ld a, $bf
 	ld [$ffb7], a
 	push hl
-	ld hl, Data_2e09
-	call Func_2d62
+	ld hl, PlayerSpaceScooterAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -18626,8 +18657,8 @@ HandleHelicopterChairEntity:
 	ld [$ffbc], a
 	ld a, [hl]
 	ld [$ffbd], a
-	ld hl, Data_2e0d
-	call Func_2d62
+	ld hl, PlayerHelicopterAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -19792,8 +19823,8 @@ HandleLadderEntity:
 	ld [hl], $10
 	ld a, $18
 	ld [$ffb0], a
-	ld hl, Data_2ded
-	call Func_2d62
+	ld hl, PlayerSwingingAnimations
+	call InitPlayerAnimation
 	ld hl, hPlayerXPos
 	ld a, c
 	add $06
@@ -23863,7 +23894,7 @@ TryInitNextScreen_:
 	jp c, InitNextScreen
 .asm_17589
 	ld [hl], a
-	ld hl, $3def
+	ld hl, rBGPSettings
 	ld c, a
 	ld b, $00
 	add hl, bc
@@ -29436,175 +29467,955 @@ BugsIdleAnimation:
 .end
 	dbw 0, .frame1
 
-INCBIN "baserom.gbc", $3b588, $3b62d - $3b588
+LolaIdleAnimation:
+.frame0
+	db 210
+	dbw Bank(LolaMovementSprite0), LolaMovementSprite0 + 1
+.frame1
+	db 12
+	dbw Bank(LolaMovementSprite6), LolaMovementSprite6 + 1
+.frame2
+	db 12
+	dbw Bank(LolaMovementSprite7), LolaMovementSprite7 + 1
+.frame3
+	db 32
+	dbw Bank(LolaMovementSprite8), LolaMovementSprite8 + 1
+.frame4
+	db 32
+	dbw Bank(LolaMovementSprite9), LolaMovementSprite9 + 1
+.frame5
+	db 32
+	dbw Bank(LolaMovementSprite8), LolaMovementSprite8 + 1
+.frame6
+	db 32
+	dbw Bank(LolaMovementSprite9), LolaMovementSprite9 + 1
+.frame7
+	db 32
+	dbw Bank(LolaMovementSprite8), LolaMovementSprite8 + 1
+.frame8
+	db 32
+	dbw Bank(LolaMovementSprite9), LolaMovementSprite9 + 1
+.frame9
+	db 32
+	dbw Bank(LolaMovementSprite8), LolaMovementSprite8 + 1
+.frame10
+	db 12
+	dbw Bank(LolaMovementSprite7), LolaMovementSprite7 + 1
+.frame11
+	db 48
+	dbw Bank(LolaMovementSprite6), LolaMovementSprite6 + 1
+.end
+	dbw 0, .frame1
 
-Data_3b62d:
-	db $18
+BugsCrouchingAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite10), BugsMovementSprite10 + 1
+.end
+	dbw 0, .frame0
+
+LolaCrouchingAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaMovementSprite10), LolaMovementSprite10 + 1
+.end
+	dbw 0, .frame0
+
+BugsRunningAnimation:
+.frame0
+	db 6
+	dbw Bank(BugsMovementSprite12), BugsMovementSprite12 + 1
+.frame1
+	db 6
+	dbw Bank(BugsMovementSprite13), BugsMovementSprite13 + 1
+.frame2
+	db 6
+	dbw Bank(BugsMovementSprite14), BugsMovementSprite14 + 1
+.frame3
+	db 6
+	dbw Bank(BugsMovementSprite15), BugsMovementSprite15 + 1
+.frame4
+	db 6
+	dbw Bank(BugsMovementSprite16), BugsMovementSprite16 + 1
+.frame5
+	db 6
+	dbw Bank(BugsMovementSprite17), BugsMovementSprite17 + 1
+.frame6
+	db 6
+	dbw Bank(BugsMovementSprite18), BugsMovementSprite18 + 1
+.frame7
+	db 6
+	dbw Bank(BugsMovementSprite19), BugsMovementSprite19 + 1
+.end
+	dbw 0, .frame0
+
+LolaRunningAnimation:
+.frame0
+	db 6
+	dbw Bank(LolaMovementSprite12), LolaMovementSprite12 + 1
+.frame1
+	db 6
+	dbw Bank(LolaMovementSprite13), LolaMovementSprite13 + 1
+.frame2
+	db 6
+	dbw Bank(LolaMovementSprite14), LolaMovementSprite14 + 1
+.frame3
+	db 6
+	dbw Bank(LolaMovementSprite15), LolaMovementSprite15 + 1
+.frame4
+	db 6
+	dbw Bank(LolaMovementSprite16), LolaMovementSprite16 + 1
+.frame5
+	db 6
+	dbw Bank(LolaMovementSprite17), LolaMovementSprite17 + 1
+.frame6
+	db 6
+	dbw Bank(LolaMovementSprite18), LolaMovementSprite18 + 1
+.frame7
+	db 6
+	dbw Bank(LolaMovementSprite19), LolaMovementSprite19 + 1
+.end
+	dbw 0, .frame0
+
+BugsHabaneroAnimation:
+.frame0
+	db 6
+	dbw Bank(BugsMovementSprite46), BugsMovementSprite46 + 1
+.frame1
+	db 6
+	dbw Bank(BugsMovementSprite47), BugsMovementSprite47 + 1
+.frame2
+	db 6
+	dbw Bank(BugsMovementSprite48), BugsMovementSprite48 + 1
+.end
+	dbw 0, .frame0
+
+LolaHabaneroAnimation:
+.frame0
+	db 6
+	dbw Bank(LolaMovementSprite46), LolaMovementSprite46 + 1
+.frame1
+	db 6
+	dbw Bank(LolaMovementSprite47), LolaMovementSprite47 + 1
+.frame2
+	db 6
+	dbw Bank(LolaMovementSprite48), LolaMovementSprite48 + 1
+.end
+	dbw 0, .frame0
+
+BugsPushingAnimation:
+.frame0
+	db 24
 	dbw Bank(BugsPushingSprite7), BugsPushingSprite7 + 1
-	db $18
+.frame1
+	db 24
 	dbw Bank(BugsPushingSprite9), BugsPushingSprite9 + 1
-	db $18
+.frame2
+	db 24
 	dbw Bank(BugsPushingSprite11), BugsPushingSprite11 + 1
-	db $18
+.frame3
+	db 24
 	dbw Bank(BugsPushingSprite13), BugsPushingSprite13 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b63d, $3b640 - $3b63d
-
-Data_3b640:
-	db $20
+LolaPushingAnimation:
+.frame0
+	db 32
 	dbw Bank(LolaPushingSprite0), LolaPushingSprite0 + 1
-	db $20
+.frame1
+	db 32
 	dbw Bank(LolaPushingSprite1), LolaPushingSprite1 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b648, $3b77f - $3b648
+BugsTransformationAnimation:
+.frame0
+	db 4
+	dbw Bank(BugsMovementSprite39), BugsMovementSprite39 + 1
+.frame1
+	db 4
+	dbw Bank(BugsMovementSprite38), BugsMovementSprite38 + 1
+.frame2
+	db 4
+	dbw Bank(BugsMovementSprite37), BugsMovementSprite37 + 1
+.frame3
+	db 4
+	dbw Bank(BugsMovementSprite36), BugsMovementSprite36 + 1
+.frame4
+	db 4
+	dbw Bank(BugsMovementSprite35), BugsMovementSprite35 + 1
+.frame5
+	db 8
+	dbw Bank(BugsMovementSprite33), BugsMovementSprite33 + 1
+.frame6
+	db 8
+	dbw Bank(LolaMovementSprite33), LolaMovementSprite33 + 1
+.frame7
+	db 4
+	dbw Bank(LolaMovementSprite35), LolaMovementSprite35 + 1
+.frame8
+	db 4
+	dbw Bank(LolaMovementSprite36), LolaMovementSprite36 + 1
+.frame9
+	db 4
+	dbw Bank(LolaMovementSprite37), LolaMovementSprite37 + 1
+.frame10
+	db 4
+	dbw Bank(LolaMovementSprite38), LolaMovementSprite38 + 1
+.frame11
+	db 4
+	dbw Bank(LolaMovementSprite39), LolaMovementSprite39 + 1
+.end
+	dbw 0, LolaIdleAnimation
 
-Data_3b77f:
-	db $08
+LolaTransformationAnimation:
+.frame0
+	db 4
+	dbw Bank(LolaMovementSprite39), LolaMovementSprite39 + 1
+.frame1
+	db 4
+	dbw Bank(LolaMovementSprite38), LolaMovementSprite38 + 1
+.frame2
+	db 4
+	dbw Bank(LolaMovementSprite37), LolaMovementSprite37 + 1
+.frame3
+	db 4
+	dbw Bank(LolaMovementSprite36), LolaMovementSprite36 + 1
+.frame4
+	db 4
+	dbw Bank(LolaMovementSprite35), LolaMovementSprite35 + 1
+.frame5
+	db 8
+	dbw Bank(LolaMovementSprite33), LolaMovementSprite33 + 1
+.frame6
+	db 8
+	dbw Bank(BugsMovementSprite33), BugsMovementSprite33 + 1
+.frame7
+	db 4
+	dbw Bank(BugsMovementSprite35), BugsMovementSprite35 + 1
+.frame8
+	db 4
+	dbw Bank(BugsMovementSprite36), BugsMovementSprite36 + 1
+.frame9
+	db 4
+	dbw Bank(BugsMovementSprite37), BugsMovementSprite37 + 1
+.frame10
+	db 4
+	dbw Bank(BugsMovementSprite38), BugsMovementSprite38 + 1
+.frame11
+	db 4
+	dbw Bank(BugsMovementSprite39), BugsMovementSprite39 + 1
+.end
+	dbw 0, BugsIdleAnimation
+
+BugsJumpUpAnimation:
+.frame0
+	db 14
+	dbw Bank(BugsMovementSprite1), BugsMovementSprite1 + 1
+.frame1
+	db 255
+	dbw Bank(BugsMovementSprite2), BugsMovementSprite2 + 1
+.end
+	dbw 0, .frame1
+
+LolaJumpUpAnimation:
+.frame0
+	db 14
+	dbw Bank(LolaMovementSprite1), LolaMovementSprite1 + 1
+.frame1
+	db 255
+	dbw Bank(LolaMovementSprite2), LolaMovementSprite2 + 1
+.end
+	dbw 0, .frame1
+
+BugsJumpDownAnimation:
+.frame0
+	db 14
+	dbw Bank(BugsMovementSprite3), BugsMovementSprite3 + 1
+.frame1
+	db 255
+	dbw Bank(BugsMovementSprite4), BugsMovementSprite4 + 1
+.end
+	dbw 0, .frame1
+
+LolaJumpDownAnimation:
+.frame0
+	db 14
+	dbw Bank(LolaMovementSprite3), LolaMovementSprite3 + 1
+.frame1
+	db 255
+	dbw Bank(LolaMovementSprite4), LolaMovementSprite4 + 1
+.end
+	dbw 0, .frame1
+
+BugsHoverAnimation:
+.frame0
+	db 4
+	dbw Bank(BugsMovementSprite40), BugsMovementSprite40 + 1
+.frame1
+	db 4
+	dbw Bank(BugsMovementSprite41), BugsMovementSprite41 + 1
+.frame2
+	db 4
+	dbw Bank(BugsMovementSprite42), BugsMovementSprite42 + 1
+.frame3
+	db 4
+	dbw Bank(BugsMovementSprite43), BugsMovementSprite43 + 1
+.frame4
+	db 4
+	dbw Bank(BugsMovementSprite44), BugsMovementSprite44 + 1
+.frame5
+	db 4
+	dbw Bank(BugsMovementSprite45), BugsMovementSprite45 + 1
+.end
+	dbw 0, .frame0
+
+LolaHoverAnimation:
+.frame0
+	db 4
+	dbw Bank(LolaMovementSprite40), LolaMovementSprite40 + 1
+.frame1
+	db 4
+	dbw Bank(LolaMovementSprite41), LolaMovementSprite41 + 1
+.frame2
+	db 4
+	dbw Bank(LolaMovementSprite42), LolaMovementSprite42 + 1
+.frame3
+	db 4
+	dbw Bank(LolaMovementSprite43), LolaMovementSprite43 + 1
+.frame4
+	db 4
+	dbw Bank(LolaMovementSprite44), LolaMovementSprite44 + 1
+.frame5
+	db 4
+	dbw Bank(LolaMovementSprite45), LolaMovementSprite45 + 1
+.end
+	dbw 0, .frame0
+
+BugsHammerAnimation:
+.frame0
+	db 6
+	dbw Bank(BugsMovementSprite20), BugsMovementSprite20 + 1
+.frame1
+	db 4
+	dbw Bank(BugsMovementSprite21), BugsMovementSprite21 + 1
+.frame2
+	db 255
+	dbw Bank(BugsMovementSprite22), BugsMovementSprite22 + 1
+.end
+	dbw 0, .frame2
+
+LolaHammerAnimation:
+.frame0
+	db 6
+	dbw Bank(LolaMovementSprite20), LolaMovementSprite20 + 1
+.frame1
+	db 4
+	dbw Bank(LolaMovementSprite21), LolaMovementSprite21 + 1
+.frame2
+	db 255
+	dbw Bank(LolaMovementSprite22), LolaMovementSprite22 + 1
+.end
+	dbw 0, .frame2
+
+BugsFaceAwayAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite55), BugsMovementSprite55 + 1
+.end
+	dbw 0, .frame0
+
+LolaFaceAwayAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaMovementSprite55), LolaMovementSprite55 + 1
+.end
+	dbw 0, .frame0
+
+BugsFlyingAnimation:
+.frame0
+	db 8
+	dbw Bank(BugsMovementSprite50), BugsMovementSprite50 + 1
+.frame1
+	db 8
+	dbw Bank(BugsMovementSprite52), BugsMovementSprite52 + 1
+.end
+	dbw 0, .frame0
+
+LolaFlyingAnimation:
+.frame0
+	db 8
+	dbw Bank(LolaMovementSprite50), LolaMovementSprite50 + 1
+.frame1
+	db 8
+	dbw Bank(LolaMovementSprite52), LolaMovementSprite52 + 1
+.end
+	dbw 0, .frame0
+
+BugsFallingAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite5), BugsMovementSprite5 + 1
+.end
+	dbw 0, .frame0
+
+LolaFallingAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaMovementSprite5), LolaMovementSprite5 + 1
+.end
+	dbw 0, .frame0
+
+BugsDeathAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite11), BugsMovementSprite11 + 1
+.end
+	dbw 0, .frame0
+
+LolaDeathAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaMovementSprite11), LolaMovementSprite11 + 1
+.end
+	dbw 0, .frame0
+
+BugsDamagedAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite56), BugsMovementSprite56 + 1
+.end
+	dbw 0, .frame0
+
+LolaDamagedAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaMovementSprite56), LolaMovementSprite56 + 1
+.end
+	dbw 0, .frame0
+
+LolaUmbrellaAnimation:
+.frame0
+	db 8
 	dbw Bank(LolaUmbrellaSprite1), LolaUmbrellaSprite1 + 1
-	db $08
+.frame1
+	db 8
 	dbw Bank(LolaUmbrellaSprite2), LolaUmbrellaSprite2 + 1
-	db $10
+.frame2
+	db 16
 	dbw Bank(LolaUmbrellaSprite2), LolaUmbrellaSprite2 + 1
-	db $10
+.frame3
+	db 16
 	dbw Bank(LolaUmbrellaSprite3), LolaUmbrellaSprite3 + 1
+.end
+	dbw 0, .frame2
 
-INCBIN "baserom.gbc", $3b78f, $3b792 - $3b78f
-
-Data_3b792:
-	db $0C
+LevelCompleteClapboardAnimation:
+.frame0
+	db 12
 	dbw Bank(LevelCompleteClapboardSprite0), LevelCompleteClapboardSprite0 + 1
-	db $0C
+.frame1
+	db 12
 	dbw Bank(LevelCompleteClapboardSprite1), LevelCompleteClapboardSprite1 + 1
-	db $0C
+.frame2
+	db 12
 	dbw Bank(LevelCompleteClapboardSprite2), LevelCompleteClapboardSprite2 + 1
-	db $0C
+.frame3
+	db 12
 	dbw Bank(LevelCompleteClapboardSprite3), LevelCompleteClapboardSprite3 + 1
-	db $18
+.frame4
+	db 24
 	dbw Bank(LevelCompleteClapboardSprite4), LevelCompleteClapboardSprite4 + 1
-	db $FF
+.frame5
+	db 255
 	dbw Bank(LevelCompleteClapboardSprite5), LevelCompleteClapboardSprite5 + 1
+.end
+	dbw 0, .frame5
 
-INCBIN "baserom.gbc", $3b7aa, $3b7ad - $3b7aa
-
-Data_3b7ad:
-	db $FF
+BugsSkateboardingAnimation:
+.frame0
+	db 255
 	dbw Bank(BugsSkateboardingSprite0), BugsSkateboardingSprite0 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b7b1, $3b7b4 - $3b7b1
-
-Data_3b7b4:
-	db $FF
+LolaSkateboardingAnimation:
+.frame0
+	db 255
 	dbw Bank(LolaSkateboardingSprite1), LolaSkateboardingSprite1 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b7b8, $3b7bb - $3b7b8
-
-Data_3b7bb:
-	db $06
+BugsSkateboardingPushAnimation:
+.frame0
+	db 6
 	dbw Bank(BugsSkateboardingSprite1), BugsSkateboardingSprite1 + 1
+.end
+	dbw 0, BugsSkateboardingAnimation
 
-INCBIN "baserom.gbc", $3b7bf, $3b7c2 - $3b7bf
-
-Data_3b7c2:
+LolaSkateboardingPushAnimation:
+.frame0
 	db $06
 	dbw Bank(LolaSkateboardingSprite2), LolaSkateboardingSprite2 + 1
+.end
+	dbw 0, LolaSkateboardingAnimation
 
-INCBIN "baserom.gbc", $3b7c6, $3b81d - $3b7c6
+BugsClimbingAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite30), BugsMovementSprite30 + 1
+.frame1
+	db 255
+	dbw Bank(BugsMovementSprite29), BugsMovementSprite29 + 1
+.frame2
+	db 255
+	dbw Bank(BugsMovementSprite28), BugsMovementSprite28 + 1
+.frame3
+	db 255
+	dbw Bank(BugsMovementSprite27), BugsMovementSprite27 + 1
+.frame4
+	db 255
+	dbw Bank(BugsMovementSprite27), BugsMovementSprite27 + 1
+.frame5
+	db 255
+	dbw Bank(BugsMovementSprite32), BugsMovementSprite32 + 1
+.frame6
+	db 255
+	dbw Bank(BugsMovementSprite31), BugsMovementSprite31 + 1
+.frame7
+	db 255
+	dbw Bank(BugsMovementSprite30), BugsMovementSprite30 + 1
+.end
+	dbw 0, .frame0
 
-Data_3b81d:
-	db $06
-	dbw Bank(BugsBarrelSprite0), BugsBarrelSprite0 + 1
-	db $06
+LolaClimbingAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaMovementSprite30), LolaMovementSprite30 + 1
+.frame1
+	db 255
+	dbw Bank(LolaMovementSprite29), LolaMovementSprite29 + 1
+.frame2
+	db 255
+	dbw Bank(LolaMovementSprite28), LolaMovementSprite28 + 1
+.frame3
+	db 255
+	dbw Bank(LolaMovementSprite27), LolaMovementSprite27 + 1
+.frame4
+	db 255
+	dbw Bank(LolaMovementSprite27), LolaMovementSprite27 + 1
+.frame5
+	db 255
+	dbw Bank(LolaMovementSprite32), LolaMovementSprite32 + 1
+.frame6
+	db 255
+	dbw Bank(LolaMovementSprite31), LolaMovementSprite31 + 1
+.frame7
+	db 255
+	dbw Bank(LolaMovementSprite30), LolaMovementSprite30 + 1
+.end
+	dbw 0, .frame0
+
+BugsBarrelIdleAnimation:
+.frame0
+	db 255
 	dbw Bank(BugsBarrelSprite1), BugsBarrelSprite1 + 1
-	db $06
-	dbw Bank(BugsBarrelSprite2), BugsBarrelSprite2 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b829, $3b82c - $3b829
-
-Data_3b82c:
-	db $06
-	dbw Bank(LolaBarrelSprite0), LolaBarrelSprite0 + 1
-	db $06
+LolaBarrelIdleAnimation:
+.frame0
+	db 255
 	dbw Bank(LolaBarrelSprite1), LolaBarrelSprite1 + 1
-	db $06
+.end
+	dbw 0, .frame0
+
+BugsBarrelPaddleAnimation:
+.frame0
+	db 6
+	dbw Bank(BugsBarrelSprite0), BugsBarrelSprite0 + 1
+.frame1
+	db 6
+	dbw Bank(BugsBarrelSprite1), BugsBarrelSprite1 + 1
+.frame2
+	db 6
+	dbw Bank(BugsBarrelSprite2), BugsBarrelSprite2 + 1
+.end
+	dbw 0, BugsBarrelIdleAnimation
+
+LolaBarrelPaddleAnimation:
+.frame0
+	db 6
+	dbw Bank(LolaBarrelSprite0), LolaBarrelSprite0 + 1
+.frame1
+	db 6
+	dbw Bank(LolaBarrelSprite1), LolaBarrelSprite1 + 1
+.frame2
+	db 6
 	dbw Bank(LolaBarrelSprite2), LolaBarrelSprite2 + 1
+.end
+	dbw 0, LolaBarrelIdleAnimation
 
-INCBIN "baserom.gbc", $3b838, $3b846 - $3b838
+BugsInvisibleAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsMovementSprite57), BugsMovementSprite57 + 1
+.end
+	dbw 0, .frame0
 
-Data_3b846:
-	db $08
+BugsDiggingAnimation:
+.frame0
+	db 8
+	dbw Bank(BugsMovementSprite10), BugsMovementSprite10 + 1
+.frame1
+	db 8
 	dbw Bank(BugsDiggingSprite0), BugsDiggingSprite0 + 1
-	db $08
+.frame2
+	db 8
 	dbw Bank(BugsDiggingSprite1), BugsDiggingSprite1 + 1
-	db $08
+.frame3
+	db 8
 	dbw Bank(BugsDiggingSprite0), BugsDiggingSprite0 + 1
-	db $08
+.frame4
+	db 8
 	dbw Bank(BugsDiggingSprite1), BugsDiggingSprite1 + 1
-	db $08
+.frame5
+	db 8
 	dbw Bank(BugsDiggingSprite2), BugsDiggingSprite2 + 1
-	db $08
+.frame6
+	db 8
 	dbw Bank(BugsDiggingSprite3), BugsDiggingSprite3 + 1
-	db $08
+.frame7
+	db 8
 	dbw Bank(BugsDiggingSprite4), BugsDiggingSprite4 + 1
-	db $08
+.frame8
+	db 8
 	dbw Bank(BugsDiggingSprite5), BugsDiggingSprite5 + 1
-	db $08
+.frame9
+	db 8
 	dbw Bank(BugsDiggingSprite6), BugsDiggingSprite6 + 1
-	db $08
+.frame10
+	db 8
 	dbw Bank(BugsDiggingSprite7), BugsDiggingSprite7 + 1
+.frame11
+	db 255
+	dbw Bank(BugsDiggingSprite6), BugsDiggingSprite6 + 1
+.frame12
+	db 255
+	dbw Bank(BugsDiggingSprite7), BugsDiggingSprite7 + 1
+.end
+	dbw 0, .frame11
 
-INCBIN "baserom.gbc", $3b86e, $3b8a3 - $3b86e
+BugsDiggingEmergeAnimation:
+.frame0
+	db 6
+	dbw Bank(BugsMovementSprite33), BugsMovementSprite33 + 1
+.frame1
+	db 6
+	dbw Bank(BugsMovementSprite33), BugsMovementSprite33 + 1
+.frame2
+	db 6
+	dbw Bank(BugsMovementSprite35), BugsMovementSprite35 + 1
+.frame3
+	db 6
+	dbw Bank(BugsMovementSprite36), BugsMovementSprite36 + 1
+.frame4
+	db 6
+	dbw Bank(BugsMovementSprite37), BugsMovementSprite37 + 1
+.frame5
+	db 6
+	dbw Bank(BugsMovementSprite38), BugsMovementSprite38 + 1
+.frame6
+	db 6
+	dbw Bank(BugsMovementSprite39), BugsMovementSprite39 + 1
+.end
+	dbw 0, BugsIdleAnimation
 
-Data_3b8a3:
-	db $04
+BugsEyePopAnimation:
+.frame0
+	db 60
+	dbw Bank(BugsMovementSprite0), BugsMovementSprite0 + 1
+.frame1
+	db 60
+	dbw Bank(BugsMovementSprite54), BugsMovementSprite54 + 1
+.end
+	dbw 0, BugsIdleAnimation
+
+BugsJackhammerAnimation:
+.frame0
+	db 4
 	dbw Bank(BugsJackhammerSprite1), BugsJackhammerSprite1 + 1
-	db $04
+.frame1
+	db 4
 	dbw Bank(BugsJackhammerSprite2), BugsJackhammerSprite2 + 1
-	db $04
+.frame2
+	db 4
 	dbw Bank(BugsJackhammerSprite3), BugsJackhammerSprite3 + 1
-	db $04
+.frame3
+	db 4
 	dbw Bank(BugsJackhammerSprite2), BugsJackhammerSprite2 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b8b3, $3b8ec - $3b8b3
+BugsSwingingAnimation:
+.frame0
+	db 16
+	dbw Bank(BugsMovementSprite25), BugsMovementSprite25 + 1
+.frame1
+	db 16
+	dbw Bank(BugsMovementSprite26), BugsMovementSprite26 + 1
+.frame2
+	db 16
+	dbw Bank(BugsMovementSprite25), BugsMovementSprite25 + 1
+.frame3
+	db 16
+	dbw Bank(BugsMovementSprite24), BugsMovementSprite24 + 1
+.frame4
+	db 16
+	dbw Bank(BugsMovementSprite23), BugsMovementSprite23 + 1
+.frame5
+	db 16
+	dbw Bank(BugsMovementSprite24), BugsMovementSprite24 + 1
+.end
+	dbw 0, .frame0
 
-Data_3b8ec:
-	db $FF
+LolaSwingingAnimation:
+.frame0
+	db 16
+	dbw Bank(LolaMovementSprite25), LolaMovementSprite25 + 1
+.frame1
+	db 16
+	dbw Bank(LolaMovementSprite26), LolaMovementSprite26 + 1
+.frame2
+	db 16
+	dbw Bank(LolaMovementSprite25), LolaMovementSprite25 + 1
+.frame3
+	db 16
+	dbw Bank(LolaMovementSprite24), LolaMovementSprite24 + 1
+.frame4
+	db 16
+	dbw Bank(LolaMovementSprite23), LolaMovementSprite23 + 1
+.frame5
+	db 16
+	dbw Bank(LolaMovementSprite24), LolaMovementSprite24 + 1
+.end
+	dbw 0, .frame0
+
+BugsSurfingAnimation:
+.frame0
+	db 255
 	dbw Bank(BugsSurfingSprite0), BugsSurfingSprite0 + 1
-	db $FF
+.frame1
+	db 255
 	dbw Bank(BugsSurfingSprite1), BugsSurfingSprite1 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b8f4, $3b8f7 - $3b8f4
-
-Data_3b8f7:
-	db $FF
+BugsHippoAnimation:
+.frame0
+	db 255
 	dbw Bank(BugsHippoSprite0), BugsHippoSprite0 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b8fb, $3b8fe - $3b8fb
-
-Data_3b8fe:
-	db $FF
+LolaHippoAnimation:
+.frame0
+	db 255
 	dbw Bank(LolaHippoSprite1), LolaHippoSprite1 + 1
+.end
+	dbw 0, .frame0
 
-INCBIN "baserom.gbc", $3b902, $3b90c - $3b902
+BugsBicycleStationaryAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsBikingSprite1), BugsBikingSprite1 + 1
+.end
+	dbw 0, .frame0
 
-Data_3b90c:
-	db $06
+BugsBicyclePedalAnimation:
+.frame0
+	db 6
 	dbw Bank(BugsBikingSprite3), BugsBikingSprite3 + 1
-	db $06
+.frame1
+	db 6
 	dbw Bank(BugsBikingSprite4), BugsBikingSprite4 + 1
-	db $06
+.frame2
+	db 6
 	dbw Bank(BugsBikingSprite3), BugsBikingSprite3 + 1
-	db $06
+.frame3
+	db 6
 	dbw Bank(BugsBikingSprite1), BugsBikingSprite1 + 1
-	db $06
+.frame4
+	db 6
 	dbw Bank(BugsBikingSprite3), BugsBikingSprite3 + 1
-	db $06
+.frame5
+	db 6
 	dbw Bank(BugsBikingSprite1), BugsBikingSprite1 + 1
-	db $06
+.frame6
+	db 6
 	dbw Bank(BugsBikingSprite3), BugsBikingSprite3 + 1
-	db $06
+.frame7
+	db 6
 	dbw Bank(BugsBikingSprite1), BugsBikingSprite1 + 1
+.end
+	dbw 0, BugsBicycleStationaryAnimation
 
-INCBIN "baserom.gbc", $3b92c, $3b9ea - $3b92c
+BugsTeleportOutAnimation:
+.frame0
+	db 16
+	dbw Bank(BugsTeleportSprite1), BugsTeleportSprite1 + 1
+.frame1
+	db 8
+	dbw Bank(BugsTeleportSprite2), BugsTeleportSprite2 + 1
+.frame2
+	db 16
+	dbw Bank(BugsTeleportSprite3), BugsTeleportSprite3 + 1
+.end
+	dbw 0, BugsInvisibleAnimation
+
+LolaTeleportOutAnimation:
+.frame0
+	db 16
+	dbw Bank(LolaTeleportSprite2), LolaTeleportSprite2 + 1
+.frame1
+	db 8
+	dbw Bank(LolaTeleportSprite3), LolaTeleportSprite3 + 1
+.frame2
+	db 16
+	dbw Bank(LolaTeleportSprite4), LolaTeleportSprite4 + 1
+.end
+	dbw 0, BugsInvisibleAnimation
+
+BugsTeleportInAnimation:
+.frame0
+	db 16
+	dbw Bank(BugsTeleportSprite3), BugsTeleportSprite3 + 1
+.frame1
+	db 8
+	dbw Bank(BugsTeleportSprite2), BugsTeleportSprite2 + 1
+.frame2
+	db 16
+	dbw Bank(BugsTeleportSprite1), BugsTeleportSprite1 + 1
+.frame3
+	db 255
+	dbw Bank(BugsMovementSprite0), BugsMovementSprite0 + 1
+.end
+	dbw 0, .frame3
+
+LolaTeleportInAnimation:
+.frame0
+	db 16
+	dbw Bank(LolaTeleportSprite4), LolaTeleportSprite4 + 1
+.frame1
+	db 8
+	dbw Bank(LolaTeleportSprite3), LolaTeleportSprite3 + 1
+.frame2
+	db 16
+	dbw Bank(LolaTeleportSprite2), LolaTeleportSprite2 + 1
+.frame3
+	db 255
+	dbw Bank(LolaMovementSprite0), LolaMovementSprite0 + 1
+.end
+	dbw 0, .frame3
+
+BugsHovershipAnimation:
+.frame0
+	db 255
+	dbw Bank(BugsHovershipSprite0), BugsHovershipSprite0 + 1
+.frame1
+	db 255
+	dbw Bank(BugsHovershipSprite0), BugsHovershipSprite0 + 1
+.frame2
+	db 255
+	dbw Bank(BugsHovershipSprite2), BugsHovershipSprite2 + 1
+.frame3
+	db 255
+	dbw Bank(BugsHovershipSprite2), BugsHovershipSprite2 + 1
+.frame4
+	db 255
+	dbw Bank(BugsHovershipSprite4), BugsHovershipSprite4 + 1
+.frame5
+	db 255
+	dbw Bank(BugsHovershipSprite2), BugsHovershipSprite2 + 1
+.frame6
+	db 255
+	dbw Bank(BugsHovershipSprite2), BugsHovershipSprite2 + 1
+.frame7
+	db 255
+	dbw Bank(BugsHovershipSprite0), BugsHovershipSprite0 + 1
+.frame8
+	db 255
+	dbw Bank(BugsHovershipSprite0), BugsHovershipSprite0 + 1
+.end
+	dbw 0, .frame0
+
+LolaHovershipAnimation:
+.frame0
+	db 255
+	dbw Bank(LolaHovershipSprite0), LolaHovershipSprite0 + 1
+.frame1
+	db 255
+	dbw Bank(LolaHovershipSprite0), LolaHovershipSprite0 + 1
+.frame2
+	db 255
+	dbw Bank(LolaHovershipSprite2), LolaHovershipSprite2 + 1
+.frame3
+	db 255
+	dbw Bank(LolaHovershipSprite2), LolaHovershipSprite2 + 1
+.frame4
+	db 255
+	dbw Bank(LolaHovershipSprite4), LolaHovershipSprite4 + 1
+.frame5
+	db 255
+	dbw Bank(LolaHovershipSprite2), LolaHovershipSprite2 + 1
+.frame6
+	db 255
+	dbw Bank(LolaHovershipSprite2), LolaHovershipSprite2 + 1
+.frame7
+	db 255
+	dbw Bank(LolaHovershipSprite0), LolaHovershipSprite0 + 1
+.frame8
+	db 255
+	dbw Bank(LolaHovershipSprite0), LolaHovershipSprite0 + 1
+.end
+	dbw 0, .frame0
+
+BugsSpaceScooterAnimation:
+.frame0
+	db 8
+	dbw Bank(BugsSpaceScooterSprite1), BugsSpaceScooterSprite1 + 1
+.frame1
+	db 8
+	dbw Bank(BugsSpaceScooterSprite2), BugsSpaceScooterSprite2 + 1
+.frame2
+	db 8
+	dbw Bank(BugsSpaceScooterSprite3), BugsSpaceScooterSprite3 + 1
+.frame3
+	db 8
+	dbw Bank(BugsSpaceScooterSprite2), BugsSpaceScooterSprite2 + 1
+.end
+	dbw 0, .frame0
+
+BugsHelicopterAnimation:
+.frame0
+	db 8
+	dbw Bank(PlayerHelicopterSprite0), PlayerHelicopterSprite0 + 1
+.frame1
+	db 255
+	dbw Bank(PlayerHelicopterSprite2), PlayerHelicopterSprite2 + 1
+.end
+	dbw 0, .frame1
+
+LolaHelicopterAnimation:
+.frame0
+	db 8
+	dbw Bank(PlayerHelicopterSprite1), PlayerHelicopterSprite1 + 1
+.frame1
+	db 255
+	dbw Bank(PlayerHelicopterSprite3), PlayerHelicopterSprite3 + 1
+.end
+	dbw 0, .frame1
 
 TreasureIslandBossWaterLogTiles:
 	INCBIN "gfx/treasure_island/boss_water_log.2bpp.lz"
