@@ -76,8 +76,9 @@ HovershipSmokeBallSprite1:
 SECTION "hblank", ROM0 [$48]
 	reti
 
-	; data related to boss stages? See screendata entries
-	db $02, $C0, $FF, $A0, $FF, $FF, $FF
+FuddForestBossBgScrollSpeeds:
+	db 2
+	dw -64, -96
 
 SECTION "timer",  ROM0 [$50]
 	reti
@@ -89,16 +90,18 @@ HovershipSmokeBallSprite0:
 SECTION "serial", ROM0 [$58]
 	reti
 
-	; data related to boss stages? See screendata entries
-	db $02, $20, $00, $40, $00, $FF, $FF
+TazZooBossBgScrollSpeeds:
+	db 2
+	dw 32, 64
 
 SECTION "joypad", ROM0 [$60]
 	reti
 
 SECTION "Home", ROM0 [$61]
 
-	; data related to boss stages? See screendata entries
-	db $03, $C0, $FF, $B0, $FF, $A0, $FF
+CrazyTownBossBgScrollSpeeds:
+	db 3
+	dw -64, -80, -96
 
 ; Waits until the VBlank period is entered.
 WaitVBlank:
@@ -6899,7 +6902,13 @@ Func_2c73:
 	jr nz, .asm_2c87
 	ret
 
-INCBIN "baserom.gbc", $2c8d, $2c9f - $2c8d
+TitlescreenBgScrollSpeeds:
+	db 4
+	dw 64, 84, 106, 128
+
+TreasureIslandBossBgScrollSpeeds:
+	db 4
+	dw -64, -80, -96, -128
 
 DrawPlayerSprite:
 	ldh a, [hPaused]
@@ -27067,8 +27076,7 @@ ScreenData_Titlescreen:
 	db $ff
 	dw RunTitlescreen
 	dw Func_8068
-
-INCBIN "baserom.gbc", $1b192, $1b194 - $1b192
+	dw TitlescreenBgScrollSpeeds
 
 ScreenData_IntroScene:
 	compressed_data FarmSceneTiles, $8CB0
@@ -27351,7 +27359,7 @@ ScreenData_CrazyTownBoss:
 	dw Func_807a
 	dw $5C3B ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $0061
+	dw CrazyTownBossBgScrollSpeeds
 
 ScreenData_TreasureIslandBoss:
 	compressed_data TreasureIslandBossWaterLogTiles, $9680
@@ -27377,7 +27385,7 @@ ScreenData_TreasureIslandBoss:
 	dw Func_807a
 	dw $5CB3 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $2C96
+	dw TreasureIslandBossBgScrollSpeeds
 
 ScreenData_TazZoo1:
 	compressed_data TazZooLevelTiles, $8B20
@@ -27445,7 +27453,7 @@ ScreenData_TazZooBoss:
 	dw Func_807a
 	dw $5CF5 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $0059
+	dw TazZooBossBgScrollSpeeds
 
 ScreenData_SpaceStation1:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -27574,7 +27582,7 @@ ScreenData_FuddForestBoss:
 	dw Func_807a
 	dw $5C00 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $0049
+	dw FuddForestBossBgScrollSpeeds
 
 ScreenData_Password:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -27845,7 +27853,7 @@ ScreenDataGBC_CrazyTownBoss:
 	dw Func_807a
 	dw $5C3B ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $0061
+	dw CrazyTownBossBgScrollSpeeds
 
 ScreenDataGBC_TazZoo1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -27915,7 +27923,7 @@ ScreenDataGBC_TreasureIslandBoss:
 	dw Func_807a
 	dw $5CD4 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $2C96
+	dw TreasureIslandBossBgScrollSpeeds
 
 ScreenDataGBC_SpaceStation1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -28052,7 +28060,7 @@ ScreenDataGBC_FuddForestBoss:
 	dw Func_807a
 	dw $5C00 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $0049
+	dw FuddForestBossBgScrollSpeeds
 
 ScreenDataGBC_TazZooBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -28082,7 +28090,7 @@ ScreenDataGBC_TazZooBoss:
 	dw Func_807a
 	dw $5D16 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
-	dw $0059
+	dw TazZooBossBgScrollSpeeds
 
 ScreenDataGBC_Studio:
 	compressed_data StudioTilesGBC, $8C80
@@ -28108,8 +28116,7 @@ ScreenDataGBC_Titlescreen:
 	db $ff
 	dw RunTitlescreen
 	dw Func_8068
-
-INCBIN "baserom.gbc", $1bc8b, $1bc8d - $1bc8b
+	dw TitlescreenBgScrollSpeeds
 
 ScreenDataGBC_IntroScene:
 	compressed_data FarmSceneTilesGBC, $8CB0
