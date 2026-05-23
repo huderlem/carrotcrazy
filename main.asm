@@ -12143,7 +12143,7 @@ BrickThrowerSprites:
 	dw BrickThrowerSprite3 + 1
 
 BrickThrowerProjectileData:
-	projectile_spawn 1, -16, 2, -9, 19, -23, $18, $7084
+	projectile_spawn 1, -16, 2, -9, 19, -23, $18, BrickThrowerProjectileSprites
 
 BrickThrowerTowerSprite:
 	dw Load12SubSprites
@@ -12957,9 +12957,9 @@ Func_4ea7:
 
 DaffyDuckProjectileData:
 	db $03 ; boss walk-pace mask
-	projectile_spawn 1, -16, 3, -3, 19, -17, $00, $70B4
+	projectile_spawn 1, -16, 3, -3, 19, -17, $00, DaffyDuckProjectileSprites
 	db $03 ; enemy walk-pace mask
-	projectile_spawn 1, -16, 2, -3, 19, -17, $00, $70B4
+	projectile_spawn 1, -16, 2, -3, 19, -17, $00, DaffyDuckProjectileSprites
 
 DaffyDuckSprites:
 	dw DaffyDuckSprite0 + 1
@@ -12986,9 +12986,9 @@ DaffyDuckSprites:
 
 YosemiteSamProjectileData:
 	db $01 ; boss walk-pace mask
-	projectile_spawn 0, 0, 3, -9, 25, -15, $00, $70BC
+	projectile_spawn 0, 0, 3, -9, 25, -15, $00, BulletProjectileSprites
 	db $01 ; enemy walk-pace mask
-	projectile_spawn 0, 0, 2, -9, 25, -15, $00, $70BC
+	projectile_spawn 0, 0, 2, -9, 25, -15, $00, BulletProjectileSprites
 
 YosemiteSamSprites:
 	dw YosemiteSamSprite0 + 1
@@ -13015,9 +13015,9 @@ YosemiteSamSprites:
 
 TazProjectileData:
 	db $03 ; boss walk-pace mask
-	projectile_spawn 1, -16, 3, -3, 20, -19, $00, $7100
+	projectile_spawn 1, -16, 3, -3, 20, -19, $00, TazProjectileSprites
 	db $03 ; enemy walk-pace mask
-	projectile_spawn 1, -16, 2, -3, 20, -19, $00, $7100
+	projectile_spawn 1, -16, 2, -3, 20, -19, $00, TazProjectileSprites
 
 TazSprites:
 	dw TazSprite0 + 1
@@ -13044,9 +13044,9 @@ TazSprites:
 
 MarvinMartianProjectileData:
 	db $01 ; boss walk-pace mask
-	projectile_spawn 0, 0, 3, -11, 16, -15, $00, $7168
+	projectile_spawn 0, 0, 3, -11, 16, -15, $00, MartianProjectileSprites
 	db $01 ; enemy walk-pace mask
-	projectile_spawn 0, 0, 2, -11, 16, -15, $00, $7168
+	projectile_spawn 0, 0, 2, -11, 16, -15, $00, MartianProjectileSprites
 
 MarvinMartianSprites:
 	dw MarvinMartianSprite0 + 1
@@ -13073,9 +13073,9 @@ MarvinMartianSprites:
 
 ElmerFuddProjectileData:
 	db $03 ; boss walk-pace mask
-	projectile_spawn 0, 0, 3, -16, 28, -15, $00, $70BC
+	projectile_spawn 0, 0, 3, -16, 28, -15, $00, BulletProjectileSprites
 	db $03 ; enemy walk-pace mask
-	projectile_spawn 0, 0, 2, -16, 28, -15, $00, $70BC
+	projectile_spawn 0, 0, 2, -16, 28, -15, $00, BulletProjectileSprites
 
 ElmerFuddSprites:
 	dw ElmerFuddSprite0 + 1
@@ -13258,7 +13258,7 @@ RockThrowerSprites:
 	dw RockThrowerSprite3 + 1
 
 RockThrowerProjectileData:
-	projectile_spawn 1, -16, 2, -13, 19, -23, $18, $70C4
+	projectile_spawn 1, -16, 2, -13, 19, -23, $18, RockThrowerProjectileSprites
 
 HandleBarrelBoatEntity:
 	push hl
@@ -15513,7 +15513,7 @@ CannonBallLauncherSprite4:
 	sub_sprite $82, $11,  -4, 0
 
 CannonballProjectileData:
-	projectile_spawn 0, 0, 2, -24, 0, -1, $00, $70F4
+	projectile_spawn 0, 0, 2, -24, 0, -1, $00, CannonballProjectileSprites
 
 HandleDirtPathDestructionEntity:
 	ld bc, DirtPathDestructionSprites
@@ -16028,7 +16028,7 @@ MonkeySprites:
 	dw MonkeySprite4 + 1
 
 MonkeyProjectileData:
-	projectile_spawn 2, -16, 3, -2, 3, -32, $18, $7108
+	projectile_spawn 2, -16, 3, -2, 3, -32, $18, MonkeyProjectileSprites
 
 HandleTazFemaleEntity:
 	ld a, [hli]
@@ -16281,7 +16281,7 @@ TazFemaleSprites:
 	dw TazFemaleSprite11 + 1
 
 TazFemaleProjectileData:
-	projectile_spawn 1, -16, 2, -1, 12, -12, $18, $7138
+	projectile_spawn 1, -16, 2, -1, 12, -12, $18, TazFemaleProjectileSprites
 
 HandleBicycleEntity:
 	ld a, [$de82]
@@ -17611,7 +17611,7 @@ InstantMartianEnterSprites:
 	dw InstantMartianSprite6 + 1
 
 InstantMartianProjectileData:
-	projectile_spawn 0, 0, 2, -16, 24, -3, $00, $7168
+	projectile_spawn 0, 0, 2, -16, 24, -3, $00, MartianProjectileSprites
 
 HandleHuntingDogEntity:
 	ld bc, HuntingDogSprites
@@ -18595,7 +18595,7 @@ DisguisedHunterShootingSprites:
 	dw DisguisedHunterSprite6 + 1
 
 DisguisedHunterProjectileData:
-	projectile_spawn 0, 0, 2, -4, 28, -9, $00, $70BC
+	projectile_spawn 0, 0, 2, -4, 28, -9, $00, BulletProjectileSprites
 
 HandleHelicopterChairEntity:
 	ld a, [hli]
@@ -23654,7 +23654,129 @@ INCBIN "baserom.gbc", $16db3, $16e8c - $16db3
 
 INCLUDE "data/passwords.asm"
 
-INCBIN "baserom.gbc", $16eab, $173fa - $16eab
+INCBIN "baserom.gbc", $16eab, $17084 - $16eab
+
+BrickThrowerProjectileSprites:
+	dw .frame0
+	dw .frame1
+	dw .frame2
+	dw .frame3
+.frame0
+	dw Load2SubSprites
+	sub_sprite $5C, $03, 16, 0
+	sub_sprite $5C, $63, 8, 0
+.frame1
+	dw Load2SubSprites
+	sub_sprite $5C, $43, 16, 0
+	sub_sprite $5C, $23, 8, 0
+.frame2
+	dw Load2SubSprites
+	sub_sprite $5C, $63, 8, 0
+	sub_sprite $5C, $03, 16, 0
+.frame3
+	dw Load2SubSprites
+	sub_sprite $5C, $23, 8, 0
+	sub_sprite $5C, $43, 16, 0
+
+DaffyDuckProjectileSprites:
+	dw .frame0
+.frame0
+	dw Load1SubSprite
+	sub_sprite $5A, $02, 8, 0
+
+BulletProjectileSprites:
+	dw .frame0
+.frame0
+	dw Load1SubSprite
+	sub_sprite $5A, $05, 8, 0
+
+RockThrowerProjectileSprites:
+	dw .frame0
+	dw .frame1
+	dw .frame2
+	dw .frame3
+.frame0
+	dw Load2SubSprites
+	sub_sprite $5C, $03, 8, 0
+	sub_sprite $5E, $03, 16, 0
+.frame1
+	dw Load2SubSprites
+	sub_sprite $5C, $43, 8, 0
+	sub_sprite $5E, $43, 16, 0
+.frame2
+	dw Load2SubSprites
+	sub_sprite $5C, $63, 16, 0
+	sub_sprite $5E, $63, 8, 0
+.frame3
+	dw Load2SubSprites
+	sub_sprite $5C, $23, 16, 0
+	sub_sprite $5E, $23, 8, 0
+
+CannonballProjectileSprites:
+	dw .frame0
+.frame0
+	dw Load2SubSprites
+	sub_sprite $56, $00, 8, 0
+	sub_sprite $56, $60, 16, 2
+
+TazProjectileSprites:
+	dw .frame0
+.frame0
+	dw Load1SubSprite
+	sub_sprite $56, $05, 8, 0
+
+MonkeyProjectileSprites:
+	dw .frame0
+	dw .frame1
+	dw .frame2
+	dw .frame3
+.frame0
+	dw Load2SubSprites
+	sub_sprite $68, $01, 8, 0
+	sub_sprite $6A, $01, 16, 0
+.frame1
+	dw Load2SubSprites
+	sub_sprite $68, $21, 16, 0
+	sub_sprite $6A, $21, 8, 0
+.frame2
+	dw Load2SubSprites
+	sub_sprite $68, $61, 16, 0
+	sub_sprite $6A, $61, 8, 0
+.frame3
+	dw Load2SubSprites
+	sub_sprite $68, $41, 8, 0
+	sub_sprite $6A, $41, 16, 0
+
+TazFemaleProjectileSprites:
+	dw .frame0
+	dw .frame1
+	dw .frame2
+	dw .frame3
+.frame0
+	dw Load2SubSprites
+	sub_sprite $6C, $02, 16, 0
+	sub_sprite $6C, $62, 8, 0
+.frame1
+	dw Load2SubSprites
+	sub_sprite $6C, $42, 16, 0
+	sub_sprite $6C, $22, 8, 0
+.frame2
+	dw Load2SubSprites
+	sub_sprite $6C, $62, 8, 0
+	sub_sprite $6C, $02, 16, 0
+.frame3
+	dw Load2SubSprites
+	sub_sprite $6C, $22, 8, 0
+	sub_sprite $6C, $42, 16, 0
+
+MartianProjectileSprites:
+	dw .frame0
+.frame0
+	dw Load2SubSprites
+	sub_sprite $56, $06, 8, 0
+	sub_sprite $56, $26, 16, 0
+
+INCBIN "baserom.gbc", $17174, $173fa - $17174
 
 Func_173fa:
 	ldh a, [hPaused]
