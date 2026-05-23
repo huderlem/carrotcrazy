@@ -13547,9 +13547,9 @@ HandleCannonEntity:
 	ld a, [hl]
 	and $1c
 	srl a
-	add $09
+	add (CannonLaunchParams & $ff)
 	ld c, a
-	ld a, $53
+	ld a, (CannonLaunchParams >> 8)
 	adc $00
 	ld b, a
 	ld a, $24
@@ -13575,7 +13575,20 @@ HandleCannonEntity:
 .asm_5306
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $5309, $5319 - $5309
+; The horizontal launch velocity and facing flags applied to the player when
+; fired out of a cannon, indexed by the cannon's aim direction (0-7).
+; The velocity is stored to the player's launch speed, and the flag byte's bit 5
+; is OR'd into the player's state to set the facing direction.
+;   db xVelocity, playerFacingFlags
+CannonLaunchParams:
+	db -32, $20
+	db -32, $20
+	db   0, $00
+	db  32, $00
+	db  32, $00
+	db  32, $00
+	db   0, $00
+	db -32, $20
 
 CannonSprites:
 	dw CannonSprite0 + 1
