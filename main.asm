@@ -12067,7 +12067,7 @@ HandleBrickThrowerEntity:
 	ld a, [hld]
 	cp $30
 	jr nz, .asm_4955
-	ld bc, Data_49c7
+	ld bc, BrickThrowerProjectileData
 	call Func_1868
 	jr .asm_4969
 .asm_4955
@@ -12142,8 +12142,8 @@ BrickThrowerSprites:
 	dw BrickThrowerSprite3 + 1
 	dw BrickThrowerSprite3 + 1
 
-Data_49c7: ; TODO: controls the brick's trajectory?
-	db $01, $F0, $02, $F7, $13, $E9, $18, $84, $70
+BrickThrowerProjectileData:
+	projectile_spawn 1, -16, 2, -9, 19, -23, $18, $7084
 
 BrickThrowerTowerSprite:
 	dw Load12SubSprites
@@ -12751,7 +12751,7 @@ Func_4c1b:
 	jr .asm_4dc0
 .asm_4d78
 	ldh a, [$ffe6]
-	sub $0a
+	sub CHARPROJ_ENEMY_MASK
 	ld e, a
 	ldh a, [$ffe7]
 	sbc $00
@@ -12880,9 +12880,9 @@ Func_4c1b:
 .asm_4e34
 	ld a, [$dde7]
 	and a
-	ld c, $09
+	ld c, CHARPROJ_ENEMY_SPAWN
 	jr z, .asm_4e3e
-	ld c, $13
+	ld c, CHARPROJ_BOSS_SPAWN
 .asm_4e3e
 	ldh a, [$ffe6]
 	sub c
@@ -12955,7 +12955,11 @@ Func_4c1b:
 Func_4ea7:
 	jp ExitEntityHandler
 
-INCBIN "baserom.gbc", $4eaa, $4ebe - $4eaa
+DaffyDuckProjectileData:
+	db $03 ; boss walk-pace mask
+	projectile_spawn 1, -16, 3, -3, 19, -17, $00, $70B4
+	db $03 ; enemy walk-pace mask
+	projectile_spawn 1, -16, 2, -3, 19, -17, $00, $70B4
 
 DaffyDuckSprites:
 	dw DaffyDuckSprite0 + 1
@@ -12980,7 +12984,11 @@ DaffyDuckSprites:
 	dw DaffyDuckSprite7 + 1
 	dw DaffyDuckSprite9 + 1
 
-INCBIN "baserom.gbc", $4ee8, $4efc - $4ee8
+YosemiteSamProjectileData:
+	db $01 ; boss walk-pace mask
+	projectile_spawn 0, 0, 3, -9, 25, -15, $00, $70BC
+	db $01 ; enemy walk-pace mask
+	projectile_spawn 0, 0, 2, -9, 25, -15, $00, $70BC
 
 YosemiteSamSprites:
 	dw YosemiteSamSprite0 + 1
@@ -13005,7 +13013,11 @@ YosemiteSamSprites:
 	dw YosemiteSamSprite14 + 1
 	dw YosemiteSamSprite9 + 1
 
-INCBIN "baserom.gbc", $4f26, $4f3a - $4f26
+TazProjectileData:
+	db $03 ; boss walk-pace mask
+	projectile_spawn 1, -16, 3, -3, 20, -19, $00, $7100
+	db $03 ; enemy walk-pace mask
+	projectile_spawn 1, -16, 2, -3, 20, -19, $00, $7100
 
 TazSprites:
 	dw TazSprite0 + 1
@@ -13030,7 +13042,11 @@ TazSprites:
 	dw TazSprite6 + 1
 	dw TazSprite9 + 1
 
-INCBIN "baserom.gbc", $4f64, $4f78 - $4f64
+MarvinMartianProjectileData:
+	db $01 ; boss walk-pace mask
+	projectile_spawn 0, 0, 3, -11, 16, -15, $00, $7168
+	db $01 ; enemy walk-pace mask
+	projectile_spawn 0, 0, 2, -11, 16, -15, $00, $7168
 
 MarvinMartianSprites:
 	dw MarvinMartianSprite0 + 1
@@ -13055,7 +13071,11 @@ MarvinMartianSprites:
 	dw MarvinMartianSprite12 + 1
 	dw MarvinMartianSprite7 + 1
 
-INCBIN "baserom.gbc", $4fa2, $4fb6 - $4fa2
+ElmerFuddProjectileData:
+	db $03 ; boss walk-pace mask
+	projectile_spawn 0, 0, 3, -16, 28, -15, $00, $70BC
+	db $03 ; enemy walk-pace mask
+	projectile_spawn 0, 0, 2, -16, 28, -15, $00, $70BC
 
 ElmerFuddSprites:
 	dw ElmerFuddSprite0 + 1
@@ -13162,7 +13182,7 @@ HandleRockThrowerEntity:
 	ld a, [hld]
 	cp $30
 	jr nz, .asm_5064
-	ld bc, Data_50d6
+	ld bc, RockThrowerProjectileData
 	call Func_1868
 	jr .asm_5078
 .asm_5064
@@ -13237,8 +13257,8 @@ RockThrowerSprites:
 	dw RockThrowerSprite3 + 1
 	dw RockThrowerSprite3 + 1
 
-Data_50d6: ; TODO: controls the rock's trajectory?
-	db $01, $F0, $02, $F3, $13, $E9, $18, $C4, $70
+RockThrowerProjectileData:
+	projectile_spawn 1, -16, 2, -13, 19, -23, $18, $70C4
 
 HandleBarrelBoatEntity:
 	push hl
@@ -15430,7 +15450,7 @@ HandleCannonballEntity:
 	jr nz, .asm_5f2e
 	push bc
 	push de
-	ld bc, Data_5f94
+	ld bc, CannonballProjectileData
 	call Func_1868
 	pop de
 	pop bc
@@ -15492,8 +15512,8 @@ CannonBallLauncherSprite4:
 	sub_sprite $80, $11, -12, 0
 	sub_sprite $82, $11,  -4, 0
 
-Data_5f94: ; TODO: controls the cannon ball's trajectory?
-	db $00, $00, $02, $E8, $00, $FF, $00, $F4, $70
+CannonballProjectileData:
+	projectile_spawn 0, 0, 2, -24, 0, -1, $00, $70F4
 
 HandleDirtPathDestructionEntity:
 	ld bc, DirtPathDestructionSprites
@@ -15936,7 +15956,7 @@ HandleMonkeyEntity:
 	ld a, [hld]
 	cp $30
 	jr nz, .asm_622b
-	ld bc, Data_6295
+	ld bc, MonkeyProjectileData
 	call Func_1868
 	jr .asm_623f
 .asm_622b
@@ -16007,8 +16027,8 @@ MonkeySprites:
 	dw MonkeySprite4 + 1
 	dw MonkeySprite4 + 1
 
-Data_6295: ; TODO: controls the rock's trajectory?
-	db $02, $F0, $03, $FE, $03, $E0, $18, $08, $71
+MonkeyProjectileData:
+	projectile_spawn 2, -16, 3, -2, 3, -32, $18, $7108
 
 HandleTazFemaleEntity:
 	ld a, [hli]
@@ -16163,7 +16183,7 @@ HandleTazFemaleEntity:
 	ld a, [hld]
 	cp $20
 	jr nz, .asm_6387
-	ld bc, Data_6423
+	ld bc, TazFemaleProjectileData
 	call Func_1868
 	jr .asm_63a2
 .asm_6387
@@ -16260,8 +16280,8 @@ TazFemaleSprites:
 	dw TazFemaleSprite10 + 1
 	dw TazFemaleSprite11 + 1
 
-Data_6423:
-	db $01, $F0, $02, $FF, $0C, $F4, $18, $38, $71
+TazFemaleProjectileData:
+	projectile_spawn 1, -16, 2, -1, 12, -12, $18, $7138
 
 HandleBicycleEntity:
 	ld a, [$de82]
@@ -17536,7 +17556,7 @@ HandleInstantMartianEntity:
 	ldh a, [$ffe4]
 	cp $5c
 	jr nz, .asm_6be9
-	ld bc, Data_6c32
+	ld bc, InstantMartianProjectileData
 	call Func_1868
 .asm_6be9
 	ldh a, [hFrameCounter]
@@ -17590,8 +17610,8 @@ InstantMartianEnterSprites:
 	dw InstantMartianSprite5 + 1
 	dw InstantMartianSprite6 + 1
 
-Data_6c32:
-	db $00, $00, $02, $F0, $18, $FD, $00, $68, $71
+InstantMartianProjectileData:
+	projectile_spawn 0, 0, 2, -16, 24, -3, $00, $7168
 
 HandleHuntingDogEntity:
 	ld bc, HuntingDogSprites
@@ -18514,7 +18534,7 @@ HandleDisguisedHunterEntity:
 	ldh a, [$ffe4]
 	cp $18
 	jr nz, .asm_71e8
-	ld bc, Data_7244
+	ld bc, DisguisedHunterProjectileData
 	call Func_1868
 .asm_71e8
 	ldh a, [$ffe5]
@@ -18574,8 +18594,8 @@ DisguisedHunterShootingSprites:
 	dw DisguisedHunterSprite7 + 1
 	dw DisguisedHunterSprite6 + 1
 
-Data_7244: ; controls the bullet's trajectory?
-	db $00, $00, $02, $FC, $1C, $F7, $00, $BC, $70
+DisguisedHunterProjectileData:
+	projectile_spawn 0, 0, 2, -4, 28, -9, $00, $70BC
 
 HandleHelicopterChairEntity:
 	ld a, [hli]

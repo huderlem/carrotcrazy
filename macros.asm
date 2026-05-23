@@ -126,6 +126,19 @@ MACRO entity_cannon
 	db 0
 	ENDM
 
+; \1: gravity
+; \2: initial y velocity
+; \3: x velocity
+; \4: x spawn offset when facing left
+; \5: x spawn offset when facing right
+; \6: y spawn offset
+; \7: sprite anim mask
+; \8: sprite table
+MACRO projectile_spawn
+	db \1, \2, \3, \4, \5, \6, \7
+	dw \8
+	ENDM
+
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum x coord when paddling
