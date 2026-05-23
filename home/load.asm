@@ -17,7 +17,7 @@ LoadData:
 	ld a, [hli]
 	cp $ff
 	ret z
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -32,7 +32,7 @@ LoadData:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [MBC5RomBank], a
 .copy:
 	ld a, [bc]
@@ -47,7 +47,7 @@ LoadData:
 	inc hl
 	jr LoadData
 .decompress:
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [MBC5RomBank], a
 	push hl
 	call Decompress

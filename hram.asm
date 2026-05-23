@@ -1,52 +1,52 @@
-hDMARoutine EQU $ff80
+DEF hDMARoutine EQU $ff80
 
 ; Set to non-zero value to indicate the game is paused.
-hPaused EQU $ff92
+DEF hPaused EQU $ff92
 
 ; Holds the number of active sprites * 4
-hActiveSprites EQU $ff93
+DEF hActiveSprites EQU $ff93
 
 ; Increments by one every frame. Does not increment when game is paused.
-hFrameCounter EQU $ff94
+DEF hFrameCounter EQU $ff94
 
-hForcedSideScrollSpeed EQU $ff95
+DEF hForcedSideScrollSpeed EQU $ff95
 
-hCameraXOffset EQU $ffa0
-hCameraYOffset EQU $ffa2
+DEF hCameraXOffset EQU $ffa0
+DEF hCameraYOffset EQU $ffa2
 
 ; $ffaf = player state (crouching, etc.)
 
-hLevelPixelWidth  EQU $ffa6
-hLevelPixelHeight EQU $ffa8
+DEF hLevelPixelWidth  EQU $ffa6
+DEF hLevelPixelHeight EQU $ffa8
 
-hDiggingMetatileReplacements EQU $ffaa
+DEF hDiggingMetatileReplacements EQU $ffaa
 
-hLevelCleared EQU $ffb5
+DEF hLevelCleared EQU $ffb5
 
 ; The current pixel coordinates of the player
-hPlayerXPos EQU $ffc8
-hPlayerYPos EQU $ffca
+DEF hPlayerXPos EQU $ffc8
+DEF hPlayerYPos EQU $ffca
 
-hCameraXOffsetScreenRight EQU $ffdb
+DEF hCameraXOffsetScreenRight EQU $ffdb
 
-hCurHealth EQU $ffed
-hMaxHealth EQU $ffee
-hNumLives  EQU $ffef
+DEF hCurHealth EQU $ffed
+DEF hMaxHealth EQU $ffee
+DEF hNumLives  EQU $ffef
 
 ; Holds a 2-byte little-endian BCD value.
-hScore EQU $fff0
+DEF hScore EQU $fff0
 
-hNumClapboards EQU $fff2
-hNumCarrots    EQU $fff3
-hCarrotMeter   EQU $fff4
+DEF hNumClapboards EQU $fff2
+DEF hNumCarrots    EQU $fff3
+DEF hCarrotMeter   EQU $fff4
 
-hEXTRALetterHUD EQU $fff5
+DEF hEXTRALetterHUD EQU $fff5
 
-hClapboardPieceHUD EQU $fff9
+DEF hClapboardPieceHUD EQU $fff9
 
 ; Holds the count of obtained letters for EXTRA.
 ; If all letters were obtained, the player gets to go to the bonus stage.
-hEXTRALetters EQU $fffd
+DEF hEXTRALetters EQU $fffd
 
 ; Set to $11 if running on a Game Boy Color. $00 otherwise.
-hGameBoyColorDetection EQU $FFFE
+DEF hGameBoyColorDetection EQU $FFFE

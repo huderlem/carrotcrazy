@@ -16,7 +16,7 @@ LoadLevelGBCpalettesHome:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	push hl
@@ -27,29 +27,29 @@ LoadLevelGBCpalettesHome:
 ; Adds a BCD value to the player's score.
 ; Input: c = value to add
 AddScore:
-	ld a, [hScore]
+	ldh a, [hScore]
 	add c
 	daa
-	ld [hScore], a
-	ld a, [hScore + 1]
+	ldh [hScore], a
+	ldh a, [hScore + 1]
 	adc b
 	daa
-	ld [hScore + 1], a
+	ldh [hScore + 1], a
 	ret
 
 ; Waits for VBlank period or immediately returns if LCD is disabled.
 WaitUntilSafeToAccessVRAM:
-	ld a, [rLCDC]
+	ldh a, [rLCDC]
 	add a
 	ret nc ; return if LCD is disabled
 	call WaitVBlank
 	sub a
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	ret
 
 WaitHBlankStart:
 	; Waits for the next HBlank period to begin.
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, WaitHBlankStart ; If we're already in the middle of HBlank, wait until it's over.
 	; fallthrough
@@ -57,7 +57,7 @@ WaitHBlankStart:
 SECTION "rst 38", ROM0 [$38]
 
 WaitNextHBlank_:
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, WaitNextHBlank_
 	ret
@@ -102,13 +102,13 @@ SECTION "Home", ROM0 [$61]
 
 ; Waits until the VBlank period is entered.
 WaitVBlank:
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp SCRN_Y + 1
 	jr c, WaitVBlank
 	ret
 
 UpdateFrameCounter:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, hFrameCounter
@@ -117,7 +117,7 @@ UpdateFrameCounter:
 
 ResetFrameCounter:
 	sub a
-	ld [hFrameCounter], a
+	ldh [hFrameCounter], a
 	ret
 
 LoadCGBPalettesHome:
@@ -236,7 +236,7 @@ SECTION "Header", ROM0 [$104]
 SECTION "Main", ROM0
 
 Start:
-	ld [hGameBoyColorDetection], a
+	ldh [hGameBoyColorDetection], a
 Start_:
 	di
 	ld sp, wStack
@@ -253,11 +253,11 @@ RunEpilogueSceneScreen:
 	ld de, $da80
 .asm_170
 	ld a, [bc]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [de]
 	ld [bc], a
 	inc c
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [de], a
 	inc e
 	jr nz, .asm_170
@@ -270,16 +270,16 @@ RunEpilogueSceneScreen:
 	call LoadCGBPalettesHome
 	ld hl, vBGMap
 	ld bc, $400
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_1b1
 	ld d, $da
 .asm_19f
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld e, [hl]
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, [de]
 	ld [hli], a
 	dec bc
@@ -287,7 +287,7 @@ RunEpilogueSceneScreen:
 	or b
 	jr nz, .asm_19f
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_1b1
 	ld a, Bank(Func_17b59)
 	ld [MBC5RomBank], a
@@ -295,7 +295,7 @@ RunEpilogueSceneScreen:
 
 Func_1b9:
 	ld a, $c7
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_1bd
 	ld a, [$defd]
 	ld c, a
@@ -313,9 +313,9 @@ Func_1b9:
 	ld a, [hl]
 	and $c0
 	or b
-	ld [rBGP], a
+	ldh [rBGP], a
 	sub a
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld hl, BugsEpilogueSpritesData
 	ld c, $38
 	ld b, $8e
@@ -327,7 +327,7 @@ Func_1b9:
 	ld hl, BugsEpilogueSpritesData
 	call Func_cae
 .asm_1f6
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 55
 	jr nz, .asm_1f6
 	call WaitHBlankStart
@@ -337,9 +337,9 @@ Func_1b9:
 	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hli]
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, $70
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld hl, LolaEpilogueSpritesData
 	call Func_cae
 	call ClearOAMBufferHome
@@ -354,32 +354,32 @@ Func_1b9:
 	jp .asm_1bd
 
 Func_233:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld hl, vBGMap
 	ld b, $da
 .asm_23d
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld c, [hl]
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, [bc]
 	ld [hli], a
 	ld a, h
 	cp $9c
 	jr nz, .asm_23d
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 RunLevelBonusScreen:
-	ld a, [hEXTRALetters]
+	ldh a, [hEXTRALetters]
 	cp 5 ; check if player obtained all 5 EXTRA letters
 	jp nz, InitNextScreen
 	push hl
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ld hl, ScreenData_LevelBonus
 	jr nz, .asm_264
@@ -432,78 +432,78 @@ RunLevelBonusScreen:
 	call Func_fb4
 	call Func_233
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_2cc
 	call ReadJoyPadHome
 	call TryTogglePause
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_31c
 .asm_2d8
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 51
 	jr nz, .asm_2d8
 	ld a, $80
-	ld [rBCPS], a
+	ldh [rBCPS], a
 	ld hl, Data_361
 	call WaitHBlankStart
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 .asm_2fa
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 69
 	jr nz, .asm_2fa
 	ld a, $80
-	ld [rBCPS], a
+	ldh [rBCPS], a
 	ld hl, Data_367
 	call WaitHBlankStart
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 .asm_31c
 	call TickMusicEngineHome
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_347
 .asm_325
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 119
 	jr nz, .asm_325
 	ld a, $80
-	ld [rBCPS], a
+	ldh [rBCPS], a
 	ld hl, Data_36d
 	call WaitHBlankStart
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 .asm_347
 	call WaitVBlank
 	call Func_373
@@ -516,19 +516,19 @@ RunLevelBonusScreen:
 	jp .asm_2cc
 
 Data_361:
-	RGB(31, 25, 11)
-	RGB(20, 12, 5)
-	RGB(11, 5, 0)
+	RGB 31, 25, 11
+	RGB 20, 12, 5
+	RGB 11, 5, 0
 
 Data_367:
-	RGB(31, 30, 5)
-	RGB(19, 18, 3)
-	RGB(10, 7, 0)
+	RGB 31, 30, 5
+	RGB 19, 18, 3
+	RGB 10, 7, 0
 
 Data_36d:
-	RGB(31, 20, 16)
-	RGB(22, 8, 6)
-	RGB(13, 3, 1)
+	RGB 31, 20, 16
+	RGB 22, 8, 6
+	RGB 13, 3, 1
 
 Func_373:
 	ld a, Bank(Func_17c3a)
@@ -558,7 +558,7 @@ RunLevelSummaryScreen:
 	ld [MBC5RomBank], a
 	call Func_17c82
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_3b4
 	call TickMusicEngineHome
 	call WaitVBlank
@@ -575,10 +575,10 @@ RunLevelSummaryScreen:
 	ld a, Bank(Func_17ca6)
 	ld [MBC5RomBank], a
 	call Func_17ca6
-	ld a, [hEXTRALetters]
+	ldh a, [hEXTRALetters]
 	cp 5
 	jr nz, .asm_3f4
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 4, a
 	jr nz, .asm_3f4
 	ld bc, $8044
@@ -592,16 +592,16 @@ RunLevelSummaryScreen:
 	dec [hl]
 	jp .asm_3b4
 .asm_3ff
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	and a
 	jr z, .asm_420
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and 7
 	jp nz, .asm_3b4
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	sub 1
 	daa
-	ld [hNumCarrots], a
+	ldh [hNumCarrots], a
 	ld bc, $2
 	call AddScore
 	ld a, $0f
@@ -617,7 +617,7 @@ RunLevelSummaryScreen:
 	jp .asm_3b4
 
 Func_433:
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $3
 	ret nz
 	ld a, $05
@@ -664,13 +664,13 @@ RunPasswordScreen:
 	ld l, a
 	call DrawLocalizedText
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, Data_1a9e6
 	call LoadCGBPalettesHome
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_49a
 	call TickMusicEngineHome
 	call WaitVBlank
@@ -726,15 +726,15 @@ RunInfogramesCopyrightScreen:
 	call Func_3dce
 	call ResetFrameCounter
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, InfogramesCopyrightScreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld hl, vBGMap
 	ld bc, $400
 	call Func_10e9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJOFF | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .delayFrame
 	call WaitVBlank
 	call TryInitNextScreenHome
@@ -743,7 +743,7 @@ RunInfogramesCopyrightScreen:
 .delayNextVBlank
 	dec a
 	jr nz, .delayNextVBlank
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and a
 	jr nz, .delayFrame
 	call Func_3ddc
@@ -756,12 +756,12 @@ RunWarnerBrosCopyrightScreen:
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, WarnerBrosCopyrightScreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_54e
 	call TickMusicEngineHome
 	call Func_3a82
@@ -778,7 +778,7 @@ RunWarnerBrosCopyrightScreen:
 	call ClearOAMBufferHome
 	call TryInitNextScreenHome
 	ld a, %10010000
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, [$def2]
 	and a
 	jr nz, .asm_54e
@@ -796,12 +796,12 @@ RunGameOverScreen:
 	call WriteDMACodeToHRAM
 	call Func_3dce
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, Data_1ab36
 	call LoadCGBPalettesHome
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_5a5
 	call TickMusicEngineHome
 	call Func_3a82
@@ -831,13 +831,13 @@ RunLanguageSelectScreen:
 	ld l, a
 	call DrawLocalizedWord
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, WarnerBrosCopyrightScreenGBCPalettes
 	call LoadCGBPalettesHome
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_5f4:
 	call TickMusicEngineHome
 	call WaitVBlank
@@ -915,13 +915,13 @@ RunOptionsScreen:
 	ld [hli], a
 	ld [hl], a
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, Data_1a9e6
 	call LoadCGBPalettesHome
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_69c
 	call TickMusicEngineHome
 	call WaitVBlank
@@ -1134,11 +1134,11 @@ RunTitlescreen:
 	ld hl, vBGMap
 	ld bc, $400
 	call Func_10e9
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_822
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld hl, vBGMap
 	ld b, $e0
 .asm_81a
@@ -1147,10 +1147,10 @@ RunTitlescreen:
 	dec b
 	jr nz, .asm_81a
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_822
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_826
 	ld a, [$defd]
 	ld c, a
@@ -1168,9 +1168,9 @@ RunTitlescreen:
 	ld a, [hl]
 	and $c0
 	or b
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld hl, $ded2
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_851
 	inc [hl]
@@ -1197,9 +1197,9 @@ RunTitlescreen:
 	dec [hl]
 .asm_866
 	sub a
-	ld [rSCY], a
+	ldh [rSCY], a
 	sub a
-	ld [rSCX], a
+	ldh [rSCX], a
 	call TickMusicEngineHome
 	call ReadJoyPadHome
 	call Func_2c2b
@@ -1208,7 +1208,7 @@ RunTitlescreen:
 	ld hl, $6eab
 	ld de, $ded8
 	ld a, $07
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_884
 	ld a, [de]
 	add [hl]
@@ -1239,26 +1239,26 @@ RunTitlescreen:
 	pop de
 	inc hl
 	inc hl
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_884
 .asm_8ae
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 55
 	jr nz, .asm_8ae
 	call WaitHBlankStart
 	ld a, [$dec7]
-	ld [rSCX], a
+	ldh [rSCX], a
 	ld a, 112
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld a, [$defd]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hl]
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, [$ded2]
 	cp $70
 	jr c, .asm_8d9
@@ -1287,11 +1287,11 @@ RunTitlescreen:
 	ld hl, $96c0
 	ld b, $28
 .waitCurrentHBlankFinish
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish
 .waitHBlankStart
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart
 	pop de
@@ -1351,7 +1351,7 @@ RunTitlescreen:
 .asm_95b
 	cp $78
 	jr nc, .asm_98b
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr nc, .asm_965
 	inc [hl]
@@ -1383,7 +1383,7 @@ RunTitlescreen:
 .asm_98b
 	cp $c8
 	jr nc, .asm_954
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr nc, .asm_995
 	dec [hl]
@@ -1395,23 +1395,23 @@ RunTitlescreen:
 	ld [MBC5RomBank], a
 	call LoadOAMSprites
 .asm_9a3
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 112
 	jr nz, .asm_9a3
 	ld a, [$dec9]
-	ld [rSCX], a
+	ldh [rSCX], a
 .asm_9ae
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 118
 	jr nz, .asm_9ae
 	ld a, [$decb]
-	ld [rSCX], a
+	ldh [rSCX], a
 .asm_9b9
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 128
 	jr nz, .asm_9b9
 	ld a, [$decd]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call WaitVBlank
 	call TryInitNextScreenHome
 	call ClearOAMBufferHome
@@ -1429,7 +1429,7 @@ RunTitlescreen:
 	ld a, [$defc]
 	and a
 	jp nz, .asm_826
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $1c
 	srl a
 	srl a
@@ -1438,7 +1438,7 @@ RunTitlescreen:
 	ld hl, $705c
 	add hl, bc
 	ld a, [hl]
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	ld a, [wNewKeys]
 	and PADF_DOWN | PADF_UP | PADF_SELECT
 	jr z, .asm_a12
@@ -1553,18 +1553,18 @@ RunIntroScene:
 	cp $9c
 	jr nz, .asm_a9a
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, Data_1aa1a
 	call LoadCGBPalettesHome
 	ld hl, vBGMap
 	ld bc, $400
 	call Func_10e9
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_ae8
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld hl, vBGMap
 	ld bc, $2a0
 .asm_ade
@@ -1575,10 +1575,10 @@ RunIntroScene:
 	or b
 	jr nz, .asm_ade
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_ae8
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_aec
 	ld a, [$defd]
 	ld c, a
@@ -1596,9 +1596,9 @@ RunIntroScene:
 	ld a, [hl]
 	and $c0
 	or b
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, [$deb9]
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld hl, BugsEpilogueSpritesData
 	ld a, [$dec2]
 	add $24
@@ -1613,7 +1613,7 @@ RunIntroScene:
 	ld hl, BugsEpilogueSpritesData
 	call Func_cae
 .asm_b2d
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 55
 	jr nz, .asm_b2d
 	call WaitHBlankStart
@@ -1623,11 +1623,11 @@ RunIntroScene:
 	ld hl, rBGPSettings
 	add hl, bc
 	ld a, [hli]
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, [hl]
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, 112
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld hl, LolaEpilogueSpritesData
 	call Func_cae
 	ld hl, $deb7
@@ -1645,7 +1645,7 @@ RunIntroScene:
 	dec [hl]
 	jp .asm_c09
 .asm_b66
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jp c, .asm_c09
 	inc [hl]
@@ -1750,7 +1750,7 @@ RunIntroScene:
 	call Func_d0f
 	jr .asm_be2
 .asm_bf4
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_c09
 	ld hl, $deba
@@ -1765,7 +1765,7 @@ RunIntroScene:
 	ld [hl], a
 .asm_c09
 	ld hl, $dec0
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_c13
 	inc [hl]
@@ -1820,9 +1820,9 @@ RunIntroScene:
 	and a
 	jp nz, .asm_aec
 	ld a, $50
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, $90
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	ld a, [wNewKeys]
 	and PADF_START | PADF_A
 	jp z, .asm_aec
@@ -1835,7 +1835,7 @@ Func_c7d:
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [$dec1]
@@ -1849,18 +1849,18 @@ Func_c7d:
 	ld h, [hl]
 	ld l, a
 	ld a, l
-	ld [$ff8e], a
+	ldh [$ff8e], a
 	ld a, h
-	ld [$ff8f], a
+	ldh [$ff8f], a
 	dec hl
 	ld a, [hli]
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	ld a, [hl]
 	and $1f
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	add a
 	add a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	ld a, [hli]
 	and $e0
 	ld h, [hl]
@@ -1873,11 +1873,11 @@ Func_cae:
 	ld h, d
 	ld l, e
 .waitCurrentHBlankFinish
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish
 .waitHBlankStart
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart
 	pop de
@@ -1900,9 +1900,9 @@ Func_cae:
 	ld [hli], a
 	ld a, d
 	ld [hli], a
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	dec a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	jr nz, .waitCurrentHBlankFinish
 	ld sp, wStack - 2
 	ret
@@ -1915,7 +1915,7 @@ Func_cdf:
 	ld l, a
 	inc hl
 	inc hl
-	ld a, [hActiveSprites]
+	ldh a, [hActiveSprites]
 	ld e, a
 	ld d, $df
 .asm_cef
@@ -1927,25 +1927,25 @@ Func_cdf:
 	add c
 	ld [de], a
 	inc e
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [de], a
 	inc e
 	add $02
-	ld [$ff8a], a
-	ld a, [$ff8b]
+	ldh [$ff8a], a
+	ldh a, [$ff8b]
 	ld [de], a
 	inc e
 	inc hl
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	dec a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jr nz, .asm_cef
 	ld a, e
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	ret
 
 Func_d0f:
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [bc]
 	and a
 	ret z
@@ -1955,8 +1955,8 @@ Func_d0f:
 	sub $40
 	add a
 	add $80
-	ld [$ff8b], a
-	ld a, [hActiveSprites]
+	ldh [$ff8b], a
+	ldh a, [hActiveSprites]
 	ld l, a
 	ld h, $df
 	ld a, d
@@ -1966,12 +1966,12 @@ Func_d0f:
 	add $08
 	ld e, a
 	ld [hli], a
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	ld [hli], a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [hli], a
 	ld a, l
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	ret
 
 BugsEpilogueSpritesData:
@@ -2080,16 +2080,16 @@ RunLevelIntroScreen:
 	sub a
 	ld [$dec3], a
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	call Func_d67
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_df2
 	call WaitVBlank
 	call TryInitNextScreenHome
 	ld a, $90
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	call ReadJoyPadHome
 	call UpdateFrameCounter
 	ld a, $05
@@ -2100,7 +2100,7 @@ RunLevelIntroScreen:
 	ld a, $03
 	ld [MBC5RomBank], a
 	ld hl, $ddc5
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 5, a
 	jr z, .asm_e21
 	ld hl, $ddc7
@@ -2161,7 +2161,7 @@ RunStudioScreen:
 asm_e77:
 	push hl
 	ld hl, ScreenData_Studio
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .load
 	ld hl, ScreenDataGBC_Studio
@@ -2194,7 +2194,7 @@ asm_e77:
 	call Func_31e1
 	sub a
 	ld [$de84], a
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_ed7
 	ld hl, $9b00
@@ -2210,9 +2210,9 @@ asm_e77:
 	and a
 	jr nz, .asm_eda
 	ld a, 144
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, [wInCreditsScene]
 	and a
 	jr z, .initLCDC
@@ -2220,7 +2220,7 @@ asm_e77:
 	call LoadData
 .initLCDC
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .mainLoop:
 	call ClearOAMBufferHome
 	ld a, [wInCreditsScene]
@@ -2231,14 +2231,14 @@ asm_e77:
 .tryInitNextScreen
 	call TryInitNextScreenHome
 .waitPastCeiling
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 31
 	jr nz, .waitPastCeiling
 	call WaitHBlankStart
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
 	call TickMusicEngineHome
 	ld a, [wInCreditsScene]
 	and a
@@ -2246,13 +2246,13 @@ asm_e77:
 	ld a, Bank(DrawCreditsText)
 	ld [MBC5RomBank], a
 	call DrawCreditsText
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_f55
 	ld hl, $dde3
 	ld a, [hli]
-	ld [$ffa4], a
-	ld a, [hFrameCounter]
+	ldh [$ffa4], a
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_f55
 	inc [hl]
@@ -2278,7 +2278,7 @@ asm_e77:
 	call Func_3939
 	call LoadDynamicEntitySprites
 .waitFloor
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 111
 	jr nz, .waitFloor
 	call WaitHBlankStart
@@ -2291,11 +2291,11 @@ asm_e77:
 	srl b
 	rra
 	add [hl]
-	ld [rSCX], a
+	ldh [rSCX], a
 	ld a, 112
-	ld [rSCY], a
+	ldh [rSCY], a
 .waitSecondaryFloor
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 118
 	jr nz, .waitSecondaryFloor
 	call WaitHBlankStart
@@ -2306,10 +2306,10 @@ asm_e77:
 	srl b
 	rra
 	add [hl]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call DrawStudioHUD
 	ld a, 192
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld hl, hCameraXOffset + 1
 	ld a, [hld]
 	ld b, a
@@ -2319,7 +2319,7 @@ asm_e77:
 	srl b
 	rra
 	add [hl]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call UpdateFrameCounter
 	jp .mainLoop
 
@@ -2328,11 +2328,11 @@ Func_fb4:
 	ld de, $da80
 .asm_fba
 	ld a, [bc]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [de]
 	ld [bc], a
 	inc c
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [de], a
 	inc e
 	jr nz, .asm_fba
@@ -2340,36 +2340,36 @@ Func_fb4:
 	ld de, $d980
 .asm_fcc
 	ld a, [bc]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [de]
 	ld [bc], a
 	inc c
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [de], a
 	inc e
 	jr nz, .asm_fcc
 	ret
 
 Func_fd9:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	push hl
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, Bank(SharedLevelInterfaceTiles)
 	ld [MBC5RomBank], a
 	ld bc, SharedLevelInterfaceTiles
 	ld de, $8340
 	call Decompress
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	pop hl
 	ld b, h
 	ld c, l
 	ld d, $06
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_ffd
 	ld a, [bc]
 	or $08
@@ -2378,7 +2378,7 @@ Func_fd9:
 	dec d
 	jr nz, .asm_ffd
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld b, $60
 .asm_100a
 	ld a, [hl]
@@ -2387,12 +2387,12 @@ Func_fd9:
 	cp $b3
 	jr nc, .asm_101e
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, [hl]
 	or $08
 	ld [hl], a
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_101e
 	inc hl
 	dec b
@@ -2401,11 +2401,11 @@ Func_fd9:
 
 ; Input: c = tile attribute to fill in the HUD area.
 LoadHUDTileAttributes:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld de, vBGWin
 	ld b, $60
 .asm_1031
@@ -2415,7 +2415,7 @@ LoadHUDTileAttributes:
 	dec b
 	jr nz, .asm_1031
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 RunLevelScreen:
@@ -2450,13 +2450,13 @@ RunLevelScreen:
 	sub a
 	ld [$de84], a
 	ld a, 120
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, 7
-	ld [rWX], a
+	ldh [rWX], a
 	ld hl, vBGWin
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .loop
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
@@ -2477,7 +2477,7 @@ RunLevelScreen:
 	jr .loop
 
 Func_10c9:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_10d1
 	ld b, d
@@ -2502,16 +2502,16 @@ Func_10c9:
 	ret
 
 Func_10e9:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld d, $d9
 .loop
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld e, [hl]
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, [de]
 	ld [hli], a
 	dec bc
@@ -2519,7 +2519,7 @@ Func_10e9:
 	or b
 	jr nz, .loop
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 RunCrazyTownBossScreen:
@@ -2541,15 +2541,15 @@ RunCrazyTownBossScreen:
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -1
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 56
 	ld [$de83], a
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, $b0
 	ld [$de82], a
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld hl, $9a00
 	ld bc, $160
 	call Func_10e9
@@ -2565,25 +2565,25 @@ RunCrazyTownBossScreen:
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_1179
 	ld a, 128
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld a, [$dec7]
-	ld [rSCX], a
+	ldh [rSCX], a
 	ld hl, $de82
 	ld a, [hli]
 	cp $a6
 	jr c, .asm_1194
 	ld a, $a5
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, $90
-	ld [rWY], a
+	ldh [rWY], a
 	jr .asm_1199
 .asm_1194
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, [hl]
-	ld [rWY], a
+	ldh [rWY], a
 .asm_1199
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
@@ -2596,28 +2596,28 @@ RunCrazyTownBossScreen:
 	call HandlePlayerInput
 	call Func_2c2b
 .asm_11b7
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 72
 	jr nz, .asm_11b7
 	ld a, [$dec9]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call UpdatePlayerStateHome
 .asm_11c5
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 76
 	jr nz, .asm_11c5
 	ld a, [$decb]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call HandlePlayerCollision
 .asm_11d3
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 87
 	jr nz, .asm_11d3
 	call WaitHBlankStart
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
 	call PrepareCameraUpdate
 	call HandleCameraScrollHome
 	call Func_3939
@@ -2631,11 +2631,11 @@ Func_11fc:
 	call LoadLevelGBCpalettesHome
 	ld a, [hli]
 	ld [$ddea], a
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld bc, vBGWin
 	ld de, $400
 .asm_1212
@@ -2655,7 +2655,7 @@ Func_11fc:
 	dec d
 	jr nz, .asm_1221
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 RunTreasureIslandBossScreen:
@@ -2677,15 +2677,15 @@ RunTreasureIslandBossScreen:
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -1
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 64
 	ld [$de83], a
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, $b8
 	ld [$de82], a
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld hl, $9a00
 	ld bc, $1a0
 	call Func_10e9
@@ -2701,25 +2701,25 @@ RunTreasureIslandBossScreen:
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_12a3
 	ld a, 128
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld a, [$dec7]
-	ld [rSCX], a
+	ldh [rSCX], a
 	ld hl, $de82
 	ld a, [hli]
 	cp $a6
 	jr c, .asm_12be
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, 144
-	ld [rWY], a
+	ldh [rWY], a
 	jr .asm_12c3
 .asm_12be
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, [hl]
-	ld [rWY], a
+	ldh [rWY], a
 .asm_12c3
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
@@ -2734,36 +2734,36 @@ RunTreasureIslandBossScreen:
 	call Func_3939
 	call Func_173b
 .asm_12e7
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 72
 	jr nz, .asm_12e7
 	ld a, [$dec9]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call TryInitNextScreenHome
 	call Func_2c2b
 .asm_12f8
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 80
 	jr nz, .asm_12f8
 	ld a, [$decb]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call LoadDynamicEntitySprites
 .asm_1306
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 96
 	jr nz, .asm_1306
 	ld a, [$decd]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call Func_16d2
 .asm_1314
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 103
 	jr nz, .asm_1314
 	call WaitHBlankStart
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
 	call DrawPlayerSprite
 	call DrawLevelHUD
 	call UpdateFrameCounter
@@ -2789,7 +2789,7 @@ RunTazZooBossScreen:
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, 1
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld hl, $9a00
 	ld bc, $120
@@ -2807,13 +2807,13 @@ RunTazZooBossScreen:
 	ld hl, $9b20
 	ld bc, $80
 	ld d, $c4
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_13a6
 	push hl
 	push bc
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_1397
 	ld a, $01
 	ld [hli], a
@@ -2822,7 +2822,7 @@ RunTazZooBossScreen:
 	or b
 	jr nz, .asm_1397
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	pop bc
 	pop hl
 	ld d, $c5
@@ -2843,23 +2843,23 @@ RunTazZooBossScreen:
 	ld hl, PlayerEyePopAnimations
 	call InitPlayerAnimation
 	ld a, 144
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, 7
-	ld [rWX], a
+	ldh [rWX], a
 	sub a
 	ld [$ddc3], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 5, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_13df
 	ld a, $80
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld a, [$dec7]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
 	call TryTogglePause
@@ -2874,25 +2874,25 @@ RunTazZooBossScreen:
 	call Func_1722
 	call Func_16fc
 .asm_140f
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 72
 	jr nz, .asm_140f
 	ld a, [$de82]
 	cpl
 	inc a
-	ld [rSCX], a
+	ldh [rSCX], a
 	call Func_3939
 	call Func_173b
 	call LoadDynamicEntitySprites
 .asm_1425
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 103
 	jr nz, .asm_1425
 	call WaitHBlankStart
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
 	call DrawPlayerSprite
 	call DrawLevelHUD
 	call UpdateFrameCounter
@@ -2916,15 +2916,15 @@ RunSpaceStationBossScreen:
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -2
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 24
 	ld [$de83], a
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, $b0
 	ld [$de82], a
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld hl, vBGWin
 	ld bc, $100
 	call Func_10e9
@@ -2947,24 +2947,24 @@ RunSpaceStationBossScreen:
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_14bb
 	ld hl, $de82
 	ld a, [hli]
 	cp 166
 	jr c, .asm_14cd
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, 144
-	ld [rWY], a
+	ldh [rWY], a
 	jr .asm_14d2
 .asm_14cd
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, [hl]
-	ld [rWY], a
+	ldh [rWY], a
 .asm_14d2
 	ld a, $90
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
 	call TryTogglePause
@@ -2980,11 +2980,11 @@ RunSpaceStationBossScreen:
 	call Func_3939
 	call Func_173b
 .asm_1500
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 88
 	jr nz, .asm_1500
 	ld a, 176
-	ld [rWX], a
+	ldh [rWX], a
 	call LoadDynamicEntitySprites
 	call DrawPlayerSprite
 	call DrawLevelHUD
@@ -3010,15 +3010,15 @@ RunFuddForestBossScreen:
 	call WriteDMACodeToHRAM
 	call ResetFrameCounter
 	ld a, -1
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 48
 	ld [$de83], a
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, $b8
 	ld [$de82], a
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld hl, $9a00
 	ld bc, $1a0
 	call Func_10e9
@@ -3044,25 +3044,25 @@ RunFuddForestBossScreen:
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_15ab
 	ld a, 128
-	ld [rSCY], a
+	ldh [rSCY], a
 	ld a, [$dec7]
-	ld [rSCX], a
+	ldh [rSCX], a
 	ld hl, $de82
 	ld a, [hli]
 	cp 166
 	jr c, .asm_15c6
 	ld a, 165
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, 144
-	ld [rWY], a
+	ldh [rWY], a
 	jr .asm_15cb
 .asm_15c6
-	ld [rWX], a
+	ldh [rWX], a
 	ld a, [hl]
-	ld [rWY], a
+	ldh [rWY], a
 .asm_15cb
 	call ClearOAMBufferHome
 	call ReadJoyPadHome
@@ -3075,39 +3075,39 @@ RunFuddForestBossScreen:
 	call PrepareCameraUpdate
 	call HandleCameraScrollHome
 .asm_15e9
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 64
 	jr nz, .asm_15e9
 	ld a, [$dec9]
-	ld [rSCX], a
+	ldh [rSCX], a
 	call Func_3939
 	call Func_173b
 	call LoadDynamicEntitySprites
 .asm_15fd
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 103
 	jr nz, .asm_15fd
 	call WaitHBlankStart
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
 	call TryInitNextScreenHome
 	call Func_2c2b
 	call Func_170c
 .asm_1617
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 112
 	jr nz, .asm_1617
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	call DrawPlayerSprite
 	call DrawLevelHUD
 	call UpdateFrameCounter
 	jp .asm_15ab
 
 Func_162d:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, $05
@@ -3118,13 +3118,13 @@ Func_162d:
 	ld b, [hl]
 	ld hl, $7396
 	call LoadOAMSprites
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
 	ld hl, $de82
 	ld a, [hld]
 	cp [hl]
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	jr nc, .asm_1652
 	cpl
 	inc a
@@ -3141,16 +3141,16 @@ Func_162d:
 	ld sp, hl
 	ld d, $15
 	ld hl, $8e90
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .waitCurrentHBlankFinish
 	ld hl, $8e20
 .waitCurrentHBlankFinish
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish
 .waitHBlankStart
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart
 	pop bc
@@ -3186,11 +3186,11 @@ Func_162d:
 	dec d
 	jr nz, .waitCurrentHBlankFinish
 .waitCurrentHBlankFinish2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish2
 .waitHBlankStart2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart2
 	pop bc
@@ -3206,27 +3206,27 @@ Func_162d:
 	ld a, [$de82]
 	sub $10
 	ld c, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add c
 	ld c, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	ret c
 	call Func_1ae2
 	ret
 
 Func_16d2:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $1c
 	srl a
 	srl a
@@ -3256,7 +3256,7 @@ Func_1704:
 	jp Func_177a1
 
 Func_170c:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, $05
@@ -3270,13 +3270,13 @@ Func_170c:
 	ret
 
 Func_1722:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	ret c
 	ld hl, $de81
@@ -3291,7 +3291,7 @@ Func_1722:
 	ret
 
 Func_173b:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, $ddad
@@ -3312,8 +3312,8 @@ Func_1748:
 	ret z
 	ld a, [hli]
 	ld d, a
-	ld [$ff8a], a
-	ld a, [hFrameCounter]
+	ldh [$ff8a], a
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_1763
 	sra d
@@ -3359,54 +3359,54 @@ Func_1748:
 	ld [hli], a
 	ld d, a
 	push hl
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_17e2
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr z, .asm_17e2
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	bit 1, a
 	jr nz, .asm_17e2
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	ld l, a
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_17e2
 	ld a, l
 	cp $10
 	jr nc, .asm_17e2
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_17c7
 	inc a
 	jr nz, .asm_17e2
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f8
 	jr c, .asm_17e2
 	jr .asm_17dc
 .asm_17c7
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	rra
 	jr nc, .asm_17d5
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $0f
 	jr nc, .asm_17e2
 	jr .asm_17dc
 .asm_17d5
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $1e
 	jr nc, .asm_17e2
 .asm_17dc
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_17e2
 	pop hl
 	push hl
@@ -3419,9 +3419,9 @@ Func_1748:
 	ld l, a
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	add a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	jr nc, .asm_17f9
 	cpl
 	inc a
@@ -3638,18 +3638,18 @@ UpdatePlayerStateHome:
 	jp UpdatePlayerState
 
 Func_1948:
-	ld [$ffc3], a
+	ldh [$ffc3], a
 	sub a
-	ld [$ffb2], a
-	ld [$ffb3], a
-	ld [$ffb4], a
-	ld [$ffb6], a
-	ld [$ffaf], a
-	ld [$ffd1], a
-	ld [$ffd2], a
-	ld a, [$ffad]
+	ldh [$ffb2], a
+	ldh [$ffb3], a
+	ldh [$ffb4], a
+	ldh [$ffb6], a
+	ldh [$ffaf], a
+	ldh [$ffd1], a
+	ldh [$ffd2], a
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $0c
 	call PlaySoundEffectHome
 	ret
@@ -3689,7 +3689,7 @@ InitPlayerPosition:
 	ret
 
 HandlePlayerInput:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, $de84
@@ -3708,7 +3708,7 @@ HandlePlayerInput:
 	ld d, a
 	ld a, [wHeldKeys]
 	ld e, a
-	ld a, [hLevelCleared]
+	ldh a, [hLevelCleared]
 	and a
 	jp nz, Func_1a37
 	bit 2, b
@@ -3756,13 +3756,13 @@ asm_19f2:
 	jr nz, .asm_1a2d
 	bit 4, b
 	jr z, .asm_1a15
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_1a15
 	bit 4, d
 	jr nz, .asm_1a15
 	ld a, $d0
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	res 4, b
 	ld d, $20
 	ld hl, PlayerDamagedAnimations
@@ -3770,7 +3770,7 @@ asm_19f2:
 .asm_1a15
 	ld a, $13
 	call PlaySoundEffectHome
-	ld a, [hCurHealth]
+	ldh a, [hCurHealth]
 	sub $01
 	jr nc, .asm_1a29
 	call Func_1ae2
@@ -3778,7 +3778,7 @@ asm_19f2:
 	ld d, $00
 	jr .asm_1a35
 .asm_1a29
-	ld [hCurHealth], a
+	ldh [hCurHealth], a
 	jr .asm_1a35
 .asm_1a2d
 	cp $78
@@ -3792,14 +3792,14 @@ asm_19f2:
 Func_1a37:
 	call Func_2324
 	sub a
-	ld [$ffb9], a
-	ld [$ffb7], a
+	ldh [$ffb9], a
+	ldh [$ffb7], a
 	ld hl, hLevelCleared
 	ld a, [hl]
 	inc [hl]
 	cp $01
 	jr nz, .asm_1a64
-	ld a, [hNumClapboards]
+	ldh a, [hNumClapboards]
 	cp 4
 	jr nz, .asm_1a55
 	res 5, b
@@ -3824,8 +3824,8 @@ Func_1a37:
 
 Func_1a73:
 	sub a
-	ld [$ffb9], a
-	ld [$ffb7], a
+	ldh [$ffb9], a
+	ldh [$ffb7], a
 	bit 4, b
 	jr nz, .asm_1a84
 	ld hl, PlayerDamagedAnimations
@@ -3834,14 +3834,14 @@ Func_1a73:
 .asm_1a84
 	push bc
 	push de
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub $0a
 	bit 5, b
 	jr z, .asm_1a90
 	add $0c
 .asm_1a90
 	ld c, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub $18
 	ld b, a
 	ld hl, DizzyStarsSprite
@@ -3849,7 +3849,7 @@ Func_1a73:
 	ld hl, PlayerDeathAnimations
 	call InitPlayerAnimation
 	ld hl, $ffb8
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr nc, .asm_1aab
 	inc [hl]
@@ -3868,9 +3868,9 @@ Func_1a73:
 	ld a, [wCurScreen]
 	dec a
 	ld [wCurScreen], a
-	ld a, [hMaxHealth]
-	ld [hCurHealth], a
-	ld a, [hNumLives]
+	ldh a, [hMaxHealth]
+	ldh [hCurHealth], a
+	ldh a, [hNumLives]
 	and a
 	jr nz, .asm_1ad5
 	ld a, $4b
@@ -3879,7 +3879,7 @@ Func_1a73:
 .asm_1ad5
 	sub $01
 	daa
-	ld [hNumLives], a
+	ldh [hNumLives], a
 .asm_1ada
 	call Func_3ddc
 .asm_1add
@@ -3889,14 +3889,14 @@ Func_1a73:
 	jp Func_19e9
 
 Func_1ae2:
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
 	set 2, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [hCurHealth], a
-	ld [$ffb0], a
+	ldh [hCurHealth], a
+	ldh [$ffb0], a
 	jp Func_2326
 
 DizzyStarsSprite:
@@ -3907,11 +3907,11 @@ DizzyStarsSprite:
 Func_1afd:
 	bit 4, d
 	jp nz, Func_1d0e
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr z, .asm_1b1d
 	dec a
-	ld [$ffb6], a
+	ldh [$ffb6], a
 	jr nz, .asm_1b0e
 	res 2, d
 .asm_1b0e
@@ -3933,7 +3933,7 @@ Func_1afd:
 	jp Func_19e5
 
 Func_1b2f:
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	ret nz
 	bit 7, e
@@ -3948,10 +3948,10 @@ Func_1b2f:
 	ret
 
 Func_1b46:
-	ld a, [$ffe8]
+	ldh a, [$ffe8]
 	and a
 	jr nz, .asm_1ba3
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_1b55
 	cp $38
@@ -3970,16 +3970,16 @@ Func_1b46:
 	jr .asm_1b71
 .asm_1b69
 	sub a
-	ld [$ffc4], a
+	ldh [$ffc4], a
 .asm_1b6c
 	res 2, d
 	res 3, d
 	ret
 .asm_1b71
-	ld [$ffc4], a
+	ldh [$ffc4], a
 	bit 4, b
 	jr z, .asm_1b6c
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	jr nz, .asm_1b69
 	bit 0, d
@@ -3990,7 +3990,7 @@ Func_1b46:
 	ret nz
 	ld d, $04
 	ld hl, PlayerRunningAnimations
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jp z, InitPlayerAnimation
 	ld hl, PlayerHabaneroAnimations
@@ -4016,26 +4016,26 @@ Func_1b46:
 	res 5, b
 	ld a, $02
 .asm_1bba
-	ld [$ffc4], a
+	ldh [$ffc4], a
 	bit 4, b
 	ret z
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	ret nz
 	bit 0, d
 	ret nz
 	ld hl, BugsSurfingAnimation
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 5, a
 	jr z, .asm_1bd2
 	ld hl, $78f0
 .asm_1bd2
 	ld a, l
-	ld [$ffd6], a
+	ldh [$ffd6], a
 	ld a, h
-	ld [$ffd7], a
+	ldh [$ffd7], a
 	sub a
-	ld [$ffd5], a
+	ldh [$ffd5], a
 	ret
 
 Func_1bdc:
@@ -4049,13 +4049,13 @@ Func_1bdc:
 	jr nz, .asm_1bf3
 	bit 1, e
 	jr z, .asm_1bf3
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	and a
 	jr z, .asm_1bf3
 	ld [hl], $01
 .asm_1bf3
 	ld a, $d0
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	res 4, b
 	jr .asm_1c58
 .asm_1bfb
@@ -4071,7 +4071,7 @@ Func_1bdc:
 	ld a, $0a
 	call PlaySoundEffectHome
 .asm_1c0e
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	add $1c
 	add $10
 	cp [hl]
@@ -4087,7 +4087,7 @@ Func_1bdc:
 	call InitPlayerAnimation
 .asm_1c28
 	ld a, $f0
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	res 4, b
 	jr .asm_1c51
 .asm_1c30
@@ -4095,11 +4095,11 @@ Func_1bdc:
 	jr nz, .asm_1c4d
 	bit 4, b
 	jr z, .asm_1c58
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	ret nz
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	set 6, b
@@ -4116,15 +4116,15 @@ Func_1bdc:
 	res 7, d
 	ret
 .asm_1c58
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	ret nz
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	jr c, .asm_1c94
 	bit 1, e
 	jr z, .asm_1c7b
-	ld a, [$ffb3]
+	ldh a, [$ffb3]
 	and a
 	jr nz, .asm_1c7b
 	bit 7, b
@@ -4136,7 +4136,7 @@ Func_1bdc:
 	ld hl, PlayerUmbrellaAnimations
 	jp InitPlayerAnimation
 .asm_1c7b
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	cp $38
 	jr c, .asm_1c89
 	ld d, $00
@@ -4163,7 +4163,7 @@ Func_1c9f:
 	dec [hl]
 	ld d, $00
 	sub a
-	ld [$ffb3], a
+	ldh [$ffb3], a
 .asm_1cac
 	bit 0, e
 	jr nz, .asm_1cb3
@@ -4179,7 +4179,7 @@ Func_1c9f:
 	ret nz
 	bit 7, d
 	ret nz
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_1cc8
 	cp $38
@@ -4188,7 +4188,7 @@ Func_1c9f:
 	set 0, c
 	ld d, $00
 	sub a
-	ld [$ffb3], a
+	ldh [$ffb3], a
 	ld [hl], $0e
 	ld a, $01
 	call PlaySoundEffectHome
@@ -4196,7 +4196,7 @@ Func_1c9f:
 	jp InitPlayerAnimation
 
 Func_1cdc:
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	ret nz
 	ld a, d
@@ -4207,11 +4207,11 @@ Func_1cdc:
 	ld a, [wNewKeys]
 	bit PADB_SELECT, a
 	jr z, .asm_1d00
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr nz, .asm_1d00
 	ld a, $3c
-	ld [$ffb1], a
+	ldh [$ffb1], a
 	ld d, $10
 	ld hl, PlayerTransformationAnimations
 	jp InitPlayerAnimation
@@ -4241,15 +4241,15 @@ Func_1d20:
 	call Func_232c
 	ld d, $00
 	res 4, b
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_1d39
-	ld a, [$ffb7]
+	ldh a, [$ffb7]
 	dec a
-	ld [$ffb7], a
+	ldh [$ffb7], a
 	jr nz, .asm_1d39
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jr .asm_1d5e
 .asm_1d39
 	bit 7, e
@@ -4261,7 +4261,7 @@ Func_1d20:
 	jr z, .asm_1d49
 	ld a, $ec
 .asm_1d47
-	ld [$ffc6], a
+	ldh [$ffc6], a
 .asm_1d49
 	sub a
 	bit 5, e
@@ -4275,19 +4275,19 @@ Func_1d20:
 	res 5, b
 	ld a, $01
 .asm_1d5c
-	ld [$ffc4], a
+	ldh [$ffc4], a
 .asm_1d5e
 	jp Func_19e5
 
 Func_1d61:
 	sub a
-	ld [$ffc4], a
-	ld [$ff8a], a
+	ldh [$ffc4], a
+	ldh [$ff8a], a
 	ld hl, hPlayerXPos
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	sub [hl]
 	inc l
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	sbc [hl]
 	jr c, .asm_1d79
 	ld hl, $ffba
@@ -4295,22 +4295,22 @@ Func_1d61:
 	jr .asm_1d88
 .asm_1d79
 	ld hl, $ffbc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
 	jr c, .asm_1d93
 .asm_1d88
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, [hl]
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_1d93
 	bit 5, e
 	jr z, .asm_1d9b
@@ -4325,7 +4325,7 @@ Func_1d61:
 	rra
 	jr nc, .asm_1dc6
 	bit 5, b
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	jr z, .asm_1db4
 	inc a
 	jr z, .asm_1dc6
@@ -4336,7 +4336,7 @@ Func_1d61:
 	jr z, .asm_1dc6
 	ld a, $20
 .asm_1db9
-	ld [$ffc5], a
+	ldh [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerSkateboardingPushAnimations
@@ -4356,7 +4356,7 @@ Func_1dc9:
 	jr z, .asm_1ddb
 	ld a, $0c
 .asm_1ddb
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	ld hl, BugsClimbingAnimation
 	bit 7, b
 	jr z, .asm_1de7
@@ -4365,16 +4365,16 @@ Func_1dc9:
 	and a
 	ld a, $0c
 	jr z, .asm_1df0
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	and $1c
 .asm_1df0
 	add l
-	ld [$ffd6], a
+	ldh [$ffd6], a
 	ld a, h
 	adc $00
-	ld [$ffd7], a
+	ldh [$ffd7], a
 	sub a
-	ld [$ffd5], a
+	ldh [$ffd5], a
 	bit 4, b
 	jr nz, .asm_1e14
 	bit 1, e
@@ -4382,14 +4382,14 @@ Func_1dc9:
 	bit 6, b
 	jr nz, .asm_1e1b
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	set 0, b
 	set 6, b
 .asm_1e14
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jr .asm_1e1b
 .asm_1e19
 	res 6, b
@@ -4398,13 +4398,13 @@ Func_1dc9:
 
 Func_1e1e:
 	sub a
-	ld [$ffc4], a
-	ld [$ff8a], a
+	ldh [$ffc4], a
+	ldh [$ff8a], a
 	ld hl, hPlayerXPos
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	sub [hl]
 	inc l
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	sbc [hl]
 	jr c, .asm_1e36
 	ld hl, $ffba
@@ -4412,22 +4412,22 @@ Func_1e1e:
 	jr .asm_1e45
 .asm_1e36
 	ld hl, $ffbc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
 	jr c, .asm_1e50
 .asm_1e45
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, [hl]
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_1e50
 	bit 5, e
 	jr z, .asm_1e58
@@ -4442,7 +4442,7 @@ Func_1e1e:
 	rra
 	jr nc, .asm_1e83
 	bit 5, b
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	jr z, .asm_1e71
 	inc a
 	jr z, .asm_1e83
@@ -4453,7 +4453,7 @@ Func_1e1e:
 	jr z, .asm_1e83
 	ld a, $10
 .asm_1e76
-	ld [$ffc5], a
+	ldh [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerBarrelPaddleAnimations
@@ -4467,21 +4467,21 @@ Func_1e86:
 
 Func_1e8c:
 	call Func_2324
-	ld a, [$ffc0]
+	ldh a, [$ffc0]
 	and a
 	jr z, .asm_1e9a
 	dec a
-	ld [$ffc0], a
+	ldh [$ffc0], a
 	jp .asm_1f70
 .asm_1e9a
-	ld a, [$ffc1]
+	ldh a, [$ffc1]
 	and a
 	jr z, .asm_1eb6
 	dec a
-	ld [$ffc1], a
+	ldh [$ffc1], a
 	jp nz, .asm_1f70
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld hl, hPlayerYPos
 	ld a, [hl]
 	sub $01
@@ -4503,25 +4503,25 @@ Func_1e8c:
 	res 5, b
 	ld a, $0c
 .asm_1ec9
-	ld [$ffc5], a
+	ldh [$ffc5], a
 	ld hl, $786e
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	bit 2, a
 	jr z, .asm_1ed7
 	ld hl, $7872
 .asm_1ed7
 	ld a, l
-	ld [$ffd6], a
+	ldh [$ffd6], a
 	ld a, h
-	ld [$ffd7], a
+	ldh [$ffd7], a
 	sub a
-	ld [$ffd5], a
+	ldh [$ffd5], a
 	bit 1, c
 	jr z, .asm_1ef2
 	bit 6, e
 	jr z, .asm_1ef2
 	ld a, $2a
-	ld [$ffc1], a
+	ldh [$ffc1], a
 	ld hl, PlayerDiggingEmergeAnimations
 	call InitPlayerAnimation
 .asm_1ef2
@@ -4539,13 +4539,13 @@ Func_1e8c:
 	ld a, $05
 	ld [MBC5RomBank], a
 	ld a, [hli]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_1f0a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	and a
 	jr z, .asm_1f6e
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld d, a
 	and $0f
@@ -4564,7 +4564,7 @@ Func_1e8c:
 	jr .asm_1f0a
 .asm_1f28
 	ld a, [hl]
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	ld hl, hPlayerYPos
 	ld a, [hli]
 	ld e, a
@@ -4609,7 +4609,7 @@ Func_1e8c:
 	swap a
 	add l
 	ld l, a
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	ld [hl], a
 	pop de
 	pop bc
@@ -4624,13 +4624,13 @@ Func_1e8c:
 
 Func_1f73:
 	sub a
-	ld [$ffc4], a
-	ld [$ff8a], a
+	ldh [$ffc4], a
+	ldh [$ff8a], a
 	ld hl, hPlayerXPos
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	sub [hl]
 	inc l
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	sbc [hl]
 	jr c, .asm_1f8b
 	ld hl, $ffba
@@ -4638,24 +4638,24 @@ Func_1f73:
 	jr .asm_1f9a
 .asm_1f8b
 	ld hl, $ffbc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
 	jr c, .asm_1fa5
 .asm_1f9a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, [hl]
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_1fa5
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	bit 5, e
 	jr z, .asm_1fb4
 	set 5, b
@@ -4671,9 +4671,9 @@ Func_1f73:
 	jr z, .asm_1fc1
 	ld a, $10
 .asm_1fbf
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_1fc1
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $0f
 	jr nz, .asm_1fcc
 	ld a, $05
@@ -4696,13 +4696,13 @@ Func_1fcf:
 
 Func_1fe3:
 	sub a
-	ld [$ffc4], a
-	ld [$ff8a], a
+	ldh [$ffc4], a
+	ldh [$ff8a], a
 	ld hl, hPlayerXPos
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	sub [hl]
 	inc l
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	sbc [hl]
 	jr c, .asm_1ffb
 	ld hl, $ffba
@@ -4710,22 +4710,22 @@ Func_1fe3:
 	jr .asm_200a
 .asm_1ffb
 	ld hl, $ffbc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
 	jr c, .asm_2015
 .asm_200a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, [hl]
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_2015
 	bit 5, e
 	jr z, .asm_201d
@@ -4740,7 +4740,7 @@ Func_1fe3:
 	rra
 	jr nc, .asm_2042
 	bit 5, b
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	jr z, .asm_2036
 	inc a
 	jr z, .asm_2042
@@ -4751,7 +4751,7 @@ Func_1fe3:
 	jr z, .asm_2042
 	ld a, $08
 .asm_203b
-	ld [$ffc5], a
+	ldh [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
 .asm_2042
@@ -4759,33 +4759,33 @@ Func_1fe3:
 
 Func_2045:
 	sub a
-	ld [$ffc4], a
-	ld [$ff8a], a
+	ldh [$ffc4], a
+	ldh [$ff8a], a
 	ld hl, $ffbc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	jr c, .asm_2064
 	ld a, $01
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, [hl]
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_2064
 	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_207e
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
 	jr z, .asm_207e
 	ld a, $28
-	ld [$ffc5], a
+	ldh [$ffc5], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerBicyclePedalAnimations
@@ -4795,23 +4795,23 @@ Func_2045:
 
 Func_2081:
 	call Func_2324
-	ld a, [$ffd6]
+	ldh a, [$ffd6]
 	cp $3b
 	jp nz, .asm_2121
-	ld a, [$ffd7]
+	ldh a, [$ffd7]
 	cp $78
 	jp nz, .asm_2121
 	sub a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, $02
-	ld [$ff8b], a
+	ldh [$ff8b], a
 .asm_2099
 	ld hl, $ffba
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	cp [hl]
 	inc hl
 	jr nz, .asm_20ad
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	cp [hl]
 	jr nz, .asm_20ad
 	ld hl, $ff8a
@@ -4819,10 +4819,10 @@ Func_2081:
 	jr .asm_20d4
 .asm_20ad
 	ld hl, $ffba
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc hl
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	ld hl, hPlayerXPos
 	jr c, .asm_20c6
@@ -4846,14 +4846,14 @@ Func_2081:
 	jr nz, .asm_2099
 .asm_20d4
 	ld a, $02
-	ld [$ff8b], a
+	ldh [$ff8b], a
 .asm_20d8
 	ld hl, $ffbc
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	cp [hl]
 	inc hl
 	jr nz, .asm_20ec
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	cp [hl]
 	jr nz, .asm_20ec
 	ld hl, $ff8a
@@ -4861,10 +4861,10 @@ Func_2081:
 	jr .asm_2113
 .asm_20ec
 	ld hl, $ffbc
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub [hl]
 	inc hl
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc [hl]
 	ld hl, hPlayerYPos
 	jr c, .asm_2105
@@ -4887,20 +4887,20 @@ Func_2081:
 	dec [hl]
 	jr nz, .asm_20d8
 .asm_2113
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	cp $02
 	jr nz, .asm_2142
 	ld hl, PlayerTeleportInAnimations
 	call InitPlayerAnimation
 	jr .asm_2142
 .asm_2121
-	ld a, [$ffd6]
+	ldh a, [$ffd6]
 	sub $4d
-	ld a, [$ffd7]
+	ldh a, [$ffd7]
 	sbc $79
 	jr c, .asm_2142
 	bit 7, b
-	ld a, [$ffd6]
+	ldh a, [$ffd6]
 	jr nz, .asm_2139
 	sub $4d
 	cp $0c
@@ -4912,19 +4912,19 @@ Func_2081:
 	jr c, .asm_2142
 .asm_213f
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 .asm_2142
 	jp Func_19e5
 
 Func_2145:
 	sub a
-	ld [$ffc4], a
-	ld [$ff8a], a
+	ldh [$ffc4], a
+	ldh [$ff8a], a
 	ld hl, hPlayerXPos
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	sub [hl]
 	inc l
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	sbc [hl]
 	jr c, .asm_215d
 	ld hl, $ffba
@@ -4932,39 +4932,39 @@ Func_2145:
 	jr .asm_216c
 .asm_215d
 	ld hl, $ffbc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc [hl]
 	dec l
 	ld a, $01
 	jr c, .asm_2177
 .asm_216c
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, [hl]
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_2177
 	bit 5, e
 	jr z, .asm_2183
-	ld a, [$ffeb]
+	ldh a, [$ffeb]
 	set 7, a
-	ld [$ffeb], a
+	ldh [$ffeb], a
 	jr .asm_218d
 .asm_2183
 	bit 4, e
 	jr z, .asm_218d
-	ld a, [$ffeb]
+	ldh a, [$ffeb]
 	res 7, a
-	ld [$ffeb], a
+	ldh [$ffeb], a
 .asm_218d
-	ld a, [$ffeb]
+	ldh a, [$ffeb]
 	add a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	jr nc, .asm_219b
 	inc a
 	jr z, .asm_21a2
@@ -4975,9 +4975,9 @@ Func_2145:
 	jr z, .asm_21a2
 	ld a, $10
 .asm_21a0
-	ld [$ffc5], a
+	ldh [$ffc5], a
 .asm_21a2
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_21bf
 	ld hl, $ffeb
@@ -5000,7 +5000,7 @@ Func_2145:
 	jr z, .asm_21c9
 	ld hl, LolaHovershipAnimation
 .asm_21c9
-	ld a, [$ffeb]
+	ldh a, [$ffeb]
 	and $7f
 	res 5, b
 	cp $05
@@ -5010,32 +5010,32 @@ Func_2145:
 	add a
 	add a
 	add l
-	ld [$ffd6], a
+	ldh [$ffd6], a
 	ld a, h
 	adc $00
-	ld [$ffd7], a
+	ldh [$ffd7], a
 	sub a
-	ld [$ffd5], a
-	ld a, [$ffbe]
+	ldh [$ffd5], a
+	ldh a, [$ffbe]
 	ld l, a
-	ld a, [$ffbf]
+	ldh a, [$ffbf]
 	ld h, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	ld a, $fd
 	jr c, .asm_21f4
 	ld a, $f8
 .asm_21f4
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	push bc
 	push de
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld c, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	ld b, a
-	ld a, [$ffeb]
+	ldh a, [$ffeb]
 	add a
 	jr c, .asm_221a
 	add (HovershipSmokeBallOffsets0 & $ff)
@@ -5069,14 +5069,14 @@ Func_2145:
 	ld b, a
 	ld hl, HovershipSmokeBallSprite1
 .asm_222f
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 2, a
 	jr z, .asm_2238
 	call LoadOAMSpritesCameraOffset
 .asm_2238
 	pop de
 	pop bc
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $0f
 	jr nz, .asm_2245
 	ld a, $05
@@ -5110,15 +5110,15 @@ Func_226c:
 	call Func_2324
 	res 4, b
 	set 5, b
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_2285
-	ld a, [$ffb7]
+	ldh a, [$ffb7]
 	dec a
-	ld [$ffb7], a
+	ldh [$ffb7], a
 	jr nz, .asm_2285
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jr .asm_22c6
 .asm_2285
 	bit 7, e
@@ -5130,7 +5130,7 @@ Func_226c:
 	jr z, .asm_2295
 	ld a, $f0
 .asm_2293
-	ld [$ffc6], a
+	ldh [$ffc6], a
 .asm_2295
 	ld a, $f0
 	bit 5, e
@@ -5142,7 +5142,7 @@ Func_226c:
 	jr z, .asm_22a5
 	ld a, $10
 .asm_22a5
-	ld [$ffc5], a
+	ldh [$ffc5], a
 	ld hl, hPlayerYPos
 	ld a, [hli]
 	sub $30
@@ -5169,25 +5169,25 @@ Func_226c:
 
 Func_22c9:
 	ld hl, hPlayerYPos
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	sub [hl]
 	inc l
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	sbc [hl]
 	jr c, .asm_22e0
-	ld a, [$ffbb]
+	ldh a, [$ffbb]
 	ld [hld], a
-	ld a, [$ffba]
+	ldh a, [$ffba]
 	ld [hl], a
 	sub a
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	jr .asm_22f5
 .asm_22e0
 	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_22f5
 	ld a, $e0
-	ld [$ffc6], a
+	ldh [$ffc6], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerHelicopterAnimations
@@ -5200,7 +5200,7 @@ Func_22c9:
 	ld hl, $78ab
 	bit 4, b
 	jr nz, .asm_2314
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $0c
 	srl a
 	add $a3
@@ -5212,9 +5212,9 @@ Func_22c9:
 	ld h, [hl]
 	ld l, a
 .asm_2314
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	ld b, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld c, a
 	call LoadOAMSpritesCameraOffset
 	pop de
@@ -5226,31 +5226,31 @@ Func_2324:
 	ld d, $00
 Func_2326:
 	sub a
-	ld [$ffaf], a
+	ldh [$ffaf], a
 Func_2329:
 	sub a
-	ld [$ffc5], a
+	ldh [$ffc5], a
 Func_232c:
 	sub a
-	ld [$ffc2], a
-	ld [$ffc3], a
-	ld [$ffc4], a
-	ld [$ffc6], a
-	ld [$ffb2], a
-	ld [$ffb3], a
-	ld [$ffb4], a
-	ld [$ffb6], a
-	ld [$ffd1], a
-	ld [$ffd2], a
+	ldh [$ffc2], a
+	ldh [$ffc3], a
+	ldh [$ffc4], a
+	ldh [$ffc6], a
+	ldh [$ffb2], a
+	ldh [$ffb3], a
+	ldh [$ffb4], a
+	ldh [$ffb6], a
+	ldh [$ffd1], a
+	ldh [$ffd2], a
 	ret
 
 InitPlayerState:
 	ld a, $06
 	ld [MBC5RomBank], a
 	ld a, [hli]
-	ld [hDiggingMetatileReplacements], a
+	ldh [hDiggingMetatileReplacements], a
 	ld a, [hli]
-	ld [hDiggingMetatileReplacements + 1], a
+	ldh [hDiggingMetatileReplacements + 1], a
 	ld c, $ac
 	ld b, $14
 	sub a
@@ -5259,13 +5259,13 @@ InitPlayerState:
 	inc c
 	dec b
 	jr nz, .asm_2352
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 4, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ret
 
 HandlePlayerCollision:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, hPlayerXPos
@@ -5285,11 +5285,11 @@ HandlePlayerCollision:
 	ld [hli], a
 	res 1, [hl]
 	sub a
-	ld [$ffd4], a
-	ld a, [$ffb0]
+	ldh [$ffd4], a
+	ldh a, [$ffb0]
 	cp $21
 	ret z
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $12
 	jr nz, .asm_2399
 	ld hl, $4
@@ -5308,12 +5308,12 @@ HandlePlayerCollision:
 	ld hl, $0
 	jr .asm_23e8
 .asm_23a2
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_23b7
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld l, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	ld h, a
 	ld a, l
 	cp c
@@ -5323,10 +5323,10 @@ HandlePlayerCollision:
 	jr nz, .asm_23c1
 	jr .asm_23e8
 .asm_23b7
-	ld a, [$ff96]
+	ldh a, [$ff96]
 	add $10
 	ld l, a
-	ld a, [$ff97]
+	ldh a, [$ff97]
 	adc $00
 	ld h, a
 .asm_23c1
@@ -5335,21 +5335,21 @@ HandlePlayerCollision:
 	ld a, b
 	sbc h
 	jr c, .asm_23e8
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_23d8
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add $90
 	ld l, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc 0
 	ld h, a
 	jr .asm_23e2
 .asm_23d8
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	sub $18
 	ld l, a
-	ld a, [$ff99]
+	ldh a, [$ff99]
 	sbc 0
 	ld h, a
 .asm_23e2
@@ -5369,10 +5369,10 @@ HandlePlayerCollision:
 	jr .asm_2420
 .asm_23f4
 	inc de
-	ld a, [$ff9e]
+	ldh a, [$ff9e]
 	add $10
 	ld l, a
-	ld a, [$ff9f]
+	ldh a, [$ff9f]
 	adc $00
 	ld h, a
 	ld a, e
@@ -5380,10 +5380,10 @@ HandlePlayerCollision:
 	ld a, d
 	sbc h
 	jr c, .asm_2420
-	ld a, [$ff9c]
+	ldh a, [$ff9c]
 	add $10
 	ld l, a
-	ld a, [$ff9d]
+	ldh a, [$ff9d]
 	adc $00
 	ld h, a
 	ld a, l
@@ -5400,10 +5400,10 @@ HandlePlayerCollision:
 	ld d, h
 	ld e, l
 	sub a
-	ld [$ffc6], a
-	ld [$ffcc], a
+	ldh [$ffc6], a
+	ldh [$ffcc], a
 .asm_2427
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	jr nc, .asm_244a
 	ld hl, $ffe2
@@ -5425,7 +5425,7 @@ HandlePlayerCollision:
 	ld b, h
 	ld c, l
 .asm_244a
-	ld a, [$ffc5]
+	ldh a, [$ffc5]
 	add a
 	jr nc, .asm_2469
 	ld hl, $8
@@ -5457,16 +5457,16 @@ HandlePlayerCollision:
 	ld b, h
 	ld c, l
 .asm_2481
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jp nz, .asm_2583
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jp nz, .asm_2583
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jp nz, .asm_2583
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_249f
 	cp $38
@@ -5493,13 +5493,13 @@ HandlePlayerCollision:
 	jr c, .asm_2529
 	cp $0c
 	jr nc, .asm_2529
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 4, a
 	jr z, .asm_2529
 	ld a, [wHeldKeys]
 	add a
 	jr nc, .asm_2529
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	bit 4, a
 	jr nz, .asm_2529
 	ld a, e
@@ -5513,37 +5513,37 @@ HandlePlayerCollision:
 	add $09
 	ld c, a
 	ld a, $09
-	ld [$ffb0], a
-	ld a, [$ffad]
+	ldh [$ffb0], a
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	call Func_2326
 	jp .asm_257d
 .asm_24f5
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 4, a
 	jr z, .asm_2529
 	ld a, [wHeldKeys]
 	add a
 	jr nc, .asm_2529
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	bit 4, a
 	jr nz, .asm_2529
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	add a
 	jr c, .asm_2529
 	inc de
 	ld a, $12
-	ld [$ffb0], a
-	ld a, [$ffad]
+	ldh [$ffb0], a
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld hl, PlayerDiggingAnimations
 	call InitPlayerAnimation
 	ld a, $58
-	ld [$ffc0], a
+	ldh [$ffc0], a
 	sub a
-	ld [$ffc1], a
+	ldh [$ffc1], a
 	call Func_2326
 	jr .asm_257d
 .asm_2529
@@ -5569,7 +5569,7 @@ HandlePlayerCollision:
 	ld a, [wHeldKeys]
 	bit PADB_UP, a
 	jr z, .asm_2571
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	bit 4, a
 	jr nz, .asm_2571
 	res 0, [hl]
@@ -5582,14 +5582,14 @@ HandlePlayerCollision:
 	add $09
 	ld c, a
 	ld a, $09
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	set 6, [hl]
 	call Func_2326
 	jr .asm_2577
 .asm_2571
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 0, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_2577
 	ld hl, $1e
 	add hl, de
@@ -5651,19 +5651,19 @@ Func_25da:
 	ld l, a
 	ld h, d
 	inc hl
-	ld a, [$ffcf]
+	ldh a, [$ffcf]
 	sub l
 	jr c, .asm_25e7
 	sub $1e
 .asm_25e7
-	ld a, [$ffd0]
+	ldh a, [$ffd0]
 	sbc h
 	ret c
 	ld d, h
 	ld e, l
 	jr Func_260d
 Func_25ef:
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $09
 	ret nz
 	ld a, e
@@ -5672,26 +5672,26 @@ Func_25ef:
 	inc de
 	jr Func_260d
 Func_25fb:
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, Func_25da
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, Func_25da
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	jr Func_25da
 Func_260d:
 	sub a
-	ld [$ffc6], a
-	ld [$ffcc], a
-	ld [$ffb2], a
-	ld [$ffb3], a
+	ldh [$ffc6], a
+	ldh [$ffcc], a
+	ldh [$ffb2], a
+	ldh [$ffb3], a
 	ret
 
 Func_2617:
-	ld [$ffd3], a
+	ldh [$ffd3], a
 	call Func_299f
 	add (.jumpTable & $ff)
 	ld l, a
@@ -5726,9 +5726,9 @@ Func_2664:
 	ret
 
 Func_2665:
-	ld a, [$ffcf]
+	ldh a, [$ffcf]
 	ld l, a
-	ld a, [$ffd0]
+	ldh a, [$ffd0]
 	ld h, a
 	ld a, e
 	and $f0
@@ -5747,9 +5747,9 @@ Func_267a:
 	and $0f
 	cp $08
 	ret c
-	ld a, [$ffcf]
+	ldh a, [$ffcf]
 	ld l, a
-	ld a, [$ffd0]
+	ldh a, [$ffd0]
 	ld h, a
 	ld a, e
 	and $f0
@@ -5765,25 +5765,25 @@ Func_267a:
 	jp Func_28b7
 
 Func_2698:
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $09
 	jr nz, Func_2665
 	ret
 
 Func_269f:
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, Func_2665
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, Func_2665
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	jr Func_2665
 
 Func_26b1:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
 	ld a, e
@@ -5796,7 +5796,7 @@ Func_26b1:
 	srl a
 	cp l
 	jr nc, Func_26c8
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 Func_26c8:
@@ -5813,7 +5813,7 @@ Func_26c8:
 	jp Func_28b7
 
 Func_26d9:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
 	ld a, e
@@ -5827,7 +5827,7 @@ Func_26d9:
 	add $08
 	cp l
 	jr nc, Func_26f2
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 Func_26f2:
@@ -5845,7 +5845,7 @@ Func_26f2:
 	jp Func_28b7
 
 Func_2704:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
 	ld a, c
@@ -5856,7 +5856,7 @@ Func_2704:
 	and $0f
 	cp l
 	jr nc, Func_2718
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 Func_2718:
@@ -5872,7 +5872,7 @@ Func_2718:
 	jp Func_28b7
 
 Func_2727:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
 	ld a, c
@@ -5884,7 +5884,7 @@ Func_2727:
 	and $0f
 	cp l
 	jr nc, Func_273d
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 Func_273d:
@@ -5900,7 +5900,7 @@ Func_273d:
 	jp Func_28b7
 
 Func_274d:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
 	ld a, e
@@ -5912,7 +5912,7 @@ Func_274d:
 	and $0f
 	cp l
 	jr nc, Func_2762
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 Func_2762:
@@ -5929,7 +5929,7 @@ Func_2762:
 	jp Func_28b7
 
 Func_2772:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
 	ld a, c
@@ -5939,7 +5939,7 @@ Func_2772:
 	and $0f
 	cp l
 	jr nc, Func_2784
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 Func_2784:
@@ -5954,7 +5954,7 @@ Func_2784:
 	jp Func_28b7
 
 Func_2791:
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	ret nz
 	push de
@@ -5992,12 +5992,12 @@ Func_2791:
 	cp $03
 	ret nz
 .asm_27d8
-	ld a, [$ffd4]
+	ldh a, [$ffd4]
 	inc a
-	ld [$ffd4], a
+	ldh [$ffd4], a
 	cp $02
 	ret nz
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 	ld a, e
@@ -6010,7 +6010,7 @@ Func_2791:
 	jp Func_28b7
 
 Func_27f1:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
 	ld a, e
@@ -6020,17 +6020,17 @@ Func_27f1:
 	jp Func_26c8
 
 Func_27fd:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 	ld a, e
 	and $0f
 	cp $0e
 	ret c
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	ret c
 	ld a, e
@@ -6040,7 +6040,7 @@ Func_27fd:
 	jp Func_26f2
 
 Func_2817:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
 	ld a, e
@@ -6050,17 +6050,17 @@ Func_2817:
 	jp Func_273d
 
 Func_2823:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 	ld a, e
 	and $0f
 	cp $0e
 	ret c
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	ret c
 	ld a, e
@@ -6070,7 +6070,7 @@ Func_2823:
 	jp Func_2718
 
 Func_283d:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
 	ld a, e
@@ -6080,17 +6080,17 @@ Func_283d:
 	jp Func_2762
 
 Func_2849:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret z
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 	ld a, e
 	and $0f
 	cp $0d
 	ret c
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	ret c
 	ld a, e
@@ -6100,7 +6100,7 @@ Func_2849:
 	jp Func_2762
 
 Func_2863:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
 	ld a, e
@@ -6110,17 +6110,17 @@ Func_2863:
 	jp Func_2784
 
 Func_286f:
-	ld a, [$ffd3]
+	ldh a, [$ffd3]
 	and a
 	ret nz
-	ld a, [$ffac]
+	ldh a, [$ffac]
 	and a
 	ret z
 	ld a, e
 	and $0f
 	cp $0d
 	ret c
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	ret c
 	ld a, e
@@ -6134,9 +6134,9 @@ Func_2889:
 	and $0f
 	cp $08
 	ret c
-	ld a, [$ffcf]
+	ldh a, [$ffcf]
 	ld l, a
-	ld a, [$ffd0]
+	ldh a, [$ffd0]
 	ld h, a
 	ld a, e
 	and $f0
@@ -6149,20 +6149,20 @@ Func_2889:
 	and $f0
 	add $07
 	ld e, a
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_28b4
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_28b4
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_28b4
 	jp Func_28b7
 
 Func_28b7:
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, Func_28c4
 	cp $38
@@ -6170,24 +6170,24 @@ Func_28b7:
 	call Func_1ae2
 Func_28c4:
 	sub a
-	ld [$ffc6], a
-	ld [$ffb2], a
-	ld [$ffb3], a
+	ldh [$ffc6], a
+	ldh [$ffb2], a
+	ldh [$ffb3], a
 	ld a, $f0
-	ld [$ffcc], a
-	ld a, [$ffad]
+	ldh [$ffcc], a
+	ldh a, [$ffad]
 	set 4, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffd1], a
-	ld [$ffd2], a
+	ldh [$ffd1], a
+	ldh [$ffd2], a
 	ret
 
 Func_28db:
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_28e5
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
 .asm_28e5
@@ -6241,7 +6241,7 @@ Func_2948:
 	ret
 
 Func_2949:
-	ld a, [$ffc5]
+	ldh a, [$ffc5]
 	add a
 	jr c, .asm_2957
 	ld a, c
@@ -6257,32 +6257,32 @@ Func_2949:
 	inc bc
 	sub a
 .asm_295d
-	ld [$ffc7], a
+	ldh [$ffc7], a
 	ld hl, $ffc5
 	sub a
 	ld [hld], a
 	ld [hl], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 3, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ret
 
 Func_296c:
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, Func_2949
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, Func_2949
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	jr Func_2949
 
 Func_297e:
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	set 1, a
-	ld [$ffae], a
+	ldh [$ffae], a
 	ret
 
 Func_2985:
@@ -6290,9 +6290,9 @@ Func_2985:
 	and $0f
 	cp $0c
 	ret nc
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	set 1, a
-	ld [$ffae], a
+	ldh [$ffae], a
 	ret
 
 Func_2992:
@@ -6300,9 +6300,9 @@ Func_2992:
 	and $0f
 	cp $04
 	ret c
-	ld a, [$ffae]
+	ldh a, [$ffae]
 	set 1, a
-	ld [$ffae], a
+	ldh [$ffae], a
 	ret
 
 Func_299f:
@@ -6368,22 +6368,22 @@ Func_299f:
 	ret
 
 PrepareCameraUpdate:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, [$de84]
 	and a
 	ret nz
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	add a
 	jr z, .asm_29fb
 	jr c, .asm_2a32
 	jr .asm_2a57
 .asm_29fb
 	ld bc, $4fc
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld d, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub d
 	sub 76 ; x pixel position for when the camera starts scrolling horizontally
 	bit 7, a
@@ -6397,11 +6397,11 @@ PrepareCameraUpdate:
 	jr nc, .asm_2a14
 	ld a, c
 .asm_2a14
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	ld bc, $4fc
-	ld a, [hCameraYOffset]
+	ldh a, [hCameraYOffset]
 	ld d, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub d
 	sub 88 ; y pixel position for when the camera starts scrolling vertically
 	bit 7, a
@@ -6415,63 +6415,63 @@ PrepareCameraUpdate:
 	jr nc, .asm_2a2f
 	ld a, c
 .asm_2a2f
-	ld [$ffa5], a
+	ldh [$ffa5], a
 	ret
 .asm_2a32
 	sub a
-	ld [$ffa5], a
-	ld a, [$ffad]
+	ldh [$ffa5], a
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	and a
 	jr nz, .asm_2a43
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	and a
 	ret z
 .asm_2a43
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	cp $fe
 	jr nz, .asm_2a4e
 	ld a, $ff
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	ret
 .asm_2a4e
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	ret c
-	ld a, [hForcedSideScrollSpeed]
-	ld [$ffa4], a
+	ldh a, [hForcedSideScrollSpeed]
+	ldh [$ffa4], a
 	ret
 .asm_2a57
 	sub a
-	ld [$ffa5], a
-	ld a, [$ffad]
+	ldh [$ffa5], a
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add $b1
 	ld c, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	sub c
-	ld a, [$ff99]
+	ldh a, [$ff99]
 	sbc b
 	ret c
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	cp $01
 	jr z, .asm_2a7b
 	srl a
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	ret
 .asm_2a7b
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	ret c
-	ld a, [hForcedSideScrollSpeed]
-	ld [$ffa4], a
+	ldh a, [hForcedSideScrollSpeed]
+	ldh [$ffa4], a
 	ret
 
 HandleCameraScrollHome:
@@ -6560,11 +6560,11 @@ PrepareDrawMetatile:
 	ret
 
 DrawMetatile_HBlank:
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, DrawMetatile_HBlank ; wait for current HBlank to end
 .waitHBlank
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlank
 DrawMetatile:
@@ -6592,15 +6592,15 @@ DrawMetatile:
 ;        de = destination bg address for last tile in metatile
 ;        b  = 0 if metatile should be drawn, $ff if it should be skipped
 DrawMetatileGBCAttributes_HBlank:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 .waitCurrentHBlankFinish
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish
 .waitHBlankStart
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart
 	ld a, b
@@ -6608,7 +6608,7 @@ DrawMetatileGBCAttributes_HBlank:
 	ret nz
 	ld b, (wGBCTileAttributes >> 8)
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, [hld]
 	ld c, a
 	ld a, [bc]
@@ -6619,11 +6619,11 @@ DrawMetatileGBCAttributes_HBlank:
 	ld a, [bc]
 	ld [de], a
 .waitCurrentHBlankFinish2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish2
 .waitHBlankStart2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart2
 	ld a, e
@@ -6638,7 +6638,7 @@ DrawMetatileGBCAttributes_HBlank:
 	ld a, [bc]
 	ld [de], a
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 ; Draws the metatile's GBC tile attributes.
@@ -6646,7 +6646,7 @@ DrawMetatileGBCAttributes_HBlank:
 ;        de = destination bg address for last tile in metatile
 ;        b  = 0 if metatile should be drawn, $ff if it should be skipped
 DrawMetatileGBCAttributes:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld a, b
@@ -6654,7 +6654,7 @@ DrawMetatileGBCAttributes:
 	ret nz
 	ld b, (wGBCTileAttributes >> 8)
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld a, [hld]
 	ld c, a
 	ld a, [bc]
@@ -6676,7 +6676,7 @@ DrawMetatileGBCAttributes:
 	ld a, [bc]
 	ld [de], a
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 InitCameraAndMap:
@@ -6690,10 +6690,10 @@ InitCameraAndMap:
 	inc c
 	dec b
 	jr nz, .asm_2b76
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
 	sub a
 	ld [$ff00+c], a
 	inc c
@@ -6821,37 +6821,37 @@ DrawWholeScreenMetatiles:
 	ret
 
 Func_2c2b:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, [$de84]
 	and a
 	ret nz
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_2c5d
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	ret nz
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	add a
 	jr nc, .asm_2c4c
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	and a
 	jr nz, .asm_2c5d
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	and a
 	ret z
 .asm_2c4c
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add $b1
 	ld c, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ld a, [$ff98]
+	ldh a, [$ff98]
 	sub c
-	ld a, [$ff99]
+	ldh a, [$ff99]
 	sbc b
 	ret c
 .asm_2c5d
@@ -6902,7 +6902,7 @@ Func_2c73:
 INCBIN "baserom.gbc", $2c8d, $2c9f - $2c8d
 
 DrawPlayerSprite:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, $0e
@@ -6937,7 +6937,7 @@ DrawPlayerSprite:
 	ld [hli], a
 	ld [hl], b
 .asm_2cc8
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_2cd9
 	ld hl, $ffd8
@@ -6951,12 +6951,12 @@ DrawPlayerSprite:
 	ld a, [bc]
 	ld [hl], a
 .asm_2cd9
-	ld a, [hActiveSprites]
+	ldh a, [hActiveSprites]
 	ld c, a
 	ld b, $df
 	ld hl, $ffd8
 	sub a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -6964,40 +6964,40 @@ DrawPlayerSprite:
 	ld l, a
 	dec hl
 	ld a, [hli]
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	ld a, [hli]
 	inc hl
 	and $1f
-	ld [$ff8c], a
-	ld a, [hCameraXOffset]
+	ldh [$ff8c], a
+	ldh a, [hCameraXOffset]
 	ld d, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub d
 	ld d, a
-	ld a, [hCameraYOffset]
+	ldh a, [hCameraYOffset]
 	ld e, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	ld e, a
-	ld a, [$ffb9]
+	ldh a, [$ffb9]
 	and a
 	jr z, .asm_2d0d
 	bit 1, a
 	jr nz, .asm_2d16
 	ret
 .asm_2d0d
-	ld a, [$ffb7]
+	ldh a, [$ffb7]
 	cp $0c
 	jr nc, .asm_2d16
 	bit 1, a
 	ret nz
 .asm_2d16
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 5, a
 	jr z, .asm_2d24
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	set 5, a
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	jr .asm_2d42
 .asm_2d24
 	ld a, [hli]
@@ -7009,17 +7009,17 @@ DrawPlayerSprite:
 	add d
 	ld [bc], a
 	inc c
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [bc], a
 	inc c
 	add $02
-	ld [$ff8a], a
-	ld a, [$ff8b]
+	ldh [$ff8a], a
+	ldh a, [$ff8b]
 	ld [bc], a
 	inc c
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	dec a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jr nz, .asm_2d24
 	jr .asm_2d5e
 .asm_2d42
@@ -7032,36 +7032,36 @@ DrawPlayerSprite:
 	add d
 	ld [bc], a
 	inc c
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld [bc], a
 	inc c
 	add $02
-	ld [$ff8a], a
-	ld a, [$ff8b]
+	ldh [$ff8a], a
+	ldh a, [$ff8b]
 	ld [bc], a
 	inc c
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	dec a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jr nz, .asm_2d42
 .asm_2d5e
 	ld a, c
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	ret
 
 InitPlayerAnimation:
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	add a
 	jr nc, .load
 	inc hl
 	inc hl
 .load
 	ld a, [hli]
-	ld [$ffd6], a
+	ldh [$ffd6], a
 	ld a, [hl]
-	ld [$ffd7], a
+	ldh [$ffd7], a
 	sub a
-	ld [$ffd5], a
+	ldh [$ffd5], a
 	ret
 
 Func_2d73:
@@ -7218,11 +7218,11 @@ PlayerHelicopterAnimations:
 Func_2e11:
 	call WaitHBlankStart
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
+	ldh [rLCDC], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
 	ret
 
 DrawLevelHUD:
@@ -7234,28 +7234,28 @@ DrawStudioHUD:
 	ld [$de85], a
 	jr DrawHUD
 DrawHUD:
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 119
 	jr nz, DrawHUD
 	call WaitHBlankStart
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_2e49
 	ld a, 112
-	ld [rSCY], a
+	ldh [rSCY], a
 	sub a
-	ld [rSCX], a
+	ldh [rSCX], a
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJOFF | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	jr .asm_2e4d
 .asm_2e49
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJOFF | LCDCF_BGON
-	ld [rLCDC], a
+	ldh [rLCDC], a
 .asm_2e4d
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	jp nz, .asm_2eeb
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jp c, LoadQueuedTileGfx
 	ld hl, $ffd8
@@ -7270,32 +7270,32 @@ DrawHUD:
 	ld l, a
 	ld sp, hl
 	ld hl, vTilesOB
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_2e85
 	sub a
-	ld [rHDMA3], a
-	ld [rHDMA4], a
+	ldh [rHDMA3], a
+	ldh [rHDMA4], a
 	ld hl, sp+$00
 	ld a, l
-	ld [rHDMA2], a
+	ldh [rHDMA2], a
 	ld a, h
-	ld [rHDMA1], a
+	ldh [rHDMA1], a
 	ld a, $93
-	ld [rHDMA5], a
+	ldh [rHDMA5], a
 	jr .asm_2ee8
 .asm_2e85
 	ld a, $16
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_2e89
 	pop bc
 	pop de
 .waitCurrentHBlankFinish
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish
 .waitHBlankStart
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart
 	ld a, c
@@ -7331,18 +7331,18 @@ DrawHUD:
 	ld [hli], a
 	ld [hl], b
 	inc hl
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_2e89
 	pop bc
 	pop de
 .waitCurrentHBlankFinish2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .waitCurrentHBlankFinish2
 .waitHBlankStart2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .waitHBlankStart2
 	ld a, c
@@ -7375,7 +7375,7 @@ DrawHUD:
 .asm_2ee8
 	ld sp, wStack - 2
 .asm_2eeb
-	ld a, [rLY]
+	ldh a, [rLY]
 	cp 143
 	jr nz, .asm_2eeb
 	ld a, [$de85]
@@ -7385,15 +7385,15 @@ DrawHUD:
 	ld [MBC5RomBank], a
 	call WaitHBlankStart
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
-	ld a, [hPaused]
+	ldh [rLCDC], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
+	ldh a, [hPaused]
 	and a
 	ret nz
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 1, a
 	jr nz, .asm_2f34
 	ld hl, $dda1
@@ -7415,7 +7415,7 @@ DrawHUD:
 	ld bc, $dda5
 	bit 7, [hl]
 	jr z, .asm_2f47
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 2, a
 	jr z, .asm_2f4a
 .asm_2f47
@@ -7605,7 +7605,7 @@ DrawHUDElement:
 	ld hl, .jumpTable
 	add hl, bc
 	ld bc, vBGWin
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .jump
 	ld bc, $9ba0
@@ -7626,9 +7626,9 @@ DrawHUDElement:
 DrawHUDCurrentHealth:
 	ld h, b
 	ld l, c
-	ld a, [hCurHealth]
+	ldh a, [hCurHealth]
 	ld b, a
-	ld a, [hMaxHealth]
+	ldh a, [hMaxHealth]
 	ld c, a
 .drawHeart
 	ld a, b
@@ -7646,7 +7646,7 @@ DrawHUDCurrentHealth:
 	ret
 
 DrawHUDNumLives:
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	ld hl, $4b
 	jr z, .draw
@@ -7656,12 +7656,12 @@ DrawHUDNumLives:
 	ld hl, $4b
 .draw
 	add hl, bc
-	ld a, [hNumLives]
+	ldh a, [hNumLives]
 	and $f0
 	swap a
 	add $84
 	ld [hli], a
-	ld a, [hNumLives]
+	ldh a, [hNumLives]
 	and $0f
 	add $84
 	ld [hl], a
@@ -7696,19 +7696,19 @@ DrawScore:
 	ret
 
 DrawHUDNumClapboards:
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	ret nz
 	ld hl, $47
 	add hl, bc
-	ld a, [hNumClapboards]
+	ldh a, [hNumClapboards]
 	and $0f
 	add $84
 	ld [hl], a
 	ret
 
 DrawHUDBunnyFaceTop:
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	add a
 	ld hl, HUDBugsBunnyFaceTiles
 	jr nc, .draw
@@ -7719,7 +7719,7 @@ DrawHUDBunnyFaceTop:
 	jp Func_31a9
 
 DrawHUDBunnyFaceBottom:
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	add a
 	ld hl, HUDBugsBunnyFaceTiles + $30
 	jr nc, .draw
@@ -7744,7 +7744,7 @@ DrawHUDEXTRALetter:
 	jp Func_31a9
 
 DrawHUDClapboardPiece:
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	and a
 	ret nz
 	ld hl, hClapboardPieceHUD
@@ -7762,17 +7762,17 @@ DrawHUDClapboardPiece:
 
 DrawHUDCarrotMeterTop:
 	sub a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr DrawHUDCarrotMeterRow
 DrawHUDCarrotMeterBottom:
 	ld a, $10
-	ld [$ff8a], a
+	ldh [$ff8a], a
 DrawHUDCarrotMeterRow:
 	ld hl, hNumCarrots
 	ld a, [hli]
 	cp [hl]
 	jr z, .asm_310e
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	and a
 	jr nz, .asm_310e
 	inc [hl]
@@ -7800,13 +7800,13 @@ DrawHUDCarrotMeterRow:
 	ld h, $40
 	ld c, a
 	ld b, $8a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	add c
 	ld c, a
 	ld a, b
 	adc $00
 	ld b, a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	add l
 	ld l, a
 	ld a, h
@@ -7814,14 +7814,14 @@ DrawHUDCarrotMeterRow:
 	ld h, a
 	ld a, $04
 	ld [MBC5RomBank], a
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, Func_3153
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	call Func_3153
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 Func_3153:
@@ -7966,7 +7966,7 @@ Func_31a9:
 Func_31e1:
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld a, [hForcedSideScrollSpeed]
+	ldh a, [hForcedSideScrollSpeed]
 	ld hl, $722c
 	ld bc, vBGWin
 	and a
@@ -7995,19 +7995,19 @@ Func_31e1:
 	dec d
 	jr nz, .asm_3200
 	sub a
-	ld [$ffec], a
-	ld [hNumCarrots], a
-	ld [hCarrotMeter], a
-	ld [hNumClapboards], a
-	ld [hEXTRALetterHUD], a
-	ld [hEXTRALetterHUD + 1], a
-	ld [hEXTRALetterHUD + 2], a
-	ld [hEXTRALetterHUD + 3], a
-	ld [hClapboardPieceHUD], a
-	ld [hClapboardPieceHUD + 1], a
-	ld [hClapboardPieceHUD + 2], a
-	ld [hClapboardPieceHUD + 3], a
-	ld [hEXTRALetters], a
+	ldh [$ffec], a
+	ldh [hNumCarrots], a
+	ldh [hCarrotMeter], a
+	ldh [hNumClapboards], a
+	ldh [hEXTRALetterHUD], a
+	ldh [hEXTRALetterHUD + 1], a
+	ldh [hEXTRALetterHUD + 2], a
+	ldh [hEXTRALetterHUD + 3], a
+	ldh [hClapboardPieceHUD], a
+	ldh [hClapboardPieceHUD + 1], a
+	ldh [hClapboardPieceHUD + 2], a
+	ldh [hClapboardPieceHUD + 3], a
+	ldh [hEXTRALetters], a
 	ret
 
 ResetPlayerData:
@@ -8020,14 +8020,14 @@ ResetPlayerData:
 	ld d, 3
 .setData
 	ld a, b
-	ld [hCurHealth], a
+	ldh [hCurHealth], a
 	ld a, c
-	ld [hMaxHealth], a
+	ldh [hMaxHealth], a
 	ld a, d
-	ld [hNumLives], a
+	ldh [hNumLives], a
 	sub a
-	ld [hScore], a
-	ld [hScore + 1], a
+	ldh [hScore], a
+	ldh [hScore + 1], a
 	ret
 
 CarrotMeterSliceMasks:
@@ -8037,34 +8037,34 @@ CarrotMeterSliceMasks:
 	db %00000000
 
 LoadDynamicEntitySprites:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, $dd80
 	ld a, [hli]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, $14
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	ld a, $0c
 	ld [MBC5RomBank], a
 .asm_3265
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	and a
 	jr z, .asm_32df
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [hCameraYOffset]
+	ldh a, [hCameraYOffset]
 	ld e, a
 	ld a, [bc]
 	inc bc
 	inc bc
 	sub e
 	ld e, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld d, a
 	ld a, [bc]
 	inc bc
@@ -8080,15 +8080,15 @@ LoadDynamicEntitySprites:
 	and $20
 	or [hl]
 	inc hl
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	ld a, [hli]
 	inc hl
 	and $1f
-	ld [$ff8d], a
-	ld a, [hActiveSprites]
+	ldh [$ff8d], a
+	ldh a, [hActiveSprites]
 	ld c, a
 	ld b, (wOAMBuffer >> 8)
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	bit 5, a
 	jr nz, .asm_32bc
 .asm_329e
@@ -8101,17 +8101,17 @@ LoadDynamicEntitySprites:
 	add d
 	ld [bc], a
 	inc c
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	ld [bc], a
 	inc c
 	add $02
-	ld [$ff8b], a
-	ld a, [$ff8c]
+	ldh [$ff8b], a
+	ldh a, [$ff8c]
 	ld [bc], a
 	inc c
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	dec a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	jr nz, .asm_329e
 	jr .asm_32d8
 .asm_32bc
@@ -8124,27 +8124,27 @@ LoadDynamicEntitySprites:
 	add d
 	ld [bc], a
 	inc c
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	ld [bc], a
 	inc c
 	add $02
-	ld [$ff8b], a
-	ld a, [$ff8c]
+	ldh [$ff8b], a
+	ldh a, [$ff8c]
 	ld [bc], a
 	inc c
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	dec a
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	jr nz, .asm_32bc
 .asm_32d8
 	pop hl
 	inc hl
 	ld a, c
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	jr .asm_3265
 .asm_32df
 	ld bc, $dd80
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_32ea
 	sub a
@@ -8154,13 +8154,13 @@ LoadDynamicEntitySprites:
 	ld hl, wQueuedTileGfx
 	ld a, [bc]
 	inc c
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_32f1
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	and a
 	ret z
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	inc c
 	inc c
 	ld a, [bc]
@@ -8176,7 +8176,7 @@ LoadDynamicEntitySprites:
 	ld a, [de]
 	inc de
 	and $e0
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	ld a, [de]
 	and $c0
 	rlca
@@ -8187,7 +8187,7 @@ LoadDynamicEntitySprites:
 	and $3f
 	add $40 ; high byte of gfx address
 	ld d, a
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	ld e, a
 .asm_331c
 	ld a, c
@@ -8231,16 +8231,16 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8140
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_3352
 	pop bc
 	pop de
 .asm_3354
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3354
 .asm_335a
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_335a
 	ld [hl], c
@@ -8276,18 +8276,18 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_3352
 	pop bc
 	pop de
 .asm_338a
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_338a
 .asm_3390
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_3390
 	ld [hl], c
@@ -8321,16 +8321,16 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	inc l
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_33be
 	pop bc
 	pop de
 .asm_33c0
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_33c0
 .asm_33c6
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_33c6
 	ld [hl], c
@@ -8366,9 +8366,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_33be
 	ld hl, wQueuedTileGfx + 6
 	ld a, [hli]
@@ -8379,16 +8379,16 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8180
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_3406
 	pop bc
 	pop de
 .asm_3408
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3408
 .asm_340e
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_340e
 	ld [hl], c
@@ -8424,18 +8424,18 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_3406
 	pop bc
 	pop de
 .asm_343e
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_343e
 .asm_3444
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_3444
 	ld [hl], c
@@ -8469,16 +8469,16 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	inc l
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_3472
 	pop bc
 	pop de
 .asm_3474
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3474
 .asm_347a
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_347a
 	ld [hl], c
@@ -8514,9 +8514,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_3472
 	ld hl, wQueuedTileGfx + 12
 	ld a, [hli]
@@ -8527,16 +8527,16 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $81c0
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_34ba
 	pop bc
 	pop de
 .asm_34bc
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_34bc
 .asm_34c2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_34c2
 	ld [hl], c
@@ -8572,18 +8572,18 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_34ba
 	pop bc
 	pop de
 .asm_34f2
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_34f2
 .asm_34f8
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_34f8
 	ld [hl], c
@@ -8619,11 +8619,11 @@ LoadQueuedTileGfx:
 	pop bc
 	pop de
 .asm_3524
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3524
 .asm_352a
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_352a
 	ld [hl], c
@@ -8662,11 +8662,11 @@ LoadQueuedTileGfx:
 	pop bc
 	pop de
 .asm_3553
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3553
 .asm_3559
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_3559
 	ld [hl], c
@@ -8705,16 +8705,16 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8200
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_358c
 	pop bc
 	pop de
 .asm_358e
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_358e
 .asm_3594
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_3594
 	ld [hl], c
@@ -8750,18 +8750,18 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_358c
 	pop bc
 	pop de
 .asm_35c4
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_35c4
 .asm_35ca
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_35ca
 	ld [hl], c
@@ -8795,16 +8795,16 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	inc l
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_35f8
 	pop bc
 	pop de
 .asm_35fa
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_35fa
 .asm_3600
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_3600
 	ld [hl], c
@@ -8840,9 +8840,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_35f8
 	ld hl, wQueuedTileGfx + 24
 	ld a, [hli]
@@ -8853,16 +8853,16 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8240
 	ld a, $02
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_3640
 	pop bc
 	pop de
 .asm_3642
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3642
 .asm_3648
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_3648
 	ld [hl], c
@@ -8898,18 +8898,18 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_3640
 	pop bc
 	pop de
 .asm_3678
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr z, .asm_3678
 .asm_367e
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and STATF_LCD
 	jr nz, .asm_367e
 	ld [hl], c
@@ -8942,7 +8942,7 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 .asm_36a7
-	ld a, [rSTAT]
+	ldh a, [rSTAT]
 	and $03
 	cp $01
 	jr nz, .asm_36a7
@@ -9535,11 +9535,11 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	ld sp, $dffe
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
-	ld [rLCDC], a
-	ld a, [hCameraXOffset]
-	ld [rSCX], a
-	ld a, [hCameraYOffset]
-	ld [rSCY], a
+	ldh [rLCDC], a
+	ldh a, [hCameraXOffset]
+	ldh [rSCX], a
+	ldh a, [hCameraYOffset]
+	ldh [rSCY], a
 	ret
 
 ClearQueuedTileGfx:
@@ -9553,34 +9553,34 @@ ClearQueuedTileGfx:
 	ret
 
 Func_3939:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	sub a
-	ld [$ffe8], a
+	ldh [$ffe8], a
 	ld hl, hCameraXOffsetScreenRight
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add SCRN_X
 	ld [hli], a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc 0
 	ld [hli], a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	add 8
 	ld [hli], a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	adc 0
 	ld [hli], a
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	ld b, 30 ; pixel height of player
 	rra
 	jr nc, .asm_3960
 	srl b
 .asm_3960
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
 	ld [hli], a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc 0
 	ld [hli], a
 	ld a, [hli]
@@ -9589,9 +9589,9 @@ Func_3939:
 	ld h, [hl]
 	ld l, a
 	inc hl
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld c, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	ld b, a
 .asm_3977
 	ld a, [hld]
@@ -9632,18 +9632,18 @@ Func_3939:
 	jr nc, .asm_3992
 .asm_39a6
 	ld a, l
-	ld [$ffe2], a
+	ldh [$ffe2], a
 	ld a, h
-	ld [$ffe3], a
-	ld a, [hCameraYOffset]
+	ldh [$ffe3], a
+	ldh a, [hCameraYOffset]
 	add $e0
 	ld e, a
-	ld a, [hCameraYOffset + 1]
+	ldh a, [hCameraYOffset + 1]
 	adc $ff
 	ld d, a
 	inc bc
 Func_39b7:
-	ld a, [$ffe1]
+	ldh a, [$ffe1]
 	ld [MBC5RomBank], a
 .asm_39bc
 	ld a, [hli]
@@ -9699,17 +9699,17 @@ InitLevelEntities:
 	ld a, $06
 	ld [MBC5RomBank], a
 	ld a, [hli]
-	ld [$ffe1], a
+	ldh [$ffe1], a
 	ld a, [hli]
-	ld [$ffe2], a
+	ldh [$ffe2], a
 	ld a, [hli]
-	ld [$ffe3], a
+	ldh [$ffe3], a
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
 	ld b, a
 	push hl
-	ld a, [$ffe1]
+	ldh a, [$ffe1]
 	ld [MBC5RomBank], a
 	ld hl, wLevelEntities
 	ld de, $400
@@ -9722,29 +9722,29 @@ InitLevelEntities:
 	or d
 	jr nz, .copyLoop
 	sub a
-	ld [$ffe8], a
+	ldh [$ffe8], a
 	ld hl, hCameraXOffsetScreenRight
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add SCRN_X
 	ld [hli], a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc 0
 	ld [hli], a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	add $08
 	ld [hli], a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	adc $00
 	ld [hli], a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub $1e
 	ld [hli], a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc 0
 	ld [hli], a
 	sub a
-	ld [$ffe9], a
-	ld [$ffea], a
+	ldh [$ffe9], a
+	ldh [$ffea], a
 	pop hl
 	ret
 
@@ -9821,7 +9821,7 @@ Func_3a82:
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	add a
 	jr nc, .asm_3ae5
@@ -9841,9 +9841,9 @@ Func_3a82:
 	add hl, de
 	ld d, h
 	ld e, l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_3aa2
 	ld hl, $def3
 	dec [hl]
@@ -9884,10 +9884,10 @@ Func_3a82:
 	adc $00
 	ld h, a
 	ld a, [hl]
-	ld [$ff8b], a
+	ldh [$ff8b], a
 .asm_3af6
 	call WaitHBlankStart
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	ld l, a
 	cpl
 	ld h, a
@@ -9928,9 +9928,9 @@ Func_3a82:
 	adc $01
 	ld d, a
 .asm_3b28
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_3af6
 	ld hl, $def3
 	dec [hl]
@@ -9986,11 +9986,11 @@ Func_3a82:
 	ld e, a
 	swap a
 	and $f0
-	ld [$ff8e], a
+	ldh [$ff8e], a
 	ld a, e
 	swap a
 	and $0f
-	ld [$ff8f], a
+	ldh [$ff8f], a
 	ld a, [hli]
 	ld d, a
 	bit 7, [hl]
@@ -10018,11 +10018,11 @@ Func_3a82:
 	ld a, d
 	ld [bc], a
 	inc c
-	ld a, [$ff8e]
+	ldh a, [$ff8e]
 	sub $10
 	ld [bc], a
 	inc c
-	ld a, [$ff8f]
+	ldh a, [$ff8f]
 	sbc 0
 	ld [bc], a
 	inc c
@@ -10083,13 +10083,13 @@ Func_3bb4:
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	push hl
 .asm_3bff
-	ld a, [$ff8a]
-	ld [$ff8c], a
+	ldh a, [$ff8a]
+	ldh [$ff8c], a
 .asm_3c03
 	ld h, b
 	ld l, c
@@ -10119,11 +10119,11 @@ Func_3bb4:
 	ld d, h
 	ld e, l
 .asm_3c25
-	ld a, [$ff8c]
+	ldh a, [$ff8c]
 	dec a
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	jr nz, .asm_3c03
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	cpl
 	inc a
 	ld l, a
@@ -10137,9 +10137,9 @@ Func_3bb4:
 	add hl, de
 	ld d, h
 	ld e, l
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	dec a
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	jr nz, .asm_3bff
 	pop hl
 	ld a, [hli]
@@ -10162,9 +10162,9 @@ TryTogglePause:
 	ld a, [wNewKeys]
 	bit PADB_START, a
 	ret z
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	cpl
-	ld [hPaused], a
+	ldh [hPaused], a
 	and a
 	jp z, ResumeMusicHome
 	jp PauseMusicHome
@@ -10178,16 +10178,16 @@ InitKeysState:
 	ret
 
 LoadOAMSpritesStandard:
-	ld a, [hCameraXOffsetScreenRight]
+	ldh a, [hCameraXOffsetScreenRight]
 	sub c
 	ld e, a
-	ld a, [hCameraXOffsetScreenRight + 1]
+	ldh a, [hCameraXOffsetScreenRight + 1]
 	sbc d
 	jr nz, .asm_3c95
 	ld a, e
 	cp $d8
 	jr nc, .asm_3c95
-	ld a, [hCameraYOffset]
+	ldh a, [hCameraYOffset]
 	ld e, a
 	ld a, b
 	sub e
@@ -10199,12 +10199,12 @@ LoadOAMSpritesStandard:
 	ld a, $ff
 	ret
 LoadOAMSpritesCameraOffset:
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld e, a
 	ld a, c
 	sub e
 	ld c, a
-	ld a, [hCameraYOffset]
+	ldh a, [hCameraYOffset]
 	ld e, a
 	ld a, b
 	sub e
@@ -10220,7 +10220,7 @@ LoadOAMSprites:
 	ld a, [hli]
 	ld d, a
 	push de
-	ld a, [hActiveSprites]
+	ldh a, [hActiveSprites]
 	ld e, a
 	ld d, wOAMBuffer >> 8
 	ret
@@ -10466,7 +10466,7 @@ Load1SubSprite:
 	ld [de], a
 	inc e
 	ld a, e
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	sub a
 	ret
 
@@ -10494,12 +10494,12 @@ WriteDMACodeToHRAM:
 	jr nz, .clear
 	call hDMARoutine
 	sub a
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	ret
 
 DMARoutine:
 	ld a, wOAMBuffer >> 8
-	ld [rDMA], a
+	ldh [rDMA], a
 	ld a, $28
 .waitLoop
 	dec a
@@ -10645,7 +10645,7 @@ Func_3e83:
 
 InitNextScreen:
 	sub a
-	ld [hPaused], a
+	ldh [hPaused], a
 	ld sp, wStack
 	call Func_3e13
 	call WriteDMACodeToHRAM
@@ -10656,7 +10656,7 @@ InitNextScreen:
 	add a
 	ld c, a
 	ld b, $00
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ld hl, ScreenDataPointers
 	jr nz, .load
@@ -10691,7 +10691,7 @@ HandleCreditsStudioCharacterEntity:
 	ld bc, $4
 	add hl, bc
 	res 5, [hl]
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 6, a
 	jr z, .asm_400e
 	set 5, [hl] ; make the character sprites face the opposite direction
@@ -10715,30 +10715,30 @@ HandleStudioCharacterEntity:
 	ld a, [hli]
 	sbc 0
 	ld b, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	ld c, a
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_4049
 	ld a, c
 	cp $66
 	jr nc, .asm_4049
-	ld a, [hLevelCleared]
+	ldh a, [hLevelCleared]
 	and a
 	jr nz, .asm_4049
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 4, a
 	jr z, .asm_4049
 	ld a, [$defa]
 	and $41
 	jr z, .asm_4049
 	ld a, 1
-	ld [hLevelCleared], a
+	ldh [hLevelCleared], a
 .asm_4049
 	push hl
 	res 5, [hl]
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 6, a
 	jr z, .asm_4056
 	set 5, [hl]
@@ -10804,7 +10804,7 @@ HandleCollectibleEntity:
 	ld b, a
 	bit 4, [hl]
 	jr z, .asm_40cc
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_40cc
 	dec de
@@ -10900,37 +10900,37 @@ HandleCollectibleEntity:
 	call LoadOAMSpritesCameraOffset
 	jp .asm_423b
 .asm_414f
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_41c1
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_41c1
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_4172
 	inc a
 	jr nz, .asm_41c1
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f0
 	jr c, .asm_41c1
 	jr .asm_4179
 .asm_4172
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $22
 	jr nc, .asm_41c1
 .asm_4179
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_41c1
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr z, .asm_41c1
 	sub a
@@ -10970,10 +10970,10 @@ HandleCollectibleEntity:
 	push hl
 	ld hl, $48
 	add hl, bc
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub l
 	ld l, a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc h
 	jr nc, .asm_41ff
 	inc a
@@ -10983,10 +10983,10 @@ HandleCollectibleEntity:
 	jr c, .asm_41ff
 	ld hl, $2e
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	ld l, a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nc, .asm_41ff
 	inc a
@@ -10995,7 +10995,7 @@ HandleCollectibleEntity:
 	cp $92
 	jr c, .asm_41ff
 	pop hl
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr z, .asm_4200
 	set 4, [hl]
@@ -11023,7 +11023,7 @@ HandleCollectibleEntity:
 	ld e, a
 	ld a, [bc]
 	ld d, a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_4224
 	inc [hl]
@@ -11052,11 +11052,11 @@ HandleCollectibleEntity:
 .collectCarrot
 	ld a, $0f
 	call PlaySoundEffectHome
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	cp 32
 	jr z, .asm_423b
 	inc a
-	ld [hNumCarrots], a
+	ldh [hNumCarrots], a
 	ld bc, 5
 	call AddScore
 	jr .asm_423b
@@ -11064,18 +11064,18 @@ HandleCollectibleEntity:
 	ld a, $10
 	call PlaySoundEffectHome
 	ld a, $f0
-	ld [$ffb6], a
-	ld a, [$ffaf]
+	ldh [$ffb6], a
+	ldh a, [$ffaf]
 	res 2, a
-	ld [$ffaf], a
+	ldh [$ffaf], a
 	jr .asm_423b
 .collectSuperCarrot
 	ld a, $10
 	call PlaySoundEffectHome
 	ld a, $24
-	ld [$ffb7], a
+	ldh [$ffb7], a
 	ld a, $03
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld hl, PlayerFlyingAnimations
 	call InitPlayerAnimation
 	jr .asm_423b
@@ -11104,7 +11104,7 @@ HandleCollectibleEntity:
 	cp 4
 	jr nz, .asm_42ac
 	ld a, 1
-	ld [hLevelCleared], a
+	ldh [hLevelCleared], a
 .asm_42ac
 	ld hl, hClapboardPieceHUD
 	jr .initHUDTile
@@ -11156,12 +11156,12 @@ HandleCollectibleEntity:
 .collect1Up
 	ld a, $11
 	call PlaySoundEffectHome
-	ld a, [hNumLives]
+	ldh a, [hNumLives]
 	cp $99
 	jp z, .asm_423b
 	add 1
 	daa
-	ld [hNumLives], a
+	ldh [hNumLives], a
 	jp .asm_423b
 
 CollectibleEntitySprites:
@@ -11275,7 +11275,7 @@ TweetyDownSprite:
 	sub_sprite $38, $26, 16, -32
 
 HandlePushableObjectEntity:
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jp z, ExitEntityHandler
 	call HandlePushableObjectEntity_
@@ -11300,7 +11300,7 @@ HandlePushableObjectEntity_:
 	ld h, a
 	bit 7, e
 	jr z, .loadSprites
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 4, a
 	jr z, .loadSprites
 	inc hl
@@ -11310,23 +11310,23 @@ HandlePushableObjectEntity_:
 	ld h, [hl]
 	ld l, a
 	ld a, [hli]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	add $1e
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub c
 	ld e, a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc b
 	jp nz, .return
-	ld a, [$ff8b]
+	ldh a, [$ff8b]
 	dec a
 	cp e
 	jp c, .return
@@ -11336,20 +11336,20 @@ HandlePushableObjectEntity_:
 	ld a, [hli]
 	sbc $00
 	ld b, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
 	ld e, a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jp nz, .return
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	add $08
 	cp e
 	jp c, .return
-	ld a, [$ffcd]
+	ldh a, [$ffcd]
 	sub c
 	ld e, a
-	ld a, [$ffce]
+	ldh a, [$ffce]
 	sbc b
 	jr nc, .asm_444c
 	ld de, $3
@@ -11364,7 +11364,7 @@ HandlePushableObjectEntity_:
 	ld a, $f0
 	jr .asm_4469
 .asm_444c
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	add $08
 	cp e
 	jr nc, .asm_4486
@@ -11373,7 +11373,7 @@ HandlePushableObjectEntity_:
 	call Func_44dc
 	ld de, -3
 	add hl, de
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	add $09
 	add c
 	ld e, a
@@ -11382,17 +11382,17 @@ HandlePushableObjectEntity_:
 	ld d, a
 	sub a
 .asm_4469
-	ld [$ffc7], a
+	ldh [$ffc7], a
 	sub a
-	ld [$ffc5], a
-	ld [$ffc4], a
-	ld a, [$ffad]
+	ldh [$ffc5], a
+	ldh [$ffc4], a
+	ldh a, [$ffad]
 	set 3, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, e
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, d
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	ld a, c
 	add $08
 	ld [hli], a
@@ -11411,19 +11411,19 @@ HandlePushableObjectEntity_:
 	adc $00
 	ld d, a
 	pop hl
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr c, .asm_44af
 	ld de, $fffc
 	add hl, de
 	ld a, [hli]
 	add $3e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, [hl]
 	adc $00
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	call Func_260d
 	jr .return
 .asm_44af
@@ -11435,14 +11435,14 @@ HandlePushableObjectEntity_:
 	ld d, [hl]
 	dec de
 	ld a, e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, d
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	jr z, .asm_44d8
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_44d8
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	cp $28
 	jr c, .asm_44cf
 	ld a, $28
@@ -11457,10 +11457,10 @@ HandlePushableObjectEntity_:
 	ret
 
 Func_44dc:
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	ret nz
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 4, a
 	ret z
 	add a
@@ -11472,7 +11472,7 @@ Func_44dc:
 	cp b
 	jr z, .asm_44fb
 .asm_44ef
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_44fb
 	ld a, c
@@ -11572,35 +11572,35 @@ HandleFireHydrantEntity:
 	ld d, a
 	ld a, [hli]
 	ld c, a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld b, a
-	ld [$ff8b], a
+	ldh [$ff8b], a
 	res 0, [hl]
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr nz, .asm_461a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $08
 	jr nc, .asm_461a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_461a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $28
 	jr nc, .asm_461a
 	call Func_28b7
 	dec de
 	ld a, e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, d
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	inc de
 	set 0, [hl]
 .asm_461a
@@ -11609,20 +11609,20 @@ HandleFireHydrantEntity:
 	jr z, .asm_4629
 	dec de
 	ld a, e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, d
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	inc de
 .asm_4629
 	ld bc, $4
 	add hl, bc
 	ld a, [hl]
-	ld [$ff8c], a
+	ldh [$ff8c], a
 	sub e
-	ld [$ff8d], a
+	ldh [$ff8d], a
 	ld bc, $fffc
 	add hl, bc
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_464b
 	ld a, [hl]
@@ -11673,7 +11673,7 @@ HandleFireHydrantEntity:
 	jr z, .asm_46bd
 	cp $30
 	jr c, .asm_46a3
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_4698
 	ld a, [hl]
@@ -11696,7 +11696,7 @@ HandleFireHydrantEntity:
 	ld a, [hl]
 	and $e7
 	ld [hl], a
-	ld a, [$ff8d]
+	ldh a, [$ff8d]
 	srl a
 	srl a
 	dec a
@@ -11855,54 +11855,54 @@ HandleSkateboardEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_4878
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_4870
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_4870
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_4870
 	cp $38
 	jr nc, .asm_4870
 	inc de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_4870
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $fc
 	jr c, .asm_4870
 	dec de
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_4870
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_4870
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $06
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerSkateboardingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -11921,46 +11921,46 @@ HandleSkateboardEntity:
 	jr .asm_48be
 .asm_4878
 	dec hl
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	ld [hld], a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld [hli], a
 	inc hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_48a2
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_48a2
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_48b8
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_48be
 .asm_48a2
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_48be
 .asm_48b8
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_48be
 	jp ExitEntityHandler
 
@@ -12069,9 +12069,9 @@ HandleBrickThrowerEntity:
 	ld [hld], a
 .asm_495d
 	res 5, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc d
 	jr nc, .asm_4969
 	set 5, [hl]
@@ -12303,39 +12303,39 @@ HandleSylvesterEntity:
 	ld a, [hli]
 	adc $00
 	ld e, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc d
 	jr nz, .asm_4b18
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_4b18
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc e
 	jr z, .asm_4b06
 	inc a
 	jr nz, .asm_4b18
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
 	cp $f0
 	jr nc, .asm_4b0d
 	jr .asm_4b18
 .asm_4b06
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
 	cp $1e
 	jr nc, .asm_4b18
 .asm_4b0d
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_4b18
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_4b18
 	ld a, [hli]
 	cp b
@@ -12344,7 +12344,7 @@ HandleSylvesterEntity:
 	cp e
 	jr nz, .asm_4b52
 	pop hl
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_4b33
 	inc [hl]
@@ -12485,18 +12485,18 @@ HandleCharacterBossEntity:
 	bit 7, [hl]
 	pop hl
 	jr z, Func_4c1b
-	ld a, [hLevelCleared]
+	ldh a, [hLevelCleared]
 	and a
 	jp nz, Func_4ea7
 	ld a, 1
-	ld [hLevelCleared], a
+	ldh [hLevelCleared], a
 	ld a, 4
-	ld [hNumClapboards], a
+	ldh [hNumClapboards], a
 	ld hl, hPlayerXPos
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add $4c
 	ld [hli], a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld [hli], a
 	ld a, $58
@@ -12509,9 +12509,9 @@ HandleCharacterEntity:
 	ld [$dde7], a
 Func_4c1b:
 	ld a, c
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	ld a, b
-	ld [$ffe7], a
+	ldh [$ffe7], a
 	ld a, [hli]
 	inc hl
 	ld b, a
@@ -12668,7 +12668,7 @@ Func_4c1b:
 	ld b, d
 	add a
 	jp nc, .asm_4dc0
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	cp $3a
 	jr nz, .asm_4d53
 	push hl
@@ -12686,36 +12686,36 @@ Func_4c1b:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	ld c, a
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_4d50
 	ld a, c
 	cp $20
 	jr nc, .asm_4d50
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	ld e, a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr nz, .asm_4d50
 	ld a, e
 	cp $36
 	jr nc, .asm_4d50
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_4d50
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_4d50
 	pop de
 	pop bc
 	pop hl
 .asm_4d53
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	cp $78
 	ld d, $30
 	jr nz, .asm_4d5d
@@ -12728,7 +12728,7 @@ Func_4c1b:
 	sub a
 .asm_4d63
 	ld [hld], a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $7f
 	jr nz, .asm_4d78
 	dec [hl]
@@ -12741,15 +12741,15 @@ Func_4c1b:
 	ld [hl], $10
 	jr .asm_4dc0
 .asm_4d78
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	sub $0a
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	sbc $00
 	ld d, a
 	ld a, [de]
 	ld e, a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and e
 	ld a, [hli]
 	jr z, .asm_4d92
@@ -12862,9 +12862,9 @@ Func_4c1b:
 .asm_4e27
 	dec hl
 	res 5, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jr nc, .asm_4e34
 	set 5, [hl]
@@ -12875,10 +12875,10 @@ Func_4c1b:
 	jr z, .asm_4e3e
 	ld c, $13
 .asm_4e3e
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	sub c
 	ld c, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	sbc $00
 	ld b, a
 	call Func_1868
@@ -12889,9 +12889,9 @@ Func_4c1b:
 	jr nz, .asm_4e5f
 	dec hl
 	res 5, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jr nc, .asm_4e5e
 	set 5, [hl]
@@ -12930,10 +12930,10 @@ Func_4c1b:
 	srl a
 .asm_4e94
 	ld e, a
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	add e
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -13164,9 +13164,9 @@ HandleRockThrowerEntity:
 	ld [hld], a
 .asm_506c
 	res 5, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc d
 	jr nc, .asm_5078
 	set 5, [hl]
@@ -13270,52 +13270,52 @@ HandleBarrelBoatEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_517b
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_5173
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_5173
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_5173
 	cp $38
 	jr nc, .asm_5173
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_5173
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f8
 	jr c, .asm_5173
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_5173
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_5173
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $0c
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerBarrelIdleAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -13337,55 +13337,55 @@ HandleBarrelBoatEntity:
 .asm_517b
 	dec hl
 	dec hl
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub $08
 	ld [hli], a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc 0
 	ld [hld], a
 	dec hl
 	ld a, [hld]
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	ld a, [hli]
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	inc hl
 	inc hl
 	inc hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_51b3
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_51b3
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_51c9
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .exit
 .asm_51b3
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .exit
 .asm_51c9
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .exit
 	jp ExitEntityHandler
 
@@ -13402,7 +13402,7 @@ HandleCannonEntity:
 	push hl
 	ld bc, 4
 	add hl, bc
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_5235
 	ld a, [hl]
@@ -13448,38 +13448,38 @@ HandleCannonEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_52b6
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jp nz, .asm_5306
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jp nz, .asm_5306
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jp nz, .asm_5306
 	cp $38
 	jp nc, .asm_5306
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	cp e
 	jp nz, .asm_5306
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	cp d
 	jp nz, .asm_5306
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jp nz, .asm_5306
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_5306
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $0f
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld hl, PlayerInvisibleAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -13496,23 +13496,23 @@ HandleCannonEntity:
 	jr .asm_5306
 .asm_52b6
 	ld a, c
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, b
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	ld a, e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, d
-	ld [hPlayerYPos + 1], a
-	ld a, [$ffad]
+	ldh [hPlayerYPos + 1], a
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_52f9
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_52f9
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_5300
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_5306
 	ld a, [hl]
@@ -13527,22 +13527,22 @@ HandleCannonEntity:
 	call Func_1948
 	ld a, [bc]
 	inc bc
-	ld [$ffc2], a
+	ldh [$ffc2], a
 	ld a, [bc]
 	ld b, a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	and $df
 	or b
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_52f9
 	res 7, [hl]
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jr .asm_5306
 .asm_5300
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_5306
 	jp ExitEntityHandler
 
@@ -13563,9 +13563,9 @@ HandleSeagullEntity:
 	jr .asm_532e
 .asm_532e
 	ld a, c
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	ld a, b
-	ld [$ffe7], a
+	ldh [$ffe7], a
 	push hl
 	ld a, [hli]
 	inc hl
@@ -13685,10 +13685,10 @@ HandleSeagullEntity:
 	ld [hli], a
 	ld [hl], $38
 .asm_53e3
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	sub 2
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	sbc $00
 	ld d, a
 	ld a, [de]
@@ -13710,7 +13710,7 @@ HandleSeagullEntity:
 	sub a
 .asm_5404
 	ld [hld], a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $7f
 	jr nz, .asm_5419
 	dec [hl]
@@ -13723,7 +13723,7 @@ HandleSeagullEntity:
 	ld [hl], $28
 	jr .asm_5452
 .asm_5419
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	ld a, [hli]
 	jr z, .asm_5428
@@ -13880,10 +13880,10 @@ HandleSeagullEntity:
 	srl a
 .asm_54f8
 	ld e, a
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	add e
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	adc $00
 	ld d, a
 	ld a, [de]
@@ -13909,39 +13909,39 @@ HandleSeagullEntity:
 	ld d, a
 	bit 7, [hl]
 	jr z, .asm_559a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc d
 	jr nz, .asm_5555
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_5555
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc e
 	jr z, .asm_5543
 	inc a
 	jr nz, .asm_5555
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
 	cp $f0
 	jr nc, .asm_554a
 	jr .asm_5555
 .asm_5543
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub b
 	cp $1e
 	jr nc, .asm_5555
 .asm_554a
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_5555
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_5555
 	inc hl
 	ld a, [hli]
@@ -13951,7 +13951,7 @@ HandleSeagullEntity:
 	jr nz, .asm_558e
 	cp e
 	jr nz, .asm_558e
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_5571
 	inc [hl]
@@ -14039,12 +14039,12 @@ HandleJackhammerEntity:
 	ld a, [$de82]
 	sub $18
 	ld c, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add c
-	ld [$ff8e], a
-	ld a, [hCameraXOffset + 1]
+	ldh [$ff8e], a
+	ldh a, [hCameraXOffset + 1]
 	adc $00
-	ld [$ff8f], a
+	ldh [$ff8f], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -14059,7 +14059,7 @@ HandleJackhammerEntity:
 	and $1f
 	cp $13
 	jp z, .asm_570a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_5616
 	inc [hl]
@@ -14083,9 +14083,9 @@ HandleJackhammerEntity:
 	call LoadOAMSpritesStandard
 	jp .asm_570a
 .asm_5632
-	ld a, [$ff8e]
+	ldh a, [$ff8e]
 	sub c
-	ld a, [$ff8f]
+	ldh a, [$ff8f]
 	sbc b
 	jr nc, .asm_5654
 	ld a, $0d
@@ -14094,63 +14094,63 @@ HandleJackhammerEntity:
 	bit 7, [hl]
 	jp z, .asm_570a
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jp .asm_570a
 .asm_5654
 	bit 7, [hl]
 	jr nz, .asm_56c4
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_56bc
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_56bc
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_56bc
 	cp $38
 	jr nc, .asm_56bc
 	inc de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_56bc
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $fc
 	jr c, .asm_56bc
 	dec de
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_56bc
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_56bc
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $15
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerJackhammerAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -14169,46 +14169,46 @@ HandleJackhammerEntity:
 	jr .asm_570a
 .asm_56c4
 	dec hl
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	ld [hld], a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld [hli], a
 	inc hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_56ee
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_56ee
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_5704
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_570a
 .asm_56ee
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_570a
 .asm_5704
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_570a
 	jp ExitEntityHandler
 
@@ -14222,35 +14222,35 @@ HandleWreckingBallEntity:
 	ld a, [hli]
 	ld b, a
 	call Func_74f9
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	and a
 	jr z, .asm_574a
 	ld hl, $ffe0
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_574a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $3e
 	jr nc, .asm_574a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_574a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $28
 	jr nc, .asm_574a
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_574a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_574a
 	ld d, b
 	ld b, e
@@ -14287,12 +14287,12 @@ HandleFixedPathEntity:
 	push hl
 	push bc
 	ld a, c
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	ld a, b
-	ld [$ffe7], a
+	ldh [$ffe7], a
 	dec bc
 	ld a, [bc]
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -14304,7 +14304,7 @@ HandleFixedPathEntity:
 	call Func_74f9
 	ld d, b
 	ld b, e
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld e, a
 	inc [hl]
 	ld a, [hl]
@@ -14315,7 +14315,7 @@ HandleFixedPathEntity:
 	and $c0
 	ld [hl], a
 .asm_57c1
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	and a
 	ld a, [hl]
 	jr z, .asm_57c9
@@ -14346,10 +14346,10 @@ HandleFixedPathEntity:
 	ld b, a
 	bit 7, [hl]
 	jp nz, .asm_586d
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_5869
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_5869
 	ld a, e
@@ -14358,20 +14358,20 @@ HandleFixedPathEntity:
 	ld a, d
 	adc $00
 	ld d, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_5811
 	inc a
 	jr nz, .asm_5869
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f0
 	jr c, .asm_5869
 	jr .asm_5818
 .asm_5811
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $10
 	jr nc, .asm_5869
@@ -14382,20 +14382,20 @@ HandleFixedPathEntity:
 	ld a, d
 	sbc $00
 	ld d, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr z, .asm_5834
 	inc a
 	jr nz, .asm_5869
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $f8
 	jr c, .asm_5869
 	jr .asm_583b
 .asm_5834
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_5869
@@ -14403,11 +14403,11 @@ HandleFixedPathEntity:
 	bit 6, [hl]
 	jr nz, .asm_58b8
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $18
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld hl, PlayerSwingingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -14444,35 +14444,35 @@ HandleFixedPathEntity:
 	adc $00
 	ld [hl], a
 	pop hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_589a
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_589a
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_58b2
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_58b8
 .asm_589a
 	res 7, [hl]
 	set 6, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_58b8
 .asm_58b2
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_58b8
 	jp ExitEntityHandler
 
@@ -14537,7 +14537,7 @@ HandleBouncingOilDrumEntity:
 	and $1f
 	cp $13
 	jp z, .asm_59d4
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_593c
 	inc [hl]
@@ -14568,50 +14568,50 @@ HandleBouncingOilDrumEntity:
 	jr .asm_59d4
 .asm_595f
 	call Func_74f9
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_59a5
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_59a5
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_5985
 	inc a
 	jr nz, .asm_59a5
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $e8
 	jr c, .asm_59a5
 	jr .asm_599a
 .asm_5985
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	rra
 	jr c, .asm_5993
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $1e
 	jr nc, .asm_59a5
 	jr .asm_599a
 .asm_5993
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $0f
 	jr nc, .asm_59a5
 .asm_599a
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_59a5
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_59a5
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld b, a
 	ld a, c
 	add $28
@@ -14625,7 +14625,7 @@ HandleBouncingOilDrumEntity:
 	call PlaySoundEffectHome
 	jr .asm_59d4
 .asm_59bc
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $18
 	srl a
 	srl a
@@ -14689,7 +14689,7 @@ HandleBreakableWallEntity:
 	and $7e
 	add a
 	add a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	bit 7, [hl]
 	jr nz, .asm_5a2f
 	add c
@@ -14697,47 +14697,47 @@ HandleBreakableWallEntity:
 	ld a, b
 	adc $00
 	ld b, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jr nc, .asm_5a51
 	ld a, c
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, b
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	sub a
 	jr .asm_5a44
 .asm_5a2f
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr c, .asm_5a51
 	dec bc
 	ld a, c
 	sub $08
-	ld [hPlayerXPos], a
+	ldh [hPlayerXPos], a
 	ld a, b
 	sbc $00
-	ld [hPlayerXPos + 1], a
+	ldh [hPlayerXPos + 1], a
 	ld a, $f0
 .asm_5a44
-	ld [$ffc7], a
+	ldh [$ffc7], a
 	sub a
-	ld [$ffc5], a
-	ld [$ffc4], a
-	ld a, [$ffad]
+	ldh [$ffc5], a
+	ldh [$ffc4], a
+	ldh a, [$ffad]
 	set 3, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_5a51
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	ld b, a
 	ld c, $30
 	call Func_78ae
 	cp $01
 	jr nz, .asm_5a79
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	dec a
 	jr nz, .asm_5a79
 	ld a, $0d
@@ -14928,17 +14928,17 @@ HandleMoveLeftBossVehicleFarRightEntity:
 
 HandleFastestScrollRightEntity:
 	ld a, 4
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	jp ExitEntityHandler
 
 HandleFastScrollRightEntity:
 	ld a, 2
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	jp ExitEntityHandler
 
 HandleNormalScrollRightEntity:
 	ld a, 1
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	jp ExitEntityHandler
 
 HandleMoveYosemiteShipMiddleEntity:
@@ -14962,13 +14962,13 @@ HandleTrainTrackDollyEntity:
 HandleRaftEntity:
 	ld bc, RaftSprites
 	jr HandleBossMovablePlatformEntity
-HandleBossMovablePlatformEntity
+HandleBossMovablePlatformEntity:
 	ld a, c
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	ld a, b
-	ld [$ffe7], a
+	ldh [$ffe7], a
 	sub a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -14981,15 +14981,15 @@ HandleBossMovablePlatformEntity
 	and $1f
 	cp $0f
 	jp z, .asm_5d49
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_5ca4
 	inc [hl]
 .asm_5ca4
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub $08
 	ld c, a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc 0
 	ld b, a
 	inc hl
@@ -15017,7 +15017,7 @@ HandleBossMovablePlatformEntity
 	jr .asm_5ccc
 .asm_5cc8
 	ld a, $ff
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_5ccc
 	dec hl
 	dec hl
@@ -15030,50 +15030,50 @@ HandleBossMovablePlatformEntity
 	ld a, c
 	ld [hli], a
 	inc hl
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr nz, .asm_5d12
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $08
 	jr nc, .asm_5d12
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_5d12
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_5d12
 	call Func_28b7
 	ld a, l
 	sub $02
-	ld [$ffe9], a
+	ldh [$ffe9], a
 	ld a, h
 	sbc $00
-	ld [$ffea], a
+	ldh [$ffea], a
 	dec de
 	ld a, e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, d
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	inc de
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	and a
 	jr z, .asm_5d12
 	ld a, $ff
-	ld [$ffe8], a
+	ldh [$ffe8], a
 .asm_5d12
 	ld a, [$de82]
 	sub $20
 	ld e, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add e
 	ld e, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc 0
 	ld d, a
 	ld a, c
@@ -15087,9 +15087,9 @@ HandleBossMovablePlatformEntity
 	call PlaySoundEffectHome
 	set 7, [hl]
 .asm_5d32
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	ld d, a
 	ld a, [hl]
 	and $1e
@@ -15129,13 +15129,13 @@ TrainTrackDollySprites:
 
 HandleTrainTrackBarricadeEntity:
 	ld a, $ff
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr HandleBossGroundTrap
 HandleTNTBarrelEntity:
 	sub a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr HandleBossGroundTrap
-HandleBossGroundTrap
+HandleBossGroundTrap:
 	ld a, [hli]
 	inc hl
 	ld b, a
@@ -15151,7 +15151,7 @@ HandleBossGroundTrap
 	and $1f
 	cp $13
 	jr z, .asm_5df3
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_5d93
 	inc [hl]
@@ -15176,9 +15176,9 @@ HandleBossGroundTrap
 	ld a, d
 	adc $00
 	ld b, a
-	ld a, [$ffe9]
+	ldh a, [$ffe9]
 	ld e, a
-	ld a, [$ffea]
+	ldh a, [$ffea]
 	ld d, a
 	or e
 	jr z, .asm_5dce
@@ -15197,10 +15197,10 @@ HandleBossGroundTrap
 	call PlaySoundEffectHome
 	jr .asm_5df3
 .asm_5dce
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	and a
 	jr nz, .asm_5df6
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_5de1
 	inc [hl]
@@ -15273,7 +15273,7 @@ HandleSharkEntity:
 	ld b, a
 	bit 7, [hl]
 	jr z, .asm_5e6a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_5e55
 	inc [hl]
@@ -15306,9 +15306,9 @@ HandleSharkEntity:
 	ld a, b
 	adc $00
 	ld b, a
-	ld a, [$ffe9]
+	ldh a, [$ffe9]
 	ld e, a
-	ld a, [$ffea]
+	ldh a, [$ffea]
 	ld d, a
 	or e
 	jr z, .asm_5e9e
@@ -15334,12 +15334,12 @@ HandleSharkEntity:
 	ld a, $0d
 	call PlaySoundEffectHome
 .asm_5e9e
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	and $18
 	srl a
 	srl a
 	ld e, a
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	add e
 	add (SharkSwimSprites & $ff)
 	ld e, a
@@ -15387,21 +15387,21 @@ HandleCannonballEntity:
 	ld a, [$de83]
 	add $28
 	ld e, a
-	ld a, [hCameraYOffset]
+	ldh a, [hCameraYOffset]
 	add e
 	ld e, a
 	ld [hli], a
-	ld a, [hCameraYOffset + 1]
+	ldh a, [hCameraYOffset + 1]
 	adc 0
 	ld d, a
 	ld [hli], a
 	ld a, [$de82]
 	ld c, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add c
 	ld c, a
 	ld [hli], a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc 0
 	ld b, a
 	ld [hli], a
@@ -15411,7 +15411,7 @@ HandleCannonballEntity:
 	and $1f
 	cp $1f
 	jr z, .asm_5f3f
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_5f2e
 	inc [hl]
@@ -15492,11 +15492,11 @@ HandleDirtPathDestructionEntity:
 HandleLogDestructionEntity:
 	ld bc, LogDestructionSprites
 	jr HandlePlatformDestructionEntity
-HandlePlatformDestructionEntity
+HandlePlatformDestructionEntity:
 	ld a, c
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	ld a, b
-	ld [$ffe7], a
+	ldh [$ffe7], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -15510,10 +15510,10 @@ HandlePlatformDestructionEntity
 	ld a, [$de82]
 	sub $20
 	ld e, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add e
 	ld e, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc 0
 	ld d, a
 	ld a, c
@@ -15597,9 +15597,9 @@ HandlePlatformDestructionEntity
 	jr .asm_604b
 .asm_6033
 	inc [hl]
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	ld d, a
 	ld a, [hl]
 	and $06
@@ -15640,49 +15640,49 @@ HandleHippoEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_60df
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_60ce
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_60ce
 	cp $38
 	jr nc, .asm_60ce
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_60ce
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f8
 	jr c, .asm_60ce
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_60ce
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $40
 	jr nc, .asm_60ce
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $1b
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerHippoAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -15697,11 +15697,11 @@ HandleHippoEntity:
 	ld [hl], d
 	call Func_2326
 	sub a
-	ld [$ffb7], a
+	ldh [$ffb7], a
 	pop hl
 .asm_60ce
 	ld bc, HippoSprite0 + 1
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 5, a
 	jr z, .asm_60da
 	ld bc, HippoSprite0 + 1
@@ -15711,47 +15711,47 @@ HandleHippoEntity:
 .asm_60df
 	dec hl
 	dec hl
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub $18
 	ld [hli], a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc $00
 	ld [hli], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_610d
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_610d
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_6123
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_6129
 .asm_610d
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6129
 .asm_6123
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_6129
 	jp ExitEntityHandler
 
@@ -15771,7 +15771,7 @@ HandleGiraffeFeederEntity:
 	push hl
 	inc hl
 	ld a, $06
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_6147
 	ld a, [hli]
 	ld c, a
@@ -15787,9 +15787,9 @@ HandleGiraffeFeederEntity:
 	ld d, a
 	ld a, [hli]
 	ld [de], a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_6147
 	pop hl
 	jr .asm_6185
@@ -15938,9 +15938,9 @@ HandleMonkeyEntity:
 	ld [hld], a
 .asm_6233
 	res 5, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc d
 	jr nc, .asm_623f
 	set 5, [hl]
@@ -16170,9 +16170,9 @@ HandleTazFemaleEntity:
 	jr .asm_6332
 .asm_6396
 	res 5, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc d
 	jr nc, .asm_63a2
 	set 5, [hl]
@@ -16257,12 +16257,12 @@ Data_6423:
 HandleBicycleEntity:
 	ld a, [$de82]
 	ld c, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add c
-	ld [$ff8e], a
-	ld a, [hCameraXOffset + 1]
+	ldh [$ff8e], a
+	ldh a, [hCameraXOffset + 1]
 	adc 0
-	ld [$ff8f], a
+	ldh [$ff8f], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -16277,7 +16277,7 @@ HandleBicycleEntity:
 	and $1f
 	cp $13
 	jp z, .asm_6574
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_6455
 	inc [hl]
@@ -16301,9 +16301,9 @@ HandleBicycleEntity:
 	call LoadOAMSpritesStandard
 	jp .asm_6574
 .asm_6471
-	ld a, [$ff8e]
+	ldh a, [$ff8e]
 	sub c
-	ld a, [$ff8f]
+	ldh a, [$ff8f]
 	sbc b
 	jr c, .asm_6493
 	ld a, $0d
@@ -16312,59 +16312,59 @@ HandleBicycleEntity:
 	bit 7, [hl]
 	jp z, .asm_6574
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jp .asm_6574
 .asm_6493
 	bit 7, [hl]
 	jr nz, .asm_6503
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_64fb
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_64fb
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_64fb
 	cp $38
 	jr nc, .asm_64fb
 	inc de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_64fb
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $fc
 	jr c, .asm_64fb
 	dec de
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_64fb
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_64fb
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $1e
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerBicycleStationaryAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -16377,9 +16377,9 @@ HandleBicycleEntity:
 	ld [hl], d
 	call Func_2326
 	pop hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 5, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_64fb
 	ld bc, BicycleSprite0 + 1
 	call Func_792d
@@ -16406,51 +16406,51 @@ HandleBicycleEntity:
 .asm_6523
 	ld hl, BicycleWheelSprite2
 .asm_6526
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld c, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	ld b, a
 	call LoadOAMSpritesCameraOffset
 	pop de
 	pop bc
 	pop hl
 	dec hl
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	ld [hld], a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld [hli], a
 	inc hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 5, a
-	ld [$ffad], a
-	ld a, [$ffad]
+	ldh [$ffad], a
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_6558
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_6558
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_656e
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_6574
 .asm_6558
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6574
 .asm_656e
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_6574
 	jp ExitEntityHandler
 
@@ -16481,11 +16481,11 @@ HandleBalloonEntity:
 	jp z, .asm_66c2
 	res 7, [hl]
 	set 6, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jp .asm_66c2
 .asm_65b7
 	cp $14
@@ -16493,7 +16493,7 @@ HandleBalloonEntity:
 	ld a, $0d
 	call PlaySoundEffectHome
 .asm_65c0
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_65c7
 	inc [hl]
@@ -16525,10 +16525,10 @@ HandleBalloonEntity:
 	ld b, a
 	bit 7, [hl]
 	jp nz, .asm_6677
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jp nz, .asm_6673
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_6673
 	ld a, e
@@ -16537,20 +16537,20 @@ HandleBalloonEntity:
 	ld a, d
 	adc $00
 	ld d, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_6615
 	inc a
 	jr nz, .asm_6673
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f0
 	jr c, .asm_6673
 	jr .asm_661c
 .asm_6615
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $10
 	jr nc, .asm_6673
@@ -16561,20 +16561,20 @@ HandleBalloonEntity:
 	ld a, d
 	sbc $00
 	ld d, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr z, .asm_6638
 	inc a
 	jr nz, .asm_6673
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $f8
 	jr c, .asm_6673
 	jr .asm_663f
 .asm_6638
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_6673
@@ -16587,11 +16587,11 @@ HandleBalloonEntity:
 	jr nz, .asm_664b
 	inc [hl]
 .asm_664b
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $18
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld hl, PlayerSwingingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -16628,35 +16628,35 @@ HandleBalloonEntity:
 	adc $00
 	ld [hl], a
 	pop hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_66a4
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_66a4
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_66bc
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_66c2
 .asm_66a4
 	res 7, [hl]
 	set 6, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_66c2
 .asm_66bc
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_66c2
 	jp ExitEntityHandler
 
@@ -16922,7 +16922,7 @@ HandleTazFemaleBossEntity:
 	ld c, l
 	inc de
 	ld a, $03
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_6843
 	push bc
 	push de
@@ -16960,7 +16960,7 @@ HandleTazFemaleBossEntity:
 	swap a
 	add l
 	ld l, a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	cpl
 	add $05
 	ld [hl], a
@@ -16976,9 +16976,9 @@ HandleTazFemaleBossEntity:
 	add hl, bc
 	ld b, h
 	ld c, l
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_6843
 	jr .asm_68a2
 .asm_688e
@@ -17044,7 +17044,7 @@ HandleCageDropEntity:
 	and $1f
 	cp $13
 	jp z, .asm_6981
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_68f5
 	inc [hl]
@@ -17088,30 +17088,30 @@ HandleCageDropEntity:
 	push hl
 	ld hl, $ffe0
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_6956
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $3e
 	jr nc, .asm_6956
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_6956
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $28
 	jr nc, .asm_6956
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_6956
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_6956
 	pop hl
 	ld a, e
@@ -17126,7 +17126,7 @@ HandleCageDropEntity:
 	call Func_792d
 	jr .asm_6981
 .asm_696d
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	sub c
 	cp $88
 	jr c, .asm_697b
@@ -17156,44 +17156,44 @@ HandleTeleporterEntity:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_69ed
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_69ed
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	cp e
 	jr nz, .asm_69e9
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	cp d
 	jr nz, .asm_69e9
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_69e9
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_69e9
 	bit 7, [hl]
 	jr nz, .asm_69ef
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $21
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerTeleportOutAnimations
 	call InitPlayerAnimation
 	call Func_2326
@@ -17224,7 +17224,7 @@ HandleBombHazardEntity:
 	and $7f
 	cp $13
 	jp z, .asm_6a7d
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_6a0f
 	inc [hl]
@@ -17248,33 +17248,33 @@ HandleBombHazardEntity:
 	push hl
 	ld hl, hScore
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_6a5f
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $2e
 	jr nc, .asm_6a5f
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_6a5f
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_6a5f
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr z, .asm_6a5f
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_6a5f
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	pop hl
 	ld [hl], $80
 	jr .asm_6a7d
@@ -17365,7 +17365,7 @@ HandleInstantMartianEntity:
 	ld a, [hl]
 	add a
 	jr nc, .asm_6b28
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $1f
 	jp nz, .asm_6c17
 	dec [hl]
@@ -17412,7 +17412,7 @@ HandleInstantMartianEntity:
 .asm_6b28
 	add a
 	jr nc, .asm_6b54
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_6b3e
 	inc [hl]
@@ -17441,7 +17441,7 @@ HandleInstantMartianEntity:
 	add a
 	add a
 	jr nc, .asm_6b8b
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_6b74
 	inc [hl]
@@ -17476,7 +17476,7 @@ HandleInstantMartianEntity:
 .asm_6b8b
 	add a
 	jr nc, .asm_6bc0
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_6bb8
 	dec [hl]
@@ -17524,28 +17524,28 @@ HandleInstantMartianEntity:
 	call PlaySoundEffectHome
 	jr .asm_6bb8
 .asm_6bdd
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	cp $5c
 	jr nz, .asm_6be9
 	ld bc, Data_6c32
 	call Func_1868
 .asm_6be9
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr nc, .asm_6bf6
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	and $20
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
 .asm_6bf6
 	ld de, InstantMartianIdleSprites
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	rra
 	jr nc, .asm_6c01
 	ld de, InstantMartianTurnSprites
 .asm_6c01
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	and $18
 	srl a
 	srl a
@@ -17592,9 +17592,9 @@ HandleK9Entity:
 	jr HandleDogEntity
 HandleDogEntity:
 	ld a, c
-	ld [$ffe6], a
+	ldh [$ffe6], a
 	ld a, b
-	ld [$ffe7], a
+	ldh [$ffe7], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -17606,7 +17606,7 @@ HandleDogEntity:
 	ld a, [hl]
 	add a
 	jr nc, .asm_6c8d
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $1f
 	jp nz, .asm_6de5
 	dec [hl]
@@ -17647,7 +17647,7 @@ HandleDogEntity:
 .asm_6c8d
 	add a
 	jr nc, .asm_6cbd
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_6ca3
 	inc [hl]
@@ -17658,9 +17658,9 @@ HandleDogEntity:
 	ld [hl], $00
 	jp .asm_6d54
 .asm_6ca3
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	ld d, a
 	ld a, [hl]
 	and $06
@@ -17680,7 +17680,7 @@ HandleDogEntity:
 	add a
 	add a
 	jr nc, .asm_6d0d
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $0f
 	jr nz, .asm_6cdd
 	inc [hl]
@@ -17710,13 +17710,13 @@ HandleDogEntity:
 	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 3, a
 	jp z, .asm_6de5
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	sub $02
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	sbc $00
 	ld d, a
 	ld a, [de]
@@ -17729,7 +17729,7 @@ HandleDogEntity:
 .asm_6d0d
 	add a
 	jr nc, .asm_6d54
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_6d3f
 	dec [hl]
@@ -17761,10 +17761,10 @@ HandleDogEntity:
 	and $20
 	ld [hl], a
 .asm_6d3f
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	sub $04
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	sbc $00
 	ld d, a
 	ld a, [de]
@@ -17779,33 +17779,33 @@ HandleDogEntity:
 	push hl
 	ld hl, $ffe8
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_6d8b
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $36
 	jr nc, .asm_6d8b
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_6d8b
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_6d8b
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr z, .asm_6d8b
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_6d8b
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_6d8b
 	pop hl
 	ld bc, $1818
@@ -17822,15 +17822,15 @@ HandleDogEntity:
 	call PlaySoundEffectHome
 	jr .asm_6d3f
 .asm_6da6
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	sub $05
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	sbc $00
 	ld d, a
 	ld a, [de]
 	ld e, a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and e
 	jr nz, .asm_6dc3
 	inc [hl]
@@ -17842,14 +17842,14 @@ HandleDogEntity:
 	and $f8
 	ld [hl], a
 .asm_6dc3
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
-	ld a, [$ffe6]
+	ldh a, [$ffe6]
 	add $08
 	ld e, a
-	ld a, [$ffe7]
+	ldh a, [$ffe7]
 	adc $00
 	ld d, a
 	ld a, [hl]
@@ -17919,40 +17919,40 @@ HandleLeverSpringEntity:
 	sbc $00
 	ld d, a
 .asm_6e2e
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr nz, .asm_6e73
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $04
 	jr nc, .asm_6e73
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_6e73
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $28
 	jr nc, .asm_6e73
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	add a
 	jr c, .asm_6e73
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr z, .asm_6e73
 	call Func_28b7
 	dec de
 	ld a, e
-	ld [hPlayerYPos], a
+	ldh [hPlayerYPos], a
 	ld a, d
-	ld [hPlayerYPos + 1], a
+	ldh [hPlayerYPos + 1], a
 	inc de
 	bit 7, [hl]
 	jr z, .asm_6e73
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_6e73
 	res 7, [hl]
@@ -18040,61 +18040,61 @@ HandleHoverShipEntity:
 	jr .asm_6f60
 .asm_6ef3
 	pop hl
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_6f60
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_6f60
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_6f60
 	cp $38
 	jr nc, .asm_6f60
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_6f60
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $fc
 	jr c, .asm_6f60
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_6f60
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_6f60
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $24
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $04
-	ld [$ffeb], a
-	ld a, [$ffad]
+	ldh [$ffeb], a
+	ldh a, [$ffad]
 	res 5, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hli]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld a, [hli]
-	ld [$ffbe], a
+	ldh [$ffbe], a
 	ld a, [hli]
-	ld [$ffbf], a
+	ldh [$ffbf], a
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -18116,7 +18116,7 @@ HandleHoverShipEntity:
 	inc hl
 	add $04
 	ld b, a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 2, a
 	jr z, .asm_6f84
 	ld a, [hli]
@@ -18141,43 +18141,43 @@ HandleHoverShipEntity:
 .asm_6f94
 	push hl
 	dec hl
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	ld [hld], a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	ld [hld], a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	ld [hld], a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	ld [hl], a
 	pop hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_6fbb
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_6fbb
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_6fd1
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_6fd7
 .asm_6fbb
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6fd7
 .asm_6fd1
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_6fd7
 	jp ExitEntityHandler
 
@@ -18192,47 +18192,47 @@ HandleSpaceScooterEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_704b
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_7045
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_7045
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_7045
 	cp $38
 	jr nc, .asm_7045
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_7045
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f8
 	jr c, .asm_7045
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_7045
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $28
 	jr nc, .asm_7045
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $27
-	ld [$ffb0], a
-	ld a, [$ffad]
+	ldh [$ffb0], a
+	ldh a, [$ffad]
 	set 5, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $bf
-	ld [$ffb7], a
+	ldh [$ffb7], a
 	push hl
 	ld hl, PlayerSpaceScooterAnimations
 	call InitPlayerAnimation
@@ -18265,27 +18265,27 @@ HandleFallingAsteroidEntity:
 	push hl
 	ld hl, $ffe8
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_7082
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $36
 	jr nc, .asm_7082
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_7082
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_7082
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_7082
 	pop hl
 	ld bc, FallingAsteroidSprite0 + 1
@@ -18307,28 +18307,28 @@ HandleFuelCanisterEntity:
 	push hl
 	ld hl, $ffe8
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_70cc
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $36
 	jr nc, .asm_70cc
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_70cc
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $20
 	jr nc, .asm_70cc
 	pop hl
 	set 7, [hl]
 	ld a, $bf
-	ld [$ffb7], a
+	ldh [$ffb7], a
 	ld a, $10
 	call PlaySoundEffectHome
 	jr .asm_70d3
@@ -18349,7 +18349,7 @@ HandleActionHintEntity:
 	ld bc, ActionHintSprite0 + 1
 	call Func_792d
 	pop hl
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 4, a
 	jr z, .asm_70fc
 	bit 7, [hl]
@@ -18373,33 +18373,33 @@ HandleBearTrapEntity:
 	push hl
 	ld hl, $fffc
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc h
 	jr nz, .asm_7135
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub l
 	cp $22
 	jr nc, .asm_7135
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_7135
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $28
 	jr nc, .asm_7135
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_7135
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_7135
 	pop hl
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 5, a
 	ld bc, BearTrapSprite0 + 1
 	jr z, .asm_7142
@@ -18423,7 +18423,7 @@ HandleDisguisedHunterEntity:
 	ld a, [hl]
 	and $1f
 	jp z, .asm_7211
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_7161
 	dec [hl]
@@ -18441,7 +18441,7 @@ HandleDisguisedHunterEntity:
 	ld hl, DizzyStarsSprite
 	call LoadOAMSpritesStandard
 	pop hl
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 3, a
 	jp z, .asm_7211
 	ld bc, DisguisedHunterSprite10 + 1
@@ -18499,27 +18499,27 @@ HandleDisguisedHunterEntity:
 	call PlaySoundEffectHome
 	jr .asm_71b2
 .asm_71d7
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	rra
 	jr nc, .asm_71e8
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	cp $18
 	jr nz, .asm_71e8
 	ld bc, Data_7244
 	call Func_1868
 .asm_71e8
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	and $20
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
 	ld de, DisguisedHunterSprites
-	ld a, [$ffe5]
+	ldh a, [$ffe5]
 	rra
 	jr nc, .asm_71fb
 	ld de, DisguisedHunterShootingSprites
 .asm_71fb
-	ld a, [$ffe4]
+	ldh a, [$ffe4]
 	and $f8
 	srl a
 	srl a
@@ -18606,57 +18606,57 @@ HandleHelicopterChairEntity:
 	jr .asm_72e4
 .asm_7279
 	pop hl
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_72e4
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_72e4
-	ld a, [$ffc6]
+	ldh a, [$ffc6]
 	bit 7, a
 	jr nz, .asm_72e4
 	cp $38
 	jr nc, .asm_72e4
 	inc de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	inc a
 	jr nz, .asm_72ee
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $fc
 	jr c, .asm_72ee
 	dec de
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_72e4
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_72e4
 	set 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	ld a, $2a
-	ld [$ffb0], a
-	ld a, [$ffad]
+	ldh [$ffb0], a
+	ldh a, [$ffad]
 	res 5, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	push hl
 	inc hl
 	ld a, [hli]
-	ld [$ffba], a
+	ldh [$ffba], a
 	ld a, [hli]
-	ld [$ffbb], a
+	ldh [$ffbb], a
 	ld a, [hli]
-	ld [$ffbc], a
+	ldh [$ffbc], a
 	ld a, [hl]
-	ld [$ffbd], a
+	ldh [$ffbd], a
 	ld hl, PlayerHelicopterAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -18683,39 +18683,39 @@ HandleHelicopterChairEntity:
 	dec hl
 	dec hl
 	dec hl
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	ld [hld], a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	ld [hl], a
 	pop hl
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_7314
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr z, .asm_7314
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_732a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 6, a
 	jr nz, .asm_7330
 .asm_7314
 	res 7, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld a, $06
-	ld [$ffb2], a
+	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_7330
 .asm_732a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	res 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_7330
 	jp ExitEntityHandler
 
@@ -18797,7 +18797,7 @@ HandleRockTeeterTotterEntity:
 	ld bc, $4
 	add hl, bc
 	ld a, $06
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_73ca
 	ld a, [hli]
 	ld c, a
@@ -18826,9 +18826,9 @@ HandleRockTeeterTotterEntity:
 	call DrawMetatile_HBlank
 	call DrawMetatileGBCAttributes_HBlank
 	pop hl
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_73ca
 .asm_73f3
 	pop hl
@@ -18915,7 +18915,7 @@ HandleBoomBarrierEntity:
 	and $1f
 	cp $13
 	jp z, .asm_74e6
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_7463
 	inc [hl]
@@ -18936,45 +18936,45 @@ HandleBoomBarrierEntity:
 	call LoadOAMSpritesStandard
 	jr .asm_74e6
 .asm_747a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr nz, .asm_74b7
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $10
 	jr nc, .asm_74b7
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_749d
 	inc a
 	jr nz, .asm_74b7
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $c0
 	jr c, .asm_74b7
 	jr .asm_74a4
 .asm_749d
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $1e
 	jr nc, .asm_74b7
 .asm_74a4
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_74b7
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $38
 	cp $20
 	jr c, .asm_74b7
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 1, a
-	ld [$ffad], a
+	ldh [$ffad], a
 .asm_74b7
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	ld b, a
 	ld a, c
 	add $28
@@ -18988,7 +18988,7 @@ HandleBoomBarrierEntity:
 	call PlaySoundEffectHome
 	jr .asm_74e6
 .asm_74ce
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $38
 	srl a
 	srl a
@@ -19022,7 +19022,7 @@ Func_74f9:
 .asm_74fb
 	dec [hl]
 	ld a, [hli]
-	ld [$ffe4], a
+	ldh [$ffe4], a
 	cp $ff
 	ld a, [hli]
 	ld h, [hl]
@@ -19032,17 +19032,17 @@ Func_74f9:
 .asm_7507
 	dec hl
 	ld a, [hld]
-	ld [$ff8f], a
+	ldh [$ff8f], a
 	ld a, [hld]
-	ld [$ff8e], a
+	ldh [$ff8e], a
 	ld a, [hl]
 	pop hl
 	push hl
 	inc hl
 	ld [hli], a
-	ld a, [$ff8e]
+	ldh a, [$ff8e]
 	ld [hli], a
-	ld a, [$ff8f]
+	ldh a, [$ff8f]
 	ld [hld], a
 	dec hl
 	jr .asm_74fb
@@ -19053,9 +19053,9 @@ Func_78ae:
 	push hl
 	ld de, $fffc
 	add hl, de
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	ld e, a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	ld d, a
 	ld a, [hli]
 	sub e
@@ -19074,16 +19074,16 @@ Func_78ae:
 	cp c
 	jr nc, .asm_792a
 .asm_78ce
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr z, .asm_78e9
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub e
 	ld e, a
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc d
 	jr nz, .asm_792a
 	ld a, b
@@ -19093,18 +19093,18 @@ Func_78ae:
 	ld a, $02
 	jr .asm_792b
 .asm_78e9
-	ld a, [$ffb4]
+	ldh a, [$ffb4]
 	and a
 	jr z, .asm_792a
 	cp $08
 	jr nc, .asm_792a
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 5, a
 	jr nz, .asm_7914
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	add $18
 	ld e, a
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	adc $00
 	ld d, a
 	ld a, e
@@ -19124,10 +19124,10 @@ Func_78ae:
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub e
 	ld e, a
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc d
 	jr nz, .asm_792a
 	ld a, b
@@ -19143,17 +19143,17 @@ Func_78ae:
 	ret
 
 Func_792d:
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	ret nc
 	dec hl
 	ld a, [hld]
 	ld d, a
 	ld e, [hl]
-	ld a, [hCameraXOffsetScreenRight]
+	ldh a, [hCameraXOffsetScreenRight]
 	sub e
 	ld e, a
-	ld a, [hCameraXOffsetScreenRight + 1]
+	ldh a, [hCameraXOffsetScreenRight + 1]
 	sbc d
 	ret nz
 	ld a, e
@@ -19186,7 +19186,7 @@ Func_792d:
 	ret
 
 Func_795e:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, $ddcc
@@ -19202,7 +19202,7 @@ Func_795e:
 	ld a, [$ddcd]
 	bit 6, a
 	jr nz, .asm_7998
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 4, a
 	jr z, .asm_798c
 	ld bc, $3844
@@ -19226,7 +19226,7 @@ Func_795e:
 	ld a, [hli]
 	cp [hl]
 	ret nz
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 4, a
 	ret z
 	ld bc, $3844
@@ -19250,17 +19250,17 @@ Func_795e:
 	ld a, [hli]
 	or [hl]
 	jr nz, .asm_79e7
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_7a48
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	cp 32
 	jr z, .asm_7a48
 	inc a
-	ld [hNumCarrots], a
+	ldh [hNumCarrots], a
 	jr .asm_7a48
 .asm_79e7
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	and a
 	jr z, .asm_7a48
 	ld hl, $ddcc
@@ -19276,7 +19276,7 @@ Func_795e:
 	inc l
 	ld a, b
 	ld [hli], a
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	ld b, $ff
 .asm_7a02
 	inc b
@@ -19295,8 +19295,8 @@ Func_795e:
 	ld a, [bc]
 	ld [hl], a
 	sub a
-	ld [hNumCarrots], a
-	ld [hCarrotMeter], a
+	ldh [hNumCarrots], a
+	ldh [hCarrotMeter], a
 	ld hl, $9300
 	ld bc, vTilesBG
 	ld d, $20
@@ -19437,7 +19437,7 @@ Func_795e:
 	jr c, .asm_7ae8
 	cp $5a
 	jp nc, Func_7b8a
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 3, a
 	ret z
 .asm_7ae8
@@ -19571,10 +19571,10 @@ Func_7b8a:
 	ld a, [hli]
 	cp [hl]
 	ret nz
-	ld a, [hNumLives]
+	ldh a, [hNumLives]
 	add 1
 	daa
-	ld [hNumLives], a
+	ldh [hNumLives], a
 	ret
 .asm_7bb0
 	add a
@@ -19658,7 +19658,7 @@ HandleLadderEntity:
 	ld e, a
 	ld d, [hl]
 	ld a, $06
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_7cb6
 	push bc
 	push de
@@ -19728,9 +19728,9 @@ HandleLadderEntity:
 	ld a, d
 	adc $00
 	ld d, a
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_7cb6
 	jp .asm_7dbf
 .asm_7d1b:
@@ -19757,17 +19757,17 @@ HandleLadderEntity:
 	ld [hl], $20
 	dec hl
 	set 6, [hl]
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	set 6, a
-	ld [$ffad], a
+	ldh [$ffad], a
 	sub a
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	jr .asm_7dbf
 .asm_7d49
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	and a
 	jr nz, .asm_7dbf
-	ld a, [$ffad]
+	ldh a, [$ffad]
 	bit 2, a
 	jr nz, .asm_7dbf
 	ld a, e
@@ -19776,20 +19776,20 @@ HandleLadderEntity:
 	ld a, d
 	adc $00
 	ld d, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc d
 	jr z, .asm_7d70
 	inc a
 	jr nz, .asm_7dbf
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $f0
 	jr c, .asm_7dbf
 	jr .asm_7d77
 .asm_7d70
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub e
 	cp $10
 	jr nc, .asm_7dbf
@@ -19800,20 +19800,20 @@ HandleLadderEntity:
 	ld a, d
 	sbc $00
 	ld d, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	jr z, .asm_7d93
 	inc a
 	jr nz, .asm_7dbf
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $f0
 	jr c, .asm_7dbf
 	jr .asm_7d9a
 .asm_7d93
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
 	cp $18
 	jr nc, .asm_7dbf
@@ -19822,7 +19822,7 @@ HandleLadderEntity:
 	inc hl
 	ld [hl], $10
 	ld a, $18
-	ld [$ffb0], a
+	ldh [$ffb0], a
 	ld hl, PlayerSwingingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -19862,13 +19862,13 @@ LadderSprite:
 ResetInitialData:
 	call WaitUntilSafeToAccessVRAM
 	sub a
-	ld [rIF], a
-	ld [$ffff], a
-	ld [rSC], a
-	ld [rTAC], a
-	ld [rSTAT], a
+	ldh [rIF], a
+	ldh [$ffff], a
+	ldh [rSC], a
+	ldh [rTAC], a
+	ldh [rSTAT], a
 	ld a, $30
-	ld [rP1], a
+	ldh [rP1], a
 	ld hl, vTilesOB
 	ld bc, $2000
 	call ClearData
@@ -20036,26 +20036,26 @@ ResumeMusic_:
 
 PauseMusic_:
 	xor a
-	ld [rNR12], a
-	ld [rNR22], a
-	ld [rNR42], a
+	ldh [rNR12], a
+	ldh [rNR22], a
+	ldh [rNR42], a
 	inc a
 	ld [wMusicPaused], a
 	ld a, [wActiveSoundEffect]
 	and a
 	jr nz, .asm_80b6
 	xor a
-	ld [rNR32], a
+	ldh [rNR32], a
 .asm_80b6
 	ld a, $80
-	ld [rNR14], a
-	ld [rNR24], a
-	ld [rNR44], a
+	ldh [rNR14], a
+	ldh [rNR24], a
+	ldh [rNR44], a
 	ld a, [wActiveSoundEffect]
 	and a
 	ret nz
 	ld a, $80
-	ld [rNR34], a
+	ldh [rNR34], a
 	ret
 
 Func_80c8:
@@ -20109,7 +20109,7 @@ TickMusicEngine_:
 	ld l, $05
 	ld a, [hli]
 	add e
-	ld [rNR13], a
+	ldh [rNR13], a
 	ld a, [hli]
 	adc d
 	ld b, [hl]
@@ -20133,11 +20133,11 @@ Func_8128:
 	ld [hl], $00
 	dec l
 	ld a, [hl]
-	ld [rNR12], a
+	ldh [rNR12], a
 	ld a, b
 	or $80
 Func_8131:
-	ld [rNR14], a
+	ldh [rNR14], a
 Func_8133:
 	inc h
 	ld l, $25
@@ -20147,7 +20147,7 @@ Func_8133:
 	ld l, $05
 	ld a, [hli]
 	add e
-	ld [rNR23], a
+	ldh [rNR23], a
 	ld a, [hli]
 	adc d
 	ld b, [hl]
@@ -20171,11 +20171,11 @@ Func_8158:
 	ld [hl], $00
 	dec l
 	ld a, [hl]
-	ld [rNR22], a
+	ldh [rNR22], a
 	ld a, b
 	or $80
 Func_8161:
-	ld [rNR24], a
+	ldh [rNR24], a
 Func_asm_8163:
 	ld hl, wActiveSoundEffect
 	ld a, [hl]
@@ -20190,12 +20190,12 @@ Func_816b:
 	ld l, $05
 	ld a, [hli]
 	add e
-	ld [rNR33], a
+	ldh [rNR33], a
 	ld a, [hli]
 	adc d
 	cp [hl]
 	jr z, .asm_817e
-	ld [rNR34], a
+	ldh [rNR34], a
 	ld [hl], a
 .asm_817e
 	inc l
@@ -20210,7 +20210,7 @@ Func_816b:
 	jr z, Func_8193
 	ld a, [hl]
 	ld [$db44], a
-	ld [rNR32], a
+	ldh [rNR32], a
 Func_8193:
 	ld hl, $db38
 	ld c, [hl]
@@ -20240,7 +20240,7 @@ Func_8193:
 	jr nz, .asm_81bc
 	ld a, $ff
 .asm_81bc
-	ld [rNR51], a
+	ldh [rNR51], a
 	jp Func_86ca
 
 TickSoundEffectChannel:
@@ -20625,11 +20625,11 @@ ReadMusicMetaCommand_85:
 	cp $db
 	jr nz, .asm_83d7
 	ld a, $80
-	ld [rNR11], a
+	ldh [rNR11], a
 	jr .asm_83db
 .asm_83d7
 	ld a, $80
-	ld [rNR21], a
+	ldh [rNR21], a
 .asm_83db
 	ld a, b
 	sub $84
@@ -20893,7 +20893,7 @@ Func_8518:
 
 Func_8522:
 	ld a, $ff
-	ld [rNR52], a
+	ldh [rNR52], a
 	ld a, $70
 	ld [$db4b], a
 	ld a, $c5
@@ -20909,21 +20909,21 @@ Func_853d:
 	ld a, $20
 	ld [$db48], a
 	xor a
-	ld [rNR12], a
-	ld [rNR22], a
-	ld [rNR32], a
-	ld [rNR42], a
-	ld [rNR14], a
-	ld [rNR24], a
-	ld [rNR34], a
-	ld [rNR44], a
+	ldh [rNR12], a
+	ldh [rNR22], a
+	ldh [rNR32], a
+	ldh [rNR42], a
+	ldh [rNR14], a
+	ldh [rNR24], a
+	ldh [rNR34], a
+	ldh [rNR44], a
 	ld [$db65], a
 	ld [$db52], a
 	ld [$db5c], a
 	ld a, $88
 	ld [$db46], a
 	ld a, $77
-	ld [rNR50], a
+	ldh [rNR50], a
 	ld h, $db
 	call Func_857b
 	inc h
@@ -21175,11 +21175,11 @@ Func_8690:
 	cp $db
 	jr nz, .asm_8699
 	ld a, l
-	ld [rNR11], a
+	ldh [rNR11], a
 	ret
 .asm_8699
 	ld a, l
-	ld [rNR21], a
+	ldh [rNR21], a
 	ret
 
 Func_869d:
@@ -21216,11 +21216,11 @@ Func_86ca:
 	ld a, [$db65]
 	and a
 	jr nz, .asm_86d9
-	ld a, [rNR50]
+	ldh a, [rNR50]
 	and a
 	ret z
 	ld a, $77
-	ld [rNR50], a
+	ldh [rNR50], a
 	ret
 .asm_86d9
 	ld a, [$db63]
@@ -21245,7 +21245,7 @@ Func_86ca:
 	jr z, .asm_870b
 	cp $ff
 	jr z, Func_86c5
-	ld [rNR50], a
+	ldh [rNR50], a
 	ld a, [$db62]
 	inc a
 	ld [$db62], a
@@ -21276,7 +21276,7 @@ Func_8711:
 .asm_8728
 	ld b, h
 	xor a
-	ld [rNR30], a
+	ldh [rNR30], a
 	ld c, $30
 	ld a, [de]
 	ld l, a
@@ -21335,13 +21335,13 @@ Func_8711:
 	ld l, $07
 	ld a, [hl]
 	or $80
-	ld [rNR30], a
-	ld [rNR34], a
+	ldh [rNR30], a
+	ldh [rNR34], a
 	ret
 
 Func_876e:
 	xor a
-	ld [rNR30], a
+	ldh [rNR30], a
 	ld c, (_AUD3WAVERAM & $ff)
 	ld hl, $db4c
 	ld a, [hli]
@@ -21399,8 +21399,8 @@ Func_876e:
 	ret nz
 	ld a, $80
 	ld [$dd07], a
-	ld [rNR30], a
-	ld [rNR34], a
+	ldh [rNR30], a
+	ldh [rNR34], a
 	ret
 
 INCBIN "baserom.gbc", $87b7, $8800 - $87b7
@@ -21563,7 +21563,7 @@ Func_88f8:
 	ld [$db65], a
 	ld [$db52], a
 	ld a, $77
-	ld [rNR50], a
+	ldh [rNR50], a
 asm_8905:
 	call Func_857b
 	ld l, $27
@@ -21837,7 +21837,7 @@ Func_8a7f:
 	ld a, [hl]
 	cp $ff
 	jr z, .asm_8b1b
-	ld [rNR43], a
+	ldh [rNR43], a
 	ld a, [$db59]
 	and a
 	jr z, .asm_8aea
@@ -21860,9 +21860,9 @@ Func_8a7f:
 	jr nc, .asm_8ae4
 	and $0f
 .asm_8ae4
-	ld [rNR42], a
+	ldh [rNR42], a
 	ld a, $80
-	ld [rNR44], a
+	ldh [rNR44], a
 .asm_8aea
 	ld a, [$db47]
 	and a
@@ -22440,7 +22440,7 @@ WarnerBrosCopyrightAmpersandTiles:
 	INCBIN "gfx/warner_bros_copyright/ampersand.2bpp"
 
 Func_f585:
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and 7
 	ret nz
 	ld hl, $dde0
@@ -22567,7 +22567,7 @@ DrawCreditsText:
 	ld a, [hl]
 	cp $ff
 	jp z, InitNextScreen
-	ld a, [hActiveSprites]
+	ldh a, [hActiveSprites]
 	ld e, a
 	ld d, $df
 .loadWord
@@ -22602,8 +22602,8 @@ DrawCreditsText:
 	cp 1
 	jr nz, .loadLetter
 	ld a, e
-	ld [hActiveSprites], a
-	ld a, [hFrameCounter]
+	ldh [hActiveSprites], a
+	ldh a, [hFrameCounter]
 	cp $ff
 	ret nz
 	inc hl
@@ -23628,7 +23628,7 @@ INCLUDE "data/passwords.asm"
 INCBIN "baserom.gbc", $16eab, $173fa - $16eab
 
 Func_173fa:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, [$ddc3]
@@ -23752,7 +23752,7 @@ Func_173fa:
 	jr nc, .asm_174cc
 	ld hl, $9b2d
 	ld bc, $19
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ld d, $7a
 	jr nz, .asm_174a5
@@ -23795,7 +23795,7 @@ Func_173fa:
 	ld [hl], a
 .asm_174cc
 	ld hl, $ddc3
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	sub $06
 	and $07
 	jr nz, .asm_174df
@@ -23840,25 +23840,25 @@ Func_173fa:
 	ld a, [hl]
 	adc $00
 	ld b, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jr c, .asm_1753a
 	ld a, [$de82]
 	ld b, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add b
 	ld c, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ld a, [hPlayerXPos]
+	ldh a, [hPlayerXPos]
 	sub c
-	ld a, [hPlayerXPos + 1]
+	ldh a, [hPlayerXPos + 1]
 	sbc b
 	ret nc
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	cp $60
 	ret c
 .asm_1753a
@@ -23868,7 +23868,7 @@ Func_173fa:
 INCBIN "baserom.gbc", $1753e, $17568 - $1753e
 
 TryInitNextScreen:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 TryInitNextScreen_:
@@ -23899,11 +23899,11 @@ TryInitNextScreen_:
 	ld b, $00
 	add hl, bc
 	ld a, [hli]
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, [hli]
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, [hl]
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	ret
 
 Func_1759b:
@@ -23916,11 +23916,11 @@ Func_1759b:
 	jr TryInitNextScreen_
 
 ClearOAMBuffer:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	call hDMARoutine
-	ld a, [hActiveSprites]
+	ldh a, [hActiveSprites]
 	cp 161
 	jr c, .ok
 	ld a, 160
@@ -23979,14 +23979,14 @@ ClearOAMBuffer:
 	ld [wOAMBuffer + $8], a
 	ld [wOAMBuffer + $4], a
 	ld [wOAMBuffer], a
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	ret
 
 HandleCameraScroll:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
-	ld a, [$ffa4]
+	ldh a, [$ffa4]
 	add a
 	jr c, .asm_17699
 	jp z, Func_176e9
@@ -24032,9 +24032,9 @@ HandleCameraScroll:
 	call DrawMetatileGBCAttributes_HBlank
 	pop de
 	pop bc
-	ld a, [$ffa4]
+	ldh a, [$ffa4]
 	dec a
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	jr nz, .asm_17658
 .asm_17694
 	ld hl, $ff50
@@ -24085,20 +24085,20 @@ HandleCameraScroll:
 	call DrawMetatileGBCAttributes_HBlank
 	pop bc
 	pop de
-	ld a, [$ffa4]
+	ldh a, [$ffa4]
 	inc a
-	ld [$ffa4], a
+	ldh [$ffa4], a
 	jr nz, .asm_176a1
 .asm_176df
 	ld hl, $10
 .asm_176e2
 	add hl, bc
 	ld a, l
-	ld [hCameraXOffset], a
+	ldh [hCameraXOffset], a
 	ld a, h
-	ld [hCameraXOffset + 1], a
+	ldh [hCameraXOffset + 1], a
 Func_176e9:
-	ld a, [$ffa5]
+	ldh a, [$ffa5]
 	add a
 	jr c, .asm_1773a
 	jp z, Func_1778b
@@ -24143,9 +24143,9 @@ Func_176e9:
 	call DrawMetatileGBCAttributes_HBlank
 	pop de
 	pop bc
-	ld a, [$ffa5]
+	ldh a, [$ffa5]
 	dec a
-	ld [$ffa5], a
+	ldh [$ffa5], a
 	jr nz, .asm_176fa
 .asm_17735
 	ld hl, $ff70
@@ -24197,22 +24197,22 @@ Func_176e9:
 	call DrawMetatileGBCAttributes_HBlank
 	pop de
 	pop bc
-	ld a, [$ffa5]
+	ldh a, [$ffa5]
 	inc a
-	ld [$ffa5], a
+	ldh [$ffa5], a
 	jr nz, .asm_17742
 .asm_17781
 	ld hl, $10
 .asm_17784
 	add hl, de
 	ld a, l
-	ld [hCameraYOffset], a
+	ldh [hCameraYOffset], a
 	ld a, h
-	ld [hCameraYOffset + 1], a
+	ldh [hCameraYOffset + 1], a
 Func_1778b:
 	sub a
-	ld [$ffa4], a
-	ld [$ffa5], a
+	ldh [$ffa4], a
+	ldh [$ffa5], a
 	ret
 
 Func_17791:
@@ -24232,7 +24232,7 @@ Func_17791:
 	ret
 
 Func_177a1:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld a, [$de81]
@@ -24241,7 +24241,7 @@ Func_177a1:
 	ld a, [$de82]
 	cp $94
 	jr nc, .asm_177c9
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $38
 	srl a
 	srl a
@@ -24261,7 +24261,7 @@ Func_177a1:
 	ld hl, $783f
 	call LoadOAMSprites
 	ld bc, $8283
-	ld a, [$ffb7]
+	ldh a, [$ffb7]
 	add $1f
 	and $e0
 	swap a
@@ -24320,15 +24320,15 @@ Func_177a1:
 	ld a, [$de82]
 	sub $10
 	ld c, a
-	ld a, [hCameraXOffset]
+	ldh a, [hCameraXOffset]
 	add c
 	ld c, a
-	ld a, [hCameraXOffset + 1]
+	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ld a, [$ffdd]
+	ldh a, [$ffdd]
 	sub c
-	ld a, [$ffde]
+	ldh a, [$ffde]
 	sbc b
 	ret c
 	call Func_1ae2
@@ -24337,7 +24337,7 @@ Func_177a1:
 INCBIN "baserom.gbc", $1783f, $17929 - $1783f
 
 UpdatePlayerState:
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	ret nz
 	ld hl, hPlayerXPos
@@ -24354,146 +24354,146 @@ UpdatePlayerState:
 	ld c, $02
 	ld d, $28
 	ld e, $03
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $03
 	jr nz, .asm_17957
 	ld b, $14
 	ld c, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_17957
 	ld c, $01
 .asm_17957
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $2a
 	jr nz, .asm_1795f
 	ld d, $10
 .asm_1795f
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $27
 	jr nz, .asm_1796b
 	ld b, $20
 	ld c, $00
 	ld e, $00
 .asm_1796b
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $24
 	jr nz, .asm_1797c
 	ld b, $10
 	ld c, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_1797c
 	ld c, $01
 .asm_1797c
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $21
 	jr nz, .asm_17984
 	ld e, $00
 .asm_17984
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $1e
 	jr nz, .asm_1798e
 	ld b, $28
 	ld c, $01
 .asm_1798e
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $1b
 	jr nz, .asm_179a2
 	ld b, $08
 	ld c, $00
 	ld e, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $07
 	jr nz, .asm_179a2
 	ld c, $01
 .asm_179a2
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $18
 	jr nz, .asm_179aa
 	ld e, $00
 .asm_179aa
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $15
 	jr nz, .asm_179bb
 	ld b, $10
 	ld c, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_179bb
 	ld c, $01
 .asm_179bb
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $12
 	jr nz, .asm_179c3
 	ld e, $00
 .asm_179c3
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $0c
 	jr nz, .asm_179d7
 	ld b, $10
 	ld c, $00
 	ld e, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_179d7
 	ld c, $01
 .asm_179d7
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $09
 	jr nz, .asm_179df
 	ld e, $00
 .asm_179df
-	ld a, [$ffb0]
+	ldh a, [$ffb0]
 	cp $06
 	jr nz, .asm_179f0
 	ld b, $20
 	ld c, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_179f0
 	ld c, $01
 .asm_179f0
-	ld a, [hLevelCleared]
+	ldh a, [hLevelCleared]
 	and a
 	jr z, .asm_179f7
 	ld e, $00
 .asm_179f7
-	ld a, [$ffd1]
+	ldh a, [$ffd1]
 	sub $68
-	ld a, [$ffd2]
+	ldh a, [$ffd2]
 	sbc 0
 	jr c, .asm_17a06
 	add a
 	jr c, .asm_17a06
 	ld d, $38
 .asm_17a06
-	ld a, [$ffb6]
+	ldh a, [$ffb6]
 	and a
 	jr z, .asm_17a17
 	ld b, $38
 	ld c, $00
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_17a17
 	ld c, $01
 .asm_17a17
-	ld a, [$ffaf]
+	ldh a, [$ffaf]
 	add a
 	jr nc, .asm_17a31
-	ld a, [$ffd6]
+	ldh a, [$ffd6]
 	sub $87
-	ld a, [$ffd7]
+	ldh a, [$ffd7]
 	sbc $77
 	jr c, .asm_17a31
 	ld d, $08
 	sub a
-	ld [$ffd1], a
-	ld [$ffd2], a
+	ldh [$ffd1], a
+	ldh [$ffd2], a
 	ld b, $04
 	ld c, $01
 .asm_17a31
-	ld a, [$ffb3]
+	ldh a, [$ffb3]
 	cp $1c
 	jr c, .asm_17a3b
 	ld b, $04
@@ -24534,14 +24534,14 @@ UpdatePlayerState:
 .asm_17a60
 	ld c, l
 	ld [hli], a
-	ld a, [$ffc3]
+	ldh a, [$ffc3]
 	and a
 	jr z, .asm_17a73
 	dec a
-	ld [$ffc3], a
+	ldh [$ffc3], a
 	sub a
-	ld [$ffd1], a
-	ld [$ffd2], a
+	ldh [$ffd1], a
+	ldh [$ffd2], a
 	ld a, $d0
 	jr .asm_17a7d
 .asm_17a73
@@ -24554,7 +24554,7 @@ UpdatePlayerState:
 	ld a, d
 .asm_17a7d
 	ld [hli], a
-	ld a, [$ffc2]
+	ldh a, [$ffc2]
 	add a
 	jr z, .asm_17a96
 	jr c, .asm_17a8b
@@ -24565,17 +24565,17 @@ UpdatePlayerState:
 	ld a, $e8
 	ld b, $01
 .asm_17a8f
-	ld [$ffc5], a
-	ld a, [$ffc2]
+	ldh [$ffc5], a
+	ldh a, [$ffc2]
 	add b
-	ld [$ffc2], a
+	ldh [$ffc2], a
 .asm_17a96
 	ld a, [hli]
 	call Func_17aba
 	ld a, b
-	ld [$ffc7], a
+	ldh [$ffc7], a
 	inc c
-	ld a, [$ffcc]
+	ldh a, [$ffcc]
 	call Func_17aba
 	ld [hl], b
 	ld hl, $ffcf
@@ -24583,10 +24583,10 @@ UpdatePlayerState:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ld a, [hPlayerYPos]
+	ldh a, [hPlayerYPos]
 	sub c
 	ld c, a
-	ld a, [hPlayerYPos + 1]
+	ldh a, [hPlayerYPos + 1]
 	sbc b
 	ld b, a
 	ld a, [hl]
@@ -24631,7 +24631,7 @@ ReadJoyPad:
 	ld a, [wNewKeys]
 	bit PADB_SELECT, a
 	jr z, .readJoyPad
-	ld a, [hPaused]
+	ldh a, [hPaused]
 	and a
 	jr z, .readJoyPad
 	ld hl, $3e8b
@@ -24707,15 +24707,15 @@ Func_17b59:
 	or b
 	jr nz, .asm_17b79
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld a, $01
 	ld [$dec1], a
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_17ba5
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld hl, vBGMap
 	ld bc, $2a0
 .asm_17b9b
@@ -24726,7 +24726,7 @@ Func_17b59:
 	or b
 	jr nz, .asm_17b9b
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 .asm_17ba5
 	jp Func_1b9
 
@@ -24734,7 +24734,7 @@ Func_17ba8:
 	ld hl, $7bce
 	ld bc, $8f20
 	ld a, $05
-	ld [$ff8a], a
+	ldh [$ff8a], a
 .asm_17bb2
 	ld a, [hli]
 	ld e, a
@@ -24756,9 +24756,9 @@ Func_17ba8:
 	pop hl
 	inc hl
 	inc hl
-	ld a, [$ff8a]
+	ldh a, [$ff8a]
 	dec a
-	ld [$ff8a], a
+	ldh [$ff8a], a
 	jr nz, .asm_17bb2
 	ret
 
@@ -24803,11 +24803,11 @@ Func_17bf9:
 	dec d
 	jr nz, .asm_17c01
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	sub a
-	ld [hCarrotMeter], a
-	ld [hNumCarrots], a
+	ldh [hCarrotMeter], a
+	ldh [hNumCarrots], a
 	ld hl, $ddcc
 	ld a, $4a
 	ld [hli], a
@@ -24821,21 +24821,21 @@ Func_17bf9:
 	ld [hli], a
 	ld [hli], a
 	ld a, $ff
-	ld [hLevelCleared], a
+	ldh [hLevelCleared], a
 	ld a, 120
-	ld [rWY], a
+	ldh [rWY], a
 	ld a, 7
-	ld [rWX], a
+	ldh [rWX], a
 	ret
 
 Func_17c3a:
 	ld hl, $9c49
-	ld a, [hNumLives]
+	ldh a, [hNumLives]
 	and $f0
 	swap a
 	add $10
 	ld [hli], a
-	ld a, [hNumLives]
+	ldh a, [hNumLives]
 	and $0f
 	add $10
 	ld [hl], a
@@ -24878,8 +24878,8 @@ Func_17c3a:
 Func_17c82:
 	call Func_d67
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	sub a
 	ld [$dda2], a
 	ld a, $78
@@ -24901,32 +24901,32 @@ Func_17c82:
 	ret
 
 Func_17ca6:
-	ld a, [hActiveSprites]
+	ldh a, [hActiveSprites]
 	ld l, a
 	ld h, $df
 	ld bc, $7058
-	ld a, [$fff1]
+	ldh a, [$fff1]
 	swap a
 	call Func_17cea
-	ld a, [$fff1]
+	ldh a, [$fff1]
 	call Func_17cea
-	ld a, [hScore]
+	ldh a, [hScore]
 	swap a
 	call Func_17cea
-	ld a, [hScore]
+	ldh a, [hScore]
 	call Func_17cea
 	sub a
 	call Func_17cea
 	sub a
 	call Func_17cea
 	ld bc, $5858
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	swap a
 	call Func_17cea
-	ld a, [hNumCarrots]
+	ldh a, [hNumCarrots]
 	call Func_17cea
 	ld a, l
-	ld [hActiveSprites], a
+	ldh [hActiveSprites], a
 	ld bc, $5440
 	ld hl, $7b39
 	call LoadOAMSprites
@@ -24968,7 +24968,7 @@ Func_17cfd:
 	ld a, c
 	cp b
 	jr nz, .asm_17d2b
-	ld a, [hFrameCounter]
+	ldh a, [hFrameCounter]
 	bit 4, a
 	jr nz, .asm_17d2b
 	inc de
@@ -25021,8 +25021,8 @@ Func_17cfd:
 
 Func_17d6e:
 	sub a
-	ld [rSCY], a
-	ld [rSCX], a
+	ldh [rSCY], a
+	ldh [rSCX], a
 	ld hl, $ded2
 	sub a
 	ld [hli], a
@@ -25031,7 +25031,7 @@ Func_17d6e:
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld [hForcedSideScrollSpeed], a
+	ldh [hForcedSideScrollSpeed], a
 	ld [$de84], a
 	call Func_17db0
 	call ResetPlayerData
@@ -25485,28 +25485,28 @@ CrazyTownBossMetatiles:
 ; sprite palettes. Also clears the BG map attributes.
 ; Input: hl = pointer to palette data structure
 LoadCGBPalettes:
-	ld a, [hGameBoyColorDetection]
+	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	ret nz
 	ld a, (1 << 7) | $28
-	ld [rOCPS], a
+	ldh [rOCPS], a
 	ld de, CommonSpritePalettes
 	ld b, 3 ; number of palettes
 .commonSpritePaletteLoop
 	ld c, 6 ; number of color bytes
 	sub a
-	ld [rOCPD], a ; First two bytes are the transparent color in the sprite palette.
-	ld [rOCPD], a
+	ldh [rOCPD], a ; First two bytes are the transparent color in the sprite palette.
+	ldh [rOCPD], a
 .commonSpriteColorLoop
 	ld a, [de]
 	inc de
-	ld [rOCPD], a
+	ldh [rOCPD], a
 	dec c
 	jr nz, .commonSpriteColorLoop
 	dec b
 	jr nz, .commonSpritePaletteLoop
 	ld a, $80
-	ld [rBCPS], a
+	ldh [rBCPS], a
 	ld a, [hli]
 	ld b, a ; number of palettes
 .backgroundPaletteLoop
@@ -25517,13 +25517,13 @@ LoadCGBPalettes:
 	ld c, 8
 .backgroundColorLoop
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	dec c
 	jr nz, .backgroundColorLoop
 	jr .backgroundPaletteLoop
 .loadSpritePalettes
 	ld a, $80
-	ld [rOCPS], a
+	ldh [rOCPS], a
 	ld a, [hli]
 	ld b, a
 .spritePaletteLoop
@@ -25533,17 +25533,17 @@ LoadCGBPalettes:
 	dec b
 	ld c, 6 ; number of color bytes
 	sub a
-	ld [rOCPD], a ; First two bytes are the transparent color in the sprite palette.
-	ld [rOCPD], a
+	ldh [rOCPD], a ; First two bytes are the transparent color in the sprite palette.
+	ldh [rOCPD], a
 .spriteColorLoop
 	ld a, [hli]
-	ld [rOCPD], a
+	ldh [rOCPD], a
 	dec c
 	jr nz, .spriteColorLoop
 	jr .spritePaletteLoop
 .clearBank1BGMap
 	ld a, 1
-	ld [rVBK], a
+	ldh [rVBK], a
 	ld hl, vBGMap
 	ld bc, $800
 .clearLoop
@@ -25554,14 +25554,14 @@ LoadCGBPalettes:
 	or b
 	jr nz, .clearLoop
 	sub a
-	ld [rVBK], a
+	ldh [rVBK], a
 	ret
 
 LoadLevelGBCpalettes:
 	ld h, b
 	ld l, c
 	ld a, $80
-	ld [rBCPS], a
+	ldh [rBCPS], a
 	ld a, [hli]
 	ld b, a
 .paletteLoop
@@ -25572,7 +25572,7 @@ LoadLevelGBCpalettes:
 	ld c, 8
 .colorLoop
 	ld a, [hli]
-	ld [rBCPD], a
+	ldh [rBCPD], a
 	dec c
 	jr nz, .colorLoop
 	jr .paletteLoop
@@ -25590,405 +25590,405 @@ ReadAndLoadCGBpalettes:
 LevelSummaryScreenGBCPalettes:
 	db 1 ; num background palettes
 	; BG Palette 0
-	RGB(31, 31, 31)
-	RGB(17, 0, 28)
-	RGB(8, 0, 13)
-	RGB(2, 0, 7)
+	RGB 31, 31, 31
+	RGB 17, 0, 28
+	RGB 8, 0, 13
+	RGB 2, 0, 7
 
 	db 2 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(17, 0, 28)
-	RGB(8, 0, 13)
-	RGB(2, 0, 7)
+	RGB 17, 0, 28
+	RGB 8, 0, 13
+	RGB 2, 0, 7
 
 	; OBJ Palette 1
-	RGB(31, 31, 31)
-	RGB(31, 0, 31)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 31, 0, 31
+	RGB 0, 0, 0
 
 InfogramesCopyrightScreenGBCPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(0, 0, 0)
-	RGB(10, 10, 10)
-	RGB(21, 21, 21)
-	RGB(31, 31, 31)
+	RGB 0, 0, 0
+	RGB 10, 10, 10
+	RGB 21, 21, 21
+	RGB 31, 31, 31
 
 	; BG Palette 1
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
+	RGB 0, 31, 0
+	RGB 0, 31, 0
+	RGB 0, 31, 0
+	RGB 0, 31, 0
 
 	; BG Palette 2
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
+	RGB 0, 31, 0
+	RGB 0, 31, 0
+	RGB 0, 31, 0
+	RGB 0, 31, 0
 
 	; BG Palette 3
-	RGB(31, 31, 31)
-	RGB(28, 0, 0)
-	RGB(31, 31, 0)
-	RGB(21, 0, 22)
+	RGB 31, 31, 31
+	RGB 28, 0, 0
+	RGB 31, 31, 0
+	RGB 21, 0, 22
 
 	; BG Palette 4
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
-	RGB(0, 31, 0)
+	RGB 0, 31, 0
+	RGB 0, 31, 0
+	RGB 0, 31, 0
+	RGB 0, 31, 0
 
 	; BG Palette 5
-	RGB(0, 31, 0)
-	RGB(31, 31, 31)
-	RGB(16, 0, 16)
-	RGB(0, 0, 0)
+	RGB 0, 31, 0
+	RGB 31, 31, 31
+	RGB 16, 0, 16
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(31, 31, 31)
-	RGB(0, 23, 0)
-	RGB(0, 0, 23)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 0, 23, 0
+	RGB 0, 0, 23
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(31, 31, 31)
-	RGB(0, 23, 0)
-	RGB(31, 31, 0)
-	RGB(0, 0, 23)
+	RGB 31, 31, 31
+	RGB 0, 23, 0
+	RGB 31, 31, 0
+	RGB 0, 0, 23
 
 	db 0 ; num sprite palettes
 
 WarnerBrosCopyrightScreenGBCPalettes:
 	db 1 ; num background palettes
 	; BG Palette 0
-	RGB(31, 31, 31)
-	RGB(31, 0, 0)
-	RGB(15, 0, 0)
-	RGB(7, 0, 0)
+	RGB 31, 31, 31
+	RGB 31, 0, 0
+	RGB 15, 0, 0
+	RGB 7, 0, 0
 
 	db 2 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 0, 0)
-	RGB(15, 0, 0)
-	RGB(7, 0, 0)
+	RGB 31, 0, 0
+	RGB 15, 0, 0
+	RGB 7, 0, 0
 
 	; OBJ Palette 1
-	RGB(31, 31, 0)
-	RGB(23, 8, 0)
-	RGB(4, 4, 15)
+	RGB 31, 31, 0
+	RGB 23, 8, 0
+	RGB 4, 4, 15
 
 TitlescreenGBCPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(10, 17, 31)
-	RGB(31, 31, 31)
-	RGB(16, 16, 16)
-	RGB(0, 0, 0)
+	RGB 10, 17, 31
+	RGB 31, 31, 31
+	RGB 16, 16, 16
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(10, 17, 31)
-	RGB(30, 30, 14)
-	RGB(9, 8, 1)
-	RGB(0, 0, 0)
+	RGB 10, 17, 31
+	RGB 30, 30, 14
+	RGB 9, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(30, 30, 14)
-	RGB(17, 15, 5)
-	RGB(9, 8, 1)
-	RGB(0, 0, 0)
+	RGB 30, 30, 14
+	RGB 17, 15, 5
+	RGB 9, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(9, 31, 4)
-	RGB(17, 15, 5)
-	RGB(9, 8, 1)
-	RGB(0, 0, 0)
+	RGB 9, 31, 4
+	RGB 17, 15, 5
+	RGB 9, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(9, 31, 4)
-	RGB(31, 17, 0)
-	RGB(18, 5, 0)
-	RGB(0, 0, 0)
+	RGB 9, 31, 4
+	RGB 31, 17, 0
+	RGB 18, 5, 0
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(10, 17, 31)
-	RGB(31, 22, 18)
-	RGB(22, 10, 7)
-	RGB(13, 3, 1)
+	RGB 10, 17, 31
+	RGB 31, 22, 18
+	RGB 22, 10, 7
+	RGB 13, 3, 1
 
 	; BG Palette 6
-	RGB(10, 17, 31)
-	RGB(22, 10, 7)
-	RGB(13, 3, 1)
-	RGB(0, 0, 0)
+	RGB 10, 17, 31
+	RGB 22, 10, 7
+	RGB 13, 3, 1
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(31, 22, 18)
-	RGB(22, 10, 7)
-	RGB(13, 3, 1)
-	RGB(0, 0, 0)
+	RGB 31, 22, 18
+	RGB 22, 10, 7
+	RGB 13, 3, 1
+	RGB 0, 0, 0
 
 	db 3 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(16, 16, 16)
-	RGB(9, 9, 9)
-	RGB(0, 0, 0)
+	RGB 16, 16, 16
+	RGB 9, 9, 9
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(19, 19, 16)
-	RGB(12, 12, 9)
-	RGB(3, 2, 0)
+	RGB 19, 19, 16
+	RGB 12, 12, 9
+	RGB 3, 2, 0
 
 	; OBJ Palette 2
-	RGB(31, 18, 0)
-	RGB(15, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 18, 0
+	RGB 15, 4, 0
+	RGB 0, 0, 0
 
 Data_1a9e6:
 	db 1 ; num background palettes
 	; BG Palettes 0
-	RGB(31, 31, 31)
-	RGB(0, 0, 31)
-	RGB(0, 0, 15)
-	RGB(0, 0, 7)
+	RGB 31, 31, 31
+	RGB 0, 0, 31
+	RGB 0, 0, 15
+	RGB 0, 0, 7
 
 	db 7 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(0, 0, 31)
-	RGB(0, 0, 15)
-	RGB(0, 0, 7)
+	RGB 0, 0, 31
+	RGB 0, 0, 15
+	RGB 0, 0, 7
 
 	; OBJ Palette 1
-	RGB(31, 31, 31)
-	RGB(0, 0, 15)
-	RGB(0, 0, 7)
+	RGB 31, 31, 31
+	RGB 0, 0, 15
+	RGB 0, 0, 7
 
 	; OBJ Palette 2
-	RGB(31, 21, 0)
-	RGB(20, 8, 0)
-	RGB(0, 0, 0)
+	RGB 31, 21, 0
+	RGB 20, 8, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(30, 24, 20)
-	RGB(24, 9, 2)
-	RGB(0, 0, 0)
+	RGB 30, 24, 20
+	RGB 24, 9, 2
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(28, 25, 12)
-	RGB(14, 11, 0)
-	RGB(0, 0, 0)
+	RGB 28, 25, 12
+	RGB 14, 11, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 5
-	RGB(29, 29, 18)
-	RGB(4, 18, 0)
-	RGB(0, 0, 0)
+	RGB 29, 29, 18
+	RGB 4, 18, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 6
-	RGB(29, 18, 18)
-	RGB(19, 9, 0)
-	RGB(0, 0, 0)
+	RGB 29, 18, 18
+	RGB 19, 9, 0
+	RGB 0, 0, 0
 
 Data_1aa1a:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(10, 17, 31)
-	RGB(31, 31, 31)
-	RGB(16, 16, 16)
-	RGB(0, 0, 0)
+	RGB 10, 17, 31
+	RGB 31, 31, 31
+	RGB 16, 16, 16
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(10, 17, 31)
-	RGB(30, 30, 14)
-	RGB(9, 8, 1)
-	RGB(0, 0, 0)
+	RGB 10, 17, 31
+	RGB 30, 30, 14
+	RGB 9, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(30, 30, 14)
-	RGB(17, 15, 5)
-	RGB(9, 8, 1)
-	RGB(0, 0, 0)
+	RGB 30, 30, 14
+	RGB 17, 15, 5
+	RGB 9, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(9, 31, 4)
-	RGB(17, 15, 5)
-	RGB(9, 8, 1)
-	RGB(0, 0, 0)
+	RGB 9, 31, 4
+	RGB 17, 15, 5
+	RGB 9, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(9, 31, 4)
-	RGB(31, 17, 0)
-	RGB(18, 5, 0)
-	RGB(0, 0, 0)
+	RGB 9, 31, 4
+	RGB 31, 17, 0
+	RGB 18, 5, 0
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(10, 17, 31)
-	RGB(31, 22, 18)
-	RGB(22, 10, 7)
-	RGB(13, 3, 1)
+	RGB 10, 17, 31
+	RGB 31, 22, 18
+	RGB 22, 10, 7
+	RGB 13, 3, 1
 
 	; BG Palette 6
-	RGB(10, 17, 31)
-	RGB(22, 10, 7)
-	RGB(13, 3, 1)
-	RGB(0, 0, 0)
+	RGB 10, 17, 31
+	RGB 22, 10, 7
+	RGB 13, 3, 1
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(31, 22, 18)
-	RGB(22, 10, 7)
-	RGB(13, 3, 1)
-	RGB(0, 0, 0)
+	RGB 31, 22, 18
+	RGB 22, 10, 7
+	RGB 13, 3, 1
+	RGB 0, 0, 0
 
 	db 2 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(17, 21, 31)
-	RGB(12, 17, 26)
-	RGB(7, 11, 21)
+	RGB 17, 21, 31
+	RGB 12, 17, 26
+	RGB 7, 11, 21
 
 	; OBJ Palette 1
-	RGB(24, 25, 31)
-	RGB(14, 16, 21)
-	RGB(3, 6, 11)
+	RGB 24, 25, 31
+	RGB 14, 16, 21
+	RGB 3, 6, 11
 
 StudioScreenGBCPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(23, 31, 26)
-	RGB(12, 22, 13)
-	RGB(5, 11, 6)
-	RGB(0, 0, 0)
+	RGB 23, 31, 26
+	RGB 12, 22, 13
+	RGB 5, 11, 6
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(31, 27, 10)
-	RGB(18, 18, 3)
-	RGB(8, 7, 0)
-	RGB(0, 0, 0)
+	RGB 31, 27, 10
+	RGB 18, 18, 3
+	RGB 8, 7, 0
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(31, 31, 31)
-	RGB(17, 12, 19)
-	RGB(8, 4, 11)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 17, 12, 19
+	RGB 8, 4, 11
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(8, 20, 31)
-	RGB(28, 17, 10)
-	RGB(16, 4, 0)
-	RGB(0, 0, 0)
+	RGB 8, 20, 31
+	RGB 28, 17, 10
+	RGB 16, 4, 0
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(31, 31, 31)
-	RGB(15, 29, 31)
-	RGB(8, 20, 31)
-	RGB(2, 17, 25)
+	RGB 31, 31, 31
+	RGB 15, 29, 31
+	RGB 8, 20, 31
+	RGB 2, 17, 25
 
 	; BG Palette 5
-	RGB(8, 20, 31)
-	RGB(11, 31, 3)
-	RGB(15, 7, 2)
-	RGB(0, 0, 0)
+	RGB 8, 20, 31
+	RGB 11, 31, 3
+	RGB 15, 7, 2
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(23, 31, 26)
-	RGB(17, 17, 17)
-	RGB(8, 8, 8)
-	RGB(0, 0, 0)
+	RGB 23, 31, 26
+	RGB 17, 17, 17
+	RGB 8, 8, 8
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(23, 31, 26)
-	RGB(28, 17, 10)
-	RGB(15, 7, 2)
-	RGB(0, 0, 0)
+	RGB 23, 31, 26
+	RGB 28, 17, 10
+	RGB 15, 7, 2
+	RGB 0, 0, 0
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(30, 24, 20)
-	RGB(24, 9, 2)
-	RGB(0, 0, 0)
+	RGB 30, 24, 20
+	RGB 24, 9, 2
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(31, 21, 0)
-	RGB(20, 8, 0)
-	RGB(0, 0, 0)
+	RGB 31, 21, 0
+	RGB 20, 8, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(28, 25, 12)
-	RGB(14, 11, 0)
-	RGB(0, 0, 0)
+	RGB 28, 25, 12
+	RGB 14, 11, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(29, 29, 18)
-	RGB(4, 18, 0)
-	RGB(0, 0, 0)
+	RGB 29, 29, 18
+	RGB 4, 18, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(29, 18, 18)
-	RGB(19, 9, 0)
-	RGB(0, 0, 0)
+	RGB 29, 18, 18
+	RGB 19, 9, 0
+	RGB 0, 0, 0
 
 INCBIN "baserom.gbc", $1aac8, $1ab36 - $1aac8
 
 Data_1ab36:
 	db 1 ; num background palettes
 	; BG Palette 0
-	RGB(31, 31, 31)
-	RGB(20, 15, 23)
-	RGB(14, 7, 15)
-	RGB(6, 2, 5)
+	RGB 31, 31, 31
+	RGB 20, 15, 23
+	RGB 14, 7, 15
+	RGB 6, 2, 5
 
 	db 1 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(20, 15, 23)
-	RGB(14, 7, 15)
-	RGB(6, 2, 5)
+	RGB 20, 15, 23
+	RGB 14, 7, 15
+	RGB 6, 2, 5
 
 TreasureIslandPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(31, 31, 0)
-	RGB(27, 18, 14)
-	RGB(15, 4, 3)
-	RGB(0, 0, 0)
+	RGB 31, 31, 0
+	RGB 27, 18, 14
+	RGB 15, 4, 3
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(7, 22, 31)
-	RGB(27, 18, 14)
-	RGB(15, 4, 3)
-	RGB(0, 0, 0)
+	RGB 7, 22, 31
+	RGB 27, 18, 14
+	RGB 15, 4, 3
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(7, 22, 31)
-	RGB(14, 28, 5)
-	RGB(5, 15, 0)
-	RGB(0, 0, 0)
+	RGB 7, 22, 31
+	RGB 14, 28, 5
+	RGB 5, 15, 0
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(31, 25, 14)
-	RGB(20, 13, 3)
-	RGB(12, 5, 0)
-	RGB(0, 0, 0)
+	RGB 31, 25, 14
+	RGB 20, 13, 3
+	RGB 12, 5, 0
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(8, 21, 31)
-	RGB(29, 23, 12)
-	RGB(16, 9, 0)
-	RGB(0, 0, 0)
+	RGB 8, 21, 31
+	RGB 29, 23, 12
+	RGB 16, 9, 0
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(31, 31, 31)
-	RGB(18, 31, 31)
-	RGB(7, 22, 31)
-	RGB(0, 12, 29)
+	RGB 31, 31, 31
+	RGB 18, 31, 31
+	RGB 7, 22, 31
+	RGB 0, 12, 29
 
 	; BG Palette 6
-	RGB(7, 22, 31)
-	RGB(31, 31, 0)
-	RGB(24, 21, 0)
-	RGB(18, 14, 0)
+	RGB 7, 22, 31
+	RGB 31, 31, 0
+	RGB 24, 21, 0
+	RGB 18, 14, 0
 
 	; BG Palette 7
-	RGB(29, 20, 16)
-	RGB(22, 9, 8)
-	RGB(15, 4, 3)
-	RGB(0, 0, 0)
+	RGB 29, 20, 16
+	RGB 22, 9, 8
+	RGB 15, 4, 3
+	RGB 0, 0, 0
 
 	dw TreasureIslandOBJPalettes
 
@@ -25997,79 +25997,79 @@ TreasureIslandOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(30, 20, 18)
-	RGB(19, 7, 3)
-	RGB(0, 0, 0)
+	RGB 30, 20, 18
+	RGB 19, 7, 3
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(17, 17, 16)
-	RGB(10, 10, 9)
-	RGB(0, 0, 0)
+	RGB 17, 17, 16
+	RGB 10, 10, 9
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(25, 25, 0)
-	RGB(17, 6, 0)
-	RGB(0, 0, 0)
+	RGB 25, 25, 0
+	RGB 17, 6, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(31, 14, 14)
-	RGB(10, 10, 10)
-	RGB(0, 0, 0)
+	RGB 31, 14, 14
+	RGB 10, 10, 10
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(28, 31, 26)
-	RGB(6, 17, 4)
-	RGB(0, 0, 0)
+	RGB 28, 31, 26
+	RGB 6, 17, 4
+	RGB 0, 0, 0
 
 TreasureIslandBossPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(31, 31, 31)
-	RGB(31, 21, 30)
-	RGB(31, 13, 29)
-	RGB(31, 6, 29)
+	RGB 31, 31, 31
+	RGB 31, 21, 30
+	RGB 31, 13, 29
+	RGB 31, 6, 29
 
 	; BG Palette 1
-	RGB(10, 18, 31)
-	RGB(5, 12, 27)
-	RGB(0, 5, 15)
-	RGB(0, 1, 6)
+	RGB 10, 18, 31
+	RGB 5, 12, 27
+	RGB 0, 5, 15
+	RGB 0, 1, 6
 
 	; BG Palette 2
-	RGB(28, 17, 5)
-	RGB(17, 9, 2)
-	RGB(10, 3, 0)
-	RGB(0, 0, 0)
+	RGB 28, 17, 5
+	RGB 17, 9, 2
+	RGB 10, 3, 0
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(24, 6, 27)
-	RGB(18, 6, 24)
-	RGB(12, 5, 21)
-	RGB(6, 5, 18)
+	RGB 24, 6, 27
+	RGB 18, 6, 24
+	RGB 12, 5, 21
+	RGB 6, 5, 18
 
 	; BG Palette 4
-	RGB(31, 6, 29)
-	RGB(13, 25, 3)
-	RGB(3, 13, 0)
-	RGB(0, 0, 0)
+	RGB 31, 6, 29
+	RGB 13, 25, 3
+	RGB 3, 13, 0
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(31, 6, 29)
-	RGB(31, 13, 12)
-	RGB(15, 7, 0)
-	RGB(0, 0, 0)
+	RGB 31, 6, 29
+	RGB 31, 13, 12
+	RGB 15, 7, 0
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(31, 28, 5)
-	RGB(22, 14, 2)
-	RGB(12, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 28, 5
+	RGB 22, 14, 2
+	RGB 12, 4, 0
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(5, 12, 27)
-	RGB(31, 28, 5)
-	RGB(15, 7, 0)
-	RGB(0, 0, 0)
+	RGB 5, 12, 27
+	RGB 31, 28, 5
+	RGB 15, 7, 0
+	RGB 0, 0, 0
 
 	dw TreasureIslandBossOBJPalettes
 
@@ -26078,79 +26078,79 @@ TreasureIslandBossOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 24, 22)
-	RGB(19, 7, 3)
-	RGB(0, 0, 0)
+	RGB 31, 24, 22
+	RGB 19, 7, 3
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(17, 9, 2)
-	RGB(10, 3, 0)
-	RGB(0, 0, 0)
+	RGB 17, 9, 2
+	RGB 10, 3, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(5, 12, 27)
-	RGB(0, 5, 15)
-	RGB(0, 1, 6)
+	RGB 5, 12, 27
+	RGB 0, 5, 15
+	RGB 0, 1, 6
 
 	; OBJ Palette 3
-	RGB(31, 15, 15)
-	RGB(31, 0, 0)
-	RGB(0, 0, 0)
+	RGB 31, 15, 15
+	RGB 31, 0, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(24, 31, 22)
-	RGB(6, 17, 4)
-	RGB(0, 0, 0)
+	RGB 24, 31, 22
+	RGB 6, 17, 4
+	RGB 0, 0, 0
 
 CrazyTownPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(30, 27, 17)
-	RGB(17, 14, 4)
-	RGB(10, 8, 1)
-	RGB(0, 0, 0)
+	RGB 30, 27, 17
+	RGB 17, 14, 4
+	RGB 10, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(10, 18, 31)
-	RGB(15, 23, 31)
-	RGB(25, 27, 31)
-	RGB(31, 31, 31)
+	RGB 10, 18, 31
+	RGB 15, 23, 31
+	RGB 25, 27, 31
+	RGB 31, 31, 31
 
 	; BG Palette 2
-	RGB(19, 31, 23)
-	RGB(12, 22, 17)
-	RGB(6, 16, 11)
-	RGB(0, 4, 3)
+	RGB 19, 31, 23
+	RGB 12, 22, 17
+	RGB 6, 16, 11
+	RGB 0, 4, 3
 
 	; BG Palette 3
-	RGB(10, 18, 31)
-	RGB(27, 14, 7)
-	RGB(18, 5, 0)
-	RGB(6, 1, 0)
+	RGB 10, 18, 31
+	RGB 27, 14, 7
+	RGB 18, 5, 0
+	RGB 6, 1, 0
 
 	; BG Palette 4
-	RGB(21, 24, 26)
-	RGB(10, 15, 20)
-	RGB(5, 8, 11)
-	RGB(0, 0, 0)
+	RGB 21, 24, 26
+	RGB 10, 15, 20
+	RGB 5, 8, 11
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(17, 14, 4)
-	RGB(27, 14, 7)
-	RGB(18, 5, 0)
-	RGB(6, 1, 0)
+	RGB 17, 14, 4
+	RGB 27, 14, 7
+	RGB 18, 5, 0
+	RGB 6, 1, 0
 
 	; BG Palette 6
-	RGB(17, 14, 4)
-	RGB(23, 21, 21)
-	RGB(10, 9, 9)
-	RGB(0, 0, 0)
+	RGB 17, 14, 4
+	RGB 23, 21, 21
+	RGB 10, 9, 9
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(17, 14, 4)
-	RGB(31, 11, 19)
-	RGB(14, 3, 6)
-	RGB(0, 0, 0)
+	RGB 17, 14, 4
+	RGB 31, 11, 19
+	RGB 14, 3, 6
+	RGB 0, 0, 0
 
 	dw CrazyTownOBJPalettes
 
@@ -26159,79 +26159,79 @@ CrazyTownOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(25, 20, 16)
-	RGB(18, 10, 1)
-	RGB(0, 0, 0)
+	RGB 25, 20, 16
+	RGB 18, 10, 1
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(31, 18, 0)
-	RGB(15, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 18, 0
+	RGB 15, 4, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(31, 5, 5)
-	RGB(15, 2, 2)
-	RGB(0, 0, 0)
+	RGB 31, 5, 5
+	RGB 15, 2, 2
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(31, 31, 10)
-	RGB(27, 11, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 10
+	RGB 27, 11, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(6, 20, 31)
-	RGB(3, 8, 16)
-	RGB(0, 0, 0)
+	RGB 6, 20, 31
+	RGB 3, 8, 16
+	RGB 0, 0, 0
 
 CrazyTownBossPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(31, 31, 31)
-	RGB(8, 16, 31)
-	RGB(0, 0, 31)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 8, 16, 31
+	RGB 0, 0, 31
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(31, 31, 31)
-	RGB(31, 23, 0)
-	RGB(15, 8, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 31, 23, 0
+	RGB 15, 8, 0
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(29, 20, 30)
-	RGB(17, 11, 19)
-	RGB(8, 3, 9)
-	RGB(0, 0, 0)
+	RGB 29, 20, 30
+	RGB 17, 11, 19
+	RGB 8, 3, 9
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(31, 22, 18)
-	RGB(22, 12, 7)
-	RGB(12, 5, 0)
-	RGB(0, 0, 0)
+	RGB 31, 22, 18
+	RGB 22, 12, 7
+	RGB 12, 5, 0
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(8, 16, 31)
-	RGB(2, 11, 14)
-	RGB(31, 31, 31)
-	RGB(0, 0, 0)
+	RGB 8, 16, 31
+	RGB 2, 11, 14
+	RGB 31, 31, 31
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(20, 30, 17)
-	RGB(14, 21, 11)
-	RGB(5, 11, 4)
-	RGB(0, 0, 0)
+	RGB 20, 30, 17
+	RGB 14, 21, 11
+	RGB 5, 11, 4
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(31, 24, 21)
-	RGB(21, 14, 10)
-	RGB(11, 8, 3)
-	RGB(0, 0, 0)
+	RGB 31, 24, 21
+	RGB 21, 14, 10
+	RGB 11, 8, 3
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(30, 27, 24)
-	RGB(20, 16, 14)
-	RGB(11, 8, 6)
-	RGB(0, 0, 0)
+	RGB 30, 27, 24
+	RGB 20, 16, 14
+	RGB 11, 8, 6
+	RGB 0, 0, 0
 
 	dw CrazyTownBossOBJPalettes
 
@@ -26240,79 +26240,79 @@ CrazyTownBossOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(25, 14, 13)
-	RGB(16, 10, 4)
-	RGB(0, 0, 0)
+	RGB 25, 14, 13
+	RGB 16, 10, 4
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(31, 18, 0)
-	RGB(15, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 18, 0
+	RGB 15, 4, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(15, 25, 10)
-	RGB(3, 17, 3)
-	RGB(0, 0, 0)
+	RGB 15, 25, 10
+	RGB 3, 17, 3
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(31, 31, 31)
-	RGB(31, 23, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 31, 23, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(31, 18, 0)
-	RGB(15, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 18, 0
+	RGB 15, 4, 0
+	RGB 0, 0, 0
 
 TazZooPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(31, 26, 29)
-	RGB(21, 17, 19)
-	RGB(11, 8, 6)
-	RGB(0, 0, 0)
+	RGB 31, 26, 29
+	RGB 21, 17, 19
+	RGB 11, 8, 6
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(11, 20, 31)
-	RGB(18, 28, 10)
-	RGB(8, 23, 2)
-	RGB(1, 10, 0)
+	RGB 11, 20, 31
+	RGB 18, 28, 10
+	RGB 8, 23, 2
+	RGB 1, 10, 0
 
 	; BG Palette 2
-	RGB(31, 31, 31)
-	RGB(20, 27, 31)
-	RGB(11, 20, 31)
-	RGB(6, 12, 23)
+	RGB 31, 31, 31
+	RGB 20, 27, 31
+	RGB 11, 20, 31
+	RGB 6, 12, 23
 
 	; BG Palette 3
-	RGB(11, 20, 31)
-	RGB(31, 25, 20)
-	RGB(23, 11, 9)
-	RGB(13, 3, 3)
+	RGB 11, 20, 31
+	RGB 31, 25, 20
+	RGB 23, 11, 9
+	RGB 13, 3, 3
 
 	; BG Palette 4
-	RGB(31, 25, 20)
-	RGB(23, 11, 9)
-	RGB(8, 23, 2)
-	RGB(1, 10, 0)
+	RGB 31, 25, 20
+	RGB 23, 11, 9
+	RGB 8, 23, 2
+	RGB 1, 10, 0
 
 	; BG Palette 5
-	RGB(29, 25, 10)
-	RGB(20, 15, 2)
-	RGB(9, 6, 0)
-	RGB(0, 0, 0)
+	RGB 29, 25, 10
+	RGB 20, 15, 2
+	RGB 9, 6, 0
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(29, 25, 10)
-	RGB(20, 15, 2)
-	RGB(9, 6, 0)
-	RGB(8, 23, 2)
+	RGB 29, 25, 10
+	RGB 20, 15, 2
+	RGB 9, 6, 0
+	RGB 8, 23, 2
 
 	; BG Palette 7
-	RGB(29, 12, 10)
-	RGB(22, 8, 1)
-	RGB(13, 0, 0)
-	RGB(0, 0, 0)
+	RGB 29, 12, 10
+	RGB 22, 8, 1
+	RGB 13, 0, 0
+	RGB 0, 0, 0
 
 	dw TazZooOBJPalettes
 
@@ -26321,74 +26321,74 @@ TazZooOBJPalettes:
 
 	db 4 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 25, 20)
-	RGB(23, 11, 9)
-	RGB(13, 3, 3)
+	RGB 31, 25, 20
+	RGB 23, 11, 9
+	RGB 13, 3, 3
 
 	; OBJ Palette 1
-	RGB(28, 24, 17)
-	RGB(21, 9, 0)
-	RGB(0, 0, 0)
+	RGB 28, 24, 17
+	RGB 21, 9, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(28, 25, 12)
-	RGB(17, 10, 0)
-	RGB(0, 0, 0)
+	RGB 28, 25, 12
+	RGB 17, 10, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(10, 20, 31)
-	RGB(0, 12, 31)
-	RGB(2, 5, 0)
+	RGB 10, 20, 31
+	RGB 0, 12, 31
+	RGB 2, 5, 0
 
 TazZooBossPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(21, 21, 23)
-	RGB(11, 11, 13)
-	RGB(5, 5, 7)
-	RGB(18, 13, 11)
+	RGB 21, 21, 23
+	RGB 11, 11, 13
+	RGB 5, 5, 7
+	RGB 18, 13, 11
 
 	; BG Palette 1
-	RGB(30, 26, 10)
-	RGB(18, 13, 11)
-	RGB(22, 8, 2)
-	RGB(0, 0, 0)
+	RGB 30, 26, 10
+	RGB 18, 13, 11
+	RGB 22, 8, 2
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(26, 23, 19)
-	RGB(18, 13, 11)
-	RGB(9, 7, 5)
-	RGB(0, 0, 0)
+	RGB 26, 23, 19
+	RGB 18, 13, 11
+	RGB 9, 7, 5
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(13, 6, 2)
-	RGB(15, 26, 3)
-	RGB(6, 14, 0)
-	RGB(0, 0, 0)
+	RGB 13, 6, 2
+	RGB 15, 26, 3
+	RGB 6, 14, 0
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(22, 13, 6)
-	RGB(13, 6, 2)
-	RGB(15, 26, 3)
-	RGB(0, 0, 0)
+	RGB 22, 13, 6
+	RGB 13, 6, 2
+	RGB 15, 26, 3
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(10, 15, 31)
-	RGB(13, 24, 8)
-	RGB(6, 13, 3)
-	RGB(0, 0, 0)
+	RGB 10, 15, 31
+	RGB 13, 24, 8
+	RGB 6, 13, 3
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(31, 24, 17)
-	RGB(22, 13, 6)
-	RGB(13, 6, 2)
-	RGB(0, 0, 0)
+	RGB 31, 24, 17
+	RGB 22, 13, 6
+	RGB 13, 6, 2
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(10, 15, 31)
-	RGB(31, 24, 17)
-	RGB(22, 13, 6)
-	RGB(13, 6, 2)
+	RGB 10, 15, 31
+	RGB 31, 24, 17
+	RGB 22, 13, 6
+	RGB 13, 6, 2
 
 	dw TazZooBossOBJPalettes
 
@@ -26397,79 +26397,79 @@ TazZooBossOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 28, 15)
-	RGB(22, 14, 4)
-	RGB(3, 0, 0)
+	RGB 31, 28, 15
+	RGB 22, 14, 4
+	RGB 3, 0, 0
 
 	; OBJ Palette 1
-	RGB(18, 31, 20)
-	RGB(8, 28, 9)
-	RGB(0, 0, 0)
+	RGB 18, 31, 20
+	RGB 8, 28, 9
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(28, 25, 12)
-	RGB(17, 10, 0)
-	RGB(0, 0, 0)
+	RGB 28, 25, 12
+	RGB 17, 10, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(18, 13, 11)
-	RGB(11, 11, 13)
-	RGB(5, 5, 7)
+	RGB 18, 13, 11
+	RGB 11, 11, 13
+	RGB 5, 5, 7
 
 	; OBJ Palette 4
-	RGB(23, 22, 17)
-	RGB(15, 15, 15)
-	RGB(0, 0, 0)
+	RGB 23, 22, 17
+	RGB 15, 15, 15
+	RGB 0, 0, 0
 
 SpaceStationPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(23, 10, 23)
-	RGB(15, 2, 15)
-	RGB(8, 0, 8)
-	RGB(0, 0, 0)
+	RGB 23, 10, 23
+	RGB 15, 2, 15
+	RGB 8, 0, 8
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(21, 31, 10)
-	RGB(11, 23, 2)
-	RGB(3, 13, 0)
-	RGB(0, 0, 0)
+	RGB 21, 31, 10
+	RGB 11, 23, 2
+	RGB 3, 13, 0
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(26, 23, 20)
-	RGB(17, 16, 13)
-	RGB(9, 8, 7)
-	RGB(0, 0, 0)
+	RGB 26, 23, 20
+	RGB 17, 16, 13
+	RGB 9, 8, 7
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(31, 31, 31)
-	RGB(31, 31, 0)
-	RGB(15, 2, 15)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 31, 31, 0
+	RGB 15, 2, 15
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(31, 25, 18)
-	RGB(27, 17, 5)
-	RGB(17, 9, 0)
-	RGB(0, 0, 0)
+	RGB 31, 25, 18
+	RGB 27, 17, 5
+	RGB 17, 9, 0
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(15, 2, 15)
-	RGB(23, 5, 4)
-	RGB(14, 1, 1)
-	RGB(0, 0, 0)
+	RGB 15, 2, 15
+	RGB 23, 5, 4
+	RGB 14, 1, 1
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(31, 31, 0)
-	RGB(28, 15, 4)
-	RGB(22, 4, 14)
-	RGB(15, 2, 15)
+	RGB 31, 31, 0
+	RGB 28, 15, 4
+	RGB 22, 4, 14
+	RGB 15, 2, 15
 
 	; BG Palette 7
-	RGB(17, 16, 31)
-	RGB(10, 8, 24)
-	RGB(5, 3, 17)
-	RGB(0, 0, 0)
+	RGB 17, 16, 31
+	RGB 10, 8, 24
+	RGB 5, 3, 17
+	RGB 0, 0, 0
 
 	dw SpaceStationOBJPalettes
 
@@ -26478,74 +26478,74 @@ SpaceStationOBJPalettes:
 
 	db 4 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 31, 31)
-	RGB(9, 18, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 9, 18, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(23, 26, 27)
-	RGB(9, 14, 20)
-	RGB(0, 0, 0)
+	RGB 23, 26, 27
+	RGB 9, 14, 20
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(31, 31, 31)
-	RGB(6, 22, 2)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 6, 22, 2
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(29, 29, 18)
-	RGB(4, 18, 0)
-	RGB(0, 0, 0)
+	RGB 29, 29, 18
+	RGB 4, 18, 0
+	RGB 0, 0, 0
 
 SpaceStationBossPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(26, 19, 9)
-	RGB(20, 10, 3)
-	RGB(11, 4, 0)
-	RGB(0, 0, 0)
+	RGB 26, 19, 9
+	RGB 20, 10, 3
+	RGB 11, 4, 0
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(23, 21, 15)
-	RGB(14, 12, 7)
-	RGB(8, 6, 1)
-	RGB(0, 0, 0)
+	RGB 23, 21, 15
+	RGB 14, 12, 7
+	RGB 8, 6, 1
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(21, 21, 21)
-	RGB(14, 14, 14)
-	RGB(7, 7, 7)
-	RGB(0, 0, 0)
+	RGB 21, 21, 21
+	RGB 14, 14, 14
+	RGB 7, 7, 7
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(15, 30, 14)
-	RGB(5, 19, 4)
-	RGB(2, 8, 1)
-	RGB(0, 0, 0)
+	RGB 15, 30, 14
+	RGB 5, 19, 4
+	RGB 2, 8, 1
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(22, 12, 28)
-	RGB(14, 6, 22)
-	RGB(7, 1, 12)
-	RGB(0, 0, 0)
+	RGB 22, 12, 28
+	RGB 14, 6, 22
+	RGB 7, 1, 12
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(31, 31, 0)
-	RGB(20, 20, 0)
-	RGB(10, 10, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 0
+	RGB 20, 20, 0
+	RGB 10, 10, 0
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(17, 25, 31)
-	RGB(6, 15, 18)
-	RGB(3, 8, 11)
-	RGB(0, 0, 0)
+	RGB 17, 25, 31
+	RGB 6, 15, 18
+	RGB 3, 8, 11
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(31, 31, 0)
-	RGB(6, 15, 18)
-	RGB(3, 8, 11)
-	RGB(0, 0, 0)
+	RGB 31, 31, 0
+	RGB 6, 15, 18
+	RGB 3, 8, 11
+	RGB 0, 0, 0
 
 	dw SpaceStationBossOBJPalettes
 
@@ -26554,79 +26554,79 @@ SpaceStationBossOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(17, 25, 31)
-	RGB(6, 15, 18)
-	RGB(3, 8, 11)
+	RGB 17, 25, 31
+	RGB 6, 15, 18
+	RGB 3, 8, 11
 
 	; OBJ Palette 1
-	RGB(17, 31, 17)
-	RGB(7, 21, 7)
-	RGB(2, 4, 2)
+	RGB 17, 31, 17
+	RGB 7, 21, 7
+	RGB 2, 4, 2
 
 	; OBJ Palette 2
-	RGB(31, 31, 31)
-	RGB(6, 22, 2)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 6, 22, 2
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(29, 29, 18)
-	RGB(4, 18, 0)
-	RGB(0, 0, 0)
+	RGB 29, 29, 18
+	RGB 4, 18, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(23, 20, 17)
-	RGB(16, 11, 9)
-	RGB(8, 4, 1)
+	RGB 23, 20, 17
+	RGB 16, 11, 9
+	RGB 8, 4, 1
 
 FuddForestPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(31, 21, 19)
-	RGB(22, 10, 6)
-	RGB(13, 4, 2)
-	RGB(0, 0, 0)
+	RGB 31, 21, 19
+	RGB 22, 10, 6
+	RGB 13, 4, 2
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(15, 18, 31)
-	RGB(12, 25, 3)
-	RGB(5, 13, 1)
-	RGB(0, 0, 0)
+	RGB 15, 18, 31
+	RGB 12, 25, 3
+	RGB 5, 13, 1
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(15, 18, 31)
-	RGB(18, 26, 11)
-	RGB(11, 10, 1)
-	RGB(28, 20, 14)
+	RGB 15, 18, 31
+	RGB 18, 26, 11
+	RGB 11, 10, 1
+	RGB 28, 20, 14
 
 	; BG Palette 3
-	RGB(31, 23, 14)
-	RGB(22, 13, 2)
-	RGB(12, 6, 0)
-	RGB(0, 0, 0)
+	RGB 31, 23, 14
+	RGB 22, 13, 2
+	RGB 12, 6, 0
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(12, 25, 3)
-	RGB(5, 13, 1)
-	RGB(18, 26, 11)
-	RGB(28, 20, 14)
+	RGB 12, 25, 3
+	RGB 5, 13, 1
+	RGB 18, 26, 11
+	RGB 28, 20, 14
 
 	; BG Palette 5
-	RGB(31, 28, 4)
-	RGB(17, 16, 0)
-	RGB(9, 8, 0)
-	RGB(0, 0, 0)
+	RGB 31, 28, 4
+	RGB 17, 16, 0
+	RGB 9, 8, 0
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(15, 18, 31)
-	RGB(22, 20, 17)
-	RGB(12, 9, 8)
-	RGB(0, 0, 0)
+	RGB 15, 18, 31
+	RGB 22, 20, 17
+	RGB 12, 9, 8
+	RGB 0, 0, 0
 
 	; BG Palette 7
-	RGB(12, 25, 3)
-	RGB(5, 13, 1)
-	RGB(17, 16, 0)
-	RGB(0, 0, 0)
+	RGB 12, 25, 3
+	RGB 5, 13, 1
+	RGB 17, 16, 0
+	RGB 0, 0, 0
 
 	dw FuddForestOBJPalettes
 
@@ -26635,79 +26635,79 @@ FuddForestOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 28, 10)
-	RGB(18, 14, 5)
-	RGB(0, 0, 0)
+	RGB 31, 28, 10
+	RGB 18, 14, 5
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(23, 23, 18)
-	RGB(15, 15, 9)
-	RGB(6, 5, 0)
+	RGB 23, 23, 18
+	RGB 15, 15, 9
+	RGB 6, 5, 0
 
 	; OBJ Palette 2
-	RGB(26, 17, 8)
-	RGB(18, 9, 0)
-	RGB(0, 0, 0)
+	RGB 26, 17, 8
+	RGB 18, 9, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(0, 0, 0)
-	RGB(0, 0, 0)
-	RGB(0, 0, 0)
+	RGB 0, 0, 0
+	RGB 0, 0, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(29, 18, 18)
-	RGB(20, 8, 0)
-	RGB(0, 0, 0)
+	RGB 29, 18, 18
+	RGB 20, 8, 0
+	RGB 0, 0, 0
 
 FuddForestBossPalettes:
 	db 8 ; num background palettes
 	; BG Palette 0
-	RGB(31, 22, 12)
-	RGB(22, 9, 1)
-	RGB(12, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 22, 12
+	RGB 22, 9, 1
+	RGB 12, 4, 0
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(18, 31, 10)
-	RGB(7, 27, 2)
-	RGB(1, 12, 0)
-	RGB(0, 0, 0)
+	RGB 18, 31, 10
+	RGB 7, 27, 2
+	RGB 1, 12, 0
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(6, 19, 31)
-	RGB(7, 27, 2)
-	RGB(1, 12, 0)
-	RGB(0, 0, 0)
+	RGB 6, 19, 31
+	RGB 7, 27, 2
+	RGB 1, 12, 0
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(6, 19, 31)
-	RGB(18, 31, 10)
-	RGB(7, 27, 2)
-	RGB(1, 12, 0)
+	RGB 6, 19, 31
+	RGB 18, 31, 10
+	RGB 7, 27, 2
+	RGB 1, 12, 0
 
 	; BG Palette 4
-	RGB(7, 27, 2)
-	RGB(1, 12, 0)
-	RGB(22, 9, 1)
-	RGB(0, 0, 0)
+	RGB 7, 27, 2
+	RGB 1, 12, 0
+	RGB 22, 9, 1
+	RGB 0, 0, 0
 
 	; BG Palette 5
-	RGB(26, 23, 17)
-	RGB(17, 14, 9)
-	RGB(10, 7, 4)
-	RGB(0, 0, 0)
+	RGB 26, 23, 17
+	RGB 17, 14, 9
+	RGB 10, 7, 4
+	RGB 0, 0, 0
 
 	; BG Palette 6
-	RGB(23, 23, 23)
-	RGB(12, 12, 12)
-	RGB(6, 6, 6)
-	RGB(26, 23, 17)
+	RGB 23, 23, 23
+	RGB 12, 12, 12
+	RGB 6, 6, 6
+	RGB 26, 23, 17
 
 	; BG Palette 7
-	RGB(31, 8, 31)
-	RGB(22, 9, 1)
-	RGB(12, 4, 0)
-	RGB(0, 0, 0)
+	RGB 31, 8, 31
+	RGB 22, 9, 1
+	RGB 12, 4, 0
+	RGB 0, 0, 0
 
 	dw FuddForestBossOBJPalettes
 
@@ -26716,132 +26716,132 @@ FuddForestBossOBJPalettes:
 
 	db 5 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(22, 9, 1)
-	RGB(12, 5, 0)
-	RGB(0, 0, 0)
+	RGB 22, 9, 1
+	RGB 12, 5, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(6, 27, 31)
-	RGB(2, 8, 19)
-	RGB(0, 0, 0)
+	RGB 6, 27, 31
+	RGB 2, 8, 19
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(26, 23, 17)
-	RGB(12, 12, 12)
-	RGB(6, 6, 6)
+	RGB 26, 23, 17
+	RGB 12, 12, 12
+	RGB 6, 6, 6
 
 	; OBJ Palette 3
-	RGB(31, 31, 10)
-	RGB(27, 11, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 10
+	RGB 27, 11, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(29, 18, 18)
-	RGB(19, 9, 0)
-	RGB(0, 0, 0)
+	RGB 29, 18, 18
+	RGB 19, 9, 0
+	RGB 0, 0, 0
 
 ; This only holds colors 1-3. The first transparent color is hardcoded
 ; in LoadCGBPalettes.
 CommonSpritePalettes:
 	; OBJ Palette 5
-	RGB(31, 31, 31)
-	RGB(14, 14, 14)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 14, 14, 14
+	RGB 0, 0, 0
 
 	; OBJ Palette 6
-	RGB(31, 27, 0)
-	RGB(19, 7, 0)
-	RGB(0, 0, 0)
+	RGB 31, 27, 0
+	RGB 19, 7, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 7
-	RGB(31, 28, 20)
-	RGB(31, 8, 0)
-	RGB(0, 0, 0)
+	RGB 31, 28, 20
+	RGB 31, 8, 0
+	RGB 0, 0, 0
 
 Data_1af2a: ; ??
-	RGB(31, 31, 31)
-	RGB(28, 12, 0)
-	RGB(24, 3, 0)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 28, 12, 0
+	RGB 24, 3, 0
+	RGB 0, 0, 0
 
 BonusScreenGBCPalettes:
 	db 6 ; num background palettes
 	; BG Palette 0
-	RGB(31, 21, 17)
-	RGB(22, 12, 9)
-	RGB(14, 5, 3)
-	RGB(0, 0, 0)
+	RGB 31, 21, 17
+	RGB 22, 12, 9
+	RGB 14, 5, 3
+	RGB 0, 0, 0
 
 	; BG Palette 1
-	RGB(31, 18, 18)
-	RGB(31, 0, 0)
-	RGB(13, 18, 31)
-	RGB(0, 0, 0)
+	RGB 31, 18, 18
+	RGB 31, 0, 0
+	RGB 13, 18, 31
+	RGB 0, 0, 0
 
 	; BG Palette 2
-	RGB(31, 18, 18)
-	RGB(31, 31, 31)
-	RGB(13, 18, 31)
-	RGB(0, 0, 0)
+	RGB 31, 18, 18
+	RGB 31, 31, 31
+	RGB 13, 18, 31
+	RGB 0, 0, 0
 
 	; BG Palette 3
-	RGB(21, 19, 17)
-	RGB(14, 12, 8)
-	RGB(8, 6, 4)
-	RGB(0, 0, 0)
+	RGB 21, 19, 17
+	RGB 14, 12, 8
+	RGB 8, 6, 4
+	RGB 0, 0, 0
 
 	; BG Palette 4
-	RGB(13, 18, 31)
-	RGB(31, 31, 31)
-	RGB(22, 14, 5)
-	RGB(21, 21, 21)
+	RGB 13, 18, 31
+	RGB 31, 31, 31
+	RGB 22, 14, 5
+	RGB 21, 21, 21
 
 	; BG Palette 5
-	RGB(13, 18, 31)
-	RGB(31, 22, 10)
-	RGB(22, 11, 1)
-	RGB(10, 4, 0)
+	RGB 13, 18, 31
+	RGB 31, 22, 10
+	RGB 22, 11, 1
+	RGB 10, 4, 0
 
 	db 8 ; num sprite palettes
 	; OBJ Palette 0
-	RGB(31, 27, 0)
-	RGB(19, 7, 0)
-	RGB(0, 0, 0)
+	RGB 31, 27, 0
+	RGB 19, 7, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 1
-	RGB(31, 31, 31)
-	RGB(14, 14, 14)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 14, 14, 14
+	RGB 0, 0, 0
 
 	; OBJ Palette 2
-	RGB(31, 21, 0)
-	RGB(20, 8, 0)
-	RGB(0, 0, 0)
+	RGB 31, 21, 0
+	RGB 20, 8, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 3
-	RGB(30, 24, 20)
-	RGB(24, 9, 2)
-	RGB(0, 0, 0)
+	RGB 30, 24, 20
+	RGB 24, 9, 2
+	RGB 0, 0, 0
 
 	; OBJ Palette 4
-	RGB(28, 25, 12)
-	RGB(14, 11, 0)
-	RGB(0, 0, 0)
+	RGB 28, 25, 12
+	RGB 14, 11, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 5
-	RGB(29, 29, 18)
-	RGB(4, 18, 0)
-	RGB(0, 0, 0)
+	RGB 29, 29, 18
+	RGB 4, 18, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 6
-	RGB(29, 18, 18)
-	RGB(19, 9, 0)
-	RGB(0, 0, 0)
+	RGB 29, 18, 18
+	RGB 19, 9, 0
+	RGB 0, 0, 0
 
 	; OBJ Palette 7
-	RGB(31, 31, 31)
-	RGB(14, 14, 14)
-	RGB(0, 0, 0)
+	RGB 31, 31, 31
+	RGB 14, 14, 14
+	RGB 0, 0, 0
 
 ScreenDataPointers:
 	dw $ffff

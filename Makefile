@@ -18,7 +18,7 @@ endif
 
 %.o: dep = $(shell tools/scan_includes $(@D)/$*.asm)
 %.o: %.asm $$(dep)
-	rgbasm -h -o $@ $<
+	rgbasm -o $@ $<
 
 $(ROM): $(OBJS)
 	rgblink -p 0xFF -n $(ROM:.gbc=.sym) -m $(ROM:.gbc=.map) -o $@ $(OBJS)
@@ -39,14 +39,14 @@ clean: tidy
 	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.lz' \) -exec rm {} +
 
 %.interleave.2bpp: %.interleave.png
-	rgbgfx -o $@ $<
+	rgbgfx -c embedded -o $@ $<
 	tools/gfx --interleave --png $< -o $@ $@
 
 %.2bpp: %.png
-	rgbgfx -o $@ $<
+	rgbgfx -c embedded -o $@ $<
 
 %.1bpp: %.png
-	rgbgfx -d1 -o $@ $<
+	rgbgfx -c embedded -d1 -o $@ $<
 
 %.lz: %
 	tools/rnc q p $< $@ -m=2

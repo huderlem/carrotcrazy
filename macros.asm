@@ -1,22 +1,22 @@
-dbw: MACRO
+MACRO dbw
 	db \1
 	dw \2
 	ENDM
 
-dwb: MACRO
+MACRO dwb
 	dw \1
 	db \2
 	ENDM
 
-dba: MACRO
+MACRO dba
 	dbw BANK(\1), \1
 	ENDM
 
-dab: MACRO
+MACRO dab
 	dwb \1, BANK(\1)
 	ENDM
 
-dn: MACRO
+MACRO dn
 	rept _NARG / 2
 	db (\1) << 4 + (\2)
 	shift
@@ -24,25 +24,25 @@ dn: MACRO
 	endr
 	ENDM
 
-dx: MACRO
-x = 8 * ((\1) - 1)
+MACRO dx
+DEF x = 8 * ((\1) - 1)
 	rept \1
 	db ((\2) >> x) & $ff
-x = x + -8
+DEF x = x + -8
 	endr
 	ENDM
 
-bigdw: MACRO ; big-endian word
+MACRO bigdw ; big-endian word
 	dx 2, \1
 	ENDM
 
-RGB: MACRO
+MACRO RGB
 	dw ((\3) << 10 | (\2) << 5 | (\1))
 	ENDM
 
 ; \1: source data
 ; \2: destination
-compressed_data: MACRO
+MACRO compressed_data
 	db Bank(\1)
 	dw \1
 	dw \2
@@ -51,7 +51,7 @@ compressed_data: MACRO
 ; \1: source data
 ; \2: destination
 ; \3: num bytes
-uncompressed_data: MACRO
+MACRO uncompressed_data
 	db Bank(\1)
 	dw \1
 	dw \3
@@ -62,7 +62,7 @@ uncompressed_data: MACRO
 ; \2: oam attribute
 ; \3: x offset
 ; \4: y offset
-sub_sprite: MACRO
+MACRO sub_sprite
 	db \4, \3, \1, \2
 	ENDM
 
@@ -71,16 +71,22 @@ sub_sprite: MACRO
 ; \3: gfx address
 ; \4: gbc palette id
 ; \5: gb palette id
-dynamic_sprite_8: MACRO
+MACRO dynamic_sprite_8
 	db ((\5 & $1) << 4) | (\4 & $7)
+; Bits 14-15 are the source address's high bits, which must be $4000 (ROMX)
+; for banks > 11; the real bank is switched in separately at load time.
+IF (Bank(\2) - $8) >= 4
+	dw $4000 | ((\3) & $3ff0) | (\1)
+ELSE
 	dw ((Bank(\2) - $8) << 14) | ((\3) & $3ff0) | (\1)
+ENDC
 	ENDM
 
 ; \1; num sub sprites
 ; \2: gfx address
 ; \3: gbc palette id
 ; \4: gb palette id
-dynamic_sprite: MACRO
+MACRO dynamic_sprite
 	db ((\4 & $1) << 4) | (\3 & $7)
 	dw ((\2) & $fff0) | (\1)
 	ENDM
@@ -88,7 +94,7 @@ dynamic_sprite: MACRO
 ; \1: x offset
 ; \2: y offset
 ; \3: x offset when horizontally flipped
-dynamic_sprite_offsets: MACRO
+MACRO dynamic_sprite_offsets
 	db \2, \1, \3
 	ENDM
 
@@ -96,14 +102,14 @@ dynamic_sprite_offsets: MACRO
 ; \2: maximum x coord
 ; \3: entity num
 ; \4: level name
-trigger: MACRO
+MACRO trigger
 	dw \1, \2, wLevelEntities + (\4Entity\3 - \4Entities) + 2
 	ENDM
 
 ; \1: type
 ; \2: x pixel coord
 ; \3: y pixel coord
-entity_collectible: MACRO
+MACRO entity_collectible
 	dw HandleCollectibleEntity
 	dw \3, \2
 	db \1, $0
@@ -114,7 +120,7 @@ entity_collectible: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_cannon: MACRO
+MACRO entity_cannon
 	dw HandleCannonEntity
 	dw \2, \1
 	db 0
@@ -124,7 +130,7 @@ entity_cannon: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when paddling
 ; \4: maximum x coord when paddling
-entity_barrel_boat: MACRO
+MACRO entity_barrel_boat
 	dw HandleBarrelBoatEntity
 	dw \2, \1
 	db 0
@@ -135,7 +141,7 @@ entity_barrel_boat: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when pushing
 ; \4: maximum x coord when pushing
-entity_pushable_chest: MACRO
+MACRO entity_pushable_chest
 	dw HandlePushableObjectEntity
 	dw \2, \1
 	db $80 | 2
@@ -146,7 +152,7 @@ entity_pushable_chest: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when pushing
 ; \4: maximum x coord when pushing
-entity_pushable_crate: MACRO
+MACRO entity_pushable_crate
 	dw HandlePushableObjectEntity
 	dw \2, \1
 	db 0
@@ -155,7 +161,7 @@ entity_pushable_crate: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_hint_umbrella: MACRO
+MACRO entity_hint_umbrella
 	dw HandleActionHintEntity
 	dw \2, \1
 	db $00
@@ -163,7 +169,7 @@ entity_hint_umbrella: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_hint_shovel: MACRO
+MACRO entity_hint_shovel
 	dw HandleActionHintEntity
 	dw \2, \1
 	db $80
@@ -174,7 +180,7 @@ entity_hint_shovel: MACRO
 ; \3: minimum x coord when walking
 ; \4: maximum x coord when walking
 ; \5: entrance type
-entity_yosemite_sam: MACRO
+MACRO entity_yosemite_sam
 	dw HandleYosemiteSamEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -189,7 +195,7 @@ entity_yosemite_sam: MACRO
 ; \3: minimum x coord when flying
 ; \4: maximum x coord when flying
 ; \5: cannonball explosion y coord
-entity_seagull: MACRO
+MACRO entity_seagull
 	dw HandleSeagullEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -200,7 +206,7 @@ entity_seagull: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_rock_thrower: MACRO
+MACRO entity_rock_thrower
 	dw HandleRockThrowerEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -208,7 +214,7 @@ entity_rock_thrower: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_brick_thrower: MACRO
+MACRO entity_brick_thrower
 	dw HandleBrickThrowerEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -216,7 +222,7 @@ entity_brick_thrower: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_fire_hydrant: MACRO
+MACRO entity_fire_hydrant
 	dw HandleFireHydrantEntity
 	dw \2, \1
 	db $00, $00, $2B, $75, ((\2) & $ff)
@@ -226,7 +232,7 @@ entity_fire_hydrant: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when skateboarding
 ; \4: maximum x coord when skateboarding
-entity_skateboard: MACRO
+MACRO entity_skateboard
 	dw HandleSkateboardEntity
 	dw \2, \1
 	db $00
@@ -236,7 +242,7 @@ entity_skateboard: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: bomb explosion y coord
-entity_sylvester: MACRO
+MACRO entity_sylvester
 	dw HandleSylvesterEntity
 	dw \2, \1
 	db $00, $00, $00, $00, $00
@@ -247,7 +253,7 @@ entity_sylvester: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when walking
 ; \4: maximum x coord when walking
-entity_daffy_duck: MACRO
+MACRO entity_daffy_duck
 	dw HandleDaffyDuckEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -259,7 +265,7 @@ entity_daffy_duck: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_ladder: MACRO
+MACRO entity_ladder
 	dw HandleLadderEntity
 	dw \2, \1
 	db $00, $00
@@ -272,7 +278,7 @@ entity_ladder: MACRO
 ; \3: minimum x coord when walking
 ; \4: maximum x coord when walking
 ; \5: ???
-entity_taz: MACRO
+MACRO entity_taz
 	dw HandleTazEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -286,7 +292,7 @@ entity_taz: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when riding
 ; \4: maximum x coord when riding
-entity_hippo: MACRO
+MACRO entity_hippo
 	dw HandleHippoEntity
 	dw \2, \1
 	db $00
@@ -295,7 +301,7 @@ entity_hippo: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_monkey: MACRO
+MACRO entity_monkey
 	dw HandleMonkeyEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -303,7 +309,7 @@ entity_monkey: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_taz_female: MACRO
+MACRO entity_taz_female
 	dw HandleTazFemaleEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -315,7 +321,7 @@ entity_taz_female: MACRO
 ; \4: maximum x coord when pushing feeder
 ; \5: x pixel coord of giraffe
 ; \6: y pixel coord of giraffe - only lo byte is actually used
-entity_giraffe_feeder: MACRO
+MACRO entity_giraffe_feeder
 	dw HandleGiraffeFeederEntity
 	dw \2, \1
 	db 6
@@ -327,7 +333,7 @@ entity_giraffe_feeder: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_balloons: MACRO
+MACRO entity_balloons
 	dw HandleBalloonsEntity
 	dw \2, \1
 	db $00, $00
@@ -339,7 +345,7 @@ entity_balloons: MACRO
 ; \3: minimum x coord when walking
 ; \4: maximum x coord when walking
 ; \5: entrance type
-entity_marvin_martian: MACRO
+MACRO entity_marvin_martian
 	dw HandleMarvianMartianEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -353,7 +359,7 @@ entity_marvin_martian: MACRO
 ; \2: y pixel coord
 ; \3: minimum x coord when pushing
 ; \4: maximum x coord when pushing
-entity_pushable_computer: MACRO
+MACRO entity_pushable_computer
 	dw HandlePushableObjectEntity
 	dw \2, \1
 	db 8
@@ -365,7 +371,7 @@ entity_pushable_computer: MACRO
 ; \3: minimum x coord when hovering
 ; \4: maximum x coord when pushing
 ; \5: minimum y coord when pushing
-entity_hover_ship: MACRO
+MACRO entity_hover_ship
 	dw HandleHoverShipEntity
 	dw \2, \1
 	db $00
@@ -376,7 +382,7 @@ entity_hover_ship: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_instant_martian: MACRO
+MACRO entity_instant_martian
 	dw HandleInstantMartianEntity
 	dw \2, \1
 	db $81, $00, $C2, $76, $00
@@ -388,7 +394,7 @@ entity_instant_martian: MACRO
 ; \2: y pixel coord
 ; \3: destination x pixel coord
 ; \4: destination y pixel coord
-entity_teleporter: MACRO
+MACRO entity_teleporter
 	dw HandleTeleporterEntity
 	dw \2, \1
 	db $00
@@ -397,7 +403,7 @@ entity_teleporter: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_k9: MACRO
+MACRO entity_k9
 	dw HandleK9Entity
 	dw \2, \1
 	db $81, $00, $F4, $77, $00
@@ -407,7 +413,7 @@ entity_k9: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_bomb_hazard: MACRO
+MACRO entity_bomb_hazard
 	dw HandleBombHazardEntity
 	dw \2, \1
 	db $00, $00, $DE, $77
@@ -417,7 +423,7 @@ entity_bomb_hazard: MACRO
 ; \2: spring y pixel coord
 ; \3: lever x pixel coord
 ; \4: lever y pixel coord
-entity_lever_spring: MACRO
+MACRO entity_lever_spring
 	dw HandleLeverSpringEntity
 	dw \2, \1
 	db $00
@@ -427,7 +433,7 @@ entity_lever_spring: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum y coord when flying
-entity_helicopter_chair: MACRO
+MACRO entity_helicopter_chair
 	dw HandleHelicopterChairEntity
 	dw \2, \1
 	db $00
@@ -436,7 +442,7 @@ entity_helicopter_chair: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_disguised_hunter: MACRO
+MACRO entity_disguised_hunter
 	dw HandleDisguisedHunterEntity
 	dw \2, \1
 	db $00, $00, $97, $78, $03
@@ -447,7 +453,7 @@ entity_disguised_hunter: MACRO
 ; \3: minimum x coord when walking
 ; \4: maximum x coord when walking
 ; \5: entrance type
-entity_elmer_fudd: MACRO
+MACRO entity_elmer_fudd
 	dw HandleElmerFuddEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -459,7 +465,7 @@ entity_elmer_fudd: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_bear_trap: MACRO
+MACRO entity_bear_trap
 	dw HandleBearTrapEntity
 	dw \2, \1
 	db $00
@@ -467,7 +473,7 @@ entity_bear_trap: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_hunting_dog: MACRO
+MACRO entity_hunting_dog
 	dw HandleHuntingDogEntity
 	dw \2, \1
 	db $81, $00, $60, $78, $00
@@ -480,7 +486,7 @@ entity_hunting_dog: MACRO
 ; \3: rock minimum x coord when pushing
 ; \4: rock maximum x coord when pushing
 ; \5: rock maximum y coord when falling
-entity_rock_teeter_totter: MACRO
+MACRO entity_rock_teeter_totter
 	dw HandleRockTeeterTotterEntity
 	dw \2, \1
 	db 10
@@ -490,7 +496,7 @@ entity_rock_teeter_totter: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_hook_line: MACRO
+MACRO entity_hook_line
 	dw HandleHookLineEntity
 	dw \2, \1
 	db $00, $00
@@ -499,7 +505,7 @@ entity_hook_line: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_tnt_barrel: MACRO
+MACRO entity_tnt_barrel
 	dw HandleTNTBarrelEntity
 	dw \2, \1
 	db $00
@@ -507,7 +513,7 @@ entity_tnt_barrel: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_log_destruction: MACRO
+MACRO entity_log_destruction
 	dw HandleLogDestructionEntity
 	dw \2, \1
 	db $00, $06
@@ -516,7 +522,7 @@ entity_log_destruction: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum x pixel coord when surfing
-entity_raft: MACRO
+MACRO entity_raft
 	dw HandleRaftEntity
 	dw \2, \1
 	db $00
@@ -526,7 +532,7 @@ entity_raft: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum x pixel coord when surfing
-entity_shark: MACRO
+MACRO entity_shark
 	dw HandleSharkEntity
 	dw \2, \1
 	db $00, $00
@@ -535,7 +541,7 @@ entity_shark: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_cannonball: MACRO
+MACRO entity_cannonball
 	dw HandleCannonballEntity
 	dw \2, \1
 	db $20
@@ -544,7 +550,7 @@ entity_cannonball: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: health
-entity_yosemite_sam_boss: MACRO
+MACRO entity_yosemite_sam_boss
 	dw HandleYosemiteSamBossEntity
 	dw \2, \1
 	db $20, $00
@@ -554,35 +560,35 @@ entity_yosemite_sam_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_right_boss_vehicle_off_screen: MACRO
+MACRO entity_move_right_boss_vehicle_off_screen
 	dw HandleMoveRightBossVehicleOffScreenEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_right_boss_vehicle_far_left: MACRO
+MACRO entity_move_right_boss_vehicle_far_left
 	dw HandleMoveRightBossVehicleFarLeftEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_right_boss_vehicle_far_right: MACRO
+MACRO entity_move_right_boss_vehicle_far_right
 	dw HandleMoveRightBossVehicleFarRightEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_yosemite_ship_middle: MACRO
+MACRO entity_move_yosemite_ship_middle
 	dw HandleMoveYosemiteShipMiddleEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_bouncing_oil_drum: MACRO
+MACRO entity_bouncing_oil_drum
 	dw HandleBouncingOilDrumEntity
 	dw \2, \1
 	db $00, $00
@@ -592,7 +598,7 @@ entity_bouncing_oil_drum: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum x pixel coord when riding
-entity_jackhammer: MACRO
+MACRO entity_jackhammer
 	dw HandleJackhammerEntity
 	dw \2, \1
 	db $00
@@ -601,7 +607,7 @@ entity_jackhammer: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_hanging_hook: MACRO
+MACRO entity_hanging_hook
 	dw HandleHangingHookEntity
 	dw \2, \1
 	db $00, $00
@@ -610,7 +616,7 @@ entity_hanging_hook: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_wrecking_ball: MACRO
+MACRO entity_wrecking_ball
 	dw HandleWreckingBallEntity
 	dw \2, \1
 	db $00, $00
@@ -619,7 +625,7 @@ entity_wrecking_ball: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_brick_wall: MACRO
+MACRO entity_brick_wall
 	dw HandleBreakableWallEntity
 	dw \2, \1
 	db $06
@@ -628,7 +634,7 @@ entity_brick_wall: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: health
-entity_daffy_duck_boss: MACRO
+MACRO entity_daffy_duck_boss
 	dw HandleDaffyDuckBossEntity
 	dw \2, \1
 	db $20, $00
@@ -638,7 +644,7 @@ entity_daffy_duck_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_taz_female_boss: MACRO
+MACRO entity_taz_female_boss
 	dw HandleTazFemaleBossEntity
 	dw \2, \1
 	db $20, $00, $01, $00, $00, $00, $00, $00
@@ -646,7 +652,7 @@ entity_taz_female_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_balloon: MACRO
+MACRO entity_balloon
 	dw HandleBalloonEntity
 	dw \2, \1
 	db $00
@@ -655,7 +661,7 @@ entity_balloon: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: maximum x pixel coord when riding
-entity_bicycle: MACRO
+MACRO entity_bicycle
 	dw HandleBicycleEntity
 	dw \2, \1
 	db $00
@@ -664,7 +670,7 @@ entity_bicycle: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_cage_wall: MACRO
+MACRO entity_cage_wall
 	dw HandleBreakableWallEntity
 	dw \2, \1
 	db $86
@@ -672,7 +678,7 @@ entity_cage_wall: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_cage_drop: MACRO
+MACRO entity_cage_drop
 	dw HandleCageDropEntity
 	dw \2, \1
 	db $00
@@ -680,42 +686,42 @@ entity_cage_drop: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_left_boss_vehicle_off_screen: MACRO
+MACRO entity_move_left_boss_vehicle_off_screen
 	dw HandleMoveLeftBossVehicleOffScreenEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_left_boss_vehicle_far_left: MACRO
+MACRO entity_move_left_boss_vehicle_far_left
 	dw HandleMoveLeftBossVehicleFarLeftEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_move_left_boss_vehicle_far_right: MACRO
+MACRO entity_move_left_boss_vehicle_far_right
 	dw HandleMoveLeftBossVehicleFarRightEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_normal_scroll_right: MACRO
+MACRO entity_normal_scroll_right
 	dw HandleNormalScrollRightEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_fast_scroll_right: MACRO
+MACRO entity_fast_scroll_right
 	dw HandleFastScrollRightEntity
 	dw \2, \1
 	ENDM
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_fastest_scroll_right: MACRO
+MACRO entity_fastest_scroll_right
 	dw HandleFastestScrollRightEntity
 	dw \2, \1
 	ENDM
@@ -723,7 +729,7 @@ entity_fastest_scroll_right: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: health
-entity_taz_boss: MACRO
+MACRO entity_taz_boss
 	dw HandleTazBossEntity
 	dw \2, \1
 	db $20, $00
@@ -733,7 +739,7 @@ entity_taz_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_space_scooter: MACRO
+MACRO entity_space_scooter
 	dw HandleSpaceScooterEntity
 	dw \2, \1
 	db $20
@@ -741,7 +747,7 @@ entity_space_scooter: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_fuel_canister: MACRO
+MACRO entity_fuel_canister
 	dw HandleFuelCanisterEntity
 	dw \2, \1
 	db $00, $00
@@ -750,7 +756,7 @@ entity_fuel_canister: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_falling_asteroid: MACRO
+MACRO entity_falling_asteroid
 	dw HandleFallingAsteroidEntity
 	dw \2, \1
 	db $00, $00
@@ -759,7 +765,7 @@ entity_falling_asteroid: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_instant_martian_boss: MACRO
+MACRO entity_instant_martian_boss
 	dw HandleInstantMartianEntity
 	dw \2, \1
 	db $00, $00, $02, $77, $00
@@ -769,7 +775,7 @@ entity_instant_martian_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_bomb_hazard_boss: MACRO
+MACRO entity_bomb_hazard_boss
 	dw HandleBombHazardEntity
 	dw \2, \1
 	db $00, $00, $D2, $77
@@ -778,7 +784,7 @@ entity_bomb_hazard_boss: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: health
-entity_marvin_martian_boss: MACRO
+MACRO entity_marvin_martian_boss
 	dw HandleMarvianMartianBossEntity
 	dw \2, \1
 	db $20, $00
@@ -788,7 +794,7 @@ entity_marvin_martian_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_dirt_path_destruction: MACRO
+MACRO entity_dirt_path_destruction
 	dw HandleDirtPathDestructionEntity
 	dw \2, \1
 	db $00, $06
@@ -797,7 +803,7 @@ entity_dirt_path_destruction: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: minimum x pixel coord when surfing
-entity_train_track_dolly: MACRO
+MACRO entity_train_track_dolly
 	dw HandleTrainTrackDollyEntity
 	dw \2, \1
 	db $00
@@ -806,7 +812,7 @@ entity_train_track_dolly: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_train_track_barricade: MACRO
+MACRO entity_train_track_barricade
 	dw HandleTrainTrackBarricadeEntity
 	dw \2, \1
 	db $00
@@ -814,7 +820,7 @@ entity_train_track_barricade: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_brick_thrower_tower: MACRO
+MACRO entity_brick_thrower_tower
 	dw HandleBrickThrowerTowerEntity
 	dw \2, \1
 	db $80, $01, $00
@@ -822,7 +828,7 @@ entity_brick_thrower_tower: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_boom_barrier: MACRO
+MACRO entity_boom_barrier
 	dw HandleBoomBarrierEntity
 	dw \2, \1
 	db $00
@@ -831,7 +837,7 @@ entity_boom_barrier: MACRO
 ; \1: x pixel coord
 ; \2: y pixel coord
 ; \3: health
-entity_elmer_fudd_boss: MACRO
+MACRO entity_elmer_fudd_boss
 	dw HandleElmerFuddBossEntity
 	dw \2, \1
 	db $20, $00
@@ -841,7 +847,7 @@ entity_elmer_fudd_boss: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_studio_yosemite_sam: MACRO
+MACRO entity_studio_yosemite_sam
 	dw HandleStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -852,7 +858,7 @@ entity_studio_yosemite_sam: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_credits_studio_yosemite_sam: MACRO
+MACRO entity_credits_studio_yosemite_sam
 	dw HandleCreditsStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -861,7 +867,7 @@ entity_credits_studio_yosemite_sam: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_studio_daffy_duck: MACRO
+MACRO entity_studio_daffy_duck
 	dw HandleStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -872,7 +878,7 @@ entity_studio_daffy_duck: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_credits_studio_daffy_duck: MACRO
+MACRO entity_credits_studio_daffy_duck
 	dw HandleCreditsStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -881,7 +887,7 @@ entity_credits_studio_daffy_duck: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_studio_taz: MACRO
+MACRO entity_studio_taz
 	dw HandleStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -892,7 +898,7 @@ entity_studio_taz: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_credits_studio_taz: MACRO
+MACRO entity_credits_studio_taz
 	dw HandleCreditsStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -901,7 +907,7 @@ entity_credits_studio_taz: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_studio_marvin_martian: MACRO
+MACRO entity_studio_marvin_martian
 	dw HandleStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -912,7 +918,7 @@ entity_studio_marvin_martian: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_credits_studio_marvin_martian: MACRO
+MACRO entity_credits_studio_marvin_martian
 	dw HandleCreditsStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -921,7 +927,7 @@ entity_credits_studio_marvin_martian: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_studio_elmer_fudd: MACRO
+MACRO entity_studio_elmer_fudd
 	dw HandleStudioCharacterEntity
 	dw \2, \1
 	db $00
@@ -932,7 +938,7 @@ entity_studio_elmer_fudd: MACRO
 
 ; \1: x pixel coord
 ; \2: y pixel coord
-entity_credits_studio_elmer_fudd: MACRO
+MACRO entity_credits_studio_elmer_fudd
 	dw HandleCreditsStudioCharacterEntity
 	dw \2, \1
 	db $00
