@@ -247,7 +247,7 @@ Start_:
 	ld [MBC5RomBank], a
 	call ResetInitialData
 	call ResetPlayerData
-	call Func_3e31
+	call InitSoundHome
 	call SetInitialScreen
 	jp InitNextScreen
 
@@ -10566,10 +10566,10 @@ ResumeMusicHome:
 	ld [MBC5RomBank], a
 	jp ResumeMusic
 
-Func_3e13:
-	ld a, Bank(Func_8053)
+StopMusicHome:
+	ld a, Bank(StopMusic)
 	ld [MBC5RomBank], a
-	jp Func_8053
+	jp StopMusic
 
 PlaySoundEffectHome:
 	push bc
@@ -10587,12 +10587,12 @@ PlaySoundEffectHome:
 	ld [MBC5RomBank], a
 	ret
 
-Func_3e31:
+InitSoundHome:
 	sub a
 	ld [wDisableMusic], a
-	ld a, Bank(Func_8059)
+	ld a, Bank(InitSound)
 	ld [MBC5RomBank], a
-	jp Func_8059
+	jp InitSound
 
 Func_3e3d:
 	ld a, Bank(Func_805c)
@@ -10656,7 +10656,7 @@ InitNextScreen:
 	sub a
 	ldh [hPaused], a
 	ld sp, wStack
-	call Func_3e13
+	call StopMusicHome
 	call WriteDMACodeToHRAM
 	call WaitUntilSafeToAccessVRAM
 	ld hl, wCurScreen
@@ -20469,9 +20469,27 @@ TreasureIslandBossShipTilemap:
 TazZooBossCollisionAttributes:
 	INCBIN "data/levels/taz_zoo_boss_collision_attrs.bin.lz"
 
+; =============================================================================
+; Music / Sound Engine
+; =============================================================================
+; A custom 4-channel sound driver. The rest of the ROM talks to it through a
+; small jump table at the start of this bank (TickMusicEngine, PauseMusic, ...)
+; so the entry-point addresses stay fixed. The home-bank wrappers in bank 0
+; (TickMusicEngineHome, PlaySoundEffectHome, ...) bank this code in first.
+;
+; Each frame, TickMusicEngine advances every channel: it counts down the current
+; note, reads the next command(s) when a note ends, applies the per-frame effects
+; (volume envelope, pitch slide, arpeggio, duty/pan sequences) and writes the
+; Game Boy sound registers.
+;
+; Channel state lives in four $100-aligned WRAM structs ($db00/$dc00/$dd00/$de00);
+; see constants/audio_constants.asm for the field layout and the command format.
+; Songs are tiny loader routines (further down this bank) that point each channel
+; at a command stream. Sound effects play on channel 4 via PlaySoundEffect.
 SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
-Data_8000:
+; Jump table for command-stream opcodes $60-$84 (see ReadMusicMetaCommand).
+MusicCommandTable:
 	dw Func_84c9
 	dw Func_84cf
 	dw Func_8502
@@ -20479,7 +20497,7 @@ Data_8000:
 	dw Func_84e8
 	dw Func_8502
 	dw Func_84ef
-	dw Func_853d
+	dw ResetMusicChannels
 	dw Func_857a
 	dw Func_85be
 	dw Func_85e6
@@ -20493,10 +20511,10 @@ Data_8000:
 	dw Func_868a
 	dw Func_868e
 	dw Func_861b
-	dw Func_8633
-	dw Func_8664
-	dw Func_86aa
-	dw Func_86c5
+	dw MusicCommand_PanSequence
+	dw MusicCommand_DutySequence
+	dw MusicCommand_MasterVolumeSequence
+	dw StopMasterVolumeSequence
 	dw Func_8711
 	dw Func_84c1
 	dw Func_84ac
@@ -20519,14 +20537,14 @@ PauseMusic:
 ResumeMusic:
 	jp ResumeMusic_
 
-Func_8053:
-	jp Func_853d
+StopMusic:
+	jp ResetMusicChannels
 
 PlaySoundEffect:
 	jp PlaySoundEffect_
 
-Func_8059:
-	jp Func_8522
+InitSound:
+	jp InitSoundEngine
 
 Func_805c:
 	jp Func_895d
@@ -20594,7 +20612,7 @@ PlaySoundEffect__:
 ResumeMusic_:
 	xor a
 	ld [wMusicPaused], a
-	jp Func_876e
+	jp ReloadWaveChannel
 
 PauseMusic_:
 	xor a
@@ -20662,7 +20680,7 @@ TickMusicEngine_:
 	call TickMusicChannel
 	inc h
 	call TickMusicChannel
-	call Func_8a7f
+	call UpdateNoiseChannel
 	ld hl, $db25
 	ld l, $25
 	ld e, [hl]
@@ -20803,10 +20821,10 @@ Func_8193:
 	ld a, $ff
 .asm_81bc
 	ldh [rNR51], a
-	jp Func_86ca
+	jp UpdateMasterVolumeSequence
 
 TickSoundEffectChannel:
-	call Func_86ca
+	call UpdateMasterVolumeSequence
 	ld h, $de
 	call TickMusicChannel
 	call Func_816b
@@ -20814,126 +20832,131 @@ TickSoundEffectChannel:
 
 INCBIN "baserom.gbc", $81ce, $81de - $81ce
 
+; Advances a single music channel by one frame. `h` selects the channel struct.
+; Updates the duty/pan sequences, reads the next command if the note has ended,
+; recomputes the channel's frequency, and applies the volume envelope and vibrato.
 TickMusicChannel:
-	ld l, $27
+	ld l, MUSIC_CH_ENABLED
 	ld a, [hl]
 	and a
 	ret z ; exit if the channel is disabled
-	ld l, $2f
+	ld l, MUSIC_CH_DUTY_SEQ
 	ld a, [hl]
 	and a
-	call nz, Func_866d
-	ld l, $2c
+	call nz, UpdateDutySequence ; advance the duty-cycle sequence, if any
+	ld l, MUSIC_CH_PAN_SEQ
 	ld a, [hl]
 	and a
-	call nz, Func_863c
-	ld l, $02
+	call nz, UpdatePanSequence ; advance the stereo-pan sequence, if any
+	ld l, MUSIC_CH_CMD_PTR
 	ld e, [hl]
 	inc l
 	ld d, [hl] ; de holds the pointer to the channel's current command
-	ld l, $0a
-	dec [hl]   ; decrement the current command's duration
-	call z, TryReadMusicCommand
-	ld l, $04
+	ld l, MUSIC_CH_NOTE_TIMER
+	dec [hl]   ; count down the current note's remaining duration
+	call z, TryReadMusicCommand ; note finished: read the next command(s)
+	ld l, MUSIC_CH_FLAGS
 	bit 0, [hl]
-	jr nz, .asm_8266
-.asm_8202
-	ld l, $0b
+	jr nz, .arpeggio ; flag bit 0: pull this frame's pitch from the arpeggio table
+.computeFrequency
+	; The note index is the sum of the pitch components: transpose + note +
+	; octave + arpeggio offset + detune.
+	ld l, MUSIC_CH_TRANSPOSE
 	ld a, [hli]
 	add [hl]
-	ld [hli], a
+	ld [hli], a ; fold the one-shot transpose into the note value
 	add [hl]
 	inc l
 	add [hl]
 	inc l
 	add [hl]
 	cp $50
-	jr c, .asm_8211
-	xor a
-.asm_8211
-	add a
+	jr c, .noteInRange
+	xor a ; clamp out-of-range notes to index 0
+.noteInRange
+	add a ; *2 for a word index into NoteFrequencies
 	ld c, a
 	ld b, (NoteFrequencies >> 8)
-	ld l, $05
+	ld l, MUSIC_CH_FREQ
 	ld a, [bc]
 	inc c
 	ld [hli], a
 	ld a, [bc]
 	ld [hl], a
-	call Func_88a2
-	call Func_8447
-	ld l, $04
+	call UpdateVolumeEnvelope
+	call Func_8447 ; apply note glide/connect
+	ld l, MUSIC_CH_FLAGS
 	bit 3, [hl]
-	ret z
-	ld l, $21
+	ret z ; done unless vibrato is enabled
+	ld l, MUSIC_CH_VIBRATO + 1
 	ld a, [hl]
 	and a
-	jr z, .asm_822f
-	dec [hl]
+	jr z, .vibratoActive
+	dec [hl] ; still in the onset delay: count it down
 	ret
-.asm_822f
-	ld l, $04
+.vibratoActive
+	ld l, MUSIC_CH_FLAGS
 	bit 4, [hl]
-	jr z, .asm_824c
-	ld l, $23
+	jr z, .vibratoDown
+	ld l, MUSIC_CH_VIBRATO + 3
 	dec [hl]
-	jr nz, .asm_8242
+	jr nz, .vibratoStepUp
 	inc l
 	ld a, [hld]
-	ld [hl], a
-	ld l, $04
+	ld [hl], a ; reload step count and reverse direction (down)
+	ld l, MUSIC_CH_FLAGS
 	res 4, [hl]
 	ret
-.asm_8242
-	ld l, $22
+.vibratoStepUp
+	ld l, MUSIC_CH_VIBRATO + 2
 	ld a, [hl]
-	ld l, $25
+	ld l, MUSIC_CH_PITCH_BEND
 	add [hl]
-	ld [hli], a
+	ld [hli], a ; pitch bend += depth step
 	ret nc
 	inc [hl]
 	ret
-.asm_824c
-	ld l, $23
+.vibratoDown
+	ld l, MUSIC_CH_VIBRATO + 3
 	dec [hl]
-	jr nz, .asm_8259
+	jr nz, .vibratoStepDown
 	inc l
 	ld a, [hld]
-	ld [hl], a
-	ld l, $04
+	ld [hl], a ; reload step count and reverse direction (up)
+	ld l, MUSIC_CH_FLAGS
 	set 4, [hl]
 	ret
-.asm_8259
-	ld l, $22
+.vibratoStepDown
+	ld l, MUSIC_CH_VIBRATO + 2
 	ld c, [hl]
-	ld l, $25
+	ld l, MUSIC_CH_PITCH_BEND
 	ld a, [hl]
 	sub c
-	ld [hli], a
+	ld [hli], a ; pitch bend -= depth step
 	ret nc
 	dec [hl]
 	ret
-.asm_8264
-	ld [hl], $00
-.asm_8266
-	ld l, $1d
+.arpRestart
+	ld [hl], $00 ; loop marker reached: rewind the arpeggio index
+.arpeggio
+	ld l, MUSIC_CH_ARP_PTR
 	ld a, [hli]
 	ld b, [hl]
 	inc l
-	add [hl]
+	add [hl] ; bc = arpeggio table + current index
 	ld c, a
-	jr nc, .asm_8270
+	jr nc, .arpRead
 	inc b
-.asm_8270
+.arpRead
 	ld a, [bc]
 	cp $6a
-	jr z, .asm_8264
+	jr z, .arpRestart ; $6a = loop back to the start of the table
 	cp $ff
-	jr z, .asm_8202
-	inc [hl]
-	ld l, $0e
+	jr z, .computeFrequency ; $ff = hold the last offset
+	inc [hl] ; advance the arpeggio index
+	ld l, MUSIC_CH_ARP_OFFSET
 	ld [hl], a
-	jr .asm_8202
+	jr .computeFrequency
 
 TryReadMusicCommand:
 	ld a, [$db45]
@@ -21065,7 +21088,7 @@ ReadMusicMetaCommand:
 	sub $60
 	add a
 	ld c, a
-	ld b, (Data_8000 >> 8)
+	ld b, (MusicCommandTable >> 8)
 	ld a, [bc]
 	ld l, a
 	inc c
@@ -21453,7 +21476,7 @@ Func_8518:
 	ld [hl], d
 	ret
 
-Func_8522:
+InitSoundEngine:
 	ld a, $ff
 	ldh [rNR52], a
 	ld a, $70
@@ -21465,7 +21488,7 @@ Func_8522:
 	ld [wMusicPaused], a
 	ld [$db47], a
 	ld [$db5d], a
-Func_853d:
+ResetMusicChannels:
 	ld a, $70
 	ld [$db49], a
 	ld a, $20
@@ -21539,7 +21562,7 @@ Func_857b:
 	ld [$db5f], a
 	dec a
 	ld [$db44], a
-	jp Func_876e
+	jp ReloadWaveChannel
 
 Func_85be:
 	ld a, [de]
@@ -21655,7 +21678,7 @@ Func_861b:
 	inc de
 	ret
 
-Func_8633:
+MusicCommand_PanSequence:
 	ld a, [de]
 	inc de
 	ld l, $2c
@@ -21664,7 +21687,7 @@ Func_8633:
 	ld [hl], $01
 	ret
 
-Func_863c:
+UpdatePanSequence:
 	ld l, $2d
 	dec [hl]
 	ret nz
@@ -21696,7 +21719,7 @@ Func_865f:
 	ld [hl], $10
 	ret
 
-Func_8664:
+MusicCommand_DutySequence:
 	ld a, [de]
 	inc de
 	ld l, $2f
@@ -21705,7 +21728,7 @@ Func_8664:
 	ld [hl], $01
 	ret
 
-Func_866d:
+UpdateDutySequence:
 	ld l, $30
 	dec [hl]
 	ret nz
@@ -21744,14 +21767,14 @@ Func_8690:
 	ldh [rNR21], a
 	ret
 
-Func_869d:
+StartMasterVolumeSequence:
 	ld [$db64], a
 	ld a, l
 	ld [$db60], a
 	ld a, h
 	ld [$db61], a
-	jr Func_86b9
-Func_86aa:
+	jr _StartMasterVolumeSequence
+MusicCommand_MasterVolumeSequence:
 	ld a, [de]
 	ld [$db64], a
 	inc de
@@ -21761,7 +21784,7 @@ Func_86aa:
 	ld a, [de]
 	ld [$db61], a
 	inc de
-Func_86b9:
+_StartMasterVolumeSequence:
 	xor a
 	ld [$db62], a
 	ld [$db63], a
@@ -21769,12 +21792,12 @@ Func_86b9:
 	ld [$db65], a
 	ret
 
-Func_86c5:
+StopMasterVolumeSequence:
 	xor a
 	ld [$db65], a
 	ret
 
-Func_86ca:
+UpdateMasterVolumeSequence:
 	ld a, [$db65]
 	and a
 	jr nz, .asm_86d9
@@ -21806,7 +21829,7 @@ Func_86ca:
 	cp $6a
 	jr z, .asm_870b
 	cp $ff
-	jr z, Func_86c5
+	jr z, StopMasterVolumeSequence
 	ldh [rNR50], a
 	ld a, [$db62]
 	inc a
@@ -21901,7 +21924,7 @@ Func_8711:
 	ldh [rNR34], a
 	ret
 
-Func_876e:
+ReloadWaveChannel:
 	xor a
 	ldh [rNR30], a
 	ld c, (_AUD3WAVERAM & $ff)
@@ -22050,7 +22073,7 @@ NoteFrequencies:
 	dw $07ec
 	dw $07ed
 
-Func_88a2:
+UpdateVolumeEnvelope:
 	ld a, h
 	cp $dd
 	jr nc, .asm_88b7
@@ -22184,11 +22207,11 @@ PlaySoundEffect___:
 
 Func_8957:
 	ld hl, $77ee
-	jp Func_869d
+	jp StartMasterVolumeSequence
 
 Func_895d:
 	ld hl, $77f7
-	jp Func_869d
+	jp StartMasterVolumeSequence
 
 Func_8963:
 	xor a
@@ -22364,7 +22387,7 @@ Func_8a72:
 	ld [$db56], a
 	jr Func_8a22
 
-Func_8a7f:
+UpdateNoiseChannel:
 	ld a, [$db47]
 	and a
 	jr z, .asm_8a89
@@ -22467,7 +22490,7 @@ Func_8b23:
 	jp Func_8b26
 
 Func_8b26:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $4b3b
 	call Func_88f8
 	ld de, $4b43
@@ -22478,7 +22501,7 @@ Func_8b26:
 INCBIN "baserom.gbc", $8b3b, $8cbd - $8b3b
 
 Func_8cbd:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $4cd2
 	call Func_88f8
 	ld de, $4cee
@@ -22492,7 +22515,7 @@ Func_913f:
 	jp Func_8cbd
 
 Func_9142:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $5157
 	call Func_88f8
 	ld de, $5167
@@ -22503,7 +22526,7 @@ Func_9142:
 INCBIN "baserom.gbc", $9157, $941e - $9157
 
 Func_941e:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, Data_9433
 	call Func_88f8
 	ld de, Data_9435
@@ -22538,7 +22561,7 @@ Data_9439:
 INCBIN "baserom.gbc", $9483, $9537 - $9483
 
 Func_9537:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $554c
 	call Func_88f8
 	ld de, $554e
@@ -22549,7 +22572,7 @@ Func_9537:
 INCBIN "baserom.gbc", $954c, $95c9 - $954c
 
 Func_95c9:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $55de
 	call Func_88f8
 	ld de, $55e8
@@ -22560,7 +22583,7 @@ Func_95c9:
 INCBIN "baserom.gbc", $95de, $9867 - $95de
 
 Func_9867:
-	call Func_853d
+	call ResetMusicChannels
 	ld a, $6f
 	ld [$db49], a
 	ld a, $93
@@ -22575,7 +22598,7 @@ Func_9867:
 INCBIN "baserom.gbc", $9886, $9b73 - $9886
 
 Func_9b73:
-	call Func_853d
+	call ResetMusicChannels
 	ld a, $6f
 	ld [$db49], a
 	ld a, $93
@@ -22590,7 +22613,7 @@ Func_9b73:
 INCBIN "baserom.gbc", $9b92, $9e6a - $9b92
 
 Func_9e6a:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $5e7f
 	call Func_88f8
 	ld de, $5e9d
@@ -22601,7 +22624,7 @@ Func_9e6a:
 INCBIN "baserom.gbc", $9e7f, $a152 - $9e7f
 
 Func_a152:
-	call Func_853d
+	call ResetMusicChannels
 	ld a, $6f
 	ld [$db49], a
 	ld a, $93
@@ -22665,7 +22688,7 @@ Data_a1d8:
 INCBIN "baserom.gbc", $a1f8, $a4c9 - $a1f8
 
 Func_a4c9:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $64de
 	call Func_88f8
 	ld de, $64ec
@@ -22676,7 +22699,7 @@ Func_a4c9:
 INCBIN "baserom.gbc", $a4de, $a6df - $a4de
 
 Func_a6df:
-	call Func_853d
+	call ResetMusicChannels
 	ld a, $6f
 	ld [$db49], a
 	ld a, $93
@@ -22691,7 +22714,7 @@ Func_a6df:
 INCBIN "baserom.gbc", $a6fe, $a792 - $a6fe
 
 Func_a792:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $67a7
 	call Func_88f8
 	ld de, $67ad
@@ -22702,7 +22725,7 @@ Func_a792:
 INCBIN "baserom.gbc", $a7a7, $a816 - $a7a7
 
 Func_a816:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $682b
 	call Func_88f8
 	ld de, $6831
@@ -22713,7 +22736,7 @@ Func_a816:
 INCBIN "baserom.gbc", $a82b, $a904 - $a82b
 
 Func_a904:
-	call Func_853d
+	call ResetMusicChannels
 	ld de, $6919
 	call Func_88f8
 	ld de, $6937
@@ -22724,7 +22747,7 @@ Func_a904:
 INCBIN "baserom.gbc", $a919, $ac37 - $a919
 
 Func_ac37:
-	call Func_853d
+	call ResetMusicChannels
 	ld a, $6f
 	ld [$db49], a
 	ld a, $93
