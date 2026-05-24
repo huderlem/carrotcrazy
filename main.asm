@@ -11613,7 +11613,7 @@ HandleFireHydrantEntity:
 	inc de
 	set 0, [hl]
 .asm_461a
-	call Func_74f9
+	call RunMovementScript
 	bit 0, [hl]
 	jr z, .asm_4629
 	dec de
@@ -14263,7 +14263,7 @@ HandleWreckingBallEntity:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	call Func_74f9
+	call RunMovementScript
 	ldh a, [$ffe5]
 	and a
 	jr z, .asm_574a
@@ -14343,7 +14343,7 @@ HandleFixedPathEntity:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	call Func_74f9
+	call RunMovementScript
 	ld d, b
 	ld b, e
 	ldh a, [$ff8a]
@@ -14609,7 +14609,7 @@ HandleBouncingOilDrumEntity:
 	call LoadOAMSpritesStandard
 	jr .asm_59d4
 .asm_595f
-	call Func_74f9
+	call RunMovementScript
 	ldh a, [$ffdd]
 	sub c
 	ldh a, [$ffde]
@@ -15341,7 +15341,7 @@ HandleSharkEntity:
 	call Func_792d
 	jr .asm_5eba
 .asm_5e6a
-	call Func_74f9
+	call RunMovementScript
 	ld a, c
 	add $18
 	ld c, a
@@ -17259,7 +17259,7 @@ HandleBombHazardEntity:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	call Func_74f9
+	call RunMovementScript
 	bit 7, [hl]
 	jr z, .asm_6a26
 	ld a, [hl]
@@ -17551,7 +17551,7 @@ HandleInstantMartianEntity:
 	call Func_792d
 	jr .asm_6c17
 .asm_6bc0
-	call Func_74f9
+	call RunMovementScript
 	ld bc, $1818
 	call Func_78ae
 	and a
@@ -17817,7 +17817,7 @@ HandleDogEntity:
 	call Func_792d
 	jp .asm_6de5
 .asm_6d54
-	call Func_74f9
+	call RunMovementScript
 	push hl
 	ld hl, $ffe8
 	add hl, de
@@ -18303,7 +18303,7 @@ HandleFallingAsteroidEntity:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	call Func_74f9
+	call RunMovementScript
 	push hl
 	ld hl, $ffe8
 	add hl, de
@@ -18345,7 +18345,7 @@ HandleFuelCanisterEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_70d3
-	call Func_74f9
+	call RunMovementScript
 	push hl
 	ld hl, $ffe8
 	add hl, de
@@ -18526,7 +18526,7 @@ HandleDisguisedHunterEntity:
 	call Func_792d
 	jr .asm_7211
 .asm_71ba
-	call Func_74f9
+	call RunMovementScript
 	ld bc, $1018
 	call Func_78ae
 	and a
@@ -19058,7 +19058,19 @@ BoomBarrierSprites:
 	dw BoomBarrierSprite2 + 1
 	dw BoomBarrierSprite1 + 1
 
-Func_74f9:
+; Runs one frame of an entity's movement script. On entry hl points at the
+; entity's flags byte, which sits just past its 4 position bytes:
+;   [hl-4..hl-1] = position (de = Y, bc = X); MovementScriptApplyResult writes
+;                  the updated value back here
+;   [hl+0]       = entity flags (owned by the caller, e.g. bit 7 = collected)
+;   [hl+1]       = movement-script countdown timer
+;   [hl+2..hl+3] = current command handler pointer
+; The on-disk record is laid out by the entity_* macros (dw HandleFn; dw Y; dw X;
+; db flags; db timer; dw handler). Ticks the timer and jumps to the handler; when
+; the timer underflows, advances to the next command (the 3 bytes preceding the
+; handler) and reruns - so an initial timer of 0 starts the entity on the command
+; just before its placed handler.
+RunMovementScript:
 	push hl
 	inc hl
 .asm_74fb
@@ -19089,7 +19101,515 @@ Func_74f9:
 	dec hl
 	jr .asm_74fb
 
-INCBIN "baserom.gbc", $751c, $78ae - $751c
+; Per-entity movement scripts run by RunMovementScript to drive moving hazards/
+; platforms. There is one script per entity type. Each step is a tiny routine that
+; nudges the entity's 16-bit position (de = Y, bc = X), optionally reports a
+; per-frame state byte in [$ffe5], and ends by jumping to MovementScriptApplyResult
+; to commit it.
+;
+; A "command" is 3 bytes: db <frames>, dw <step>. Eeach command's 3 bytes sit in ROM
+; *immediately before* its related routine. RunMovementScript keeps the current
+; command in the entity (timer + step pointer); when the timer expires it fetches
+; the next command from [step-3..step-1] (see RunMovementScript.asm_7507), so each
+; step is permanently chained to whatever command precedes the next step.
+;
+; [$ffe4] = the script frame counter (the timer value, decreasing); handlers test
+; its low bits to move every Nth frame, or use it to index the delta curves below.
+; [$ffe5] = a per-frame state byte the owning entity reads (e.g. the Instant
+; Martian uses bit 5 = facing left, bit 0 = turning; the wrecking ball treats
+; any nonzero value as "hazard active").
+
+; Commits the script's updated position (bc = X, de = Y) back into the entity
+; struct (the 4 bytes just below the pointer RunMovementScript was called with),
+; then returns to RunMovementScript's caller. Every handler ends by jumping here.
+MovementScriptApplyResult:
+	pop hl
+	push hl
+	dec hl
+	ld a, b
+	ld [hld], a
+	ld a, c
+	ld [hld], a
+	ld a, d
+	ld [hld], a
+	ld [hl], e
+	pop hl
+	ret
+
+	db $0c
+	dw FireHydrantScriptRise
+; Hold position.
+FireHydrantScript:
+	jr MovementScriptApplyResult
+	db $78
+	dw FireHydrantScriptHoldHigh
+; Move up 4px (de -= 4).
+FireHydrantScriptRise:
+	dec de
+	dec de
+	dec de
+	dec de
+	jr MovementScriptApplyResult
+	db $0c
+	dw FireHydrantScriptFall
+; Hold position.
+FireHydrantScriptHoldHigh:
+	jr MovementScriptApplyResult
+	db $78
+	dw FireHydrantScript
+; Move down 4px (de += 4).
+FireHydrantScriptFall:
+	inc de
+	inc de
+	inc de
+	inc de
+	jr MovementScriptApplyResult
+
+	db $04
+	dw WreckingBallScriptDownA2
+; Hold position; report state $00.
+WreckingBallScript:
+	jr WreckingBallScriptApplyIdle
+	db $08
+	dw WreckingBallScriptDownA3
+; Move down 2px; report state $01 (hazard active).
+WreckingBallScriptDownA2:
+	inc de
+	inc de
+	jr WreckingBallScriptApplyActive
+	db $0b
+	dw WreckingBallScriptDownA4
+; Move down 3px; report state $01.
+WreckingBallScriptDownA3:
+	inc de
+	inc de
+	inc de
+	jr WreckingBallScriptApplyActive
+	db $1e
+	dw WreckingBallScriptHoldA
+; Move down 4px; report state $01; play SFX $0d once the timer reaches 0.
+WreckingBallScriptDownA4:
+	inc de
+	inc de
+	inc de
+	inc de
+	ldh a, [$ffe4]
+	and a
+	jr nz, WreckingBallScriptApplyActive
+	ld a, $0d
+	call PlaySoundEffectHome
+	jr WreckingBallScriptApplyActive
+	db $4c
+	dw WreckingBallScriptUpA
+; Hold position; report state $00.
+WreckingBallScriptHoldA:
+	jr WreckingBallScriptApplyIdle
+	db $1e
+	dw WreckingBallScriptHoldB
+; Move up 1px; report state $00.
+WreckingBallScriptUpA:
+	dec de
+	jr WreckingBallScriptApplyIdle
+	db $04
+	dw WreckingBallScriptDownB2
+; Hold position; report state $00.
+WreckingBallScriptHoldB:
+	jr WreckingBallScriptApplyIdle
+	db $08
+	dw WreckingBallScriptDownB3
+; Move down 2px; report state $01.
+WreckingBallScriptDownB2:
+	inc de
+	inc de
+	jr WreckingBallScriptApplyActive
+	db $0b
+	dw WreckingBallScriptDownB4
+; Move down 3px; report state $01.
+WreckingBallScriptDownB3:
+	inc de
+	inc de
+	inc de
+	jr WreckingBallScriptApplyActive
+	db $1e
+	dw WreckingBallScriptHoldC
+; Move down 4px; report state $01; play SFX $0d once the timer reaches 0.
+WreckingBallScriptDownB4:
+	inc de
+	inc de
+	inc de
+	inc de
+	ldh a, [$ffe4]
+	and a
+	jr nz, WreckingBallScriptApplyActive
+	ld a, $0d
+	call PlaySoundEffectHome
+	jr WreckingBallScriptApplyActive
+	db $4c
+	dw WreckingBallScriptUpB
+; Hold position; report state $00.
+WreckingBallScriptHoldC:
+	jr WreckingBallScriptApplyIdle
+	db $ff
+	dw WreckingBallScript
+; Move up 1px; report state $00.
+WreckingBallScriptUpB:
+	dec de
+	jr WreckingBallScriptApplyIdle
+; Shared tail: report state $01, then commit the position.
+WreckingBallScriptApplyActive:
+	ld a, $01
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+; Shared tail: report state $00, then commit the position.
+WreckingBallScriptApplyIdle:
+	sub a
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+
+	db $50
+	dw HangingHookScriptDown
+; Move up 1px every other frame; report state $00.
+HangingHookScript:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp c, MovementScriptApplyResult
+	dec de
+	jp MovementScriptApplyResult
+	db $50
+	dw HangingHookScript
+; Move down 1px every other frame; report state $00.
+HangingHookScriptDown:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp c, MovementScriptApplyResult
+	inc de
+	jp MovementScriptApplyResult
+
+	db $3c
+	dw BouncingOilDrumScript
+; Advance X every other frame and add Curve1 to Y; play SFX $0c once the timer reaches 0.
+BouncingOilDrumScript:
+	ldh a, [$ffe4]
+	rra
+	jr nc, .skipAdvanceX
+	inc bc
+.skipAdvanceX:
+	ld hl, BouncingOilDrumDeltas
+	call MovementScriptAddDelta
+	ldh a, [$ffe4]
+	and a
+	jp nz, MovementScriptApplyResult
+	ld a, $0c
+	call PlaySoundEffectHome
+	jp MovementScriptApplyResult
+
+BouncingOilDrumDeltas:
+	dw  3,  2,  3,  2,  2,  3,  2,  3
+	dw  2,  2,  2,  2,  2,  2,  2,  2
+	dw  1,  2,  1,  2,  1,  1,  1,  1
+	dw  0,  1,  0,  1,  0,  0,  0,  0
+	dw -1,  0, -1,  0, -1, -1, -1, -1
+	dw -2, -1, -2, -1, -2, -2, -2, -2
+	dw -2, -2, -2, -2, -3, -2, -3, -2
+	dw -2, -3, -2, -3
+
+	db $20
+	dw SharkScriptRight
+; Hold position; report state $00.
+SharkScript:
+	sub a
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $20
+	dw SharkScriptPauseLeft
+; Move right 1px every other frame; report state $08.
+SharkScriptRight:
+	ld a, $08
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp c, MovementScriptApplyResult
+	inc bc
+	jp MovementScriptApplyResult
+	db $20
+	dw SharkScriptLeft
+; Hold position; report state $10.
+SharkScriptPauseLeft:
+	ld a, $10
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $20
+	dw SharkScript
+; Move left 1px every other frame; report state $18.
+SharkScriptLeft:
+	ld a, $18
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp c, MovementScriptApplyResult
+	dec bc
+	jp MovementScriptApplyResult
+
+	db $80
+	dw BalloonsScriptUp
+; Move down 1px every other frame; report state $00.
+BalloonsScript:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp c, MovementScriptApplyResult
+	inc de
+	jp MovementScriptApplyResult
+	db $80
+	dw BalloonsScript
+; Move up 1px every other frame; report state $00.
+BalloonsScriptUp:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp c, MovementScriptApplyResult
+	dec de
+	jp MovementScriptApplyResult
+
+	db $20
+	dw InstantMartianScriptPauseRight
+; Drift X right every other frame and add Curve2 to Y; report state $00.
+InstantMartianScript:
+	ldh a, [$ffe4]
+	rra
+	jr nc, .skipAdvanceX
+	inc bc
+.skipAdvanceX:
+	ld hl, InstantMartianDeltas
+	call MovementScriptAddDelta
+	ld a, $00
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $60
+	dw InstantMartianScriptArcLeft
+; Hold position; report state $01.
+InstantMartianScriptPauseRight:
+	ld a, $01
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $20
+	dw InstantMartianScriptPauseLeft
+; Drift X left every other frame and add Curve2 to Y; report state $20.
+InstantMartianScriptArcLeft:
+	ldh a, [$ffe4]
+	rra
+	jr nc, .skipAdvanceX
+	dec bc
+.skipAdvanceX:
+	ld hl, InstantMartianDeltas
+	call MovementScriptAddDelta
+	ld a, $20
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $60
+	dw InstantMartianScript
+; Hold position; report state $21.
+InstantMartianScriptPauseLeft:
+	ld a, $21
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $60
+	dw InstantMartianBossScript
+; Add Curve2 to Y; report state $00.
+InstantMartianBossScript:
+	ld hl, InstantMartianDeltas
+	call MovementScriptAddDelta
+	ld a, $00
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+; Signed per-frame Y offsets for a second, gentler swing.
+InstantMartianDeltas:
+	dw  1,  1,  1,  1,  1,  2,  1,  0
+	dw  1,  1,  1,  1,  1,  0,  1,  0
+	dw  1,  0,  1,  0,  0,  0,  0,  0
+	dw  0,  0,  0,  0,  0, -1,  0, -1
+	dw  0, -1,  0, -1, -1, -1, -1, -1
+	dw  0, -1, -2, -1, -1, -1, -1, -1
+	dw -1, -1, -1, -1, -1, -2, -1,  0
+	dw -1, -1, -1, -1, -1,  0, -1,  0
+	dw -1,  0, -1,  0,  0,  0,  0,  0
+	dw  0,  0,  0,  0,  0,  1,  0,  1
+	dw  0,  1,  0,  1,  1,  1,  1,  1
+	dw  0,  1,  2,  1,  1,  1,  1,  1
+
+	db $60
+	dw BombHazardBossScript
+; Add Curve2 to Y; leave the reported state unchanged.
+BombHazardBossScript:
+	ld hl, InstantMartianDeltas
+	call MovementScriptAddDelta
+	jp MovementScriptApplyResult
+	db $ff
+	dw BombHazardScript
+; Hold position.
+BombHazardScript:
+	jp MovementScriptApplyResult
+
+	db $80
+	dw K9Script
+; Move right 1px every other frame; report state $00.
+K9ScriptRight:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp nc, MovementScriptApplyResult
+	inc bc
+	jp MovementScriptApplyResult
+	db $80
+	dw K9ScriptRight
+; Move left 1px every other frame; report state $20.
+K9Script:
+	ld a, $20
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp nc, MovementScriptApplyResult
+	dec bc
+	jp MovementScriptApplyResult
+
+	db $01
+	dw FallingAsteroidScript
+; Move down 1px (de += 1).
+FallingAsteroidScriptFall:
+	inc de
+	jp MovementScriptApplyResult
+	db $8a
+	dw FallingAsteroidScriptFall
+; Snap Y to 8 and play SFX $09.
+FallingAsteroidScript:
+	ld de, $0008
+	ld a, $09
+	call PlaySoundEffectHome
+	jp MovementScriptApplyResult
+
+	db $10
+	dw FuelCanisterScriptUp
+; Move down 1px every 4th frame.
+FuelCanisterScript:
+	ldh a, [$ffe4]
+	and $03
+	jp nz, MovementScriptApplyResult
+	inc de
+	jp MovementScriptApplyResult
+	db $10
+	dw FuelCanisterScript
+; Move up 1px every 4th frame.
+FuelCanisterScriptUp:
+	ldh a, [$ffe4]
+	and $03
+	jp nz, MovementScriptApplyResult
+	dec de
+	jp MovementScriptApplyResult
+
+	db $60
+	dw HookLineScript
+; Move right 1px/frame and down 1px every other frame; report state $00.
+HookLineScriptDownRight:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jr c, .skipDownStep
+	inc de
+.skipDownStep:
+	inc bc
+	jp MovementScriptApplyResult
+	db $60
+	dw HookLineScriptDownRight
+; Move left 1px/frame and up 1px every other frame; report state $00.
+HookLineScript:
+	sub a
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jr c, .skipUpStep
+	dec de
+.skipUpStep:
+	dec bc
+	jp MovementScriptApplyResult
+
+	db $40
+	dw HuntingDogScript
+; Move right 1px; report state $00.
+HuntingDogScriptRight:
+	sub a
+	ldh [$ffe5], a
+	inc bc
+	jp MovementScriptApplyResult
+	db $40
+	dw HuntingDogScriptRight
+; Move left 1px; report state $20.
+HuntingDogScript:
+	ld a, $20
+	ldh [$ffe5], a
+	dec bc
+	jp MovementScriptApplyResult
+
+	db $30
+	dw DisguisedHunterScriptPauseLeft
+; Move right 1px every other frame; report state $00.
+DisguisedHunterScriptRight:
+	ld a, $00
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp nc, MovementScriptApplyResult
+	inc bc
+	jp MovementScriptApplyResult
+	db $90
+	dw DisguisedHunterScriptLeft
+; Hold position; report state $21.
+DisguisedHunterScriptPauseLeft:
+	ld a, $21
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+	db $30
+	dw DisguisedHunterScript
+; Move left 1px every other frame; report state $20.
+DisguisedHunterScriptLeft:
+	ld a, $20
+	ldh [$ffe5], a
+	ldh a, [$ffe4]
+	rra
+	jp nc, MovementScriptApplyResult
+	dec bc
+	jp MovementScriptApplyResult
+	db $90
+	dw DisguisedHunterScriptRight
+; Hold position; report state $01.
+DisguisedHunterScript:
+	ld a, $01
+	ldh [$ffe5], a
+	jp MovementScriptApplyResult
+
+; Adds the signed 16-bit entry [$ffe4] of the curve at hl to the position in de.
+MovementScriptAddDelta:
+	ldh a, [$ffe4]
+	add a
+	add l
+	ld l, a
+	ld a, h
+	adc $00
+	ld h, a
+	ld a, [hli]
+	add e
+	ld e, a
+	ld a, [hl]
+	adc d
+	ld d, a
+	ret
 
 Func_78ae:
 	push hl

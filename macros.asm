@@ -238,7 +238,9 @@ MACRO entity_brick_thrower
 MACRO entity_fire_hydrant
 	dw HandleFireHydrantEntity
 	dw \2, \1
-	db $00, $00, $2B, $75, ((\2) & $ff)
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw FireHydrantScript
+	db ((\2) & $ff)
 	ENDM
 
 ; \1: x pixel coord
@@ -349,8 +351,8 @@ MACRO entity_giraffe_feeder
 MACRO entity_balloons
 	dw HandleBalloonsEntity
 	dw \2, \1
-	db $00, $00
-	dw $76A2 ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw BalloonsScript
 	ENDM
 
 ; \1: x pixel coord
@@ -398,9 +400,11 @@ MACRO entity_hover_ship
 MACRO entity_instant_martian
 	dw HandleInstantMartianEntity
 	dw \2, \1
-	db $81, $00, $C2, $76, $00
+	db $81, $00 ; entity flags, initial movement-script timer
+	dw InstantMartianScript
+	db $00
 	dw \2, \1
-	db $C2, $76
+	dw InstantMartianScript
 	ENDM
 
 ; \1: x pixel coord
@@ -419,9 +423,11 @@ MACRO entity_teleporter
 MACRO entity_k9
 	dw HandleK9Entity
 	dw \2, \1
-	db $81, $00, $F4, $77, $00
+	db $81, $00 ; entity flags, initial movement-script timer
+	dw K9Script
+	db $00
 	dw \1
-	db $F4, $77
+	dw K9Script
 	ENDM
 
 ; \1: x pixel coord
@@ -429,7 +435,8 @@ MACRO entity_k9
 MACRO entity_bomb_hazard
 	dw HandleBombHazardEntity
 	dw \2, \1
-	db $00, $00, $DE, $77
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw BombHazardScript
 	ENDM
 
 ; \1: spring x pixel coord
@@ -458,7 +465,9 @@ MACRO entity_helicopter_chair
 MACRO entity_disguised_hunter
 	dw HandleDisguisedHunterEntity
 	dw \2, \1
-	db $00, $00, $97, $78, $03
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw DisguisedHunterScript
+	db $03
 	ENDM
 
 ; \1: x pixel coord
@@ -489,9 +498,11 @@ MACRO entity_bear_trap
 MACRO entity_hunting_dog
 	dw HandleHuntingDogEntity
 	dw \2, \1
-	db $81, $00, $60, $78, $00
+	db $81, $00 ; entity flags, initial movement-script timer
+	dw HuntingDogScript
+	db $00
 	dw \1
-	db $60, $78
+	dw HuntingDogScript
 	ENDM
 
 ; \1: rock x pixel coord
@@ -512,8 +523,8 @@ MACRO entity_rock_teeter_totter
 MACRO entity_hook_line
 	dw HandleHookLineEntity
 	dw \2, \1
-	db $00, $00
-	dw $7846 ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw HookLineScript
 	ENDM
 
 ; \1: x pixel coord
@@ -548,8 +559,8 @@ MACRO entity_raft
 MACRO entity_shark
 	dw HandleSharkEntity
 	dw \2, \1
-	db $00, $00
-	dw $766D ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw SharkScript
 	ENDM
 
 ; \1: x pixel coord
@@ -604,8 +615,8 @@ MACRO entity_move_yosemite_ship_middle
 MACRO entity_bouncing_oil_drum
 	dw HandleBouncingOilDrumEntity
 	dw \2, \1
-	db $00, $00
-	dw $75D8 ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw BouncingOilDrumScript
 	ENDM
 
 ; \1: x pixel coord
@@ -623,8 +634,8 @@ MACRO entity_jackhammer
 MACRO entity_hanging_hook
 	dw HandleHangingHookEntity
 	dw \2, \1
-	db $00, $00
-	dw $75b8 ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw HangingHookScript
 	ENDM
 
 ; \1: x pixel coord
@@ -632,8 +643,8 @@ MACRO entity_hanging_hook
 MACRO entity_wrecking_ball
 	dw HandleWreckingBallEntity
 	dw \2, \1
-	db $00, $00
-	dw $7547 ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw WreckingBallScript
 	ENDM
 
 ; \1: x pixel coord
@@ -763,8 +774,8 @@ MACRO entity_space_scooter
 MACRO entity_fuel_canister
 	dw HandleFuelCanisterEntity
 	dw \2, \1
-	db $00, $00
-	dw $781A ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw FuelCanisterScript
 	ENDM
 
 ; \1: x pixel coord
@@ -772,8 +783,8 @@ MACRO entity_fuel_canister
 MACRO entity_falling_asteroid
 	dw HandleFallingAsteroidEntity
 	dw \2, \1
-	db $00, $00
-	dw $780C ; TODO:
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw FallingAsteroidScript
 	ENDM
 
 ; \1: x pixel coord
@@ -781,9 +792,11 @@ MACRO entity_falling_asteroid
 MACRO entity_instant_martian_boss
 	dw HandleInstantMartianEntity
 	dw \2, \1
-	db $00, $00, $02, $77, $00
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw InstantMartianBossScript
+	db $00
 	dw \2, \1
-	db $02, $77
+	dw InstantMartianBossScript
 	ENDM
 
 ; \1: x pixel coord
@@ -791,7 +804,8 @@ MACRO entity_instant_martian_boss
 MACRO entity_bomb_hazard_boss
 	dw HandleBombHazardEntity
 	dw \2, \1
-	db $00, $00, $D2, $77
+	db $00, $00 ; entity flags, initial movement-script timer
+	dw BombHazardBossScript
 	ENDM
 
 ; \1: x pixel coord
