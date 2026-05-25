@@ -10521,7 +10521,7 @@ TryInitNextScreenHome:
 	jp TryInitNextScreen
 
 Func_3dce:
-	call Func_3e3d
+	call FadeInMusicHome
 	ld a, Bank(Func_1759b)
 	ld [MBC5RomBank], a
 	ld bc, $1fd
@@ -10531,7 +10531,7 @@ Func_3ddc:
 	ld a, [$defc]
 	and a
 	ret nz
-	call Func_3e47
+	call FadeOutMusicHome
 	ld a, Bank(Func_1759b)
 	ld [MBC5RomBank], a
 	ld bc, $ff0c
@@ -10594,17 +10594,17 @@ InitSoundHome:
 	ld [MBC5RomBank], a
 	jp InitSound
 
-Func_3e3d:
-	ld a, Bank(Func_805c)
+FadeInMusicHome:
+	ld a, Bank(FadeInMusic)
 	ld [MBC5RomBank], a
 	ld a, $04
-	jp Func_805c
+	jp FadeInMusic
 
-Func_3e47:
-	ld a, Bank(Func_805f)
+FadeOutMusicHome:
+	ld a, Bank(FadeOutMusic)
 	ld [MBC5RomBank], a
 	ld a, $04
-	jp Func_805f
+	jp FadeOutMusic
 
 InitScreenMusic:
 	ld a, [wDisableMusic]
@@ -20576,58 +20576,74 @@ PlaySoundEffect:
 InitSound:
 	jp InitSoundEngine
 
-Func_805c:
-	jp Func_895d
+; Song-select API for this bank. Each entry is a fixed-address jump
+; trampoline to a song loader; a screen requests its background music with a
+; `dw PlaySong_*` pointer in its ScreenData_* block. The two fades are also
+; driven from the home bank (FadeInMusicHome / FadeOutMusicHome) on transitions.
+;   PlaySong_Studio          Studio + epilogue cutscenes
+;   PlaySong_Title           title screen
+;   PlaySong_Copyright       Warner Bros. copyright screen
+;   PlaySong_GameOver        game over screen
+;   PlaySong_SpaceStation    Space Station levels 1-2
+;   PlaySong_TazZoo          Taz Zoo levels 1-2
+;   PlaySong_Boss            every world's boss screen
+;   PlaySong_TreasureIsland  Treasure Island levels 1-2
+;   PlaySong_Menu            language/options/password/summary/bonus screens
+;   PlaySong_CrazyTown       Crazy Town levels
+;   PlaySong_FuddForest      Fudd Forest levels 1-2
+; PlaySong_Unused1-5 have working loaders but are not referenced by any screen.
+FadeInMusic:
+	jp FadeInMusic_
 
-Func_805f:
-	jp Func_8957
+FadeOutMusic:
+	jp FadeOutMusic_
 
-Func_8062:
+PlaySong_Unused1:
 	jp Func_8b23
 
-Func_8065:
+PlaySong_Studio:
 	jp Func_913f
 
-Func_8068:
+PlaySong_Title:
 	jp Func_9142
 
-Func_806b:
+PlaySong_Copyright:
 	jp Func_941e
 
-Func_806e:
+PlaySong_GameOver:
 	jp Func_9537
 
-Func_8071:
+PlaySong_Unused2:
 	jp Func_95c9
 
-Func_8074:
+PlaySong_SpaceStation:
 	jp Func_9867
 
-Func_8077:
+PlaySong_TazZoo:
 	jp Func_9b73
 
-Func_807a:
+PlaySong_Boss:
 	jp Func_9e6a
 
-Func_807d:
+PlaySong_TreasureIsland:
 	jp Func_a152
 
-Func_8080:
+PlaySong_Menu:
 	jp Func_a4c9
 
-Func_8083:
+PlaySong_Unused3:
 	jp Func_a6df
 
-Func_8086:
+PlaySong_Unused4:
 	jp Func_a792
 
-Func_8089:
+PlaySong_Unused5:
 	jp Func_a816
 
-Func_808c:
+PlaySong_CrazyTown:
 	jp Func_a904
 
-Func_808f:
+PlaySong_FuddForest:
 	jp Func_ac37
 
 Func_8092:
@@ -22353,12 +22369,18 @@ PlaySoundEffect___:
 	ld [hl], a
 	ret
 
-Func_8957:
-	ld hl, $77ee
+; Fade the music out by running a master-volume (NR50) sequence that ramps both
+; outputs from full down to silence.
+; Input: a = fade speed (frames per step)
+FadeOutMusic_:
+	ld hl, FadeOutVolumeSequence
 	jp StartMasterVolumeSequence
 
-Func_895d:
-	ld hl, $77f7
+; Fade the music out by running a master-volume (NR50) sequence that ramps both
+; outputs from silence up to full.
+; Input: a = fade speed (frames per step)
+FadeInMusic_:
+	ld hl, FadeInVolumeSequence
 	jp StartMasterVolumeSequence
 
 MusicCommand_StopNoiseSequence:
@@ -23142,7 +23164,15 @@ Func_b784:
 	ret
 
 ; Noise/percussion sequence data for sound effects (pointed to by Func_b767/Func_b784).
-INCBIN "baserom.gbc", $b7a1, $bc00 - $b7a1
+INCBIN "baserom.gbc", $b7a1, $b7ee - $b7a1
+
+; NR50 master-volume fade sequences
+FadeOutVolumeSequence:
+	db $77, $66, $55, $44, $33, $22, $11, $00, $ff
+FadeInVolumeSequence:
+	db $00, $11, $22, $33, $44, $55, $66, $77, $ff
+
+INCBIN "baserom.gbc", $b800, $bc00 - $b800
 
 FuddForestLevelSpriteTiles:
 	INCBIN "gfx/fudd_forest/level_sprites.interleave.2bpp.lz"
@@ -28307,7 +28337,7 @@ ScreenData_WarnerBrosCopyright:
 	compressed_data WarnerBrosCopyrightLogoTiles, $81c0
 	db $ff
 	dw RunWarnerBrosCopyrightScreen
-	dw Func_806b
+	dw PlaySong_Copyright
 
 INCBIN "baserom.gbc", $1b111, $1b113 - $1b111
 
@@ -28317,7 +28347,7 @@ ScreenData_GameOver:
 	compressed_data WarnerBrosGameOverTiles, $C000
 	db $ff
 	dw RunGameOverScreen
-	dw Func_806e
+	dw PlaySong_GameOver
 
 INCBIN "baserom.gbc", $1b127, $1b129 - $1b127
 
@@ -28329,7 +28359,7 @@ ScreenData_LanguageSelect:
 	compressed_data GameText, $c500
 	db $ff
 	dw RunLanguageSelectScreen
-	dw Func_8080
+	dw PlaySong_Menu
 
 ScreenData_Options:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -28341,7 +28371,7 @@ ScreenData_Options:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunOptionsScreen
-	dw Func_8080
+	dw PlaySong_Menu
 
 ScreenData_Titlescreen:
 	compressed_data FarmSceneTiles, $8CB0
@@ -28352,7 +28382,7 @@ ScreenData_Titlescreen:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunTitlescreen
-	dw Func_8068
+	dw PlaySong_Title
 	dw TitlescreenBgScrollSpeeds
 
 ScreenData_IntroScene:
@@ -28525,7 +28555,7 @@ ScreenData_Studio:
 	compressed_data StudioCeilingFloorTilemap, $9B00
 	compressed_data StudioCameraArrowTiles, $8560
 	db $ff
-	dw Func_8065
+	dw PlaySong_Studio
 
 ScreenData_StudioTreasureIsland:
 	db $ff
@@ -28593,7 +28623,7 @@ ScreenData_CrazyTown1:
 	db Bank(CrazyTown1EntityTriggers)
 	dw CrazyTown1EntityTriggers
 	dw CrazyTown1Entities
-	dw Func_808c
+	dw PlaySong_CrazyTown
 	dw $5C01 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -28633,7 +28663,7 @@ ScreenData_TreasureIsland1:
 	db Bank(TreasureIsland1EntityTriggers)
 	dw TreasureIsland1EntityTriggers
 	dw TreasureIsland1Entities
-	dw Func_807d
+	dw PlaySong_TreasureIsland
 	dw $5c92 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -28653,7 +28683,7 @@ ScreenData_TreasureIsland2:
 	db Bank(TreasureIsland2EntityTriggers)
 	dw TreasureIsland2EntityTriggers
 	dw TreasureIsland2Entities
-	dw Func_807d
+	dw PlaySong_TreasureIsland
 	dw $5C92 ; animated tiles
 	dw $7175 ; bugs bunny's digging metatile replacements
 
@@ -28678,7 +28708,7 @@ ScreenData_CrazyTownBoss:
 	db Bank(CrazyTownBossEntityTriggers)
 	dw CrazyTownBossEntityTriggers
 	dw CrazyTownBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5C3B ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw CrazyTownBossBgScrollSpeeds
@@ -28704,7 +28734,7 @@ ScreenData_TreasureIslandBoss:
 	db Bank(TreasureIslandBossEntityTriggers)
 	dw TreasureIslandBossEntityTriggers
 	dw TreasureIslandBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5CB3 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw TreasureIslandBossBgScrollSpeeds
@@ -28725,7 +28755,7 @@ ScreenData_TazZoo1:
 	db Bank(TazZoo1EntityTriggers)
 	dw TazZoo1EntityTriggers
 	dw TazZoo1Entities
-	dw Func_8077
+	dw PlaySong_TazZoo
 	dw $5C00 ; animated tiles
 	dw $719A ; bugs bunny's digging metatile replacements
 
@@ -28745,7 +28775,7 @@ ScreenData_TazZoo2:
 	db Bank(TazZoo2EntityTriggers)
 	dw TazZoo2EntityTriggers
 	dw TazZoo2Entities
-	dw Func_8077
+	dw PlaySong_TazZoo
 	dw $5C00 ; animated tiles
 	dw $71B7 ; bugs bunny's digging metatile replacements
 
@@ -28772,7 +28802,7 @@ ScreenData_TazZooBoss:
 	db Bank(TazZooBossEntityTriggers)
 	dw TazZooBossEntityTriggers
 	dw TazZooBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5CF5 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw TazZooBossBgScrollSpeeds
@@ -28793,7 +28823,7 @@ ScreenData_SpaceStation1:
 	db Bank(SpaceStation1EntityTriggers)
 	dw SpaceStation1EntityTriggers
 	dw SpaceStation1Entities
-	dw Func_8074
+	dw PlaySong_SpaceStation
 	dw $5C58 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -28813,7 +28843,7 @@ ScreenData_SpaceStation2:
 	db Bank(SpaceStation2EntityTriggers)
 	dw SpaceStation2EntityTriggers
 	dw SpaceStation2Entities
-	dw Func_8074
+	dw PlaySong_SpaceStation
 	dw $5C58 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -28836,7 +28866,7 @@ ScreenData_SpaceStationBoss:
 	db Bank(SpaceStationBossEntityTriggers)
 	dw SpaceStationBossEntityTriggers
 	dw SpaceStationBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5C00
 	dw $7174
 
@@ -28856,7 +28886,7 @@ ScreenData_FuddForest1:
 	db Bank(FuddForest1EntityTriggers)
 	dw FuddForest1EntityTriggers
 	dw FuddForest1Entities
-	dw Func_808f
+	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
 	dw $71E4 ; bugs bunny's digging metatile replacements
 
@@ -28876,7 +28906,7 @@ ScreenData_FuddForest2:
 	db Bank(FuddForest2EntityTriggers)
 	dw FuddForest2EntityTriggers
 	dw FuddForest2Entities
-	dw Func_808f
+	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
 	dw $7201 ; bugs bunny's digging metatile replacements
 
@@ -28901,7 +28931,7 @@ ScreenData_FuddForestBoss:
 	db Bank(FuddForestBossEntityTriggers)
 	dw FuddForestBossEntityTriggers
 	dw FuddForestBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5C00 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw FuddForestBossBgScrollSpeeds
@@ -28913,7 +28943,7 @@ ScreenData_Password:
 	compressed_data MenuFontTiles, $C000
 	compressed_data GameText, $C500
 	db $ff
-	dw Func_8080
+	dw PlaySong_Menu
 
 ScreenData_Password1:
 	db $ff
@@ -28939,7 +28969,7 @@ ScreenData_LevelSummary:
 	compressed_data LevelSummaryIconTiles, $80E0
 	db $ff
 	dw RunLevelSummaryScreen
-	dw Func_8080
+	dw PlaySong_Menu
 
 ScreenData_LevelBonus:
 	compressed_data LevelBonusBackgroundTiles, $9500
@@ -28948,7 +28978,7 @@ ScreenData_LevelBonus:
 	compressed_data SharedLevelInterfaceTiles, $C000
 	uncompressed_data HUDExtraLettersTiles, $C620, $00A0
 	db $ff
-	dw Func_8080
+	dw PlaySong_Menu
 
 Data_1b75e:
 	db $03
@@ -28962,7 +28992,7 @@ ScreenData_EpilogueScene:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunEpilogueSceneScreen
-	dw Func_8065
+	dw PlaySong_Studio
 
 ScreenData_Credits:
 	compressed_data FontTiles, $8340
@@ -29067,7 +29097,7 @@ ScreenDataGBC_LevelBonus:
 	uncompressed_data HUDExtraLettersTiles, $C620, $00A0
 	compressed_data LevelBonusTileAttributesGBC, $DAD0
 	db $ff
-	dw Func_8080
+	dw PlaySong_Menu
 
 ScreenDataGBC_CrazyTown1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -29086,7 +29116,7 @@ ScreenDataGBC_CrazyTown1:
 	db Bank(CrazyTown1EntityTriggers)
 	dw CrazyTown1EntityTriggers
 	dw CrazyTown1Entities
-	dw Func_808c
+	dw PlaySong_CrazyTown
 	dw $5C1E ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -29128,7 +29158,7 @@ ScreenDataGBC_TreasureIsland1:
 	db Bank(TreasureIsland1EntityTriggers)
 	dw TreasureIsland1EntityTriggers
 	dw TreasureIsland1Entities
-	dw Func_807d
+	dw PlaySong_TreasureIsland
 	dw $5d37 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -29149,7 +29179,7 @@ ScreenDataGBC_TreasureIsland2:
 	db Bank(TreasureIsland2EntityTriggers)
 	dw TreasureIsland2EntityTriggers
 	dw TreasureIsland2Entities
-	dw Func_807d
+	dw PlaySong_TreasureIsland
 	dw $5d37 ; animated tiles
 	dw $7175 ; bugs bunny's digging metatile replacements
 
@@ -29176,7 +29206,7 @@ ScreenDataGBC_CrazyTownBoss:
 	db Bank(CrazyTownBossEntityTriggers)
 	dw CrazyTownBossEntityTriggers
 	dw CrazyTownBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5C3B ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw CrazyTownBossBgScrollSpeeds
@@ -29198,7 +29228,7 @@ ScreenDataGBC_TazZoo1:
 	db Bank(TazZoo1EntityTriggers)
 	dw TazZoo1EntityTriggers
 	dw TazZoo1Entities
-	dw Func_8077
+	dw PlaySong_TazZoo
 	dw $5C00 ; animated tiles
 	dw $719A ; bugs bunny's digging metatile replacements
 
@@ -29219,7 +29249,7 @@ ScreenDataGBC_TazZoo2:
 	db Bank(TazZoo2EntityTriggers)
 	dw TazZoo2EntityTriggers
 	dw TazZoo2Entities
-	dw Func_8077
+	dw PlaySong_TazZoo
 	dw $5C00
 	dw $71B7
 
@@ -29246,7 +29276,7 @@ ScreenDataGBC_TreasureIslandBoss:
 	db Bank(TreasureIslandBossEntityTriggers)
 	dw TreasureIslandBossEntityTriggers
 	dw TreasureIslandBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5CD4 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw TreasureIslandBossBgScrollSpeeds
@@ -29268,7 +29298,7 @@ ScreenDataGBC_SpaceStation1:
 	db Bank(SpaceStation1EntityTriggers)
 	dw SpaceStation1EntityTriggers
 	dw SpaceStation1Entities
-	dw Func_8074
+	dw PlaySong_SpaceStation
 	dw $5C75 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -29289,7 +29319,7 @@ ScreenDataGBC_SpaceStation2:
 	db Bank(SpaceStation2EntityTriggers)
 	dw SpaceStation2EntityTriggers
 	dw SpaceStation2Entities
-	dw Func_8074
+	dw PlaySong_SpaceStation
 	dw $5C75 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 
@@ -29314,7 +29344,7 @@ ScreenDataGBC_SpaceStationBoss:
 	db Bank(SpaceStationBossEntityTriggers)
 	dw SpaceStationBossEntityTriggers
 	dw SpaceStationBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5C00
 	dw $7174
 
@@ -29335,7 +29365,7 @@ ScreenDataGBC_FuddForest1:
 	db Bank(FuddForest1EntityTriggers)
 	dw FuddForest1EntityTriggers
 	dw FuddForest1Entities
-	dw Func_808f
+	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
 	dw $71E4 ; bugs bunny's digging metatile replacements
 
@@ -29356,7 +29386,7 @@ ScreenDataGBC_FuddForest2:
 	db Bank(FuddForest2EntityTriggers)
 	dw FuddForest2EntityTriggers
 	dw FuddForest2Entities
-	dw Func_808f
+	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
 	dw $7201 ; bugs bunny's digging metatile replacements
 
@@ -29383,7 +29413,7 @@ ScreenDataGBC_FuddForestBoss:
 	db Bank(FuddForestBossEntityTriggers)
 	dw FuddForestBossEntityTriggers
 	dw FuddForestBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5C00 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw FuddForestBossBgScrollSpeeds
@@ -29413,7 +29443,7 @@ ScreenDataGBC_TazZooBoss:
 	db Bank(TazZooBossEntityTriggers)
 	dw TazZooBossEntityTriggers
 	dw TazZooBossEntities
-	dw Func_807a
+	dw PlaySong_Boss
 	dw $5D16 ; animated tiles
 	dw $7174 ; bugs bunny's digging metatile replacements
 	dw TazZooBossBgScrollSpeeds
@@ -29429,7 +29459,7 @@ ScreenDataGBC_Studio:
 	compressed_data StudioTileAttributesGBC, $DA48
 	compressed_data StudioCeilingFloorTileAttributesGBC, $D9BC
 	db $ff
-	dw Func_8065
+	dw PlaySong_Studio
 
 ScreenDataGBC_Titlescreen:
 	compressed_data FarmSceneTilesGBC, $8CB0
@@ -29441,7 +29471,7 @@ ScreenDataGBC_Titlescreen:
 	compressed_data TitlescreenTileAttributesGBC, $D94B
 	db $ff
 	dw RunTitlescreen
-	dw Func_8068
+	dw PlaySong_Title
 	dw TitlescreenBgScrollSpeeds
 
 ScreenDataGBC_IntroScene:
@@ -29471,7 +29501,7 @@ ScreenDataGBC_EpilogueScene:
 	compressed_data TitlescreenTileAttributesGBC, $DA4B
 	db $ff
 	dw RunEpilogueSceneScreen
-	dw Func_8065
+	dw PlaySong_Studio
 
 SECTION "ROM Bank $07", ROMX[$4000], BANK[$7]
 
