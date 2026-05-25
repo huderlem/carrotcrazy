@@ -644,11 +644,11 @@ RunPasswordScreen:
 	ld bc, $ddc9
 	ld a, [wDifficultySetting]
 	and a
-	jr z, .asm_46b
+	jr z, .copyCharacterHeads
 	inc hl
 	inc hl
 	inc hl
-.asm_46b
+.copyCharacterHeads
 	ld a, [hli]
 	ld [bc], a
 	inc c
@@ -28874,14 +28874,18 @@ ScreenData_Password:
 ScreenData_Password1:
 	db $ff
 	dw RunPasswordScreen
-
-INCBIN "baserom.gbc", $1b713, $1b719 - $1b713
+Password1CharacterHeads:
+	; Indices of the 3 character heads shown as the password.
+	db 3, 4, 1 ; easy difficulty
+	db 0, 2, 3 ; hard difficulty
 
 ScreenData_Password2:
 	db $ff
 	dw RunPasswordScreen
-
-INCBIN "baserom.gbc", $1b71c, $1b722 - $1b71c
+Password2CharacterHeads:
+	; Indices of the 3 character heads shown as the password.
+	db 1, 4, 2 ; easy difficulty
+	db 3, 2, 0 ; hard difficulty
 
 ScreenData_LevelSummary:
 	compressed_data WarnerBrosBackgroundTiles, $8830
