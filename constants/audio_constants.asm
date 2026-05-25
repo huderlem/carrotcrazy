@@ -30,8 +30,8 @@ DEF MUSIC_CH_CMD_PTR    EQU $02 ; 2 bytes
 
 ; Bitfield of per-channel state flags:
 ;   bit 0 = arpeggio table active        (set by commands $94-$AF)
-;   bit 1 = note glide enabled           (param at MUSIC_CH_GLIDE)
-;   bit 2 = note glide in progress
+;   bit 1 = timed mid-note effect enabled (params at MUSIC_CH_NOTE_FX)
+;   bit 2 = timed mid-note effect applied
 ;   bit 3 = vibrato enabled              (params at MUSIC_CH_VIBRATO)
 ;   bit 4 = vibrato direction (1=up)
 ;   bit 5 = per-note callback enabled    (callback pointer at MUSIC_CH_NOTE_CB)
@@ -93,8 +93,14 @@ DEF MUSIC_CH_NRX2       EQU $32
 ; Nonzero requests a note retrigger (sets the trigger bit in NRx4).
 DEF MUSIC_CH_RETRIGGER  EQU $33
 
-; Note-glide parameters (command $7D): step size + length.
-DEF MUSIC_CH_GLIDE      EQU $34 ; $34-$35
+; Parameters for a timed mid-note effect (command $7B): after the note has played
+; for a set time it is retriggered with the new volume in $35. The high nibble of
+; $34 gates it by note length; the low nibble is the trigger time. Exact musical
+; purpose is unclear (see Func_8447).
+DEF MUSIC_CH_NOTE_FX    EQU $34 ; $34-$35
+
+; Saved return pointer for the call/return commands ($7E / $6A).
+DEF MUSIC_CH_RETURN_PTR EQU $36 ; 2 bytes
 
 ; NR51 stereo panning bits for this channel.
 DEF MUSIC_CH_NR51       EQU $38

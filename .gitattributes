@@ -1,0 +1,5 @@
+# rom.md5 is checked with `md5sum -c` (the `make compare` target), which is
+# strict about line endings: with CRLF it looks for "carrotcrazy.gbc\r" and
+# fails. Force LF in the working tree so `make compare` works regardless of the
+# user's core.autocrlf setting.
+rom.md5 text eol=lf

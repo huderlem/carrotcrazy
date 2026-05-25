@@ -20490,43 +20490,43 @@ SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
 ; Jump table for command-stream opcodes $60-$84 (see ReadMusicMetaCommand).
 MusicCommandTable:
-	dw Func_84c9
-	dw Func_84cf
+	dw MusicCommand_SetTranspose
+	dw MusicCommand_ClearTranspose
 	dw Func_8502
-	dw Func_84d4
-	dw Func_84e8
+	dw MusicCommand_SetVibrato
+	dw MusicCommand_ClearVibrato
 	dw Func_8502
-	dw Func_84ef
+	dw MusicCommand_NoteOff
 	dw ResetMusicChannels
-	dw Func_857a
-	dw Func_85be
-	dw Func_85e6
-	dw Func_8615
-	dw Func_8968
-	dw Func_8963
-	dw Func_8655
-	dw Func_865a
-	dw Func_865f
-	dw Func_8686
-	dw Func_868a
-	dw Func_868e
-	dw Func_861b
+	dw MusicCommand_StopChannel
+	dw MusicCommand_SetDetune
+	dw MusicCommand_EndSection
+	dw MusicCommand_SetNoteLength
+	dw MusicCommand_StartNoiseSequence
+	dw MusicCommand_StopNoiseSequence
+	dw SetPanBoth
+	dw SetPanRight
+	dw SetPanLeft
+	dw SetDuty50
+	dw SetDuty75
+	dw SetDuty12
+	dw MusicCommand_SetEnvelope
 	dw MusicCommand_PanSequence
 	dw MusicCommand_DutySequence
 	dw MusicCommand_MasterVolumeSequence
 	dw StopMasterVolumeSequence
-	dw Func_8711
-	dw Func_84c1
+	dw MusicCommand_LoadWave
+	dw MusicCommand_SetOctave
 	dw Func_84ac
-	dw Func_843e
-	dw Func_85df
-	dw Func_85d2
-	dw Func_8435
-	dw Func_8302
-	dw Func_842f
+	dw MusicCommand_ClearArpeggio
+	dw MusicCommand_Goto
+	dw MusicCommand_Call
+	dw MusicCommand_CallCode
+	dw MusicCommand_LoopBack
+	dw MusicCommand_SetEnvelopePeak
 	dw Func_8407
 	dw Func_841a
-	dw Func_80c8
+	dw MusicCommand_SetNoteCallback
 
 TickMusicEngine:
 	jp TickMusicEngine_
@@ -20638,7 +20638,7 @@ PauseMusic_:
 	ldh [rNR34], a
 	ret
 
-Func_80c8:
+MusicCommand_SetNoteCallback:
 	ld l, $3c
 	xor a
 	ld [hli], a
@@ -20665,6 +20665,8 @@ Func_80c8:
 	res 5, [hl]
 	ret
 
+; Main per-frame update: advance every channel, then write the resulting
+; frequencies, envelopes and panning to the sound registers.
 TickMusicEngine_:
 	; The active sound effect is played to completion,
 	; even when the player pauses the game, which pauses
@@ -20672,7 +20674,7 @@ TickMusicEngine_:
 	ld a, [wMusicPaused]
 	and a
 	jp nz, TickSoundEffectChannel
-	ld h, $db
+	ld h, HIGH(MUSIC_CHAN_1)
 	call TickMusicChannel
 	inc h
 	call TickMusicChannel
@@ -20681,12 +20683,16 @@ TickMusicEngine_:
 	inc h
 	call TickMusicChannel
 	call UpdateNoiseChannel
-	ld hl, $db25
-	ld l, $25
+
+	; Commit channel 1's frequency (base note + vibrato bend) to NR13/NR14.
+	; The high byte is cached at MUSIC_CH_FREQ_HI; NR14 is only rewritten when it
+	; changes or a retrigger is pending, and NR12 is reloaded only on retrigger.
+	ld hl, MUSIC_CHAN_1 + MUSIC_CH_PITCH_BEND
+	ld l, MUSIC_CH_PITCH_BEND
 	ld e, [hl]
 	inc l
 	ld d, [hl]
-	ld l, $05
+	ld l, MUSIC_CH_FREQ
 	ld a, [hli]
 	add e
 	ldh [rNR13], a
@@ -20694,37 +20700,39 @@ TickMusicEngine_:
 	adc d
 	ld b, [hl]
 	cp b
-	jr z, Func_8122
+	jr z, .ch1FreqUnchanged
 	ld b, a
 	ld [hl], a
-	ld l, $33
+	ld l, MUSIC_CH_RETRIGGER
 	ld a, b
 	ld c, [hl]
 	inc c
 	dec c
-	jr z, Func_8131
-	jp Func_8128
-Func_8122:
-	ld l, $33
+	jr z, .ch1WriteFreqHi
+	jp .ch1Retrigger
+.ch1FreqUnchanged
+	ld l, MUSIC_CH_RETRIGGER
 	ld a, [hl]
 	and a
-	jr z, Func_8133
-Func_8128:
+	jr z, .ch1Done
+.ch1Retrigger
 	ld [hl], $00
 	dec l
 	ld a, [hl]
 	ldh [rNR12], a
 	ld a, b
-	or $80
-Func_8131:
+	or $80 ; set the trigger bit
+.ch1WriteFreqHi
 	ldh [rNR14], a
-Func_8133:
+.ch1Done
 	inc h
-	ld l, $25
+
+	; Commit channel 2's frequency to NR23/NR24 (same scheme as channel 1).
+	ld l, MUSIC_CH_PITCH_BEND
 	ld e, [hl]
 	inc l
 	ld d, [hl]
-	ld l, $05
+	ld l, MUSIC_CH_FREQ
 	ld a, [hli]
 	add e
 	ldh [rNR23], a
@@ -20732,67 +20740,77 @@ Func_8133:
 	adc d
 	ld b, [hl]
 	cp b
-	jr z, .asm_8152
+	jr z, .ch2FreqUnchanged
 	ld b, a
 	ld [hl], a
-	ld l, $33
+	ld l, MUSIC_CH_RETRIGGER
 	ld a, b
 	ld c, [hl]
 	inc c
 	dec c
-	jr z, Func_8161
-	jp Func_8158
-.asm_8152
-	ld l, $33
+	jr z, .ch2WriteFreqHi
+	jp .ch2Retrigger
+.ch2FreqUnchanged
+	ld l, MUSIC_CH_RETRIGGER
 	ld a, [hl]
 	and a
-	jr z, Func_asm_8163
-Func_8158:
+	jr z, .selectWaveSource
+.ch2Retrigger
 	ld [hl], $00
 	dec l
 	ld a, [hl]
 	ldh [rNR22], a
 	ld a, b
-	or $80
-Func_8161:
+	or $80 ; set the trigger bit
+.ch2WriteFreqHi
 	ldh [rNR24], a
-Func_asm_8163:
+.selectWaveSource
+	; The wave channel (3) carries either music or, when one is playing, a sound
+	; effect: the SFX struct ($de) takes over the wave registers.
 	ld hl, wActiveSoundEffect
 	ld a, [hl]
 	and a
-	jr nz, Func_816b
-	dec h
-Func_816b:
-	ld l, $25
+	jr nz, CommitWaveFrequency
+	dec h ; no sound effect -> use channel 3's struct ($dd)
+
+; Commits the wave channel's frequency to NR33/NR34 and its volume to NR32 from
+; the struct selected in `h`. NR32 comes from a 4-level table (at $41ce) indexed
+; by MUSIC_CH_VOLUME, and is cached in wMusicLastWaveVolume.
+CommitWaveFrequency:
+	ld l, MUSIC_CH_PITCH_BEND
 	ld e, [hl]
 	inc l
 	ld d, [hl]
-	ld l, $05
+	ld l, MUSIC_CH_FREQ
 	ld a, [hli]
 	add e
 	ldh [rNR33], a
 	ld a, [hli]
 	adc d
 	cp [hl]
-	jr z, .asm_817e
+	jr z, .volume
 	ldh [rNR34], a
 	ld [hl], a
-.asm_817e
-	inc l
+.volume
+	inc l ; -> MUSIC_CH_VOLUME
 	ld a, [hl]
 	add $ce
 	ld l, a
 	adc $41
 	sub l
-	ld h, a
-	ld a, [$db44]
+	ld h, a ; hl = wave volume table + level
+	ld a, [wMusicLastWaveVolume]
 	cp [hl]
-	jr z, Func_8193
+	jr z, WriteStereoPanning
 	ld a, [hl]
-	ld [$db44], a
+	ld [wMusicLastWaveVolume], a
 	ldh [rNR32], a
-Func_8193:
-	ld hl, $db38
+
+; Builds the NR51 panning byte from each channel's MUSIC_CH_NR51 bits, plus the
+; noise channel's panning. Since wMusicStereoEnabled is never set, this always
+; ends up writing $ff (every channel to both speakers).
+WriteStereoPanning:
+	ld hl, MUSIC_CHAN_1 + MUSIC_CH_NR51
 	ld c, [hl]
 	inc h
 	ld a, [hl]
@@ -20802,33 +20820,35 @@ Func_8193:
 	inc h
 	ld a, [wActiveSoundEffect]
 	and a
-	jr z, .asm_81a5
+	jr z, .noSfx
 	inc h
-.asm_81a5
-	ld l, $38
+.noSfx
+	ld l, MUSIC_CH_NR51
 	ld a, [hl]
 	rlc a
 	rlc a
 	or c
 	ld c, a
-	ld a, [$db46]
+	ld a, [wMusicNoisePanning]
 	or c
 	ld c, a
-	ld a, [$db43]
+	ld a, [wMusicStereoEnabled]
 	and a
 	ld a, c
-	jr nz, .asm_81bc
+	jr nz, .write
 	ld a, $ff
-.asm_81bc
+.write
 	ldh [rNR51], a
 	jp UpdateMasterVolumeSequence
 
+; Played each frame while the game (and thus the music) is paused, so an active
+; sound effect still runs to completion on the wave channel.
 TickSoundEffectChannel:
 	call UpdateMasterVolumeSequence
-	ld h, $de
+	ld h, HIGH(MUSIC_CHAN_4)
 	call TickMusicChannel
-	call Func_816b
-	jr Func_8193
+	call CommitWaveFrequency
+	jr WriteStereoPanning
 
 INCBIN "baserom.gbc", $81ce, $81de - $81ce
 
@@ -20958,19 +20978,22 @@ TickMusicChannel:
 	ld [hl], a
 	jr .computeFrequency
 
+; Reads and executes command bytes for the channel in `h` until a note is queued.
 TryReadMusicCommand:
-	ld a, [$db45]
+	ld a, [wMusicInMacro]
 	and a
-	jp nz, Func_83f8
+	jp nz, ReadMacroCommand ; mid-macro: keep pulling commands from the macro stream
 ReadMusicCommand:
 	; de = pointer to music command
 	ld a, [de]
 	inc de
 	cp $60
-	jp nc, ReadMusicMetaCommand
-	ld l, $04
+	jp nc, ReadMusicMetaCommand ; >= $60: a command, not a note
+	ld l, MUSIC_CH_FLAGS
 	bit 5, [hl]
-	jr z, Func_82a5
+	jr z, StartNote ; no per-note callback configured
+	; flag bit 5: call the per-note callback ($3e/$3f) with the new note in a,
+	; saving the previous note ($3c) and current note ($3d) for it to use.
 	ld b, a
 	ld l, $3d
 	ld a, [hld]
@@ -20978,84 +21001,90 @@ ReadMusicCommand:
 	ld a, b
 	push af
 	ld [hl], a
-	ld l, $3e
+	ld l, MUSIC_CH_NOTE_CB
 	ld a, [hli]
 	ld c, a
 	ld a, [hl]
 	ld b, a
 	call JumpToBC
 	pop af
-Func_82a5:
-	ld l, $02
+; Begins playing note `a` on the channel in `h`: stores the note, resets its
+; duration, clears the vibrato/pitch-bend state, and loads the volume envelope
+; (a software envelope on channels 3/4, the hardware NRx2 envelope on 1/2).
+StartNote:
+	ld l, MUSIC_CH_CMD_PTR
 	ld [hl], e
 	inc l
 	ld [hl], d
-	ld l, $0c
+	ld l, MUSIC_CH_NOTE
 	ld [hl], a
 	xor a
-	ld l, $1f
+	ld l, MUSIC_CH_ARP_IDX
 	ld [hl], a
-	ld l, $09
+	ld l, MUSIC_CH_NOTE_LEN
 	ld a, [hli]
-	ld [hl], a
+	ld [hl], a ; note timer = default note length
 	xor a
-	ld l, $26
+	ld l, MUSIC_CH_PITCH_BEND + 1
 	ld [hld], a
-	ld [hld], a
+	ld [hld], a ; clear the 2-byte pitch bend
 	ld a, [hld]
 	srl a
-	ld [hl], a
-	ld l, $20
+	ld [hl], a ; vibrato step counter = half the reload, so it starts centered
+	ld l, MUSIC_CH_VIBRATO
 	ld a, [hli]
-	ld [hl], a
-	ld l, $04
+	ld [hl], a ; reload the vibrato onset delay
+	ld l, MUSIC_CH_FLAGS
 	res 4, [hl]
 	bit 1, [hl]
-	jr z, .asm_82d3
-	res 2, [hl]
-	ld l, $17
+	jr z, .loadEnvelope
+	res 2, [hl] ; mid-note effect armed: clear "applied" and reset its timers
+	ld l, MUSIC_CH_VOL_ENV_T
 	ld a, [hl]
-	ld l, $1a
+	ld l, MUSIC_CH_VOL_ENV_T + 3
 	ld [hli], a
 	ld [hli], a
-.asm_82d3
+.loadEnvelope
 	ld a, h
 	cp $dd
-	jr c, .asm_82f5
-	ld l, $10
+	jr c, .hardwareEnvelope ; channels 1 and 2 use the hardware envelope
+	; channels 3/4: unpack the packed software envelope into count/step fields
+	ld l, MUSIC_CH_VOL_ENV
 	ld a, [hli]
 	ld c, a
 	and $0f
-	ld [hli], a
+	ld [hli], a ; attack count
 	ld a, c
 	swap a
 	and $0f
-	ld [hli], a
+	ld [hli], a ; attack step
 	ld a, [hli]
 	ld c, a
 	and $0f
-	ld [hli], a
+	ld [hli], a ; decay count
 	ld a, c
 	swap a
 	and $0f
-	ld [hli], a
+	ld [hli], a ; decay step
 	ld a, [hl]
-	ld l, $08
-	ld [hl], a
+	ld l, MUSIC_CH_VOLUME
+	ld [hl], a ; start at the peak level
 	ret
-.asm_82f5
+.hardwareEnvelope
 	ld l, $28
 	ld a, [hl]
-	ld l, $32
-	ld [hli], a
-	ld [hl], $01
+	ld l, MUSIC_CH_NRX2
+	ld [hli], a ; queue the NRx2 envelope value
+	ld [hl], $01 ; request a retrigger
 	ld l, $29
 	ld a, [hli]
 	ld [hl], a
 	ret
 
-Func_8302:
-	ld l, $39
+; End-of-loop command: counts down the repeat counter set by a $F0-$FF command,
+; and rewinds the stream pointer to the loop start until it reaches zero.
+MusicCommand_LoopBack:
+	ld l, MUSIC_CH_CALL
 	ld a, [hl]
 	dec a
 	ret z
@@ -21065,26 +21094,30 @@ Func_8302:
 	ld d, [hl]
 	ret
 
+; Command $F0-$FF: begin a loop that repeats (opcode - $EE) times, remembering
+; the current stream position as the point MusicCommand_LoopBack rewinds to.
 ReadMusicMetaCommand_F:
 	sub $ee
-	ld l, $39
+	ld l, MUSIC_CH_CALL
 	ld [hli], a
 	ld [hl], e
 	inc l
 	ld [hl], d
 	jp ReadMusicCommand
 
+; Dispatches a command byte (>= $60) by range. See constants/audio_constants.asm.
 ReadMusicMetaCommand:
 	cp $f0
-	jr nc, ReadMusicMetaCommand_F
+	jr nc, ReadMusicMetaCommand_F  ; $f0-$ff: begin loop
 	cp $c0
-	jr nc, ReadMusicMetaCommand_C
+	jr nc, ReadMusicMetaCommand_C  ; $c0-$ef: set note length
 	cp $b0
-	jr nc, ReadMusicMetaCommand_B
+	jr nc, ReadMusicMetaCommand_B  ; $b0-$bf: set volume envelope
 	cp $94
-	jr nc, ReadMusicMetaCommand_94
+	jr nc, ReadMusicMetaCommand_94 ; $94-$af: select arpeggio table
 	cp $85
-	jp nc, ReadMusicMetaCommand_85
+	jp nc, ReadMusicMetaCommand_85 ; $85-$93: apply macro
+	; $60-$84: call the handler from MusicCommandTable
 	sub $60
 	add a
 	ld c, a
@@ -21102,154 +21135,166 @@ JumpToBC:
 	push bc
 	ret
 
+; Command $C0-$EF: set the default note length to (opcode - $BF).
 ReadMusicMetaCommand_C:
 	sub $bf
-	ld l, $09
+	ld l, MUSIC_CH_NOTE_LEN
 	ld [hl], a
 	jp TryReadMusicCommand
 
+; Command $B0-$BF: set the software volume envelope. The peak level is encoded in
+; the opcode (opcode - $B0); three more bytes give the attack, decay and a packed
+; pair of envelope timers.
 ReadMusicMetaCommand_B:
 	sub $b0
-	ld l, $16
-	ld [hl], a
+	ld l, MUSIC_CH_VOL_ENV + 6
+	ld [hl], a ; peak level
 	ld a, [de]
 	inc de
-	ld l, $10
-	ld [hl], a
+	ld l, MUSIC_CH_VOL_ENV
+	ld [hl], a ; attack (packed count/step)
 	ld a, [de]
 	inc de
-	ld l, $13
-	ld [hl], a
+	ld l, MUSIC_CH_VOL_ENV + 3
+	ld [hl], a ; decay (packed count/step)
 	ld a, [de]
 	swap a
 	and $0f
-	ld l, $18
+	ld l, MUSIC_CH_VOL_ENV_T + 1
 	ld [hli], a
 	ld [hl], a
 	ld a, [de]
 	and $0f
-	ld l, $1a
+	ld l, MUSIC_CH_VOL_ENV_T + 3
 	ld [hli], a
 	ld [hl], a
-	ld l, $17
+	ld l, MUSIC_CH_VOL_ENV_T
 	ld [hl], a
 	inc de
 	xor a
-	ld l, $11
+	ld l, MUSIC_CH_VOL_ENV + 1
 	ld [hl], a
 	jp TryReadMusicCommand
 
+; Same as ReadMusicMetaCommand_B, but reads the envelope bytes from bc.
 Func_8372:
 	ld a, [bc]
 	inc bc
-	ld l, $16
+	ld l, MUSIC_CH_VOL_ENV + 6
 	ld [hl], a
 	ld a, [bc]
 	inc bc
-	ld l, $10
+	ld l, MUSIC_CH_VOL_ENV
 	ld [hl], a
 	ld a, [bc]
 	inc bc
-	ld l, $13
+	ld l, MUSIC_CH_VOL_ENV + 3
 	ld [hl], a
 	ld a, [bc]
 	swap a
 	and $0f
-	ld l, $18
+	ld l, MUSIC_CH_VOL_ENV_T + 1
 	ld [hli], a
 	ld [hl], a
 	ld a, [bc]
 	and $0f
-	ld l, $1a
+	ld l, MUSIC_CH_VOL_ENV_T + 3
 	ld [hli], a
 	ld [hl], a
-	ld l, $17
+	ld l, MUSIC_CH_VOL_ENV_T
 	ld [hl], a
 	xor a
-	ld l, $11
+	ld l, MUSIC_CH_VOL_ENV + 1
 	ld [hl], a
 	ret
 
+; Command $94-$AF: point the channel at arpeggio table number (opcode - $94) from
+; the song's arpeggio table list, reset its index, and enable arpeggio.
 ReadMusicMetaCommand_94:
 	sub $94
 	add a
 	ld c, a
-	ld a, [$db4a]
+	ld a, [wMusicArpeggioTable]
 	add c
 	ld c, a
-	ld a, [$db4b]
+	ld a, [wMusicArpeggioTable + 1]
 	adc c
 	sub c
-	ld b, a
+	ld b, a ; bc = arpeggio table list + index*2
 	ld a, [bc]
 	inc bc
-	ld l, $1d
+	ld l, MUSIC_CH_ARP_PTR
 	ld [hli], a
 	ld a, [bc]
 	ld [hli], a
-	ld [hl], $00
-	ld l, $04
+	ld [hl], $00 ; reset arpeggio index
+	ld l, MUSIC_CH_FLAGS
 	set 0, [hl]
 	jp TryReadMusicCommand
 
+; Command $85-$93: run macro number (opcode - $84) from the song's macro table -
+; a stored command sequence (effectively an instrument preset) ending in $68.
 ReadMusicMetaCommand_85:
-	push de
+	push de ; save the main stream position
 	ld b, a
 	xor a
-	ld l, $04
-	res 0, [hl]
-	ld l, $0b
+	ld l, MUSIC_CH_FLAGS
+	res 0, [hl] ; cancel arpeggio
+	ld l, MUSIC_CH_TRANSPOSE
 	ld [hl], a
-	ld l, $0e
+	ld l, MUSIC_CH_ARP_OFFSET
 	ld [hl], a
-	ld l, $2f
+	ld l, MUSIC_CH_DUTY_SEQ
 	ld [hl], a
 	ld a, h
 	cp $dd
-	jr nc, .asm_83db
+	jr nc, .fetchMacro ; channels 3/4 have no duty register to reset
 	cp $db
-	jr nz, .asm_83d7
+	jr nz, .resetCh2Duty
 	ld a, $80
 	ldh [rNR11], a
-	jr .asm_83db
-.asm_83d7
+	jr .fetchMacro
+.resetCh2Duty
 	ld a, $80
 	ldh [rNR21], a
-.asm_83db
+.fetchMacro
 	ld a, b
 	sub $84
 	add a
-	ld c, h
+	ld c, h ; preserve the channel's high byte
 	ld b, a
-	ld a, [$db48]
+	ld a, [wMusicMacroTable]
 	ld l, a
-	ld a, [$db49]
+	ld a, [wMusicMacroTable + 1]
 	ld h, a
 	ld a, b
 	add l
 	ld l, a
 	adc h
 	sub l
-	ld h, a
+	ld h, a ; hl = macro table + index*2
 	ld e, [hl]
 	inc hl
-	ld d, [hl]
+	ld d, [hl] ; de = macro command stream
 	ld h, c
 	ld a, $c9
-	ld [$db45], a
-Func_83f8:
+	ld [wMusicInMacro], a ; mark that commands now come from the macro
+ReadMacroCommand:
 	ld a, [de]
 	inc de
 	cp $68
-	jp nz, ReadMusicMetaCommand
+	jp nz, ReadMusicMetaCommand ; macros contain only commands, until the $68 end
 	xor a
-	ld [$db45], a
+	ld [wMusicInMacro], a ; end of macro: resume the main stream
 	pop de
 	jp ReadMusicCommand
 
+; Command $82: set up the vibrato oscillator from one parameter (depth), with no
+; onset delay and a 1-frame rate. Combined with StartNote's setup the fast rate
+; makes it act as a continuous pitch slide. $83 differs only in direction bit 4.
 Func_8407:
 	xor a
-	ld l, $20
+	ld l, MUSIC_CH_VIBRATO
 	ld [hli], a
 	ld [hli], a
 	ld a, [de]
@@ -21258,15 +21303,16 @@ Func_8407:
 	ld a, $01
 	ld [hli], a
 	ld [hli], a
-	ld l, $04
+	ld l, MUSIC_CH_FLAGS
 	ld a, [hl]
-	or $18
+	or $18 ; enable vibrato (bits 3,4)
 	ld [hl], a
 	ret
 
+; Command $83: like Func_8407, but clears the direction bit.
 Func_841a:
 	xor a
-	ld l, $20
+	ld l, MUSIC_CH_VIBRATO
 	ld [hli], a
 	ld [hli], a
 	ld a, [de]
@@ -21275,21 +21321,23 @@ Func_841a:
 	ld a, $01
 	ld [hli], a
 	ld [hli], a
-	ld l, $04
+	ld l, MUSIC_CH_FLAGS
 	ld a, [hl]
 	or $18
-	and $ef
+	and $ef ; clear vibrato direction (bit 4)
 	ld [hl], a
 	ret
 
-Func_842f:
+; Command $81: set the software volume envelope's peak level.
+MusicCommand_SetEnvelopePeak:
 	ld a, [de]
 	inc de
-	ld l, $16
+	ld l, MUSIC_CH_VOL_ENV + 6
 	ld [hl], a
 	ret
 
-Func_8435:
+; Command $7F: jump to a native code address read (little-endian) from the stream.
+MusicCommand_CallCode:
 	ld a, [de]
 	ld c, a
 	inc de
@@ -21300,57 +21348,62 @@ Func_8435:
 	ret
 
 Func_843d:
-	ret
+	ret ; unused command handler
 
-Func_843e:
-	ld l, $04
+; Command $7C: disable arpeggio.
+MusicCommand_ClearArpeggio:
+	ld l, MUSIC_CH_FLAGS
 	res 0, [hl]
-	ld l, $0e
+	ld l, MUSIC_CH_ARP_OFFSET
 	ld [hl], $00
 	ret
 
+; Per-frame updater for the timed mid-note effect armed by command $7B (Func_84ac).
+; Once the note timer reaches the low nibble of MUSIC_CH_NOTE_FX (and the note is
+; long enough per the high nibble), the channel is retriggered with the new volume
+; in $35. Exact musical purpose is unclear.
 Func_8447:
-	ld l, $34
+	ld l, MUSIC_CH_NOTE_FX
 	ld a, [hl]
 	and $f0
-	jr z, .asm_8456
+	jr z, .checkTrigger
 	swap a
 	ld c, a
-	ld l, $09
+	ld l, MUSIC_CH_NOTE_LEN
 	ld a, [hl]
 	cp c
-	ret c
-.asm_8456
-	ld l, $04
+	ret c ; note too short for the effect
+.checkTrigger
+	ld l, MUSIC_CH_FLAGS
 	bit 1, [hl]
-	ret z
+	ret z ; effect not armed
 	bit 2, [hl]
-	ret nz
-	ld l, $0a
+	ret nz ; already applied
+	ld l, MUSIC_CH_NOTE_TIMER
 	ld c, [hl]
-	ld l, $34
+	ld l, MUSIC_CH_NOTE_FX
 	ld a, [hl]
 	and $0f
 	cp c
-	ret nz
+	ret nz ; not yet at the trigger time
 	ld a, [de]
 	cp $65
-	ret z
-	ld l, $35
+	ret z ; next command ends the note anyway: skip
+	ld l, MUSIC_CH_NOTE_FX + 1
 	ld a, h
 	cp $dd
-	jr z, .asm_8482
+	jr z, .waveChannel
 	cp $de
-	jr z, .asm_8497
-	ld a, [hl]
-	ld l, $32
+	jr z, .noiseChannel
+	ld a, [hl] ; channels 1/2: reload NRx2 volume and retrigger
+	ld l, MUSIC_CH_NRX2
 	ld [hli], a
 	ld [hl], $01
-.asm_847d
-	ld l, $04
+.markApplied
+	ld l, MUSIC_CH_FLAGS
 	set 2, [hl]
 	ret
-.asm_8482
+.waveChannel
 	ld a, [hl]
 	and $0f
 	ld [$dd1b], a
@@ -21358,10 +21411,10 @@ Func_8447:
 	ld a, [hl]
 	and $f0
 	swap a
-	jr z, .asm_847d
+	jr z, .markApplied
 	ld [$dd08], a
-	jr .asm_847d
-.asm_8497
+	jr .markApplied
+.noiseChannel
 	ld a, [hl]
 	and $0f
 	ld [$de1b], a
@@ -21369,52 +21422,58 @@ Func_8447:
 	ld a, [hl]
 	and $f0
 	swap a
-	jr z, .asm_847d
+	jr z, .markApplied
 	ld [$de08], a
-	jr .asm_847d
+	jr .markApplied
 
+; Command $7B: arm the timed mid-note effect (step value + timing in $34/$35), or
+; disable it if the first parameter byte is 0.
 Func_84ac:
-	ld l, $34
+	ld l, MUSIC_CH_NOTE_FX
 	ld a, [de]
 	inc de
 	and a
-	jr z, .asm_84bc
+	jr z, .disable
 	ld [hli], a
 	ld a, [de]
 	ld [hl], a
 	inc de
-	ld l, $04
+	ld l, MUSIC_CH_FLAGS
 	set 1, [hl]
 	ret
-.asm_84bc
-	ld l, $04
+.disable
+	ld l, MUSIC_CH_FLAGS
 	res 1, [hl]
 	ret
 
-Func_84c1:
-	ld l, $0d
+; Command $7A: set the octave offset (parameter biased by -12).
+MusicCommand_SetOctave:
+	ld l, MUSIC_CH_OCTAVE
 	ld a, [de]
 	add $f4
 	ld [hl], a
 	inc de
 	ret
 
-Func_84c9:
-	ld l, $0b
+; Command $60: set the one-shot transpose applied to the next note.
+MusicCommand_SetTranspose:
+	ld l, MUSIC_CH_TRANSPOSE
 	ld a, [de]
 	ld [hl], a
 	inc de
 	ret
 
-Func_84cf:
-	ld l, $0b
+; Command $61: clear the transpose.
+MusicCommand_ClearTranspose:
+	ld l, MUSIC_CH_TRANSPOSE
 	ld [hl], $00
 	ret
 
-Func_84d4:
+; Command $63: set up vibrato from three parameters (onset delay, depth, rate).
+MusicCommand_SetVibrato:
 	ld a, [de]
 	inc de
-	ld l, $20
+	ld l, MUSIC_CH_VIBRATO
 	ld [hli], a
 	ld [hli], a
 	ld a, [de]
@@ -21424,36 +21483,41 @@ Func_84d4:
 	inc de
 	ld [hli], a
 	ld [hli], a
-	ld l, $04
+	ld l, MUSIC_CH_FLAGS
 	ld a, [hl]
-	or $18
+	or $18 ; enable vibrato (bits 3,4)
 	ld [hl], a
 	ret
 
-Func_84e8:
-	ld l, $04
+; Command $64: disable vibrato.
+MusicCommand_ClearVibrato:
+	ld l, MUSIC_CH_FLAGS
 	ld a, [hl]
-	and $e7
+	and $e7 ; clear vibrato bits 3,4
 	ld [hl], a
 	ret
 
-Func_84ef:
+; Command $66: silence the current note (volume 0; channels 1/2 also zero NRx2).
+MusicCommand_NoteOff:
 	pop af
-	ld l, $08
+	ld l, MUSIC_CH_VOLUME
 	ld [hl], $00
 	ld a, h
 	cp $dd
 	jr nc, Func_8518
-	ld l, $32
+	ld l, MUSIC_CH_NRX2
 	xor a
 	ld [hli], a
 	inc a
-	ld [hl], a
+	ld [hl], a ; NRx2 = 0, request retrigger
 	jp Func_8518
 
+; Command $62/$65: end the note. With a per-note callback armed (flag bit 5) it
+; calls the routine at $40/$41 and replays the saved note ($3c); otherwise it just
+; holds for another note length (Func_8518).
 Func_8502:
 	pop af
-	ld l, $04
+	ld l, MUSIC_CH_FLAGS
 	bit 5, [hl]
 	jr z, Func_8518
 	ld l, $40
@@ -21464,35 +21528,40 @@ Func_8502:
 	call JumpToBC
 	ld l, $3c
 	ld a, [hl]
-	jp Func_82a5
+	jp StartNote
 
+; Holds the current note for another note length without reading a new command.
 Func_8518:
-	ld l, $09
+	ld l, MUSIC_CH_NOTE_LEN
 	ld a, [hli]
 	ld [hl], a
-	ld l, $02
+	ld l, MUSIC_CH_CMD_PTR
 	ld [hl], e
 	inc l
 	ld [hl], d
 	ret
 
+; Full sound-engine init: enable the APU, set the default macro/arpeggio table
+; pointers, then reset all channels.
 InitSoundEngine:
 	ld a, $ff
 	ldh [rNR52], a
 	ld a, $70
-	ld [$db4b], a
+	ld [wMusicArpeggioTable + 1], a
 	ld a, $c5
-	ld [$db4a], a
+	ld [wMusicArpeggioTable], a
 	xor a
-	ld [$db45], a
+	ld [wMusicInMacro], a
 	ld [wMusicPaused], a
-	ld [$db47], a
+	ld [wSfxNoiseLock], a
 	ld [$db5d], a
+; Silences all four channels, resets master volume/panning, and reinitialises
+; each channel's state struct.
 ResetMusicChannels:
 	ld a, $70
-	ld [$db49], a
+	ld [wMusicMacroTable + 1], a
 	ld a, $20
-	ld [$db48], a
+	ld [wMusicMacroTable], a
 	xor a
 	ldh [rNR12], a
 	ldh [rNR22], a
@@ -21502,86 +21571,91 @@ ResetMusicChannels:
 	ldh [rNR24], a
 	ldh [rNR34], a
 	ldh [rNR44], a
-	ld [$db65], a
+	ld [wMusicMasterVolSeqActive], a
 	ld [$db52], a
 	ld [$db5c], a
 	ld a, $88
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	ld a, $77
 	ldh [rNR50], a
-	ld h, $db
-	call Func_857b
+	ld h, HIGH(MUSIC_CHAN_1)
+	call ResetChannel
 	inc h
-	call Func_857b
+	call ResetChannel
 	inc h
-	call Func_857b
+	call ResetChannel
 	inc h
-	jr Func_857b
-Func_857a:
+	jr ResetChannel
+; Command $68: stop the channel in `h` (drops back into ResetChannel).
+MusicCommand_StopChannel:
 	pop af
-Func_857b:
+; Clears the state struct for the channel in `h` to its defaults.
+ResetChannel:
 	ld a, h
 	cp $de
-	jr z, .asm_85aa
+	jr z, .soundEffectChannel
 	xor a
-	ld l, $38
-	ld [hl], $11
+	ld l, MUSIC_CH_NR51
+	ld [hl], $11 ; default panning: both speakers
 	dec l
+	ld [hl], a ; MUSIC_CH_RETURN_PTR+1 = 0
+	ld l, MUSIC_CH_ENABLED
 	ld [hl], a
-	ld l, $27
+	ld l, MUSIC_CH_VOLUME
 	ld [hl], a
-	ld l, $08
+	ld l, MUSIC_CH_FLAGS
 	ld [hl], a
-	ld l, $04
+	ld l, MUSIC_CH_DUTY_SEQ
 	ld [hl], a
-	ld l, $2f
+	ld l, MUSIC_CH_PAN_SEQ
 	ld [hl], a
-	ld l, $2c
+	ld l, MUSIC_CH_RETURN_PTR + 1
 	ld [hl], a
-	ld l, $37
-	ld [hl], a
-	ld l, $0f
-	ld [hld], a
-	ld [hld], a
-	ld [hl], $f4
+	ld l, MUSIC_CH_DETUNE
+	ld [hld], a ; detune = 0
+	ld [hld], a ; arpeggio offset = 0
+	ld [hl], $f4 ; octave = -12 (default)
 	dec l
 	dec l
-	ld [hld], a
+	ld [hld], a ; transpose = 0
 	inc a
-	ld [hl], a
-	ld l, $33
-	ld [hld], a
+	ld [hl], a ; note timer = 1
+	ld l, MUSIC_CH_RETRIGGER
+	ld [hld], a ; retrigger = 1
 	dec a
-	ld [hl], a
+	ld [hl], a ; NRx2 shadow = 0
 	ret
-.asm_85aa
+.soundEffectChannel
 	xor a
 	ld [wActiveSoundEffect], a
-	ld [$de08], a
+	ld [MUSIC_CHAN_4 + MUSIC_CH_VOLUME], a
 	ld [$db5e], a
 	ld [$db5f], a
 	dec a
-	ld [$db44], a
+	ld [wMusicLastWaveVolume], a
 	jp ReloadWaveChannel
 
-Func_85be:
+; Command $69: set the global detune applied to all three melodic channels.
+MusicCommand_SetDetune:
 	ld a, [de]
-	ld [$db0f], a
-	ld [$dc0f], a
-	ld [$dd0f], a
+	ld [MUSIC_CHAN_1 + MUSIC_CH_DETUNE], a
+	ld [MUSIC_CHAN_2 + MUSIC_CH_DETUNE], a
+	ld [MUSIC_CHAN_3 + MUSIC_CH_DETUNE], a
 	inc de
 	ret
 
-Func_85ca:
-	ld l, $36
+; Restores de from the saved return pointer (used by MusicCommand_EndSection).
+ReturnFromCall:
+	ld l, MUSIC_CH_RETURN_PTR
 	ld e, [hl]
 	inc l
 	ld d, [hl]
 	ld [hl], $00
 	ret
 
-Func_85d2:
-	ld l, $36
+; Command $7E: call a sub-stream, saving the current position as the return point.
+MusicCommand_Call:
+	ld l, MUSIC_CH_RETURN_PTR
 	ld a, [de]
 	inc de
 	ld b, a
@@ -21594,7 +21668,8 @@ Func_85d2:
 	ld d, a
 	ret
 
-Func_85df:
+; Command $7D: jump to an absolute position in the command stream.
+MusicCommand_Goto:
 	ld a, [de]
 	inc de
 	ld l, a
@@ -21603,12 +21678,14 @@ Func_85df:
 	ld e, l
 	ret
 
-Func_85e6:
-	ld l, $37
+; Command $6A: end the current section. If a call is outstanding, return from it;
+; otherwise advance through the channel's order list (looping at the end).
+MusicCommand_EndSection:
+	ld l, MUSIC_CH_RETURN_PTR + 1
 	ld a, [hl]
 	and a
-	jr nz, Func_85ca
-	ld l, $00
+	jr nz, ReturnFromCall
+	ld l, MUSIC_CH_ORDER_PTR
 	ld c, [hl]
 	inc l
 	ld b, [hl]
@@ -21619,20 +21696,20 @@ Func_85e6:
 	inc bc
 	ld d, a
 	or e
-	jr z, .asm_85fe
+	jr z, .restartOrderList ; null entry: loop back to the start
 	ld [hl], b
 	dec l
 	ld [hl], c
 	ret
-.asm_85fe
-	ld l, $00
+.restartOrderList
+	ld l, MUSIC_CH_ORDER_PTR
 	ld a, [bc]
 	inc bc
 	ld [hli], a
 	ld a, [bc]
 	inc bc
 	ld [hl], a
-	ld l, $00
+	ld l, MUSIC_CH_ORDER_PTR
 	ld c, [hl]
 	inc l
 	ld b, [hl]
@@ -21647,23 +21724,26 @@ Func_85e6:
 	ld [hl], c
 	ret
 
-Func_8615:
+; Command $6B: set the default note length.
+MusicCommand_SetNoteLength:
 	ld a, [de]
-	ld l, $09
+	ld l, MUSIC_CH_NOTE_LEN
 	ld [hl], a
 	inc de
 	ret
 
-Func_861b:
+; Command $74: set channel 1/2's hardware envelope (NRx2) value, with an optional
+; volume sweep in the following parameters ($28-$2b).
+MusicCommand_SetEnvelope:
 	ld a, [de]
-	ld l, $32
+	ld l, MUSIC_CH_NRX2
 	ld [hl], a
 	ld l, $28
 	ld [hli], a
 	inc de
 	ld a, [de]
 	and a
-	jr z, .asm_862f
+	jr z, .noSweep
 	inc a
 	ld [hli], a
 	inc l
@@ -21672,193 +21752,211 @@ Func_861b:
 	inc de
 	ld [hl], a
 	ret
-.asm_862f
+.noSweep
 	ld [hli], a
 	ld [hl], a
 	inc de
 	ret
 
+; Command $75: start a stereo-panning sequence (pointer in the stream).
 MusicCommand_PanSequence:
 	ld a, [de]
 	inc de
-	ld l, $2c
+	ld l, MUSIC_CH_PAN_SEQ
 	ld [hli], a
 	ld [hli], a
 	ld [hl], $01
 	ret
 
+; Cycles the channel through a fixed panning pattern (both/right/both/left) once
+; every MUSIC_CH_PAN_SEQ frames - an auto-pan effect. $2c=speed, $2d=countdown,
+; $2e=step. (Inaudible in practice since panning is forced to center; see
+; WriteStereoPanning.)
 UpdatePanSequence:
-	ld l, $2d
+	ld l, MUSIC_CH_PAN_SEQ + 1
 	dec [hl]
 	ret nz
-	ld l, $2c
+	ld l, MUSIC_CH_PAN_SEQ
 	ld a, [hli]
-	ld [hli], a
+	ld [hli], a ; reload the step countdown from the speed
 	ld a, [hl]
 	inc a
-	ld [hl], a
+	ld [hl], a ; advance the step index
 	dec a
-	jr z, Func_8655
+	jr z, SetPanBoth
 	dec a
-	jr z, Func_865a
+	jr z, SetPanRight
 	dec a
-	jr z, Func_8655
+	jr z, SetPanBoth
 	dec a
-	jr z, Func_865f
-	ld [hl], $01
-Func_8655:
-	ld l, $38
+	jr z, SetPanLeft
+	ld [hl], $01 ; past the pattern end: restart it
+SetPanBoth:
+	ld l, MUSIC_CH_NR51
 	ld [hl], $11
 	ret
-Func_865a:
-	ld l, $38
+SetPanRight:
+	ld l, MUSIC_CH_NR51
 	ld [hl], $01
 	ret
-Func_865f:
-	ld l, $38
+SetPanLeft:
+	ld l, MUSIC_CH_NR51
 	ld [hl], $10
 	ret
 
+; Command $76: start a duty-cycle sequence (the parameter byte is the speed).
 MusicCommand_DutySequence:
 	ld a, [de]
 	inc de
-	ld l, $2f
+	ld l, MUSIC_CH_DUTY_SEQ
 	ld [hli], a
 	ld [hli], a
 	ld [hl], $01
 	ret
 
+; Cycles the channel through a fixed duty-cycle pattern (50/75/12.5/75 %) once
+; every MUSIC_CH_DUTY_SEQ frames - a timbre wobble. $2f=speed, $30=countdown,
+; $31=step.
 UpdateDutySequence:
-	ld l, $30
+	ld l, MUSIC_CH_DUTY_SEQ + 1
 	dec [hl]
 	ret nz
-	ld l, $2f
+	ld l, MUSIC_CH_DUTY_SEQ
 	ld a, [hli]
-	ld [hli], a
+	ld [hli], a ; reload the step countdown from the speed
 	ld a, [hl]
 	inc a
-	ld [hl], a
+	ld [hl], a ; advance the step index
 	dec a
-	jr z, Func_8686
+	jr z, SetDuty50
 	dec a
-	jr z, Func_868a
+	jr z, SetDuty75
 	dec a
-	jr z, Func_868e
+	jr z, SetDuty12
 	dec a
-	jr z, Func_868a
-	ld [hl], $01
-Func_8686:
-	ld l, $80
-	jr Func_8690
-Func_868a:
+	jr z, SetDuty75
+	ld [hl], $01 ; past the pattern end: restart it
+SetDuty50:
+	ld l, $80 ; NR11/NR21 duty bits (l is reused as a temp, not a struct offset)
+	jr WriteDutyToRegister
+SetDuty75:
 	ld l, $c0
-	jr Func_8690
-Func_868e:
+	jr WriteDutyToRegister
+SetDuty12:
 	ld l, $00
-Func_8690:
+WriteDutyToRegister:
 	ld a, h
 	cp $db
-	jr nz, .asm_8699
+	jr nz, .channel2
 	ld a, l
 	ldh [rNR11], a
 	ret
-.asm_8699
+.channel2
 	ld a, l
 	ldh [rNR21], a
 	ret
 
+; Starts a master-volume (NR50) sequence from the pointer in hl, speed in a.
 StartMasterVolumeSequence:
-	ld [$db64], a
+	ld [wMusicMasterVolSeqSpeed], a
 	ld a, l
-	ld [$db60], a
+	ld [wMusicMasterVolSeq], a
 	ld a, h
-	ld [$db61], a
+	ld [wMusicMasterVolSeq + 1], a
 	jr _StartMasterVolumeSequence
+; Command $77: start a master-volume sequence (speed + pointer from the stream).
 MusicCommand_MasterVolumeSequence:
 	ld a, [de]
-	ld [$db64], a
+	ld [wMusicMasterVolSeqSpeed], a
 	inc de
 	ld a, [de]
-	ld [$db60], a
+	ld [wMusicMasterVolSeq], a
 	inc de
 	ld a, [de]
-	ld [$db61], a
+	ld [wMusicMasterVolSeq + 1], a
 	inc de
 _StartMasterVolumeSequence:
 	xor a
-	ld [$db62], a
-	ld [$db63], a
+	ld [wMusicMasterVolSeqIndex], a
+	ld [wMusicMasterVolSeqDelay], a
 	inc a
-	ld [$db65], a
+	ld [wMusicMasterVolSeqActive], a
 	ret
 
+; Command $78: stop the master-volume sequence.
 StopMasterVolumeSequence:
 	xor a
-	ld [$db65], a
+	ld [wMusicMasterVolSeqActive], a
 	ret
 
+; Steps the master-volume (NR50) sequence each frame, writing the next value to
+; NR50 every (speed) frames. $6A in the data loops it; $ff ends it.
 UpdateMasterVolumeSequence:
-	ld a, [$db65]
+	ld a, [wMusicMasterVolSeqActive]
 	and a
-	jr nz, .asm_86d9
+	jr nz, .active
 	ldh a, [rNR50]
 	and a
 	ret z
 	ld a, $77
-	ldh [rNR50], a
+	ldh [rNR50], a ; no sequence: hold NR50 at the default volume
 	ret
-.asm_86d9
-	ld a, [$db63]
+.active
+	ld a, [wMusicMasterVolSeqDelay]
 	and a
-	jr z, .asm_86e4
+	jr z, .step
 	dec a
-	ld [$db63], a
+	ld [wMusicMasterVolSeqDelay], a
 	ret
-.asm_86e4
-	ld hl, $db60
+.step
+	ld hl, wMusicMasterVolSeq
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [$db62]
+	ld a, [wMusicMasterVolSeqIndex]
 	add l
 	ld l, a
 	adc h
 	sub l
-	ld h, a
+	ld h, a ; hl = sequence data + index
 	ld a, [hl]
 	cp $6a
-	jr z, .asm_870b
+	jr z, .loop
 	cp $ff
 	jr z, StopMasterVolumeSequence
 	ldh [rNR50], a
-	ld a, [$db62]
+	ld a, [wMusicMasterVolSeqIndex]
 	inc a
-	ld [$db62], a
-	ld a, [$db64]
-	ld [$db63], a
+	ld [wMusicMasterVolSeqIndex], a
+	ld a, [wMusicMasterVolSeqSpeed]
+	ld [wMusicMasterVolSeqDelay], a
 	ret
-.asm_870b
+.loop
 	xor a
-	ld [$db62], a
-	jr .asm_86e4
+	ld [wMusicMasterVolSeqIndex], a
+	jr .step
 
-Func_8711:
+; Command $79: load a 16-byte wave pattern into wave RAM and retrigger channel 3.
+; On channel 3 the pattern pointer is remembered (in wMusicWavePtr) so it can be
+; reloaded later; if a sound effect currently owns the wave channel, loading is
+; deferred.
+MusicCommand_LoadWave:
 	ld a, h
 	cp $dd
-	jr nz, .asm_8728
+	jr nz, .loadLoop
 	ld a, [de]
 	inc de
-	ld [$db4c], a
+	ld [wMusicWavePtr], a
 	ld a, [de]
-	ld [$db4d], a
-	ld a, [$de27]
+	ld [wMusicWavePtr + 1], a
+	ld a, [wActiveSoundEffect]
 	and a
-	jr z, .asm_8727
+	jr z, .load ; wave channel free: load now
 	inc de
-	ret
-.asm_8727
+	ret ; SFX owns the wave channel: just remember the pointer
+.load
 	dec de
-.asm_8728
+.loadLoop
 	ld b, h
 	xor a
 	ldh [rNR30], a
@@ -21917,18 +22015,20 @@ Func_8711:
 	ld a, [hl]
 	ld [$ff00+c], a
 	ld h, b
-	ld l, $07
+	ld l, MUSIC_CH_FREQ_HI
 	ld a, [hl]
-	or $80
+	or $80 ; DAC on
 	ldh [rNR30], a
-	ldh [rNR34], a
+	ldh [rNR34], a ; retrigger channel 3
 	ret
 
+; Reloads the cached wave pattern (wMusicWavePtr) into wave RAM and retriggers
+; channel 3. Used when resuming music or finishing a sound effect.
 ReloadWaveChannel:
 	xor a
 	ldh [rNR30], a
 	ld c, (_AUD3WAVERAM & $ff)
-	ld hl, $db4c
+	ld hl, wMusicWavePtr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -22145,12 +22245,12 @@ Func_88f4:
 Func_88f8:
 	ld h, $dd
 	xor a
-	ld [$db65], a
+	ld [wMusicMasterVolSeqActive], a
 	ld [$db52], a
 	ld a, $77
 	ldh [rNR50], a
 asm_8905:
-	call Func_857b
+	call ResetChannel
 	ld l, $27
 	ld [hl], $01
 	ld l, $02
@@ -22213,12 +22313,12 @@ Func_895d:
 	ld hl, $77f7
 	jp StartMasterVolumeSequence
 
-Func_8963:
+MusicCommand_StopNoiseSequence:
 	xor a
 	ld [$db52], a
 	ret
 
-Func_8968:
+MusicCommand_StartNoiseSequence:
 	ld a, [de]
 	ld [$db53], a
 	inc de
@@ -22238,7 +22338,7 @@ Func_8968:
 	ld [$db52], a
 	ld [$db54], a
 	ld a, $88
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	ret
 
 Func_8994:
@@ -22284,7 +22384,7 @@ Func_89b2:
 	cp $37
 	jr nc, Func_8a19
 	ld e, a
-	ld a, [$db47]
+	ld a, [wSfxNoiseLock]
 	and a
 	ret nz
 	ld a, e
@@ -22338,23 +22438,23 @@ Func_8a25:
 
 Func_8a2c:
 	ld a, $88
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	jr Func_8a22
 
 Func_8a33:
-	ld a, [$db47]
+	ld a, [wSfxNoiseLock]
 	and a
 	jr nz, Func_8a22
 	ld a, $08
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	jr Func_8a22
 
 Func_8a40:
-	ld a, [$db47]
+	ld a, [wSfxNoiseLock]
 	and a
 	jr nz, Func_8a22
 	ld a, $80
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	jr Func_8a22
 
 Func_8a4d:
@@ -22388,11 +22488,11 @@ Func_8a72:
 	jr Func_8a22
 
 UpdateNoiseChannel:
-	ld a, [$db47]
+	ld a, [wSfxNoiseLock]
 	and a
 	jr z, .asm_8a89
 	dec a
-	ld [$db47], a
+	ld [wSfxNoiseLock], a
 .asm_8a89
 	ld hl, $db54
 	dec [hl]
@@ -22431,7 +22531,7 @@ UpdateNoiseChannel:
 	ld l, a
 	add hl, de
 	ld c, $00
-	ld a, [$db47]
+	ld a, [wSfxNoiseLock]
 	and a
 	jr nz, .asm_8ad8
 	ld a, [$db5d]
@@ -22449,7 +22549,7 @@ UpdateNoiseChannel:
 	ld a, $80
 	ldh [rNR44], a
 .asm_8aea
-	ld a, [$db47]
+	ld a, [wSfxNoiseLock]
 	and a
 	ret nz
 	ld a, [$db4e]
@@ -22460,25 +22560,25 @@ UpdateNoiseChannel:
 	dec a
 	jr nz, .asm_8b01
 	ld a, $88
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	ret
 .asm_8b01
 	sub b
 	jr nz, .asm_8b0a
 	ld a, $08
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	ret
 .asm_8b0a
 	sub b
 	jr nz, .asm_8b13
 	ld a, $80
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	ret
 .asm_8b13
 	sub b
 	ret nz
 	ld a, $88
-	ld [$db46], a
+	ld [wMusicNoisePanning], a
 	ret
 .asm_8b1b
 	xor a
@@ -22585,9 +22685,9 @@ INCBIN "baserom.gbc", $95de, $9867 - $95de
 Func_9867:
 	call ResetMusicChannels
 	ld a, $6f
-	ld [$db49], a
+	ld [wMusicMacroTable + 1], a
 	ld a, $93
-	ld [$db48], a
+	ld [wMusicMacroTable], a
 	ld de, $5887
 	call Func_88f0
 	ld de, $58a7
@@ -22600,9 +22700,9 @@ INCBIN "baserom.gbc", $9886, $9b73 - $9886
 Func_9b73:
 	call ResetMusicChannels
 	ld a, $6f
-	ld [$db49], a
+	ld [wMusicMacroTable + 1], a
 	ld a, $93
-	ld [$db48], a
+	ld [wMusicMacroTable], a
 	ld de, $5b93
 	call Func_88f0
 	ld de, $5bab
@@ -22626,9 +22726,9 @@ INCBIN "baserom.gbc", $9e7f, $a152 - $9e7f
 Func_a152:
 	call ResetMusicChannels
 	ld a, $6f
-	ld [$db49], a
+	ld [wMusicMacroTable + 1], a
 	ld a, $93
-	ld [$db48], a
+	ld [wMusicMacroTable], a
 	ld de, Data_a172
 	call Func_88f0
 	ld de, Data_a188
@@ -22701,9 +22801,9 @@ INCBIN "baserom.gbc", $a4de, $a6df - $a4de
 Func_a6df:
 	call ResetMusicChannels
 	ld a, $6f
-	ld [$db49], a
+	ld [wMusicMacroTable + 1], a
 	ld a, $93
-	ld [$db48], a
+	ld [wMusicMacroTable], a
 	ld de, $66fe
 	call Func_88f0
 	ld de, $6704
@@ -22749,9 +22849,9 @@ INCBIN "baserom.gbc", $a919, $ac37 - $a919
 Func_ac37:
 	call ResetMusicChannels
 	ld a, $6f
-	ld [$db49], a
+	ld [wMusicMacroTable + 1], a
 	ld a, $93
-	ld [$db48], a
+	ld [wMusicMacroTable], a
 	ld de, $6c56
 	call Func_88f0
 	ld de, $6c68
@@ -22795,7 +22895,7 @@ INCBIN "baserom.gbc", $b1e2, $b3c6 - $b1e2
 
 Func_b3c6:
 	ld a, $0f
-	ld [$db47], a
+	ld [wSfxNoiseLock], a
 	xor a
 	ld [$db5b], a
 	inc a
