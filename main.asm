@@ -774,7 +774,7 @@ RunWarnerBrosCopyrightScreen:
 	jr nc, .asm_56c
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $7861
+	ld hl, WarnerBrosCopyrightScreenSprite
 	ld bc, $5c39
 	call LoadOAMSprites
 .asm_56c
@@ -5200,15 +5200,15 @@ Func_22c9:
 	push de
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $78ab
+	ld hl, PlayerHelicopterSpriteFrame0
 	bit 4, b
 	jr nz, .asm_2314
 	ldh a, [hFrameCounter]
 	and $0c
 	srl a
-	add $a3
+	add LOW(PlayerHelicopterSpriteFrames)
 	ld l, a
-	ld a, $78
+	ld a, HIGH(PlayerHelicopterSpriteFrames)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -26975,9 +26975,9 @@ Func_177a1:
 	srl a
 	srl a
 	srl a
-	add $59
+	add LOW(SpaceStationBossScreenSpriteXOffsets)
 	ld l, a
-	ld a, $78
+	ld a, HIGH(SpaceStationBossScreenSpriteXOffsets)
 	adc $00
 	ld h, a
 	ld a, [hl]
@@ -26987,7 +26987,7 @@ Func_177a1:
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
-	ld hl, $783f
+	ld hl, SpaceStationBossScreenSprite
 	call LoadOAMSprites
 	ld bc, $8283
 	ldh a, [$ffb7]
@@ -27063,7 +27063,85 @@ Func_177a1:
 	call Func_1ae2
 	ret
 
-INCBIN "baserom.gbc", $1783f, $17929 - $1783f
+SpaceStationBossScreenSprite:
+	dw Load6SubSprites
+	sub_sprite $58, $10, -15, 24
+	sub_sprite $5a, $10, -7, 24
+	sub_sprite $5c, $10, -15, 40
+	sub_sprite $5e, $10, -7, 40
+	sub_sprite $74, $10, -15, 56
+	sub_sprite $76, $10, -7, 56
+
+; Per-frame x bob offset.
+SpaceStationBossScreenSpriteXOffsets:
+	db $90, $91, $92, $93, $93, $92, $91, $90
+
+; Bugs & Lola sprite shown on the Warner Bros. copyright screen.
+WarnerBrosCopyrightScreenSprite:
+	dw Load16SubSprites
+	sub_sprite $1c, $01,  8, -25
+	sub_sprite $1e, $01, 16, -25
+	sub_sprite $20, $01, 24, -25
+	sub_sprite $22, $01, 32, -25
+	sub_sprite $24, $01, 40, -25
+	sub_sprite $26, $01, 48, -25
+	sub_sprite $28, $01,  8,  -9
+	sub_sprite $2a, $01, 16,  -9
+	sub_sprite $2c, $01, 24,  -9
+	sub_sprite $2e, $01, 32,  -9
+	sub_sprite $30, $01, 40,  -9
+	sub_sprite $32, $01, 48,  -9
+	sub_sprite $34, $01, 16,   7
+	sub_sprite $36, $01, 24,   7
+	sub_sprite $38, $01, 32,   7
+	sub_sprite $3a, $01, 40,   7
+
+; Per-frame OAM sub-sprite overlays for the player's helicopter, cycled
+; frame 0/1/2/1 by the frame counter.
+PlayerHelicopterSpriteFrames:
+	dw PlayerHelicopterSpriteFrame0
+	dw PlayerHelicopterSpriteFrame1
+	dw PlayerHelicopterSpriteFrame2
+	dw PlayerHelicopterSpriteFrame1
+
+PlayerHelicopterSpriteFrame0:
+	dw Load10SubSprites
+	sub_sprite $68, $05, 12, -47
+	sub_sprite $6a, $05, 20, -47
+	sub_sprite $6e, $05, 20, -31
+	sub_sprite $72, $05, 20, -15
+	sub_sprite $76, $05, 20,   1
+	sub_sprite $68, $25,  4, -47
+	sub_sprite $6a, $25, -4, -47
+	sub_sprite $6e, $25, -4, -31
+	sub_sprite $72, $25, -4, -15
+	sub_sprite $76, $25, -4,   1
+
+PlayerHelicopterSpriteFrame1:
+	dw Load10SubSprites
+	sub_sprite $7a, $05, 12, -47
+	sub_sprite $7c, $05, 20, -47
+	sub_sprite $6e, $05, 20, -31
+	sub_sprite $72, $05, 20, -15
+	sub_sprite $76, $05, 20,   1
+	sub_sprite $78, $05,  4, -47
+	sub_sprite $7c, $25, -4, -47
+	sub_sprite $6e, $25, -4, -31
+	sub_sprite $72, $25, -4, -15
+	sub_sprite $76, $25, -4,   1
+
+PlayerHelicopterSpriteFrame2:
+	dw Load10SubSprites
+	sub_sprite $7e, $05, 12, -47
+	sub_sprite $7c, $05, 20, -47
+	sub_sprite $6e, $05, 20, -31
+	sub_sprite $72, $05, 20, -15
+	sub_sprite $76, $05, 20,   1
+	sub_sprite $7e, $25,  4, -47
+	sub_sprite $7c, $25, -4, -47
+	sub_sprite $6e, $25, -4, -31
+	sub_sprite $72, $25, -4, -15
+	sub_sprite $76, $25, -4,   1
 
 UpdatePlayerState:
 	ldh a, [hPaused]
