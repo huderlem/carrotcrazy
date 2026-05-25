@@ -568,7 +568,7 @@ RunLevelSummaryScreen:
 	call Func_433
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $731c
+	ld hl, BannerScreenSprites
 	ld bc, $0
 	call LoadOAMSprites
 	call ClearOAMBufferHome
@@ -679,7 +679,7 @@ RunPasswordScreen:
 	call WaitVBlank
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $731c
+	ld hl, BannerScreenSprites
 	ld bc, $0
 	call LoadOAMSprites
 	call ClearOAMBufferHome
@@ -846,7 +846,7 @@ RunLanguageSelectScreen:
 	call WaitVBlank
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $731c
+	ld hl, BannerScreenSprites
 	ld bc, $0
 	call LoadOAMSprites
 	call ClearOAMBufferHome
@@ -930,7 +930,7 @@ RunOptionsScreen:
 	call WaitVBlank
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $731c
+	ld hl, BannerScreenSprites
 	ld bc, $0
 	call LoadOAMSprites
 	call ClearOAMBufferHome
@@ -2097,7 +2097,7 @@ RunLevelIntroScreen:
 	call UpdateFrameCounter
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $731c
+	ld hl, BannerScreenSprites
 	ld bc, $0
 	call LoadOAMSprites
 	ld a, $03
@@ -3119,7 +3119,7 @@ Func_162d:
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
-	ld hl, $7396
+	ld hl, CrazyTownBossScreenSprite
 	call LoadOAMSprites
 	ldh a, [$ffad]
 	bit 2, a
@@ -3233,9 +3233,9 @@ Func_16d2:
 	and $1c
 	srl a
 	srl a
-	add $f2
+	add LOW(TreasureIslandBossScreenSpriteYOffsets)
 	ld l, a
-	ld a, $73
+	ld a, HIGH(TreasureIslandBossScreenSpriteYOffsets)
 	adc $00
 	ld h, a
 	ld a, [hl]
@@ -3244,7 +3244,7 @@ Func_16d2:
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
-	ld hl, $73bc
+	ld hl, TreasureIslandBossScreenSprite
 	call LoadOAMSprites
 	ret
 
@@ -7976,15 +7976,15 @@ Func_31e1:
 	ld a, $05
 	ld [MBC5RomBank], a
 	ldh a, [hForcedSideScrollSpeed]
-	ld hl, $722c
+	ld hl, HUDWindowTilemap
 	ld bc, vBGWin
 	and a
 	jr z, .asm_31fe
-	ld hl, $7268
+	ld hl, HUDWindowTilemapAutoScroll
 	ld bc, $9ba0
 	cp $fe
 	jr nz, .asm_31fe
-	ld hl, $72a4
+	ld hl, HUDWindowTilemapAutoScrollFast
 .asm_31fe
 	ld d, $03
 .asm_3200
@@ -9817,7 +9817,7 @@ DrawLocalizedWord:
 Func_3a82:
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $731c
+	ld hl, BannerScreenSprites
 	ld bc, $0
 	call LoadOAMSprites
 	ld hl, $deed
@@ -9887,9 +9887,9 @@ Func_3a82:
 	jr nc, .asm_3b54
 	ld a, [hl]
 	and $07
-	add $8e
+	add LOW(Data_Unknown_HBlankTransitionMasks)
 	ld l, a
-	ld a, $73
+	ld a, HIGH(Data_Unknown_HBlankTransitionMasks)
 	adc $00
 	ld h, a
 	ld a, [hl]
@@ -26123,7 +26123,212 @@ MartianProjectileSprites:
 	sub_sprite $56, $06, 8, 0
 	sub_sprite $56, $26, 16, 0
 
-INCBIN "baserom.gbc", $17174, $173fa - $17174
+; Per-level tables of metatile substitutions applied while Bugs digs underground.
+; Each entry is `db packedMetatileX, replacementMetatileId`, where packedMetatileX is
+; (playerXHighByte << 4) | metatileColumn.
+EmptyDiggingMetatileReplacements:
+	db $00 ; no replacements
+
+TreasureIsland2DiggingMetatileReplacements:
+	db 18
+	db $21, $91
+	db $22, $92
+	db $23, $93
+	db $24, $93
+	db $25, $94
+	db $26, $95
+	db $39, $91
+	db $3a, $92
+	db $3b, $93
+	db $3c, $93
+	db $3d, $94
+	db $3e, $95
+	db $8d, $91
+	db $8e, $92
+	db $8f, $93
+	db $90, $93
+	db $91, $94
+	db $92, $95
+
+TazZoo1DiggingMetatileReplacements:
+	db 14
+	db $2d, $93
+	db $2e, $94
+	db $2f, $95
+	db $30, $96
+	db $31, $95
+	db $32, $97
+	db $33, $98
+	db $55, $93
+	db $56, $94
+	db $57, $95
+	db $58, $96
+	db $59, $95
+	db $5a, $97
+	db $5b, $98
+
+TazZoo2DiggingMetatileReplacements:
+	db 22
+	db $34, $93
+	db $35, $94
+	db $36, $95
+	db $37, $96
+	db $38, $96
+	db $39, $96
+	db $3a, $97
+	db $3b, $98
+	db $80, $93
+	db $81, $94
+	db $82, $95
+	db $83, $96
+	db $84, $95
+	db $85, $97
+	db $86, $98
+	db $b9, $93
+	db $ba, $94
+	db $bb, $95
+	db $bc, $96
+	db $bd, $95
+	db $be, $97
+	db $bf, $98
+
+FuddForest1DiggingMetatileReplacements:
+	db 14
+	db $2f, $f0
+	db $30, $f1
+	db $31, $f2
+	db $32, $f2
+	db $33, $f2
+	db $34, $f3
+	db $35, $f4
+	db $9a, $f0
+	db $9b, $f1
+	db $9c, $f2
+	db $9d, $f2
+	db $9e, $f2
+	db $9f, $f3
+	db $a0, $f4
+
+FuddForest2DiggingMetatileReplacements:
+	db 21
+	db $0b, $f0
+	db $0c, $f1
+	db $0d, $f2
+	db $0e, $f2
+	db $0f, $f2
+	db $10, $f3
+	db $11, $f4
+	db $23, $f0
+	db $24, $f1
+	db $25, $f2
+	db $26, $f2
+	db $27, $f2
+	db $28, $f3
+	db $29, $f4
+	db $5e, $f0
+	db $5f, $f1
+	db $60, $f2
+	db $61, $f2
+	db $62, $f2
+	db $63, $f3
+	db $64, $f4
+
+; In-level status-bar tilemaps copied into the BG window by Func_31e1 / Func_17bf9.
+; Each is 3 rows of 20 tiles.
+HUDWindowTilemap: ; standard HUD (hForcedSideScrollSpeed == 0)
+	db $8e, $8e, $8e, $8e, $8e, $8e, $80, $82, $8e, $90, $91, $8e, $a0, $a2, $a4, $a6, $a8, $aa, $ac, $ae
+	db $96, $98, $9a, $9c, $9e, $8e, $81, $83, $8e, $92, $93, $b0, $a1, $a3, $a5, $a7, $a9, $ab, $ad, $af
+	db $97, $99, $9b, $9d, $9f, $8e, $b0, $84, $8e, $94, $95, $84, $84, $8e, $84, $84, $84, $84, $84, $84
+
+HUDWindowTilemapAutoScroll: ; forced side-scroll bosses
+	db $8e, $8e, $8e, $8e, $8e, $8e, $8e, $90, $91, $8e, $8e, $8e, $a0, $a2, $a4, $a6, $a8, $aa, $ac, $ae
+	db $96, $98, $9a, $9c, $9e, $8e, $8e, $92, $93, $b0, $8e, $8e, $a1, $a3, $a5, $a7, $a9, $ab, $ad, $af
+	db $97, $99, $9b, $9d, $9f, $8e, $8e, $94, $95, $84, $84, $8e, $8e, $8e, $84, $84, $84, $84, $84, $84
+
+HUDWindowTilemapAutoScrollFast: ; forced side-scroll speed -2 (Space Station boss)
+	db $8e, $8e, $8e, $8e, $8e, $8e, $8e, $8e, $8e, $90, $91, $8e, $a0, $a2, $a4, $a6, $a8, $aa, $ac, $ae
+	db $96, $98, $9a, $9c, $9e, $8e, $8e, $8e, $8e, $92, $93, $b0, $a1, $a3, $a5, $a7, $a9, $ab, $ad, $af
+	db $97, $99, $9b, $9d, $9f, $8e, $8e, $8e, $8e, $94, $95, $84, $84, $8e, $84, $84, $84, $84, $84, $84
+
+BonusHUDWindowTilemap: ; bonus stage HUD
+	db $1a, $1a, $1a, $1a, $1a, $1a, $1a, $1c, $1d, $1a, $1a, $1a, $00, $02, $04, $06, $08, $0a, $0c, $0e
+	db $22, $24, $26, $28, $2a, $1a, $1a, $1e, $1f, $2f, $1a, $1a, $01, $03, $05, $07, $09, $0b, $0d, $0f
+	db $23, $25, $27, $29, $2b, $1a, $1a, $20, $21, $10, $10, $1a, $1a, $1a, $10, $10, $10, $10, $10, $10
+
+BannerScreenSprites: ; mirrored 7-sprite columns framing the banner menu screens
+	dw Load14SubSprites
+	sub_sprite $00, $10,   8,   32
+	sub_sprite $02, $10,   8,   48
+	sub_sprite $04, $10,   8,   64
+	sub_sprite $06, $10,   8,   80
+	sub_sprite $08, $10,   8,   96
+	sub_sprite $0a, $10,   8,  112
+	sub_sprite $0c, $10,   8, -128
+	sub_sprite $00, $30, -96,   32
+	sub_sprite $02, $30, -96,   48
+	sub_sprite $04, $30, -96,   64
+	sub_sprite $06, $30, -96,   80
+	sub_sprite $08, $30, -96,   96
+	sub_sprite $0a, $30, -96,  112
+	sub_sprite $0c, $30, -96, -128
+
+; Tile-graphics blit records processed by Func_3bb4 to compose a screen's banner image.
+; Each record: dw destTileAddr, dw srcTileAddr, db widthTiles, db heightTiles,
+;              db flags, db unused
+WarnerBrosCopyrightScreenBgBlits:
+	dw $c000, $8ac0
+	db $08, $01, $60, $80
+	dw $c080, $93a0
+	db $0c, $01, $60, $80
+	dw $c200, $9490
+	db $12, $03, $80, $ff
+
+WarnerBrosCopyrightScreenBgBlitsBunnies: ; Bugs & Lola tiles -- unreferenced (drawn as sprites instead)
+	dw $c560, $8a90
+	db $0e, $04, $a0, $01
+	dw $c8e0, $8f70
+	db $02, $02, $60, $01
+	dw $c920, $9250
+	db $12, $05, $80, $ff
+
+GameOverScreenBgBlits:
+	dw $c000, $8dd0
+	db $12, $06, $40, $ff
+
+Data_Unknown_HBlankTransitionMasks:
+	db $80, $ff, $fe, $fc, $f8, $f0, $e0, $c0
+
+CrazyTownBossScreenSprite:
+	dw Load9SubSprites
+	sub_sprite $5c, $03, -7, 16
+	sub_sprite $5e, $03, -7, 32
+	sub_sprite $5e, $03, -7, 48
+	sub_sprite $60, $03, -7, 64
+	sub_sprite $62, $03, 23, 0
+	sub_sprite $64, $03, 31, 0
+	sub_sprite $66, $04, 42, 0
+	sub_sprite $68, $04, 50, 0
+	sub_sprite $6a, $04, 50, -16
+
+TreasureIslandBossScreenSprite:
+	dw Load13SubSprites
+	sub_sprite $5c, $11, -15, 8
+	sub_sprite $5e, $11, -7, 8
+	sub_sprite $60, $11, -15, 24
+	sub_sprite $62, $11, -7, 24
+	sub_sprite $58, $11, -7, 56
+	sub_sprite $64, $00, 16, -16
+	sub_sprite $66, $00, 24, -16
+	sub_sprite $68, $00, 32, -16
+	sub_sprite $6a, $00, 16, 0
+	sub_sprite $6c, $00, 24, 0
+	sub_sprite $6e, $00, 32, 0
+	sub_sprite $80, $11, -12, 40
+	sub_sprite $82, $11, -4, 40
+
+; Per-frame Y bob offset for TreasureIslandBossScreenSprite.
+TreasureIslandBossScreenSpriteYOffsets:
+	db $40, $41, $42, $43, $43, $42, $41, $40
 
 Func_173fa:
 	ldh a, [hPaused]
@@ -27281,7 +27486,7 @@ Func_17be2:
 	ret
 
 Func_17bf9:
-	ld hl, $72e0
+	ld hl, BonusHUDWindowTilemap
 	ld bc, vBGWin
 	ld d, $03
 .asm_17c01
@@ -29616,8 +29821,7 @@ ScreenData_WarnerBrosCopyright:
 	db $ff
 	dw RunWarnerBrosCopyrightScreen
 	dw PlaySong_Copyright
-
-INCBIN "baserom.gbc", $1b111, $1b113 - $1b111
+	dw WarnerBrosCopyrightScreenBgBlits
 
 ScreenData_GameOver:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -29626,8 +29830,7 @@ ScreenData_GameOver:
 	db $ff
 	dw RunGameOverScreen
 	dw PlaySong_GameOver
-
-INCBIN "baserom.gbc", $1b127, $1b129 - $1b127
+	dw GameOverScreenBgBlits
 
 ScreenData_LanguageSelect:
 	compressed_data WarnerBrosBackgroundTiles, $8830
@@ -29843,7 +30046,7 @@ ScreenData_StudioTreasureIsland:
 	db Bank(StudioTreasureIslandEntityTriggers)
 	dw StudioTreasureIslandEntityTriggers
 	dw StudioTreasureIslandEntities
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_StudioCrazyTown:
 	db $ff
@@ -29853,7 +30056,7 @@ ScreenData_StudioCrazyTown:
 	db Bank(StudioCrazyTownEntityTriggers)
 	dw StudioCrazyTownEntityTriggers
 	dw StudioCrazyTownEntities
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_StudioTazZoo:
 	db $ff
@@ -29863,7 +30066,7 @@ ScreenData_StudioTazZoo:
 	db Bank(StudioTazZooEntityTriggers)
 	dw StudioTazZooEntityTriggers
 	dw StudioTazZooEntities
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_StudioSpaceStation:
 	db $ff
@@ -29873,7 +30076,7 @@ ScreenData_StudioSpaceStation:
 	db Bank(StudioSpaceStationEntityTriggers)
 	dw StudioSpaceStationEntityTriggers
 	dw StudioSpaceStationEntities
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_StudioFuddForest:
 	db $ff
@@ -29883,7 +30086,7 @@ ScreenData_StudioFuddForest:
 	db Bank(StudioFuddForestEntityTriggers)
 	dw StudioFuddForestEntityTriggers
 	dw StudioFuddForestEntities
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_CrazyTown1:
 	compressed_data CrazyTownLevelTiles, $8B20
@@ -29903,7 +30106,7 @@ ScreenData_CrazyTown1:
 	dw CrazyTown1Entities
 	dw PlaySong_CrazyTown
 	dw $5C01 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_CrazyTown2:
 	compressed_data CrazyTownLevelTiles, $8B20
@@ -29923,7 +30126,7 @@ ScreenData_CrazyTown2:
 	dw CrazyTown2Entities
 	dw $408C
 	dw $5C01 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_TreasureIsland1:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -29943,7 +30146,7 @@ ScreenData_TreasureIsland1:
 	dw TreasureIsland1Entities
 	dw PlaySong_TreasureIsland
 	dw $5c92 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_TreasureIsland2:
 	compressed_data TreasureIslandLevelTiles, $8B20
@@ -29963,7 +30166,7 @@ ScreenData_TreasureIsland2:
 	dw TreasureIsland2Entities
 	dw PlaySong_TreasureIsland
 	dw $5C92 ; animated tiles
-	dw $7175 ; bugs bunny's digging metatile replacements
+	dw TreasureIsland2DiggingMetatileReplacements
 
 ScreenData_CrazyTownBoss:
 	compressed_data CrazyTownBossGroundTarTiles, $9570
@@ -29988,7 +30191,7 @@ ScreenData_CrazyTownBoss:
 	dw CrazyTownBossEntities
 	dw PlaySong_Boss
 	dw $5C3B ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw CrazyTownBossBgScrollSpeeds
 
 ScreenData_TreasureIslandBoss:
@@ -30014,7 +30217,7 @@ ScreenData_TreasureIslandBoss:
 	dw TreasureIslandBossEntities
 	dw PlaySong_Boss
 	dw $5CB3 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw TreasureIslandBossBgScrollSpeeds
 
 ScreenData_TazZoo1:
@@ -30035,7 +30238,7 @@ ScreenData_TazZoo1:
 	dw TazZoo1Entities
 	dw PlaySong_TazZoo
 	dw $5C00 ; animated tiles
-	dw $719A ; bugs bunny's digging metatile replacements
+	dw TazZoo1DiggingMetatileReplacements
 
 ScreenData_TazZoo2:
 	compressed_data TazZooLevelTiles, $8B20
@@ -30055,7 +30258,7 @@ ScreenData_TazZoo2:
 	dw TazZoo2Entities
 	dw PlaySong_TazZoo
 	dw $5C00 ; animated tiles
-	dw $71B7 ; bugs bunny's digging metatile replacements
+	dw TazZoo2DiggingMetatileReplacements
 
 ScreenData_TazZooBoss:
 	uncompressed_data TazZooBossGroundTiles, $9770, $90
@@ -30082,7 +30285,7 @@ ScreenData_TazZooBoss:
 	dw TazZooBossEntities
 	dw PlaySong_Boss
 	dw $5CF5 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw TazZooBossBgScrollSpeeds
 
 ScreenData_SpaceStation1:
@@ -30103,7 +30306,7 @@ ScreenData_SpaceStation1:
 	dw SpaceStation1Entities
 	dw PlaySong_SpaceStation
 	dw $5C58 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_SpaceStation2:
 	compressed_data SpaceStationLevelTiles, $8BF0
@@ -30123,7 +30326,7 @@ ScreenData_SpaceStation2:
 	dw SpaceStation2Entities
 	dw PlaySong_SpaceStation
 	dw $5C58 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_SpaceStationBoss:
 	compressed_data SpaceStationBossLevelTiles, $8DE0
@@ -30146,7 +30349,7 @@ ScreenData_SpaceStationBoss:
 	dw SpaceStationBossEntities
 	dw PlaySong_Boss
 	dw $5C00
-	dw $7174
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_FuddForest1:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -30166,7 +30369,7 @@ ScreenData_FuddForest1:
 	dw FuddForest1Entities
 	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
-	dw $71E4 ; bugs bunny's digging metatile replacements
+	dw FuddForest1DiggingMetatileReplacements
 
 ScreenData_FuddForest2:
 	compressed_data FuddForestLevelTiles, $8B20
@@ -30186,7 +30389,7 @@ ScreenData_FuddForest2:
 	dw FuddForest2Entities
 	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
-	dw $7201 ; bugs bunny's digging metatile replacements
+	dw FuddForest2DiggingMetatileReplacements
 
 ScreenData_FuddForestBoss:
 	compressed_data FuddForestBossGroundTrackTiles, $9750
@@ -30211,7 +30414,7 @@ ScreenData_FuddForestBoss:
 	dw FuddForestBossEntities
 	dw PlaySong_Boss
 	dw $5C00 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw FuddForestBossBgScrollSpeeds
 
 ScreenData_Password:
@@ -30280,7 +30483,7 @@ ScreenData_Credits:
 	db Bank(StudioCreditsEntityTriggers)
 	dw StudioCreditsEntityTriggers
 	dw StudioCreditsEntities
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenData_TreasureIsland1Bonus:
 	db $ff
@@ -30395,7 +30598,7 @@ ScreenDataGBC_CrazyTown1:
 	dw CrazyTown1Entities
 	dw PlaySong_CrazyTown
 	dw $5C1E ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_CrazyTown2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30416,7 +30619,7 @@ ScreenDataGBC_CrazyTown2:
 	dw CrazyTown2Entities
 	dw $408C
 	dw $5C1E ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_TreasureIsland1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30437,7 +30640,7 @@ ScreenDataGBC_TreasureIsland1:
 	dw TreasureIsland1Entities
 	dw PlaySong_TreasureIsland
 	dw $5d37 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_TreasureIsland2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30458,7 +30661,7 @@ ScreenDataGBC_TreasureIsland2:
 	dw TreasureIsland2Entities
 	dw PlaySong_TreasureIsland
 	dw $5d37 ; animated tiles
-	dw $7175 ; bugs bunny's digging metatile replacements
+	dw TreasureIsland2DiggingMetatileReplacements
 
 ScreenDataGBC_CrazyTownBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30485,7 +30688,7 @@ ScreenDataGBC_CrazyTownBoss:
 	dw CrazyTownBossEntities
 	dw PlaySong_Boss
 	dw $5C3B ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw CrazyTownBossBgScrollSpeeds
 
 ScreenDataGBC_TazZoo1:
@@ -30507,7 +30710,7 @@ ScreenDataGBC_TazZoo1:
 	dw TazZoo1Entities
 	dw PlaySong_TazZoo
 	dw $5C00 ; animated tiles
-	dw $719A ; bugs bunny's digging metatile replacements
+	dw TazZoo1DiggingMetatileReplacements
 
 ScreenDataGBC_TazZoo2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30528,7 +30731,7 @@ ScreenDataGBC_TazZoo2:
 	dw TazZoo2Entities
 	dw PlaySong_TazZoo
 	dw $5C00
-	dw $71B7
+	dw TazZoo2DiggingMetatileReplacements
 
 ScreenDataGBC_TreasureIslandBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30555,7 +30758,7 @@ ScreenDataGBC_TreasureIslandBoss:
 	dw TreasureIslandBossEntities
 	dw PlaySong_Boss
 	dw $5CD4 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw TreasureIslandBossBgScrollSpeeds
 
 ScreenDataGBC_SpaceStation1:
@@ -30577,7 +30780,7 @@ ScreenDataGBC_SpaceStation1:
 	dw SpaceStation1Entities
 	dw PlaySong_SpaceStation
 	dw $5C75 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_SpaceStation2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30598,7 +30801,7 @@ ScreenDataGBC_SpaceStation2:
 	dw SpaceStation2Entities
 	dw PlaySong_SpaceStation
 	dw $5C75 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_SpaceStationBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30623,7 +30826,7 @@ ScreenDataGBC_SpaceStationBoss:
 	dw SpaceStationBossEntities
 	dw PlaySong_Boss
 	dw $5C00
-	dw $7174
+	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_FuddForest1:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30644,7 +30847,7 @@ ScreenDataGBC_FuddForest1:
 	dw FuddForest1Entities
 	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
-	dw $71E4 ; bugs bunny's digging metatile replacements
+	dw FuddForest1DiggingMetatileReplacements
 
 ScreenDataGBC_FuddForest2:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30665,7 +30868,7 @@ ScreenDataGBC_FuddForest2:
 	dw FuddForest2Entities
 	dw PlaySong_FuddForest
 	dw $5C00 ; animated tiles
-	dw $7201 ; bugs bunny's digging metatile replacements
+	dw FuddForest2DiggingMetatileReplacements
 
 ScreenDataGBC_FuddForestBoss:
 	compressed_data SharedLevelInterfaceTiles, $8340
@@ -30692,7 +30895,7 @@ ScreenDataGBC_FuddForestBoss:
 	dw FuddForestBossEntities
 	dw PlaySong_Boss
 	dw $5C00 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw FuddForestBossBgScrollSpeeds
 
 ScreenDataGBC_TazZooBoss:
@@ -30722,7 +30925,7 @@ ScreenDataGBC_TazZooBoss:
 	dw TazZooBossEntities
 	dw PlaySong_Boss
 	dw $5D16 ; animated tiles
-	dw $7174 ; bugs bunny's digging metatile replacements
+	dw EmptyDiggingMetatileReplacements
 	dw TazZooBossBgScrollSpeeds
 
 ScreenDataGBC_Studio:
