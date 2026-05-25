@@ -20886,6 +20886,8 @@ TickSoundEffectChannel:
 	call CommitWaveFrequency
 	jr WriteStereoPanning
 
+; Wave channel (CH3) volume table: maps MUSIC_CH_VOLUME to an NR32 output-level
+; code ($00/$20/$40/$60). Read at $41ce by CommitWaveFrequency.
 INCBIN "baserom.gbc", $81ce, $81de - $81ce
 
 ; Advances a single music channel by one frame. `h` selects the channel struct.
@@ -22124,6 +22126,7 @@ ReloadWaveChannel:
 	ldh [rNR34], a
 	ret
 
+; Unreferenced zero-filled gap in the audio engine bank, preceding NoteFrequencies.
 INCBIN "baserom.gbc", $87b7, $8800 - $87b7
 
 NoteFrequencies:
@@ -22643,6 +22646,7 @@ Func_8b26:
 	ld de, $4b4b
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_8b26.
 INCBIN "baserom.gbc", $8b3b, $8cbd - $8b3b
 
 Func_8cbd:
@@ -22654,6 +22658,7 @@ Func_8cbd:
 	ld de, $4d12
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_8cbd.
 INCBIN "baserom.gbc", $8cd2, $913f - $8cd2
 
 Func_913f:
@@ -22668,6 +22673,7 @@ Func_9142:
 	ld de, $5177
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_9142.
 INCBIN "baserom.gbc", $9157, $941e - $9157
 
 Func_941e:
@@ -22703,6 +22709,8 @@ Data_9439:
 	db $90, $6B, $60, $14, $D7, $19
 	db $CB, $14, $6B, $3C, $19, $68
 
+; Channel 2 & 3 music command streams for the song loaded by Func_941e (channel 1
+; is Data_9439 above).
 INCBIN "baserom.gbc", $9483, $9537 - $9483
 
 Func_9537:
@@ -22714,6 +22722,7 @@ Func_9537:
 	ld de, $5550
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_9537.
 INCBIN "baserom.gbc", $954c, $95c9 - $954c
 
 Func_95c9:
@@ -22725,6 +22734,7 @@ Func_95c9:
 	ld de, $55f2
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_95c9.
 INCBIN "baserom.gbc", $95de, $9867 - $95de
 
 Func_9867:
@@ -22740,6 +22750,7 @@ Func_9867:
 	ld de, $58c7
 	jp Func_88f4
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_9867.
 INCBIN "baserom.gbc", $9886, $9b73 - $9886
 
 Func_9b73:
@@ -22755,6 +22766,7 @@ Func_9b73:
 	ld de, $5bc3
 	jp Func_88f8
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_9b73.
 INCBIN "baserom.gbc", $9b92, $9e6a - $9b92
 
 Func_9e6a:
@@ -22766,6 +22778,7 @@ Func_9e6a:
 	ld de, $5ebb
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_9e6a.
 INCBIN "baserom.gbc", $9e7f, $a152 - $9e7f
 
 Func_a152:
@@ -22830,6 +22843,8 @@ Data_a1d1:
 Data_a1d8:
 	db $8F, $7B, $02, $10, $F1, $7E, $B4, $61, $80, $D3, $0C, $8A, $C9, $21, $8F, $D3, $15, $C9, $13, $8A, $21, $8F, $13, $D3, $0C, $8A, $E7, $21, $8F, $D3, $13, $6A
 
+; Music pattern command streams for the song loaded by Func_a152 (referenced by the
+; Data_a172/Data_a188/Data_a19e pattern-pointer lists above).
 INCBIN "baserom.gbc", $a1f8, $a4c9 - $a1f8
 
 Func_a4c9:
@@ -22841,6 +22856,7 @@ Func_a4c9:
 	ld de, $64fa
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_a4c9.
 INCBIN "baserom.gbc", $a4de, $a6df - $a4de
 
 Func_a6df:
@@ -22856,6 +22872,7 @@ Func_a6df:
 	ld de, $670a
 	jp Func_88f8
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_a6df.
 INCBIN "baserom.gbc", $a6fe, $a792 - $a6fe
 
 Func_a792:
@@ -22867,6 +22884,7 @@ Func_a792:
 	ld de, $67b3
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_a792.
 INCBIN "baserom.gbc", $a7a7, $a816 - $a7a7
 
 Func_a816:
@@ -22878,6 +22896,7 @@ Func_a816:
 	ld de, $6837
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_a816.
 INCBIN "baserom.gbc", $a82b, $a904 - $a82b
 
 Func_a904:
@@ -22889,6 +22908,7 @@ Func_a904:
 	ld de, $6955
 	jp Func_88f0
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_a904.
 INCBIN "baserom.gbc", $a919, $ac37 - $a919
 
 Func_ac37:
@@ -22904,6 +22924,7 @@ Func_ac37:
 	ld de, $6c7a
 	jp Func_88f4
 
+; Music sequence data (per-channel command streams) for the song loaded by Func_ac37.
 INCBIN "baserom.gbc", $ac56, $b1a4 - $ac56
 
 SoundEffects:
@@ -22936,6 +22957,8 @@ SoundEffect1:
 	dbw $7F, Func_b3c6
 	db $C7, $79, $2A, $75, $3C, $81, $0A, $3C, $68
 
+; Sound effect command streams (the SFX entries after SoundEffect1), referenced by
+; the SoundEffects table above.
 INCBIN "baserom.gbc", $b1e2, $b3c6 - $b1e2
 
 Func_b3c6:
@@ -22955,6 +22978,8 @@ Func_b3c6:
 	ld [$db5a], a
 	ret
 
+; Noise/percussion sequence data for sound effects. Read by UpdateNoiseChannel via
+; the sequence pointers set in Func_b3c6/Func_b658/etc.
 INCBIN "baserom.gbc", $b3e8, $b658 - $b3e8
 
 Func_b658:
@@ -22987,6 +23012,7 @@ Func_b675:
 	ld [$db5a], a
 	ret
 
+; Noise/percussion sequence data for a sound effect (pointed to by Func_b675).
 INCBIN "baserom.gbc", $b692, $b69d - $b692
 
 Func_b69d:
@@ -23004,6 +23030,7 @@ Func_b69d:
 	ld [$db5a], a
 	ret
 
+; Noise/percussion sequence data for a sound effect (pointed to by Func_b69d).
 INCBIN "baserom.gbc", $b6ba, $b6d1 - $b6ba
 
 Func_b6d1:
@@ -23081,6 +23108,7 @@ Func_b745:
 	ld [$db5a], a
 	ret
 
+; Noise/percussion sequence data for a sound effect (pointed to by Func_b745).
 INCBIN "baserom.gbc", $b762, $b767 - $b762
 
 Func_b767:
@@ -23113,6 +23141,7 @@ Func_b784:
 	ld [$db5a], a
 	ret
 
+; Noise/percussion sequence data for sound effects (pointed to by Func_b767/Func_b784).
 INCBIN "baserom.gbc", $b7a1, $bc00 - $b7a1
 
 FuddForestLevelSpriteTiles:
