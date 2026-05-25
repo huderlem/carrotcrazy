@@ -24809,7 +24809,10 @@ StudioCreditsEntity2: entity_credits_studio_daffy_duck $14C, $6D
 StudioCreditsEntity3: entity_credits_studio_yosemite_sam $1CC, $6D
 StudioCreditsEntity4: entity_credits_studio_taz $24C, $6D
 
-INCBIN "baserom.gbc", $f78f, $fb10 - $f78f
+; Complete initial data for the EXTRA bonus minigame's wram area.
+; (see wBonusSpritePtrTable and the fields after it).
+LevelBonusSpriteData:
+	INCBIN "data/level_bonus/sprite_data.bin.lz"
 
 SpaceStationMetatiles:
 	INCBIN "data/levels/space_station_metatiles.bin.lz"
@@ -30160,8 +30163,7 @@ ScreenData_LevelBonus:
 	dw PlaySong_Menu
 
 Data_1b75e:
-	db $03
-	dw $778F, $C000
+	compressed_data LevelBonusSpriteData, $C000
 	db $ff
 
 ScreenData_EpilogueScene:
