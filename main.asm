@@ -20639,33 +20639,39 @@ Func_8095:
 PlaySoundEffect__:
 	jp PlaySoundEffect___
 
+; Resumes playback after PauseMusic. Clears the paused flag and reloads the
+; wave channel (pausing had muted it; see ReloadWaveChannel).
 ResumeMusic_:
 	xor a
 	ld [wMusicPaused], a
 	jp ReloadWaveChannel
 
+; Silences every channel and sets the paused flag, but leaves an in-progress
+; sound effect playing on the wave channel (ch3) so it can finish. Volume is
+; zeroed via the NRx2 envelope registers, then each channel is retriggered
+; (NRx4 bit 7) to apply it. TickMusicEngine_ skips channel updates while paused.
 PauseMusic_:
 	xor a
-	ldh [rNR12], a
-	ldh [rNR22], a
-	ldh [rNR42], a
+	ldh [rNR12], a ; ch1: zero volume/envelope
+	ldh [rNR22], a ; ch2: zero volume/envelope
+	ldh [rNR42], a ; ch4: zero volume/envelope
 	inc a
 	ld [wMusicPaused], a
 	ld a, [wActiveSoundEffect]
 	and a
-	jr nz, .asm_80b6
+	jr nz, .retriggerChannels ; an SFX owns ch3: don't mute the wave output
 	xor a
-	ldh [rNR32], a
-.asm_80b6
+	ldh [rNR32], a ; ch3: zero wave output level
+.retriggerChannels
 	ld a, $80
-	ldh [rNR14], a
-	ldh [rNR24], a
-	ldh [rNR44], a
+	ldh [rNR14], a ; ch1: retrigger to apply the zeroed volume
+	ldh [rNR24], a ; ch2: retrigger
+	ldh [rNR44], a ; ch4: retrigger
 	ld a, [wActiveSoundEffect]
 	and a
-	ret nz
+	ret nz ; leave ch3 running if an SFX is playing
 	ld a, $80
-	ldh [rNR34], a
+	ldh [rNR34], a ; ch3: retrigger
 	ret
 
 MusicCommand_SetNoteCallback:
@@ -22296,24 +22302,33 @@ asm_8905:
 	ld [hl], d
 	ret
 
+; One more hop in the PlaySoundEffect -> ..._ -> ..__ -> ..___ trampoline chain
+; (the leading entries are fixed-address jumps near the top of the bank).
 PlaySoundEffect_:
 	jp PlaySoundEffect__
 
+; Starts playing sound effect `a`. Sound effects run on the $de struct, whose
+; tick drives the wave channel's registers (see TickSoundEffectChannel), and
+; play to completion even while the music is paused. This initializes that
+; struct -- note its MUSIC_CH_ENABLED / NOTE_TIMER / CMD_PTR fields are also
+; reachable as wActiveSoundEffect / wSoundEffectDuration / wSoundEffectCommandPointer.
 PlaySoundEffect___:
-	ld [wActiveSoundEffect], a
+	ld [wActiveSoundEffect], a ; MUSIC_CH_ENABLED: SFX id (nonzero = active)
 	ld c, a
 	ld a, $11
-	ld [$de38], a ; unused?
+	ld [MUSIC_CHAN_4 + MUSIC_CH_NR51], a ; unused (stereo panning is disabled)
 	xor a
-	ld [$de04], a
-	ld [$de0b], a
-	ld [$de2f], a
-	ld [$de2c], a
-	ld [$de0e], a
+	ld [MUSIC_CHAN_4 + MUSIC_CH_FLAGS], a     ; clear vibrato/arp/callback flags
+	ld [MUSIC_CHAN_4 + MUSIC_CH_TRANSPOSE], a
+	ld [MUSIC_CHAN_4 + MUSIC_CH_DUTY_SEQ], a  ; no duty sequence
+	ld [MUSIC_CHAN_4 + MUSIC_CH_PAN_SEQ], a   ; no pan sequence
+	ld [MUSIC_CHAN_4 + MUSIC_CH_ARP_OFFSET], a
 	inc a
-	ld [wSoundEffectDuration], a
+	ld [wSoundEffectDuration], a ; MUSIC_CH_NOTE_TIMER = 1: read first command next tick
 	ld a, $f4
-	ld [$de0d], a
+	ld [MUSIC_CHAN_4 + MUSIC_CH_OCTAVE], a ; octave base offset (-12) for SFX notes
+	; Copy SoundEffects[id] (the effect's command-stream pointer) into the SFX
+	; channel's command pointer (wSoundEffectCommandPointer = MUSIC_CH_CMD_PTR).
 	ld a, c
 	ld de, wSoundEffectCommandPointer
 	add a
