@@ -20904,7 +20904,7 @@ TickMusicChannel:
 	ld a, [bc]
 	ld [hl], a
 	call UpdateVolumeEnvelope
-	call Func_8447 ; apply note glide/connect
+	call Func_8447 ; apply the timed mid-note retrigger effect (command $7B)
 	ld l, MUSIC_CH_FLAGS
 	bit 3, [hl]
 	ret z ; done unless vibrato is enabled
