@@ -21,11 +21,13 @@ DEF MUSIC_CHAN_4 EQU $de00
 ; === Per-channel state struct field offsets ===
 ; Used as `ld l, MUSIC_CH_*` with `h` holding the channel's high address byte.
 
-; Pointer to this channel's song "order list" (a list of pointers to command
-; streams). When a stream ends, the engine advances through this list.
-DEF MUSIC_CH_ORDER_PTR  EQU $00 ; 2 bytes
+; Pointer to the current position in this channel's "chain": a tracker-style list
+; of pointers to phrases. When the current phrase ends, the engine advances the
+; chain to the next phrase (see MusicCommand_EndPhrase).
+DEF MUSIC_CH_CHAIN_PTR  EQU $00 ; 2 bytes
 
-; Pointer to the current position in the channel's command stream.
+; Pointer to the current position within the channel's current phrase (a stream of
+; the command bytes documented at the bottom of this file).
 DEF MUSIC_CH_CMD_PTR    EQU $02 ; 2 bytes
 
 ; Bitfield of per-channel state flags:
@@ -112,13 +114,13 @@ DEF MUSIC_CH_CALL       EQU $39 ; $39-$3b
 DEF MUSIC_CH_NOTE_CB    EQU $3e ; 2 bytes
 
 
-; === Command stream opcodes ===
-; A command stream is a byte sequence. Bytes below FIRST_MUSIC_COMMAND are note
-; values; bytes >= FIRST_MUSIC_COMMAND are commands, dispatched by range:
+; === Phrase command opcodes ===
+; A phrase is a byte sequence. Bytes below FIRST_MUSIC_COMMAND are note values;
+; bytes >= FIRST_MUSIC_COMMAND are commands, dispatched by range:
 ;   $60-$84  table-dispatched commands (MusicCommandTable)
-;   $85-$93  macro / sub-stream calls
+;   $85-$93  macro / sub-phrase calls
 ;   $94-$AF  select arpeggio table
 ;   $B0-$BF  set software volume envelope
 ;   $C0-$EF  set note duration (length = opcode - $BF)
-;   $F0-$FF  call command stream, repeating (opcode - $EE) times
+;   $F0-$FF  call phrase, repeating (opcode - $EE) times
 DEF FIRST_MUSIC_COMMAND EQU $60

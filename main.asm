@@ -20514,11 +20514,13 @@ TazZooBossCollisionAttributes:
 ;
 ; Channel state lives in four $100-aligned WRAM structs ($db00/$dc00/$dd00/$de00);
 ; see constants/audio_constants.asm for the field layout and the command format.
-; Songs are tiny loader routines (further down this bank) that point each channel
-; at a command stream. Sound effects play on channel 4 via PlaySoundEffect.
+; The data is laid out like a tracker: a song is three per-channel "chains" (lists
+; of "phrase" pointers), and a phrase is a stream of the command bytes below. Songs
+; are tiny loader routines (further down this bank) that point each channel at its
+; chain. Sound effects play on channel 4 via PlaySoundEffect.
 SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 
-; Jump table for command-stream opcodes $60-$84 (see ReadMusicMetaCommand).
+; Jump table for phrase command opcodes $60-$84 (see ReadMusicMetaCommand).
 MusicCommandTable:
 	dw MusicCommand_SetTranspose
 	dw MusicCommand_ClearTranspose
@@ -20530,7 +20532,7 @@ MusicCommandTable:
 	dw ResetMusicChannels
 	dw MusicCommand_StopChannel
 	dw MusicCommand_SetDetune
-	dw MusicCommand_EndSection
+	dw MusicCommand_EndPhrase
 	dw MusicCommand_SetNoteLength
 	dw MusicCommand_StartNoiseSequence
 	dw MusicCommand_StopNoiseSequence
@@ -20599,52 +20601,52 @@ FadeOutMusic:
 	jp FadeOutMusic_
 
 PlaySong_Unused1:
-	jp Func_8b23
+	jp LoadSong_Unused1_Stub
 
 PlaySong_Studio:
-	jp Func_913f
+	jp LoadSong_Studio_Stub
 
 PlaySong_Title:
-	jp Func_9142
+	jp LoadSong_Title
 
 PlaySong_Copyright:
-	jp Func_941e
+	jp LoadSong_Copyright
 
 PlaySong_GameOver:
-	jp Func_9537
+	jp LoadSong_GameOver
 
 PlaySong_Unused2:
-	jp Func_95c9
+	jp LoadSong_Unused2
 
 PlaySong_SpaceStation:
-	jp Func_9867
+	jp LoadSong_SpaceStation
 
 PlaySong_TazZoo:
-	jp Func_9b73
+	jp LoadSong_TazZoo
 
 PlaySong_Boss:
-	jp Func_9e6a
+	jp LoadSong_Boss
 
 PlaySong_TreasureIsland:
-	jp Func_a152
+	jp LoadSong_TreasureIsland
 
 PlaySong_Menu:
-	jp Func_a4c9
+	jp LoadSong_Menu
 
 PlaySong_Unused3:
-	jp Func_a6df
+	jp LoadSong_Unused3
 
 PlaySong_Unused4:
-	jp Func_a792
+	jp LoadSong_Unused4
 
 PlaySong_Unused5:
-	jp Func_a816
+	jp LoadSong_Unused5
 
 PlaySong_CrazyTown:
-	jp Func_a904
+	jp LoadSong_CrazyTown
 
 PlaySong_FuddForest:
-	jp Func_ac37
+	jp LoadSong_FuddForest
 
 Func_8092:
 	jp $6f8f
@@ -21329,7 +21331,7 @@ ReadMusicMetaCommand_85:
 	ld h, a ; hl = macro table + index*2
 	ld e, [hl]
 	inc hl
-	ld d, [hl] ; de = macro command stream
+	ld d, [hl] ; de = macro sub-phrase
 	ld h, c
 	ld a, $c9
 	ld [wMusicInMacro], a ; mark that commands now come from the macro
@@ -21698,7 +21700,7 @@ MusicCommand_SetDetune:
 	inc de
 	ret
 
-; Restores de from the saved return pointer (used by MusicCommand_EndSection).
+; Restores de from the saved return pointer (used by MusicCommand_EndPhrase).
 ReturnFromCall:
 	ld l, MUSIC_CH_RETURN_PTR
 	ld e, [hl]
@@ -21722,7 +21724,7 @@ MusicCommand_Call:
 	ld d, a
 	ret
 
-; Command $7D: jump to an absolute position in the command stream.
+; Command $7D: jump to an absolute position in the current phrase.
 MusicCommand_Goto:
 	ld a, [de]
 	inc de
@@ -21732,14 +21734,14 @@ MusicCommand_Goto:
 	ld e, l
 	ret
 
-; Command $6A: end the current section. If a call is outstanding, return from it;
-; otherwise advance through the channel's order list (looping at the end).
-MusicCommand_EndSection:
+; Command $6A: end the current phrase. If a $7E call is outstanding, return from it;
+; otherwise advance to the next phrase in the channel's chain (looping at the end).
+MusicCommand_EndPhrase:
 	ld l, MUSIC_CH_RETURN_PTR + 1
 	ld a, [hl]
 	and a
 	jr nz, ReturnFromCall
-	ld l, MUSIC_CH_ORDER_PTR
+	ld l, MUSIC_CH_CHAIN_PTR
 	ld c, [hl]
 	inc l
 	ld b, [hl]
@@ -21750,20 +21752,20 @@ MusicCommand_EndSection:
 	inc bc
 	ld d, a
 	or e
-	jr z, .restartOrderList ; null entry: loop back to the start
+	jr z, .restartChain ; null entry: loop back to the start
 	ld [hl], b
 	dec l
 	ld [hl], c
 	ret
-.restartOrderList
-	ld l, MUSIC_CH_ORDER_PTR
+.restartChain
+	ld l, MUSIC_CH_CHAIN_PTR
 	ld a, [bc]
 	inc bc
 	ld [hli], a
 	ld a, [bc]
 	inc bc
 	ld [hl], a
-	ld l, MUSIC_CH_ORDER_PTR
+	ld l, MUSIC_CH_CHAIN_PTR
 	ld c, [hl]
 	inc l
 	ld b, [hl]
@@ -22291,34 +22293,42 @@ UpdateVolumeEnvelope:
 	ld [hl], a
 	ret
 
-Func_88f0:
-	ld h, $db
-	jr asm_8905
-Func_88f4:
-	ld h, $dc
-	jr asm_8905
-Func_88f8:
-	ld h, $dd
+; Starts playback on one of the three melodic music channels from a "chain" -- a
+; list of pointers to phrases (see MUSIC_CH_CHAIN_PTR), in the manner of a tracker.
+; On entry de -> the channel's chain. Resets the channel, enables it, copies the
+; first chain entry into MUSIC_CH_CMD_PTR (the phrase that plays first) and leaves
+; MUSIC_CH_CHAIN_PTR pointing at the next entry. Every song loader (LoadSong_*)
+; calls all three, once per channel. The channel-3 entry additionally resets the
+; global master-volume sequence and NR50, since channel 3 is set up as part of the
+; song (re)start.
+StartMusicChannel1:
+	ld h, HIGH(MUSIC_CHAN_1)
+	jr LoadChannelChain
+StartMusicChannel2:
+	ld h, HIGH(MUSIC_CHAN_2)
+	jr LoadChannelChain
+StartMusicChannel3:
+	ld h, HIGH(MUSIC_CHAN_3)
 	xor a
 	ld [wMusicMasterVolSeqActive], a
 	ld [$db52], a
 	ld a, $77
 	ldh [rNR50], a
-asm_8905:
+LoadChannelChain:
 	call ResetChannel
-	ld l, $27
-	ld [hl], $01
-	ld l, $02
+	ld l, MUSIC_CH_ENABLED
+	ld [hl], $01 ; mark the channel active
+	ld l, MUSIC_CH_CMD_PTR
 	ld a, [de]
 	inc de
 	ld [hli], a
 	ld a, [de]
 	inc de
-	ld [hl], a
-	ld l, $00
+	ld [hl], a ; MUSIC_CH_CMD_PTR = chain[0] (first phrase to play)
+	ld l, MUSIC_CH_CHAIN_PTR
 	ld [hl], e
 	inc l
-	ld [hl], d
+	ld [hl], d ; MUSIC_CH_CHAIN_PTR = chain + 2 (next entry to advance to)
 	ret
 
 ; One more hop in the PlaySoundEffect -> ..._ -> ..__ -> ..___ trampoline chain
@@ -22346,7 +22356,7 @@ PlaySoundEffect___:
 	ld [wSoundEffectDuration], a ; MUSIC_CH_NOTE_TIMER = 1: read first command next tick
 	ld a, $f4
 	ld [MUSIC_CHAN_4 + MUSIC_CH_OCTAVE], a ; octave base offset (-12) for SFX notes
-	; Copy SoundEffects[id] (the effect's command-stream pointer) into the SFX
+	; Copy SoundEffects[id] (the effect's phrase pointer) into the SFX
 	; channel's command pointer (wSoundEffectCommandPointer = MUSIC_CH_CMD_PTR).
 	ld a, c
 	ld de, wSoundEffectCommandPointer
@@ -22656,298 +22666,1467 @@ UpdateNoiseChannel:
 	ld [$db5c], a
 	ret
 
-Func_8b23:
-	jp Func_8b26
+LoadSong_Unused1_Stub:
+	jp LoadSong_Unused1
 
-Func_8b26:
+LoadSong_Unused1:
 	call ResetMusicChannels
-	ld de, $4b3b
-	call Func_88f8
-	ld de, $4b43
-	call Func_88f4
-	ld de, $4b4b
-	jp Func_88f0
+	ld de, MusicChain_Unused1_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Unused1_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Unused1_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_8b26.
-INCBIN "baserom.gbc", $8b3b, $8cbd - $8b3b
+; Song data for LoadSong_Unused1: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Unused1_Ch3:
+	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_Unused1_Ch3_1
+	dw $0000
+	dw MusicChain_Unused1_Ch3 ; loop
+MusicChain_Unused1_Ch2:
+	dw MusicPhrase_Unused1_Ch2_0
+	dw MusicPhrase_Unused1_Ch2_1
+	dw $0000
+	dw MusicChain_Unused1_Ch2 ; loop
+MusicChain_Unused1_Ch1:
+	dw MusicPhrase_Unused1_Ch1_0
+	dw MusicPhrase_Unused1_Ch1_1
+	dw $0000
+	dw MusicChain_Unused1_Ch1 ; loop
 
-Func_8cbd:
+MusicPhrase_Unused1_Ch1_0:
+	db $6C, $07, $37, $51, $96, $74, $E1, $04, $83, $63, $00, $03, $04, $73, $7A, $FE
+	db $7B, $00, $D4, $33, $CD, $33, $C6, $33, $D4, $33, $CD, $33, $C6, $33, $CD, $33
+	db $C6, $33, $D4, $33, $32, $30, $2E, $CD, $2E, $C6, $2E, $D4, $2E, $CD, $2E, $C6
+	db $2E, $CD, $2E, $C6, $2E, $D4, $2E, $2C, $2B, $6A
+MusicPhrase_Unused1_Ch1_1:
+	db $D4, $29, $30, $E2, $2E, $C6, $28, $CD, $29, $D4, $30, $2E, $C6, $28, $CD, $29
+	db $C6, $2A, $D4, $2B, $30, $2E, $CD, $2B, $D4, $2E, $C6, $30, $CD, $2E, $C6, $30
+	db $CD, $32, $C6, $2E, $CD, $30, $C6, $32, $6A
+MusicPhrase_Unused1_Ch3_0:
+	db $7A, $0C, $90, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $16, $89, $CD, $27
+	db $90, $C6, $16, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $13, $14, $16, $89
+	db $CD, $22, $90, $C6, $16, $D4, $11, $89, $CD, $22, $90, $C6, $11, $D4, $16, $89
+	db $CD, $22, $90, $C6, $16, $D4, $11, $CD, $13, $C6, $14, $6A
+MusicPhrase_Unused1_Ch3_1:
+	db $90, $D4, $16, $89, $CD, $22, $90, $C6, $16, $D4, $11, $89, $CD, $22, $90, $C6
+	db $11, $D4, $16, $89, $CD, $22, $90, $C6, $16, $CD, $11, $89, $C6, $22, $90, $CD
+	db $13, $89, $C6, $22, $90, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $16, $89
+	db $CD, $27, $90, $D4, $16, $C6, $16, $89, $CD, $22, $90, $C6, $11, $CD, $13, $C6
+	db $11, $CD, $13, $C6, $11, $6A
+MusicPhrase_Unused1_Ch2_0:
+	db $63, $00, $03, $04, $8E, $CD, $1B, $C6, $1F, $CD, $22, $C6, $1F, $CD, $1B, $C6
+	db $1F, $CD, $22, $C6, $1F, $CD, $1B, $C6, $1F, $CD, $22, $C6, $1F, $CD, $1B, $C6
+	db $1F, $CD, $22, $C6, $1F, $CD, $22, $C6, $26, $CD, $1D, $C6, $26, $CD, $22, $C6
+	db $26, $CD, $1D, $C6, $26, $CD, $22, $C6, $26, $CD, $1D, $C6, $26, $CD, $22, $C6
+	db $26, $1D, $1F, $20, $6A
+MusicPhrase_Unused1_Ch2_1:
+	db $8E, $CD, $22, $C6, $26, $CD, $1D, $C6, $26, $CD, $22, $C6, $26, $CD, $1D, $C6
+	db $26, $CD, $22, $C6, $26, $CD, $1D, $C6, $26, $CD, $22, $C6, $20, $CD, $1F, $C6
+	db $1D, $CD, $1B, $C6, $24, $CD, $1F, $C6, $24, $CD, $22, $C6, $1F, $CD, $1B, $D4
+	db $22, $C6, $24, $CD, $22, $C6, $24, $CD, $26, $C6, $22, $CD, $24, $C6, $26, $6A
+
+LoadSong_Studio:
 	call ResetMusicChannels
-	ld de, $4cd2
-	call Func_88f8
-	ld de, $4cee
-	call Func_88f4
-	ld de, $4d12
-	jp Func_88f0
+	ld de, MusicChain_Studio_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Studio_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Studio_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_8cbd.
-INCBIN "baserom.gbc", $8cd2, $913f - $8cd2
+; Song data for LoadSong_Studio: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Studio_Ch3:
+	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_Unused1_Ch3_1
+	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_Studio_Ch3_0
+	dw MusicPhrase_Studio_Ch3_1
+	dw MusicPhrase_Studio_Ch3_1
+	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_Unused1_Ch3_1
+	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_Studio_Ch3_0
+	dw MusicPhrase_Studio_Ch3_1
+	dw MusicPhrase_Studio_Ch3_1
+	dw $0000
+	dw MusicChain_Studio_Ch3 ; loop
+MusicChain_Studio_Ch2:
+	dw MusicPhrase_Unused1_Ch2_0
+	dw MusicPhrase_Unused1_Ch2_1
+	dw MusicPhrase_Unused1_Ch2_0
+	dw MusicPhrase_Studio_Ch2_0
+	dw MusicPhrase_Studio_Ch2_1
+	dw MusicPhrase_Studio_Ch2_2
+	dw MusicPhrase_Studio_Ch2_1
+	dw MusicPhrase_Studio_Ch2_2
+	dw MusicPhrase_Studio_Ch2_3
+	dw MusicPhrase_Studio_Ch2_4
+	dw MusicPhrase_Studio_Ch2_5
+	dw MusicPhrase_Studio_Ch2_6
+	dw MusicPhrase_Studio_Ch2_1
+	dw MusicPhrase_Studio_Ch2_2
+	dw MusicPhrase_Studio_Ch2_1
+	dw MusicPhrase_Studio_Ch2_2
+	dw $0000
+	dw MusicChain_Studio_Ch2 ; loop
+MusicChain_Studio_Ch1:
+	dw MusicPhrase_Unused1_Ch1_0
+	dw MusicPhrase_Unused1_Ch1_1
+	dw MusicPhrase_Unused1_Ch1_0
+	dw MusicPhrase_Studio_Ch1_0
+	dw MusicPhrase_Studio_Ch1_1
+	dw MusicPhrase_Studio_Ch1_2
+	dw MusicPhrase_Studio_Ch1_1
+	dw MusicPhrase_Studio_Ch1_3
+	dw MusicPhrase_Studio_Ch1_4
+	dw MusicPhrase_Studio_Ch1_5
+	dw MusicPhrase_Studio_Ch1_6
+	dw MusicPhrase_Studio_Ch1_7
+	dw MusicPhrase_Studio_Ch1_1
+	dw MusicPhrase_Studio_Ch1_2
+	dw MusicPhrase_Studio_Ch1_1
+	dw MusicPhrase_Studio_Ch1_3
+	dw $0000
+	dw MusicChain_Studio_Ch1 ; loop
 
-Func_913f:
-	jp Func_8cbd
+MusicPhrase_Studio_Ch3_0:
+	db $90, $D4, $16, $89, $CD, $22, $90, $C6, $16, $D4, $11, $89, $CD, $22, $90, $C6
+	db $11, $D4, $16, $89, $CD, $22, $90, $C6, $16, $CD, $11, $89, $C6, $22, $90, $CD
+	db $13, $89, $C6, $22, $90, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $16, $89
+	db $CD, $27, $90, $C6, $16, $CD, $0F, $C6, $1B, $D4, $0F, $11, $12, $6A, $90, $D4
+	db $13, $89, $CD, $1F, $90, $C6, $13, $D4, $0E, $89, $CD, $1F, $90, $C6, $13, $D4
+	db $18, $8A, $CD, $24, $90, $C6, $18, $6A
+MusicPhrase_Studio_Ch3_1:
+	db $7E, $74, $4D, $D4, $13, $8A, $CD, $24, $90, $C6, $12, $D4, $11, $89, $CD, $1D
+	db $90, $C6, $11, $D4, $0C, $89, $CD, $1D, $90, $C6, $11, $D4, $16, $89, $CD, $22
+	db $90, $C6, $16, $D4, $11, $89, $CD, $22, $90, $C6, $11, $7E, $74, $4D, $CD, $13
+	db $8A, $C6, $24, $90, $CD, $12, $8A, $C6, $24, $90, $D4, $11, $89, $CD, $29, $90
+	db $C6, $11, $D4, $18, $89, $CD, $29, $90, $C6, $18, $CD, $16, $89, $C6, $2E, $90
+	db $CD, $11, $89, $C6, $2E, $90, $CD, $16, $89, $C6, $2E, $90, $11, $13, $11, $6A
+MusicPhrase_Studio_Ch2_0:
+	db $8E, $CD, $22, $C6, $26, $CD, $1D, $C6, $26, $CD, $22, $C6, $26, $CD, $1D, $C6
+	db $26, $CD, $22, $C6, $26, $CD, $1D, $C6, $26, $CD, $22, $C6, $20, $CD, $1F, $C6
+	db $1D, $CD, $1B, $C6, $24, $CD, $22, $C6, $24, $CD, $22, $C6, $24, $CD, $22, $C6
+	db $24, $CD, $1B, $C6, $27, $CD, $1B, $C6, $27, $CD, $1D, $C6, $29, $CD, $1E, $C6
+	db $2A, $6A
+MusicPhrase_Studio_Ch2_1:
+	db $8E, $CD, $1F, $C6, $1F, $CD, $1A, $C6, $23, $CD, $1F, $C6, $1A, $CD, $1A, $C6
+	db $23, $CD, $24, $C6, $24, $CD, $1F, $C6, $24, $CD, $24, $C6, $2B, $CD, $2A, $C6
+	db $29, $CD, $1D, $C6, $1D, $CD, $18, $C6, $21, $CD, $1D, $C6, $18, $CD, $18, $C6
+	db $21, $CD, $22, $C6, $22, $CD, $1D, $C6, $22, $CD, $22, $C6, $29, $CD, $2A, $C6
+	db $2B, $6A
+MusicPhrase_Studio_Ch2_2:
+	db $8E, $CD, $1F, $C6, $1F, $CD, $1A, $C6, $23, $CD, $1F, $C6, $1A, $CD, $1A, $C6
+	db $23, $CD, $24, $C6, $24, $CD, $1F, $C6, $24, $CD, $27, $C6, $1F, $CD, $24, $C6
+	db $24, $CD, $21, $C6, $21, $CD, $22, $C6, $23, $CD, $24, $C6, $26, $CD, $27, $C6
+	db $24, $CD, $26, $C6, $27, $CD, $26, $C6, $24, $CD, $22, $C6, $20, $CD, $1F, $C6
+	db $1D, $6A
+MusicPhrase_Studio_Ch2_3:
+	db $93, $CD, $37, $8E, $C6, $1F, $93, $CD, $37, $C6, $37, $CD, $37, $8E, $C6, $1F
+	db $93, $CD, $37, $C6, $37, $CD, $37, $C6, $38, $CD, $37, $8E, $C6, $1F, $93, $CD
+	db $35, $8E, $C6, $1F, $93, $CD, $33, $8E, $C6, $1F, $93, $CD, $32, $8E, $C6, $26
+	db $93, $CD, $32, $C6, $32, $CD, $32, $8E, $C6, $26, $93, $CD, $32, $C6, $32, $CD
+	db $32, $C6, $33, $CD, $32, $8E, $C6, $26, $93, $CD, $30, $8E, $C6, $26, $93, $2E
+	db $8E, $1F, $20, $6A
+MusicPhrase_Studio_Ch2_5:
+	db $93, $CD, $33, $8E, $C6, $1F, $93, $CD, $33, $C6, $33, $CD, $33, $8E, $C6, $1F
+	db $93, $CD, $33, $C6, $33, $CD, $33, $C6, $33, $CD, $33, $8E, $C6, $1F, $93, $CD
+	db $30, $8E, $C6, $1F, $93, $CD, $31, $8E, $C6, $1F, $93, $CD, $32, $8E, $C6, $26
+	db $93, $CD, $32, $C6, $32, $CD, $32, $8E, $C6, $26, $93, $CD, $32, $C6, $32, $CD
+	db $32, $C6, $32, $CD, $32, $8E, $C6, $26, $93, $CD, $33, $8E, $C6, $26, $93, $34
+	db $8E, $1F, $20, $6A
+MusicPhrase_Studio_Ch2_4:
+	db $93, $CD, $2C, $8E, $C6, $26, $93, $CD, $33, $8E, $C6, $26, $93, $CD, $32, $8E
+	db $C6, $26, $CD, $1D, $93, $C6, $2B, $CD, $2C, $C6, $33, $8E, $CD, $1D, $93, $C6
+	db $32, $8E, $CD, $22, $93, $C6, $32, $CD, $33, $C6, $35, $CD, $37, $8E, $C6, $24
+	db $93, $CD, $37, $8E, $C6, $24, $93, $CD, $37, $C6, $37, $D4, $37, $CD, $37, $C6
+	db $38, $CD, $37, $D4, $35, $C6, $33, $CD, $32, $C6, $35, $6A
+MusicPhrase_Studio_Ch2_6:
+	db $93, $CD, $32, $8E, $C6, $26, $93, $CD, $32, $C6, $32, $CD, $32, $8E, $C6, $26
+	db $93, $CD, $32, $C6, $32, $CD, $32, $C6, $32, $CD, $32, $8E, $C6, $26, $93, $CD
+	db $33, $8E, $C6, $20, $93, $CD, $32, $8E, $C6, $1D, $93, $CD, $2B, $8E, $C6, $24
+	db $93, $CD, $2B, $8E, $C6, $24, $93, $CD, $2C, $C6, $2C, $8E, $CD, $22, $93, $C6
+	db $2B, $8E, $CD, $1B, $C6, $27, $CD, $1B, $C6, $27, $CD, $1D, $C6, $29, $CD, $1E
+	db $C6, $2A, $6A
+MusicPhrase_Studio_Ch1_0:
+	db $D4, $29, $30, $E2, $2E, $C6, $28, $CD, $29, $D4, $30, $2E, $C6, $29, $CD, $2B
+	db $C6, $29, $D4, $27, $27, $CD, $27, $D4, $27, $6B, $5B, $27, $6A
+MusicPhrase_Studio_Ch1_1:
+	db $D4, $65, $74, $A0, $00, $71, $7B, $02, $62, $CD, $2F, $C6, $62, $CD, $2F, $C6
+	db $2D, $CD, $2F, $C6, $62, $30, $62, $30, $CD, $62, $6B, $31, $2B, $D4, $62, $CD
+	db $2D, $C6, $62, $CD, $2D, $C6, $2B, $CD, $2D, $C6, $62, $2E, $62, $2E, $CD, $62
+	db $E9, $29, $C6, $62, $6A, $D4, $65, $CD, $2F, $C6, $30, $32, $62, $30, $2F, $62
+	db $D4, $30, $C6, $62, $CD, $2B, $C6, $62, $CD, $33, $C6, $30, $CD, $2F, $C6, $30
+	db $CD, $35, $C6, $62, $CD, $33, $C6, $62, $CD, $32, $C6, $62, $CD, $30, $C6, $62
+	db $CD, $6A
+MusicPhrase_Studio_Ch1_2:
+	db $7E, $4D, $50, $2E, $C6, $30, $2E, $62, $E9, $29, $C6, $62, $6A
+MusicPhrase_Studio_Ch1_3:
+	db $7E, $4D, $50, $32, $C6, $33, $34, $62, $E2, $35, $CD, $62, $6A
+MusicPhrase_Studio_Ch1_4:
+	db $74, $E1, $04, $83, $63, $00, $03, $04, $73, $7B, $00, $D4, $33, $CD, $33, $C6
+	db $33, $D4, $33, $CD, $33, $C6, $33, $CD, $33, $C6, $35, $D4, $33, $32, $30, $2E
+	db $CD, $2E, $C6, $2E, $D4, $2E, $CD, $2E, $C6, $2E, $CD, $2E, $C6, $30, $D4, $2E
+	db $2C, $2B, $6A
+MusicPhrase_Studio_Ch1_5:
+	db $D4, $29, $30, $E2, $2E, $C6, $28, $CD, $29, $D4, $30, $2E, $C6, $2E, $CD, $30
+	db $C6, $32, $D4, $33, $33, $CD, $33, $C6, $33, $D4, $33, $CD, $33, $C6, $35, $CD
+	db $33, $D4, $32, $C6, $30, $CD, $2E, $C6, $2C, $6A
+MusicPhrase_Studio_Ch1_6:
+	db $D4, $2B, $CD, $2B, $C6, $2B, $D4, $2B, $CD, $2B, $C6, $2B, $CD, $2B, $C6, $2B
+	db $D4, $2B, $2C, $2D, $2E, $CD, $2E, $C6, $2E, $D4, $2E, $CD, $2E, $C6, $2E, $CD
+	db $2E, $C6, $2E, $D4, $2E, $30, $31, $6A
+MusicPhrase_Studio_Ch1_7:
+	db $D4, $35, $CD, $35, $C6, $35, $D4, $35, $CD, $35, $C6, $35, $CD, $35, $C6, $35
+	db $D4, $35, $37, $35, $33, $33, $CD, $33, $D4, $33, $6B, $5B, $33, $6A, $43, $01
+	db $00, $06, $09, $00, $06, $FF
 
-Func_9142:
+LoadSong_Studio_Stub:
+	jp LoadSong_Studio
+
+LoadSong_Title:
 	call ResetMusicChannels
-	ld de, $5157
-	call Func_88f8
-	ld de, $5167
-	call Func_88f4
-	ld de, $5177
-	jp Func_88f0
+	ld de, MusicChain_Title_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Title_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Title_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_9142.
-INCBIN "baserom.gbc", $9157, $941e - $9157
+; Song data for LoadSong_Title: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Title_Ch3:
+	dw MusicPhrase_Title_Ch3_0
+	dw MusicPhrase_Title_Ch3_1
+	dw MusicPhrase_Title_Ch3_0
+	dw MusicPhrase_Title_Ch3_2
+	dw MusicPhrase_Title_Ch3_3
+	dw MusicPhrase_Title_Ch3_4
+	dw $0000
+	dw MusicChain_Title_Ch3 ; loop
+MusicChain_Title_Ch2:
+	dw MusicPhrase_Title_Ch2_0
+	dw MusicPhrase_Title_Ch2_1
+	dw MusicPhrase_Title_Ch2_0
+	dw MusicPhrase_Title_Ch2_2
+	dw MusicPhrase_Title_Ch2_3
+	dw MusicPhrase_Title_Ch2_4
+	dw $0000
+	dw MusicChain_Title_Ch2 ; loop
+MusicChain_Title_Ch1:
+	dw MusicPhrase_Title_Ch1_0
+	dw MusicPhrase_Title_Ch1_1
+	dw MusicPhrase_Title_Ch1_0
+	dw MusicPhrase_Title_Ch1_2
+	dw MusicPhrase_Title_Ch1_3
+	dw MusicPhrase_Title_Ch1_4
+	dw $0000
+	dw MusicChain_Title_Ch1 ; loop
 
-Func_941e:
+MusicPhrase_Title_Ch3_0:
+	db $7A, $0C, $69, $FE, $6C, $06, $14, $54, $90, $CB, $0E, $89, $26, $90, $15, $89
+	db $26, $90, $0E, $89, $26, $90, $15, $89, $C5, $26, $90, $15, $6D, $7F, $28, $77
+	db $6B, $60, $0E, $CB, $6C, $06, $14, $54, $F2, $90, $15, $89, $2D, $90, $10, $89
+	db $2D, $80, $6A, $CB, $90, $15, $89, $2D, $90, $10, $89, $2D, $90, $15, $89, $2D
+	db $90, $10, $89, $C5, $2D, $90, $10, $6D, $7F, $28, $77, $6B, $60, $15, $CB, $6C
+	db $06, $14, $54, $F0, $90, $0E, $89, $26, $90, $15, $89, $26, $80, $90, $15, $89
+	db $2D, $90, $6A
+MusicPhrase_Title_Ch3_1:
+	db $7E, $BA, $51, $13, $89, $2D, $90, $12, $89, $2D, $90, $10, $89, $2D, $6A
+MusicPhrase_Title_Ch3_2:
+	db $7E, $BA, $51, $10, $89, $2D, $90, $15, $89, $2D, $90, $10, $89, $2D, $6A
+MusicPhrase_Title_Ch3_3:
+	db $90, $CB, $13, $89, $2B, $90, $1A, $89, $2B, $90, $13, $89, $2B, $90, $0E, $89
+	db $C5, $2B, $90, $0E, $6D, $7F, $28, $77, $6B, $60, $13, $CB, $6C, $06, $14, $54
+	db $F0, $90, $0E, $89, $26, $90, $15, $89, $26, $80, $F0, $90, $17, $8A, $2F, $90
+	db $12, $8A, $2F, $80, $6A
+MusicPhrase_Title_Ch3_4:
+	db $90, $CB, $15, $89, $2D, $90, $10, $89, $2D, $90, $15, $89, $2D, $90, $10, $89
+	db $C5, $2D, $90, $10, $6D, $7F, $28, $77, $6B, $60, $15, $CB, $6C, $06, $14, $54
+	db $F0, $90, $0E, $89, $26, $90, $15, $89, $26, $80, $90, $15, $89, $2D, $90, $13
+	db $89, $2D, $90, $12, $89, $2D, $90, $10, $89, $2D, $6A
+MusicPhrase_Title_Ch2_0:
+	db $92, $CB, $2D, $C5, $2A, $D1, $62, $8E, $C5, $3E, $39, $D7, $36, $92, $C5, $21
+	db $CB, $62, $C5, $21, $26, $62, $CB, $2D, $2C, $2D, $D7, $2F, $2D, $CB, $31, $2F
+	db $2E, $C5, $2D, $D1, $62, $CB, $21, $20, $21, $62, $21, $20, $21, $25, $21, $20
+	db $21, $6A
+MusicPhrase_Title_Ch2_1:
+	db $7E, $BF, $52, $2D, $C5, $2F, $2D, $CB, $2B, $C5, $2D, $2B, $CB, $2A, $C5, $2B
+	db $2A, $CB, $28, $21, $6A, $92, $CB, $2D, $C5, $2B, $D1, $62, $8E, $C5, $3D, $39
+	db $D7, $34, $92, $C5, $21, $CB, $62, $C5, $21, $28, $62, $CB, $2D, $2C, $2D, $D7
+	db $2F, $2D, $CB, $32, $2D, $2A, $26, $62, $2A, $2B, $2C, $6A
+MusicPhrase_Title_Ch2_2:
+	db $7E, $BF, $52, $C5, $2D, $28, $27, $28, $31, $2D, $2C, $2D, $34, $31, $30, $31
+	db $CB, $39, $26, $6A
+MusicPhrase_Title_Ch2_3:
+	db $92, $CB, $32, $C5, $2F, $D1, $62, $8E, $C5, $3E, $3B, $D7, $37, $92, $C5, $26
+	db $CB, $62, $C5, $26, $2B, $62, $CB, $32, $31, $32, $D7, $34, $32, $CB, $36, $C5
+	db $32, $E9, $62, $CB, $2D, $2C, $2D, $D7, $2F, $2D, $2B, $2A, $6A
+MusicPhrase_Title_Ch2_4:
+	db $92, $CB, $2D, $C5, $25, $D1, $62, $8E, $C5, $3D, $3B, $D7, $39, $92, $C5, $21
+	db $CB, $62, $C5, $21, $28, $62, $CB, $21, $20, $21, $23, $21, $2A, $28, $6B, $36
+	db $26, $C5, $26, $25, $26, $28, $2A, $2B, $2C, $CB, $2D, $C5, $2F, $2D, $CB, $2B
+	db $C5, $2D, $2B, $CB, $2A, $C5, $2B, $2A, $CB, $28, $21, $6A
+MusicPhrase_Title_Ch1_0:
+	db $8B, $7C, $CB, $39, $D7, $36, $8E, $C5, $39, $36, $D7, $32, $8B, $7C, $D1, $2D
+	db $C5, $2D, $CB, $32, $39, $38, $39, $D7, $3B, $39, $CB, $39, $37, $34, $D7, $31
+	db $CB, $2D, $2C, $D7, $2D, $CB, $2D, $2C, $2D, $31, $2D, $2C, $2D, $6A, $CB, $39
+	db $D7, $37, $8E, $C5, $40, $3D, $D7, $39, $8B, $7C, $D1, $2D, $C5, $2D, $CB, $34
+	db $39, $38, $39, $D7, $3B, $39, $CB, $39, $36, $32, $6B, $3C, $2D, $6A
+MusicPhrase_Title_Ch1_1:
+	db $7E, $91, $53, $D7, $31, $32, $33, $CB, $34, $2D, $6A
+MusicPhrase_Title_Ch1_2:
+	db $7E, $91, $53, $CB, $34, $31, $39, $34, $3D, $39, $45, $32, $6A
+MusicPhrase_Title_Ch1_3:
+	db $CB, $3E, $D7, $3B, $8E, $C5, $3B, $37, $D7, $32, $8B, $7C, $D1, $32, $C5, $32
+	db $CB, $37, $3E, $3D, $3E, $D7, $40, $3E, $CB, $3E, $6B, $30, $39, $CB, $39, $38
+	db $39, $D7, $3B, $39, $37, $36, $6A
+MusicPhrase_Title_Ch1_4:
+	db $CB, $39, $D7, $37, $8E, $C5, $39, $37, $D7, $34, $8B, $7C, $D1, $2D, $C5, $2D
+	db $CB, $34, $2D, $2C, $2D, $2F, $2D, $36, $34, $6B, $60, $32, $D7, $2D, $2F, $30
+	db $CB, $31, $2D, $6A, $45, $01, $00, $05, $06, $09, $00, $05, $06, $FF
+
+LoadSong_Copyright:
 	call ResetMusicChannels
-	ld de, Data_9433
-	call Func_88f8
-	ld de, Data_9435
-	call Func_88f4
-	ld de, Data_9437
-	jp Func_88f0
+	ld de, MusicChain_Copyright_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Copyright_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Copyright_Ch1
+	jp StartMusicChannel1
 
-Data_9433:
-	dw Data_9439
-Data_9435:
-	dw $5483
-Data_9437:
-	dw $54f7
+; Song data for LoadSong_Copyright: per-channel chains (single-entry here -- each
+; phrase ends with $68 StopChannel rather than looping), then the phrases.
+MusicChain_Copyright_Ch3:
+	dw MusicPhrase_Copyright_Ch3_0
+MusicChain_Copyright_Ch2:
+	dw MusicPhrase_Copyright_Ch2_0
+MusicChain_Copyright_Ch1:
+	dw MusicPhrase_Copyright_Ch1_0
 
-Data_9439:
-	db $7A, $0C
-	db $CB, $F0
-	db $90, $19, $89, $25
-	db $90, $14, $89, $25, $80, $F0
-	db $90, $1B, $8A, $27
-	db $90, $16, $8A, $27, $80, $F0
-	db $90, $14, $89, $2C
-	db $90, $0F, $89, $2C, $80
-	db $90, $19, $18, $16, $14, $12, $11, $0F, $14, $F0
-	db $90, $0D, $89, $25
-	db $90, $14, $89, $25, $80, $F0
-	db $90, $12, $89, $2A
-	db $90, $19, $89, $2A, $80
-	db $90, $6B, $60, $14, $D7, $19
-	db $CB, $14, $6B, $3C, $19, $68
+MusicPhrase_Copyright_Ch3_0:
+	db $7A, $0C, $CB, $F0, $90, $19, $89, $25, $90, $14, $89, $25, $80, $F0, $90, $1B
+	db $8A, $27, $90, $16, $8A, $27, $80, $F0, $90, $14, $89, $2C, $90, $0F, $89, $2C
+	db $80, $90, $19, $18, $16, $14, $12, $11, $0F, $14, $F0, $90, $0D, $89, $25, $90
+	db $14, $89, $25, $80, $F0, $90, $12, $89, $2A, $90, $19, $89, $2A, $80, $90, $6B
+	db $60, $14, $D7, $19, $CB, $14, $6B, $3C, $19, $68
+MusicPhrase_Copyright_Ch2_0:
+	db $CB, $66, $92, $C5, $25, $24, $25, $62, $20, $62, $29, $62, $25, $62, $CB, $2C
+	db $C5, $29, $D1, $62, $C5, $2E, $2D, $2E, $62, $27, $62, $CB, $33, $31, $30, $2E
+	db $C5, $30, $62, $27, $62, $30, $62, $27, $62, $2E, $62, $27, $62, $D7, $2D, $C5
+	db $2C, $62, $2E, $62, $29, $62, $D1, $2C, $E9, $62, $CB, $65, $92, $C5, $29, $2A
+	db $2C, $62, $29, $62, $25, $62, $20, $62, $CB, $25, $C5, $29, $62, $2A, $62, $2C
+	db $62, $2E, $62, $D7, $31, $C5, $25, $62, $CB, $30, $C5, $2E, $62, $20, $62, $CB
+	db $2C, $2B, $2C, $2D, $2E, $30, $2C, $C5, $19, $1D, $20, $25, $29, $2C, $CB, $31
+	db $6B, $30, $62, $68
+MusicPhrase_Copyright_Ch1_0:
+	db $8B, $D7, $38, $38, $37, $38, $3A, $CB, $39, $6B, $3C, $3A, $D7, $3C, $3C, $3A
+	db $39, $CB, $38, $3A, $35, $D7, $38, $CB, $2C, $2E, $30, $8B, $D7, $31, $CB, $30
+	db $31, $D7, $35, $CB, $34, $35, $36, $38, $3A, $D7, $3D, $CB, $3D, $3C, $D7, $3A
+	db $CB, $38, $37, $38, $39, $3A, $3C, $38, $D7, $3D, $CB, $3C, $6B, $3C, $3D, $68
 
-; Channel 2 & 3 music command streams for the song loaded by Func_941e (channel 1
-; is Data_9439 above).
-INCBIN "baserom.gbc", $9483, $9537 - $9483
-
-Func_9537:
+LoadSong_GameOver:
 	call ResetMusicChannels
-	ld de, $554c
-	call Func_88f8
-	ld de, $554e
-	call Func_88f4
-	ld de, $5550
-	jp Func_88f0
+	ld de, MusicChain_GameOver_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_GameOver_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_GameOver_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_9537.
-INCBIN "baserom.gbc", $954c, $95c9 - $954c
+; Song data for LoadSong_GameOver: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_GameOver_Ch3:
+	dw MusicPhrase_GameOver_Ch3_0
+MusicChain_GameOver_Ch2:
+	dw MusicPhrase_GameOver_Ch2_0
+MusicChain_GameOver_Ch1:
+	dw MusicPhrase_GameOver_Ch1_0
 
-Func_95c9:
+MusicPhrase_GameOver_Ch3_0:
+	db $7A, $0C, $CB, $F0, $90, $19, $89, $25, $90, $14, $89, $25, $80, $F0, $90, $1B
+	db $8A, $27, $90, $16, $8A, $27, $80, $90, $6B, $60, $14, $D7, $19, $CB, $14, $6B
+	db $3C, $19, $68
+MusicPhrase_GameOver_Ch2_0:
+	db $CB, $66, $92, $C5, $25, $24, $25, $62, $20, $62, $29, $62, $25, $62, $CB, $2C
+	db $C5, $29, $D1, $62, $C5, $2E, $2D, $2E, $62, $27, $62, $CB, $33, $31, $30, $2E
+	db $C5, $20, $62, $CB, $2C, $2B, $2C, $2D, $2E, $30, $2C, $C5, $19, $1D, $20, $25
+	db $29, $2C, $CB, $31, $6B, $30, $62, $68
+MusicPhrase_GameOver_Ch1_0:
+	db $8B, $D7, $38, $38, $37, $38, $3A, $CB, $39, $6B, $48, $3A, $CB, $38, $37, $38
+	db $39, $3A, $3C, $38, $D7, $3D, $CB, $3C, $6B, $3C, $3D, $68
+
+LoadSong_Unused2:
 	call ResetMusicChannels
-	ld de, $55de
-	call Func_88f8
-	ld de, $55e8
-	call Func_88f4
-	ld de, $55f2
-	jp Func_88f0
+	ld de, MusicChain_Unused2_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Unused2_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Unused2_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_95c9.
-INCBIN "baserom.gbc", $95de, $9867 - $95de
+; Song data for LoadSong_Unused2: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Unused2_Ch3:
+	dw MusicPhrase_Unused2_Ch3_0
+	dw MusicPhrase_Unused2_Ch3_1
+	dw MusicPhrase_Unused2_Ch3_2
+	dw $0000
+	dw MusicChain_Unused2_Ch3 ; loop
+MusicChain_Unused2_Ch2:
+	dw MusicPhrase_Unused2_Ch2_0
+	dw MusicPhrase_Unused2_Ch2_1
+	dw MusicPhrase_Unused2_Ch2_2
+	dw $0000
+	dw MusicChain_Unused2_Ch2 ; loop
+MusicChain_Unused2_Ch1:
+	dw MusicPhrase_Unused2_Ch1_0
+	dw MusicPhrase_Unused2_Ch1_1
+	dw MusicPhrase_Unused2_Ch1_2
+	dw $0000
+	dw MusicChain_Unused2_Ch1 ; loop
 
-Func_9867:
+MusicPhrase_Unused2_Ch3_0:
+	db $7A, $0C, $69, $02, $90, $CD, $17, $89, $23, $90, $12, $89, $C6, $23, $90, $12
+	db $CD, $17, $89, $23, $23, $90, $12, $17, $89, $23, $90, $12, $89, $C6, $23, $90
+	db $12, $CD, $17, $89, $C6, $23, $23, $CD, $23, $90, $17, $12, $89, $23, $90, $13
+	db $89, $23, $90, $14, $89, $28, $90, $10, $89, $28, $90, $D4, $12, $C6, $14, $CD
+	db $12, $14, $DB, $12, $89, $2A, $6A
+MusicPhrase_Unused2_Ch3_1:
+	db $90, $CD, $17, $89, $23, $90, $12, $89, $23, $90, $17, $89, $23, $23, $90, $12
+	db $17, $89, $23, $90, $12, $89, $23, $90, $19, $89, $2A, $2A, $90, $12, $19, $89
+	db $2A, $90, $12, $89, $2A, $90, $19, $89, $2A, $90, $12, $89, $2A, $90, $19, $89
+	db $2A, $90, $12, $89, $2A, $90, $17, $16, $14, $12, $6A
+MusicPhrase_Unused2_Ch3_2:
+	db $90, $CD, $17, $89, $23, $90, $12, $89, $23, $90, $17, $89, $23, $23, $90, $12
+	db $17, $89, $23, $90, $12, $89, $23, $90, $19, $89, $2A, $2A, $90, $12, $19, $89
+	db $2A, $90, $12, $89, $2A, $90, $19, $89, $2A, $90, $12, $89, $2A, $90, $12, $13
+	db $14, $16, $6B, $38, $17, $6A
+MusicPhrase_Unused2_Ch2_0:
+	db $8E, $CD, $2F, $C6, $33, $2F, $CD, $2A, $33, $2F, $92, $C6, $2A, $27, $23, $62
+	db $8E, $CD, $2A, $2F, $C6, $33, $2F, $CD, $2A, $33, $2F, $92, $C6, $2F, $2A, $27
+	db $D4, $62, $C6, $1E, $62, $C6, $1D, $1E, $C6, $1F, $62, $C6, $1E, $1F, $C6, $20
+	db $62, $C6, $1F, $20, $D4, $27, $C6, $62, $CD, $2E, $C6, $62, $2F, $C6, $2E, $62
+	db $2F, $62, $2E, $62, $C6, $27, $28, $D4, $2A, $C6, $62, $6A
+MusicPhrase_Unused2_Ch2_1:
+	db $6B, $46, $62, $92, $C6, $33, $34, $36, $6B, $5B, $62, $C6, $36, $35, $34, $6B
+	db $CB, $62, $C6, $36, $38, $3A, $3B, $3A, $38, $6A
+MusicPhrase_Unused2_Ch2_2:
+	db $92, $DB, $36, $E9, $62, $C6, $33, $34, $36, $6B, $5B, $62, $C6, $36, $35, $34
+	db $6B, $77, $62, $C6, $1B, $62, $1E, $2A, $1F, $2B, $20, $2C, $22, $2E, $23, $6B
+	db $31, $62, $6A
+MusicPhrase_Unused2_Ch1_0:
+	db $6C, $07, $F9, $57, $8E, $DB, $23, $1E, $CD, $23, $92, $C6, $27, $23, $1E, $D4
+	db $62, $8E, $DB, $23, $1E, $CD, $23, $92, $C6, $2A, $27, $23, $D4, $62, $7B, $07
+	db $A1, $CD, $2A, $C6, $29, $2A, $CD, $2B, $C6, $2A, $2B, $CD, $2C, $C6, $2B, $2C
+	db $DB, $33, $D4, $31, $C6, $33, $CD, $31, $33, $DB, $31, $36, $6A
+MusicPhrase_Unused2_Ch1_1:
+	db $6C, $07, $33, $58, $8B, $C6, $2F, $2F, $CD, $2E, $2C, $2A, $27, $92, $C6, $2F
+	db $31, $33, $62, $8B, $CD, $2A, $C6, $2F, $2F, $CD, $2E, $2C, $2D, $2E, $92, $C6
+	db $33, $32, $31, $62, $8B, $CD, $2E, $2E, $2A, $2C, $C6, $2A, $CD, $2E, $C6, $2E
+	db $CD, $2A, $2C, $27, $C6, $2A, $2A, $CD, $25, $28, $27, $E9, $2A, $CD, $2A, $6A
+MusicPhrase_Unused2_Ch1_2:
+	db $8B, $C6, $2F, $2F, $CD, $2E, $2C, $2A, $27, $92, $C6, $2F, $31, $33, $62, $8B
+	db $CD, $2A, $C6, $2F, $2F, $CD, $2E, $2C, $2D, $2E, $92, $C6, $33, $32, $31, $62
+	db $8B, $CD, $2E, $2E, $2A, $2C, $C6, $2A, $CD, $2E, $C6, $2E, $CD, $2A, $2C, $27
+	db $C6, $2A, $2A, $CD, $2B, $2C, $2E, $6D, $7F, $28, $77, $6B, $38, $2F, $6A, $5C
+	db $43, $09, $00, $C2, $09, $C3, $09, $C6, $09, $09, $00, $09, $00, $09, $00, $46
+	db $06, $06, $04, $00, $01, $00, $36, $43, $07, $00, $06, $06, $09, $00, $05, $06
+	db $01, $00, $06, $05, $09, $00, $05, $05, $09, $00, $00, $09, $09, $00, $09, $00
+	db $09, $00, $00, $00, $07, $00, $00, $00, $FF, $43, $07, $00, $05, $06, $09, $00
+	db $06, $05, $01, $00, $09, $09, $09, $00, $05, $05, $01, $00, $05, $06, $09, $00
+	db $06, $05, $01, $00, $09, $09, $09, $00, $05, $05, $5D, $01, $00, $05, $06, $09
+	db $00, $06, $05, $36, $01, $00, $09, $09, $09, $00, $09, $09, $FF
+
+LoadSong_SpaceStation:
 	call ResetMusicChannels
 	ld a, $6f
 	ld [wMusicMacroTable + 1], a
 	ld a, $93
 	ld [wMusicMacroTable], a
-	ld de, $5887
-	call Func_88f0
-	ld de, $58a7
-	call Func_88f8
-	ld de, $58c7
-	jp Func_88f4
+	ld de, MusicChain_SpaceStation_Ch1
+	call StartMusicChannel1
+	ld de, MusicChain_SpaceStation_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_SpaceStation_Ch2
+	jp StartMusicChannel2
+	ret ; dead code (the jp above always returns)
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_9867.
-INCBIN "baserom.gbc", $9886, $9b73 - $9886
+; Song data for LoadSong_SpaceStation: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_SpaceStation_Ch1:
+	dw MusicPhrase_SpaceStation_Ch1_0
+	dw MusicPhrase_SpaceStation_Ch1_1
+	dw MusicPhrase_SpaceStation_Ch1_2
+	dw MusicPhrase_SpaceStation_Ch1_2
+	dw MusicPhrase_SpaceStation_Ch1_3
+	dw MusicPhrase_SpaceStation_Ch1_4
+	dw MusicPhrase_SpaceStation_Ch1_3
+	dw MusicPhrase_SpaceStation_Ch1_5
+	dw MusicPhrase_SpaceStation_Ch1_2
+	dw MusicPhrase_SpaceStation_Ch1_2
+	dw MusicPhrase_SpaceStation_Ch1_3
+	dw MusicPhrase_SpaceStation_Ch1_4
+	dw MusicPhrase_SpaceStation_Ch1_3
+	dw MusicPhrase_SpaceStation_Ch1_5
+	dw $0000
+	dw MusicChain_SpaceStation_Ch1 ; loop
+MusicChain_SpaceStation_Ch3:
+	dw MusicPhrase_SpaceStation_Ch3_0
+	dw MusicPhrase_SpaceStation_Ch3_1
+	dw MusicPhrase_SpaceStation_Ch3_2
+	dw MusicPhrase_SpaceStation_Ch3_2
+	dw MusicPhrase_SpaceStation_Ch3_3
+	dw MusicPhrase_SpaceStation_Ch3_4
+	dw MusicPhrase_SpaceStation_Ch3_3
+	dw MusicPhrase_SpaceStation_Ch3_5
+	dw MusicPhrase_SpaceStation_Ch3_2
+	dw MusicPhrase_SpaceStation_Ch3_2
+	dw MusicPhrase_SpaceStation_Ch3_3
+	dw MusicPhrase_SpaceStation_Ch3_4
+	dw MusicPhrase_SpaceStation_Ch3_3
+	dw MusicPhrase_SpaceStation_Ch3_5
+	dw $0000
+	dw MusicChain_SpaceStation_Ch3 ; loop
+MusicChain_SpaceStation_Ch2:
+	dw MusicPhrase_SpaceStation_Ch2_0
+	dw MusicPhrase_SpaceStation_Ch2_1
+	dw MusicPhrase_SpaceStation_Ch2_2
+	dw MusicPhrase_SpaceStation_Ch2_2
+	dw MusicPhrase_SpaceStation_Ch2_3
+	dw MusicPhrase_SpaceStation_Ch2_4
+	dw MusicPhrase_SpaceStation_Ch2_3
+	dw MusicPhrase_SpaceStation_Ch2_5
+	dw MusicPhrase_SpaceStation_Ch2_2
+	dw MusicPhrase_SpaceStation_Ch2_2
+	dw MusicPhrase_SpaceStation_Ch2_3
+	dw MusicPhrase_SpaceStation_Ch2_4
+	dw MusicPhrase_SpaceStation_Ch2_3
+	dw MusicPhrase_SpaceStation_Ch2_5
+	dw $0000
+	dw MusicChain_SpaceStation_Ch2 ; loop
 
-Func_9b73:
+MusicPhrase_SpaceStation_Ch1_0:
+	db $69, $01, $CD, $74, $F1, $00, $94, $72, $94, $76, $00, $F2, $66, $0F, $16, $0F
+	db $1B, $0F, $16, $0F, $80, $6A
+MusicPhrase_SpaceStation_Ch1_2:
+	db $74, $D1, $07, $30, $76, $03, $98, $DB, $27, $27, $27, $27, $CD, $25, $25, $25
+	db $25, $25, $25, $25, $25, $DB, $27, $27, $27, $27, $CD, $2A, $2A, $2A, $2A, $2A
+	db $2A, $2A, $2A, $6A
+MusicPhrase_SpaceStation_Ch1_3:
+	db $DB, $2C, $38, $2C, $38, $CD, $2C, $20, $20, $2C, $20, $20, $2C, $20, $6A
+MusicPhrase_SpaceStation_Ch1_4:
+	db $DB, $33, $27, $33, $27, $CD, $27, $33, $33, $27, $33, $27, $33, $27, $6A
+MusicPhrase_SpaceStation_Ch1_5:
+	db $CD, $2E, $22, $2E, $22, $2E, $C6, $22, $2E, $CD, $2E, $22, $76, $00, $74, $D2
+	db $00, $71, $60, $FF, $7C, $6C, $07, $62, $5B, $31, $31, $2E, $C6, $2E, $CD, $2A
+	db $2A, $C6, $27, $CD, $27, $25, $61, $6A
+MusicPhrase_SpaceStation_Ch1_1:
+	db $CD, $F1, $66, $0F, $16, $0F, $1B, $0F, $16, $0F, $80, $6D, $7F, $28, $77, $16
+	db $6B, $62, $7F, $28, $77, $74, $F2, $0E, $40, $16, $6A
+MusicPhrase_SpaceStation_Ch3_0:
+	db $7A, $0C, $6C, $07, $52, $5B, $85, $CD, $21, $87, $33, $85, $21, $87, $27, $85
+	db $D4, $21, $87, $C6, $33, $85, $CD, $21, $87, $22, $85, $21, $87, $3A, $85, $21
+	db $87, $2E, $85, $D4, $21, $87, $C6, $3A, $85, $CD, $21, $87, $C6, $27, $85, $21
+	db $CD, $21, $87, $3F, $85, $21, $87, $33, $85, $D4, $21, $87, $C6, $3F, $85, $CD
+	db $21, $87, $2E, $85, $21, $87, $3A, $85, $21, $87, $2E, $85, $D4, $21, $87, $C6
+	db $3A, $85, $CD, $21, $C6, $21, $21, $6A
+MusicPhrase_SpaceStation_Ch3_2:
+	db $CD, $6C, $07, $48, $5B, $F2, $85, $21, $88, $0F, $80, $F1, $85, $21, $88, $16
+	db $80, $85, $21, $88, $C6, $16, $85, $21, $CD, $F2, $85, $21, $88, $0F, $80, $F2
+	db $85, $21, $88, $16, $80, $6A
+MusicPhrase_SpaceStation_Ch3_3:
+	db $CD, $F2, $85, $21, $88, $14, $80, $F1, $85, $21, $88, $08, $80, $85, $21, $88
+	db $C6, $08, $85, $21, $6A
+MusicPhrase_SpaceStation_Ch3_4:
+	db $CD, $F2, $85, $21, $88, $0F, $80, $85, $21, $88, $1B, $85, $21, $88, $19, $85
+	db $21, $88, $18, $85, $21, $88, $C6, $16, $85, $21, $6A
+MusicPhrase_SpaceStation_Ch3_5:
+	db $CD, $F3, $85, $21, $88, $16, $80, $85, $21, $88, $14, $85, $21, $88, $13, $85
+	db $21, $88, $C6, $11, $85, $21, $6A
+MusicPhrase_SpaceStation_Ch3_1:
+	db $CD, $F0, $85, $21, $86, $1B, $80, $85, $21, $86, $C6, $1B, $87, $33, $CD, $85
+	db $21, $86, $1B, $F0, $85, $21, $86, $27, $80, $85, $21, $86, $C6, $27, $87, $3A
+	db $CD, $85, $21, $86, $C6, $27, $85, $21, $CD, $21, $86, $33, $85, $21, $86, $33
+	db $85, $21, $86, $C6, $33, $87, $3F, $85, $CD, $21, $86, $33, $BF, $11, $1A, $13
+	db $98, $33, $99, $6B, $46, $2E, $6C, $07, $5D, $5B, $85, $CD, $21, $C6, $21, $21
+	db $6A
+MusicPhrase_SpaceStation_Ch2_0:
+	db $71, $74, $C0, $0E, $C7, $72, $63, $14, $01, $05, $6B, $70, $1B, $22, $27, $22
+	db $6A
+MusicPhrase_SpaceStation_Ch2_2:
+	db $CD, $65, $74, $C2, $00, $94, $71, $27, $2E, $27, $2C, $27, $2E, $DB, $27, $CD
+	db $25, $2C, $25, $31, $C6, $30, $2E, $CD, $2C, $DB, $2E, $CD, $27, $2E, $27, $2C
+	db $27, $2E, $27, $33, $C6, $31, $30, $CD, $2E, $27, $31, $C6, $31, $30, $CD, $2E
+	db $2C, $6A
+MusicPhrase_SpaceStation_Ch2_3:
+	db $7C, $74, $D0, $04, $23, $76, $07, $C6, $33, $1B, $27, $2C, $38, $20, $27, $33
+	db $20, $2C, $38, $2C, $38, $44, $20, $44, $71, $76, $00, $94, $CD, $2C, $2C, $38
+	db $C6, $20, $CD, $2C, $C6, $20, $CD, $2C, $38, $CD, $2C, $7C, $6A
+MusicPhrase_SpaceStation_Ch2_4:
+	db $76, $07, $C6, $3A, $22, $2E, $33, $3F, $27, $2E, $3A, $27, $33, $3F, $33, $3F
+	db $33, $27, $33, $71, $76, $00, $94, $CD, $27, $33, $33, $C6, $27, $CD, $31, $C6
+	db $27, $CD, $30, $30, $C6, $22, $2E, $7C, $6A
+MusicPhrase_SpaceStation_Ch2_5:
+	db $74, $C0, $0E, $C7, $72, $6B, $38, $22, $29, $2E, $3A, $6A
+MusicPhrase_SpaceStation_Ch2_1:
+	db $6B, $70, $27, $2E, $33, $CD, $37, $6B, $62, $35, $6A, $45, $01, $06, $04, $00
+	db $02, $00, $04, $00, $FF, $61, $01, $00, $06, $00, $36, $01, $00, $06, $01, $FF
+	db $02, $00, $02, $02, $FF, $02, $00, $02, $00, $02, $00, $02, $02, $00, $02, $00
+	db $02, $02, $00, $02, $00, $FF
+
+LoadSong_TazZoo:
 	call ResetMusicChannels
 	ld a, $6f
 	ld [wMusicMacroTable + 1], a
 	ld a, $93
 	ld [wMusicMacroTable], a
-	ld de, $5b93
-	call Func_88f0
-	ld de, $5bab
-	call Func_88f4
-	ld de, $5bc3
-	jp Func_88f8
+	ld de, MusicChain_TazZoo_Ch1
+	call StartMusicChannel1
+	ld de, MusicChain_TazZoo_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_TazZoo_Ch3
+	jp StartMusicChannel3
+	ret ; dead code (the jp above always returns)
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_9b73.
-INCBIN "baserom.gbc", $9b92, $9e6a - $9b92
+; Song data for LoadSong_TazZoo: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_TazZoo_Ch1:
+	dw MusicPhrase_TazZoo_Ch1_0
+	dw MusicPhrase_TazZoo_Ch1_0
+	dw MusicPhrase_TazZoo_Ch1_0
+	dw MusicPhrase_TazZoo_Ch1_0
+	dw MusicPhrase_TazZoo_Ch1_1
+	dw MusicPhrase_TazZoo_Ch1_1
+	dw MusicPhrase_TazZoo_Ch1_2
+	dw MusicPhrase_TazZoo_Ch1_2
+	dw MusicPhrase_TazZoo_Ch1_1
+	dw MusicPhrase_TazZoo_Ch1_1
+	dw $0000
+	dw MusicChain_TazZoo_Ch1 ; loop
+MusicChain_TazZoo_Ch2:
+	dw MusicPhrase_TazZoo_Ch2_0
+	dw MusicPhrase_TazZoo_Ch2_0
+	dw MusicPhrase_TazZoo_Ch2_1
+	dw MusicPhrase_TazZoo_Ch2_1
+	dw MusicPhrase_TazZoo_Ch2_2
+	dw MusicPhrase_TazZoo_Ch2_2
+	dw MusicPhrase_TazZoo_Ch2_3
+	dw MusicPhrase_TazZoo_Ch2_3
+	dw MusicPhrase_TazZoo_Ch2_2
+	dw MusicPhrase_TazZoo_Ch2_2
+	dw $0000
+	dw MusicChain_TazZoo_Ch2 ; loop
+MusicChain_TazZoo_Ch3:
+	dw MusicPhrase_TazZoo_Ch3_0
+	dw MusicPhrase_TazZoo_Ch3_0
+	dw MusicPhrase_TazZoo_Ch3_1
+	dw MusicPhrase_TazZoo_Ch3_1
+	dw MusicPhrase_TazZoo_Ch3_2
+	dw MusicPhrase_TazZoo_Ch3_2
+	dw MusicPhrase_TazZoo_Ch3_3
+	dw MusicPhrase_TazZoo_Ch3_4
+	dw MusicPhrase_TazZoo_Ch3_2
+	dw MusicPhrase_TazZoo_Ch3_2
+	dw $0000
+	dw MusicChain_TazZoo_Ch3 ; loop
 
-Func_9e6a:
+MusicPhrase_TazZoo_Ch1_0:
+	db $D7, $69, $02, $7B, $01, $00, $89, $F6, $D7, $15, $C7, $10, $8A, $CF, $1D, $89
+	db $13, $80, $6A
+MusicPhrase_TazZoo_Ch1_1:
+	db $F1, $D7, $15, $C7, $10, $8A, $CF, $1D, $89, $13, $80, $D7, $15, $C7, $10, $8A
+	db $1D, $89, $13, $CF, $10, $F0, $D7, $15, $C7, $10, $8A, $CF, $1D, $89, $13, $80
+	db $D7, $0E, $C7, $15, $8A, $CF, $1D, $89, $1A, $D7, $10, $C7, $17, $8A, $CF, $1D
+	db $89, $1C, $6A
+MusicPhrase_TazZoo_Ch1_2:
+	db $F0, $D7, $15, $C7, $10, $8A, $CF, $1D, $89, $14, $D7, $15, $C7, $10, $8A, $CF
+	db $1D, $89, $15, $D7, $0E, $C7, $15, $8A, $CF, $1D, $89, $1A, $D7, $10, $C7, $17
+	db $8A, $CF, $1D, $89, $1C, $80, $6A, $2D, $8C, $CF, $21, $8E, $2D, $8C, $C7, $21
+	db $8E, $CF, $2D, $C7, $30, $8B, $CF, $24, $8E, $30, $8B, $C7, $24, $8E, $CF, $30
+	db $C7, $32, $8C, $CF, $21, $8E, $32, $8C, $C7, $21, $8E, $CF, $32, $6A
+MusicPhrase_TazZoo_Ch2_1:
+	db $C7, $65, $8E, $7E, $48, $5C, $C7, $2B, $8C, $CF, $2D, $8E, $2B, $8C, $C7, $2D
+	db $8E, $2B, $65, $7E, $48, $5C, $C7, $28, $8C, $CF, $2D, $8E, $28, $8C, $C7, $2D
+	db $8E, $2B, $6A
+MusicPhrase_TazZoo_Ch2_0:
+	db $7B, $01, $00, $8E, $D7, $21, $6B, $68, $1C, $D7, $21, $6B, $68, $1C, $C7, $21
+	db $CF, $21, $6B, $58, $1C, $CF, $1F, $C7, $21, $CF, $21, $C7, $1C, $CF, $1C, $DF
+	db $1C, $CF, $1C, $1F, $21, $6A
+MusicPhrase_TazZoo_Ch2_2:
+	db $C7, $65, $8D, $2D, $8B, $CF, $2D, $8D, $2D, $8B, $C7, $2D, $8D, $CF, $2D, $C7
+	db $28, $8B, $CF, $2D, $8D, $28, $8B, $C7, $2D, $8D, $CF, $28, $C7, $26, $8B, $CF
+	db $2D, $8D, $26, $8B, $C7, $2D, $8D, $CF, $26, $C7, $2B, $8B, $CF, $2D, $8D, $2B
+	db $8B, $C7, $2D, $8D, $CF, $2B, $F0, $C7, $28, $8B, $CF, $21, $8D, $28, $8B, $C7
+	db $21, $8D, $CF, $28, $80, $C7, $34, $8B, $CF, $26, $8D, $34, $8B, $C7, $26, $8D
+	db $CF, $34, $C7, $2F, $8B, $CF, $28, $8D, $2F, $8B, $C7, $28, $8D, $2F, $6A, $21
+	db $8B, $CF, $2D, $8D, $21, $8B, $C7, $2D, $8D, $CF, $21, $C7, $21, $8B, $CF, $2D
+	db $8D, $21, $8B, $C7, $2D, $8D, $CF, $21, $C7, $26, $8B, $CF, $26, $8D, $26, $8B
+	db $C7, $26, $8D, $CF, $26, $C7, $28, $8B, $CF, $28, $8D, $28, $8B, $C7, $28, $8D
+	db $28, $6A
+MusicPhrase_TazZoo_Ch2_3:
+	db $C7, $65, $8D, $7E, $17, $5D, $65, $7E, $17, $5D, $6A
+MusicPhrase_TazZoo_Ch3_1:
+	db $79, $6A, $75, $BF, $12, $1F, $11, $60, $FF, $7C, $F1, $D7, $24, $C7, $24, $CF
+	db $2B, $24, $80, $C7, $24, $CF, $2B, $C7, $24, $CF, $2B, $C7, $24, $2B, $F1, $D7
+	db $24, $C7, $24, $CF, $2B, $24, $80, $C7, $24, $CF, $2C, $C7, $2C, $29, $29, $26
+	db $26, $6A
+MusicPhrase_TazZoo_Ch3_0:
+	db $6C, $08, $52, $5E, $7A, $0C, $63, $08, $01, $04, $BF, $11, $1F, $11, $94, $79
+	db $DA, $74, $6B, $30, $21, $CF, $1F, $C7, $21, $CF, $24, $C7, $21, $CF, $26, $C7
+	db $21, $6B, $38, $28, $CF, $24, $C7, $26, $CF, $28, $C7, $24, $CF, $26, $C7, $21
+	db $6B, $38, $24, $CF, $2B, $C7, $2D, $CF, $2D, $E7, $28, $D7, $2D, $DF, $28, $CF
+	db $28, $D7, $28, $CF, $2B, $2D, $6A
+MusicPhrase_TazZoo_Ch3_2:
+	db $79, $CA, $74, $BF, $00, $00, $00, $61, $97, $6B, $40, $2B, $A9, $28, $26, $97
+	db $29, $A9, $6B, $80, $28, $97, $D7, $32, $A9, $32, $31, $2F, $CF, $2D, $2C, $6A
+	db $CF, $66, $7B, $02, $50, $7C, $79, $CA, $74, $C7, $25, $26, $CF, $28, $C7, $2A
+	db $CF, $28, $2D, $C7, $2D, $CF, $2F, $31, $79, $AA, $75, $32, $C7, $34, $CF, $32
+	db $31, $2F, $C7, $2F, $CF, $2D, $2C, $C7, $2F, $CF, $2D, $79, $CA, $74, $C7, $28
+	db $34, $32, $31, $CF, $2F, $2D, $C7, $2F, $CF, $31, $32, $D7, $2A, $79, $AA, $75
+	db $C7, $26, $2D, $2C, $CF, $2A, $C7, $28, $CF, $2A, $C7, $6A
+MusicPhrase_TazZoo_Ch3_3:
+	db $7E, $EE, $5D, $2A, $CF, $28, $26, $C7, $25, $28, $6A
+MusicPhrase_TazZoo_Ch3_4:
+	db $7E, $EE, $5D, $28, $CF, $26, $25, $C7, $23, $21, $7B, $00, $6A, $46, $01, $44
+	db $06, $05, $06, $46, $02, $44, $06, $05, $06, $01, $06, $05, $46, $01, $02, $44
+	db $05, $46, $04, $00, $FF
+
+LoadSong_Boss:
 	call ResetMusicChannels
-	ld de, $5e7f
-	call Func_88f8
-	ld de, $5e9d
-	call Func_88f4
-	ld de, $5ebb
-	jp Func_88f0
+	ld de, MusicChain_Boss_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Boss_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Boss_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_9e6a.
-INCBIN "baserom.gbc", $9e7f, $a152 - $9e7f
+; Song data for LoadSong_Boss: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Boss_Ch3:
+	dw MusicPhrase_Boss_Ch3_0
+	dw MusicPhrase_Boss_Ch3_1
+	dw MusicPhrase_Boss_Ch3_2
+	dw MusicPhrase_Boss_Ch3_3
+	dw MusicPhrase_Boss_Ch3_3
+	dw MusicPhrase_Boss_Ch3_4
+	dw MusicPhrase_Boss_Ch3_4
+	dw MusicPhrase_Boss_Ch3_3
+	dw MusicPhrase_Boss_Ch3_3
+	dw MusicPhrase_Boss_Ch3_4
+	dw MusicPhrase_Boss_Ch3_4
+	dw MusicPhrase_Boss_Ch3_3
+	dw MusicPhrase_Boss_Ch3_3
+	dw $0000
+	dw $5e85 ; loop
+MusicChain_Boss_Ch2:
+	dw MusicPhrase_Boss_Ch2_0
+	dw MusicPhrase_Boss_Ch2_1
+	dw MusicPhrase_Boss_Ch2_2
+	dw MusicPhrase_Boss_Ch2_3
+	dw MusicPhrase_Boss_Ch2_3
+	dw MusicPhrase_Boss_Ch2_4
+	dw MusicPhrase_Boss_Ch2_4
+	dw MusicPhrase_Boss_Ch2_5
+	dw MusicPhrase_Boss_Ch2_5
+	dw MusicPhrase_Boss_Ch2_6
+	dw MusicPhrase_Boss_Ch2_6
+	dw MusicPhrase_Boss_Ch2_7
+	dw MusicPhrase_Boss_Ch2_7
+	dw $0000
+	dw $5ea3 ; loop
+MusicChain_Boss_Ch1:
+	dw MusicPhrase_Boss_Ch1_0
+	dw MusicPhrase_Boss_Ch1_1
+	dw MusicPhrase_Boss_Ch1_2
+	dw MusicPhrase_Boss_Ch1_3
+	dw MusicPhrase_Boss_Ch1_3
+	dw MusicPhrase_Boss_Ch1_4
+	dw MusicPhrase_Boss_Ch1_4
+	dw MusicPhrase_Boss_Ch1_1
+	dw MusicPhrase_Boss_Ch1_1
+	dw MusicPhrase_Boss_Ch1_5
+	dw MusicPhrase_Boss_Ch1_5
+	dw MusicPhrase_Boss_Ch1_6
+	dw MusicPhrase_Boss_Ch1_6
+	dw $0000
+	dw $5ec1 ; loop
 
-Func_a152:
+MusicPhrase_Boss_Ch3_0:
+	db $79, $3A, $75, $7A, $0C, $BF, $11, $1F, $12, $F0, $7F, $28, $77, $94, $D3, $20
+	db $7C, $2F, $94, $C9, $19, $7C, $2D, $94, $23, $7C, $2C, $94, $D3, $1E, $7C, $2D
+	db $94, $C9, $19, $7C, $2C, $94, $1E, $7C, $2A, $80, $6A
+MusicPhrase_Boss_Ch3_1:
+	db $D3, $7F, $28, $77, $94, $20, $7C, $2F, $94, $19, $7C, $2F, $7F, $28, $77, $94
+	db $1E, $7C, $2E, $94, $19, $7C, $2E, $C9
+MusicPhrase_Boss_Ch3_2:
+	db $6C, $05, $48, $61, $F0, $94, $20, $7C, $2F, $94, $19, $7C, $2F, $80, $F0, $94
+	db $1E, $7C, $2E, $94, $19, $7C, $2E, $80, $6A
+MusicPhrase_Boss_Ch3_4:
+	db $C9, $F0, $94, $12, $98, $2F, $94, $0D, $98, $2F, $80, $7C, $1E, $98, $2A, $7C
+	db $19, $98, $2A, $94, $12, $98, $2A, $94, $0D, $98, $2A, $6A
+MusicPhrase_Boss_Ch3_3:
+	db $C9, $7E, $55, $5F, $F0, $94, $14, $98, $25, $94, $0D, $98, $25, $80, $F0, $94
+	db $12, $98, $2A, $94, $0D, $98, $2A, $80, $6A
+MusicPhrase_Boss_Ch2_0:
+	db $74, $00, $00, $D3, $66, $8B, $DD, $2C, $D3, $25, $DD, $25, $2A, $D3, $25, $DD
+	db $25, $2C, $D3, $25, $DD, $25, $2A, $D3, $25, $C9, $25, $6A
+MusicPhrase_Boss_Ch2_1:
+	db $D3, $65, $8B, $E7, $29, $29, $2A, $DD, $2A, $D3, $29, $29, $29, $29, $2A, $2A
+	db $2A, $C9, $2A, $6A
+MusicPhrase_Boss_Ch2_2:
+	db $C9, $65, $8B, $D3, $29, $29, $29, $29, $2A, $2A, $2A, $C9, $2A, $6A
+MusicPhrase_Boss_Ch2_3:
+	db $C9, $65, $8B, $20, $2C, $20, $20, $20, $2C, $20, $F0, $1E, $22, $2A, $22, $80
+	db $F0, $20, $23, $2F, $23, $80, $F0, $1E, $22, $2E, $22, $80, $6A
+MusicPhrase_Boss_Ch2_4:
+	db $8B, $C9, $2F, $2A, $27, $23, $27, $2A, $2F, $33, $2E, $2A, $25, $22, $25, $2A
+	db $D3, $2E, $6A
+MusicPhrase_Boss_Ch2_5:
+	db $C9, $8D, $F0, $C9, $30, $31, $CE, $2F, $C4, $31, $80, $F0, $C9, $30, $31, $CE
+	db $2E, $C4, $31, $80, $F0, $C9, $30, $31, $CE, $33, $C4, $31, $80, $F0, $C9, $30
+	db $31, $CE, $36, $C4, $31, $80, $6A
+MusicPhrase_Boss_Ch2_6:
+	db $8D, $C9, $33, $2F, $2A, $27, $2A, $2F, $33, $36, $31, $2E, $2A, $25, $2A, $2E
+	db $CE, $31, $C4, $31, $6A
+MusicPhrase_Boss_Ch2_7:
+	db $C4, $65, $8E, $3D, $8B, $1A, $8E, $C9, $3D, $C4, $3D, $8B, $1C, $8E, $C9, $3D
+	db $C4, $3D, $8B, $21, $8E, $C9, $3D, $C4, $3D, $8B, $1F, $8E, $C9, $3D, $C4, $3D
+	db $8B, $1D, $8E, $3D, $8B, $1C, $8E, $3D, $8B, $1A, $8E, $C9, $3D, $C4, $3D, $8B
+	db $1A, $8E, $3D, $8B, $19, $8E, $3D, $8B, $18, $8E, $C9, $3D, $C4, $3D, $8B, $25
+	db $8E, $C9, $3D, $C4, $3D, $8B, $29, $8E, $C9, $3D, $C4, $3D, $8B, $2E, $8E, $C9
+	db $3D, $C4, $3D, $8B, $2C, $8E, $C9, $3D, $C4, $3D, $8B, $2A, $8E, $3D, $8B, $29
+	db $8E, $3D, $8B, $27, $8E, $C9, $3D, $C4, $3D, $8B, $27, $8E, $3D, $8B, $26, $8E
+	db $3D, $8B, $25, $8E, $3D, $6A
+MusicPhrase_Boss_Ch1_0:
+	db $C4, $74, $91, $00, $72, $F6, $3D, $31, $31, $31, $3D, $31, $31, $31, $80, $6A
+MusicPhrase_Boss_Ch1_1:
+	db $74, $91, $00, $72, $F2, $3D, $31, $3D, $3D, $49, $3D, $3D, $31, $3D, $31, $31
+	db $31, $3D, $31, $31, $31, $80, $6A
+MusicPhrase_Boss_Ch1_2:
+	db $F1, $3D, $31, $3D, $3D, $49, $3D, $3D, $31, $80, $3D, $31, $3D, $3D, $49, $3D
+	db $3D, $74, $F2, $0A, $57, $71, $31, $6A
+MusicPhrase_Boss_Ch1_3:
+	db $F0, $C9, $30, $31, $CE, $2F, $C4, $31, $80, $F0, $C9, $30, $31, $CE, $2E, $C4
+	db $31, $80, $F0, $C9, $30, $31, $CE, $33, $C4, $31, $80, $F0, $C9, $30, $31, $CE
+	db $36, $C4, $31, $80, $6A
+MusicPhrase_Boss_Ch1_4:
+	db $C9, $33, $2F, $2A, $27, $2A, $2F, $33, $36, $31, $2E, $2A, $25, $2A, $2E, $CE
+	db $31, $C4, $31, $6A
+MusicPhrase_Boss_Ch1_5:
+	db $C4, $3F, $33, $3F, $3F, $4B, $3F, $3F, $33, $3F, $33, $33, $33, $3F, $33, $33
+	db $33, $3D, $31, $3D, $3D, $49, $3D, $3D, $31, $3D, $31, $31, $31, $3D, $31, $31
+	db $31, $6A
+MusicPhrase_Boss_Ch1_6:
+	db $C9, $65, $74, $F2, $0A, $57, $71, $D3, $19, $1D, $22, $20, $C9, $1E, $1D, $D3
+	db $1B, $C9, $1B, $1A, $D3, $19, $19, $1D, $22, $20, $C9, $1E, $1D, $D3, $1B, $C9
+	db $1B, $1A, $19, $6A, $45, $01, $00, $05, $06, $09, $00, $05, $06, $FF
+
+LoadSong_TreasureIsland:
 	call ResetMusicChannels
 	ld a, $6f
 	ld [wMusicMacroTable + 1], a
 	ld a, $93
 	ld [wMusicMacroTable], a
-	ld de, Data_a172
-	call Func_88f0
-	ld de, Data_a188
-	call Func_88f4
-	ld de, Data_a19e
-	jp Func_88f8
+	ld de, MusicChain_TreasureIsland_Ch1
+	call StartMusicChannel1
+	ld de, MusicChain_TreasureIsland_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_TreasureIsland_Ch3
+	jp StartMusicChannel3
 	ret
 
-Data_a172: ; music chunk header? each seems to point to a 4-measure sequence
-	dw Data_a1d8
-	dw Data_a1d1
-	dw Data_a1d8
-	dw $61f8
-	dw $6246
-	dw Data_a1d1
-	dw Data_a1d8
-	dw $61f8
-	dw $6246
+; Song data for LoadSong_TreasureIsland: the three per-channel chains, then the
+; phrases. The *_Call0 phrase is invoked via the $7E call command from within other
+; phrases (e.g. the bytes $7E,$B4,$61 call MusicPhrase_TreasureIsland_Call0).
+MusicChain_TreasureIsland_Ch1:
+	dw MusicPhrase_TreasureIsland_Ch1_0
+	dw MusicPhrase_TreasureIsland_Ch1_1
+	dw MusicPhrase_TreasureIsland_Ch1_0
+	dw MusicPhrase_TreasureIsland_Ch1_2
+	dw MusicPhrase_TreasureIsland_Ch1_3
+	dw MusicPhrase_TreasureIsland_Ch1_1
+	dw MusicPhrase_TreasureIsland_Ch1_0
+	dw MusicPhrase_TreasureIsland_Ch1_2
+	dw MusicPhrase_TreasureIsland_Ch1_3
 	dw $0000
-	dw Data_a172
-
-Data_a188:
-	dw $6323
-	dw $631D
-	dw $6323
-	dw $62E3
-	dw $62F9
-	dw $631D
-	dw $6323
-	dw $62E3
-	dw $62F9
+	dw MusicChain_TreasureIsland_Ch1 ; loop
+MusicChain_TreasureIsland_Ch2:
+	dw MusicPhrase_TreasureIsland_Ch2_0
+	dw MusicPhrase_TreasureIsland_Ch2_1
+	dw MusicPhrase_TreasureIsland_Ch2_0
+	dw MusicPhrase_TreasureIsland_Ch2_2
+	dw MusicPhrase_TreasureIsland_Ch2_3
+	dw MusicPhrase_TreasureIsland_Ch2_1
+	dw MusicPhrase_TreasureIsland_Ch2_0
+	dw MusicPhrase_TreasureIsland_Ch2_2
+	dw MusicPhrase_TreasureIsland_Ch2_3
 	dw $0000
-	dw Data_a188
-
-Data_a19e:
-	dw $6448
-	dw $636C
-	dw $6390
-	dw $63BE
-	dw $643C
-	dw $636C
-	dw $6390
-	dw $63BE
-	dw $6442
+	dw MusicChain_TreasureIsland_Ch2 ; loop
+MusicChain_TreasureIsland_Ch3:
+	dw MusicPhrase_TreasureIsland_Ch3_0
+	dw MusicPhrase_TreasureIsland_Ch3_1
+	dw MusicPhrase_TreasureIsland_Ch3_2
+	dw MusicPhrase_TreasureIsland_Ch3_3
+	dw MusicPhrase_TreasureIsland_Ch3_4
+	dw MusicPhrase_TreasureIsland_Ch3_1
+	dw MusicPhrase_TreasureIsland_Ch3_2
+	dw MusicPhrase_TreasureIsland_Ch3_3
+	dw MusicPhrase_TreasureIsland_Ch3_5
 	dw $0000
-	dw Data_a19e
+	dw MusicChain_TreasureIsland_Ch3 ; loop
 
-Data_a1b4:
-	db $D3, $0C, $8A, $C9, $21, $8F, $0C, $D3, $13, $8A, $C9, $21, $8F, $13, $D3, $0E, $8A, $C9, $21, $8F, $0E, $D3, $13, $8A, $C9, $21, $8F, $13, $6A
-
-Data_a1d1:
+MusicPhrase_TreasureIsland_Call0:
+	db $D3, $0C, $8A, $C9, $21, $8F, $0C, $D3, $13, $8A, $C9, $21, $8F, $13, $D3, $0E
+	db $8A, $C9, $21, $8F, $0E, $D3, $13, $8A, $C9, $21, $8F, $13, $6A
+MusicPhrase_TreasureIsland_Ch1_1:
 	db $8F, $F2, $7E, $B4, $61, $80, $6A
+MusicPhrase_TreasureIsland_Ch1_0:
+	db $8F, $7B, $02, $10, $F1, $7E, $B4, $61, $80, $D3, $0C, $8A, $C9, $21, $8F, $D3
+	db $15, $C9, $13, $8A, $21, $8F, $13, $D3, $0C, $8A, $E7, $21, $8F, $D3, $13, $6A
+MusicPhrase_TreasureIsland_Ch1_2:
+	db $8F, $F0, $D3, $11, $8A, $C9, $21, $8F, $11, $D3, $18, $8A, $C9, $21, $8F, $18
+	db $80, $F0, $D3, $0C, $8A, $C9, $21, $8F, $0C, $D3, $13, $8A, $C9, $21, $8F, $13
+	db $80, $F0, $D3, $13, $8A, $C9, $21, $8F, $13, $D3, $0E, $8A, $C9, $21, $8F, $0E
+	db $80, $D3, $0C, $8A, $C9, $21, $8F, $0C, $D3, $13, $8A, $C9, $21, $8F, $13, $D3
+	db $18, $8A, $C9, $21, $8F, $D3, $18, $C9, $13, $8A, $21, $8F, $12, $6A
+MusicPhrase_TreasureIsland_Ch1_3:
+	db $8F, $D3, $11, $8A, $C9, $21, $8F, $11, $D3, $18, $8A, $C9, $21, $8F, $18, $D3
+	db $1D, $8A, $C9, $21, $8F, $1D, $D3, $18, $8A, $C9, $21, $8F, $18, $D3, $0C, $8A
+	db $C9, $21, $8F, $0C, $D3, $13, $8A, $C9, $21, $8F, $13, $D3, $18, $8A, $C9, $21
+	db $8F, $18, $D3, $13, $8A, $C9, $21, $8F, $13, $F0, $D3, $13, $8A, $C9, $21, $8F
+	db $13, $D3, $0E, $8A, $C9, $21, $8F, $0E, $80, $D3, $0C, $8A, $C9, $21, $8F, $D3
+	db $13, $C9, $13, $8A, $21, $8F, $13, $D3, $18, $8A, $21, $21, $C9, $21, $C4, $21
+	db $21, $6A, $98, $D3, $29, $C9, $29, $D3, $29, $C9, $29, $D3, $29, $C9, $2B, $D3
+	db $2B, $C9, $29, $D3, $29, $2B, $24, $C9, $24, $D3, $24, $C9, $24, $D3, $24, $99
+	db $C9, $26, $D3, $26, $98, $C9, $24, $D3, $24, $24, $2B, $C9, $2B, $D3, $2B, $C9
+	db $2B, $D3, $2B, $C9, $37, $D3, $37, $C9, $2B, $D3, $2B, $2B, $6A
+MusicPhrase_TreasureIsland_Ch2_2:
+	db $7E, $A8, $62, $30, $C9, $30, $D3, $30, $C9, $30, $D3, $30, $C9, $3C, $D3, $3C
+	db $C9, $30, $D3, $30, $2F, $6A
+MusicPhrase_TreasureIsland_Ch2_3:
+	db $7E, $A8, $62, $30, $DD, $30, $D3, $30, $C9, $30, $6B, $50, $30, $6A, $D3, $98
+	db $24, $C9, $24, $D3, $24, $C9, $24, $D3, $24, $99, $C9, $26, $D3, $26, $C9, $28
+	db $D3, $28, $26, $6A
+MusicPhrase_TreasureIsland_Ch2_1:
+	db $F2, $7E, $07, $63, $80, $6A
+MusicPhrase_TreasureIsland_Ch2_0:
+	db $71, $74, $D1, $07, $20, $76, $03, $D3, $F1, $7E, $07, $63, $80, $98, $24, $DD
+	db $24, $D3, $24, $C9, $24, $D3, $30, $6B, $3C, $30, $6A, $97, $6B, $5A, $35, $7C
+	db $C9, $37, $35, $37, $CC, $39, $3B, $CD, $3C, $CB, $A9, $3B, $C7, $7C, $62, $C9
+	db $37, $6B, $3C, $34, $C9, $34, $32, $34, $CC, $35, $37, $CD, $39, $CB, $A9, $37
+	db $C7, $7C, $62, $C9, $34, $6B, $3C, $30, $6A
+MusicPhrase_TreasureIsland_Ch3_1:
+	db $6C, $0A, $94, $64, $7E, $3E, $63, $C9, $30, $2F, $30, $CC, $2D, $2F, $CD, $30
+	db $6B, $5A, $97, $35, $97, $C9, $37, $A9, $37, $97, $37, $A9, $37, $97, $37, $A9
+	db $37, $7C, $2B, $6A
+MusicPhrase_TreasureIsland_Ch3_2:
+	db $7E, $3E, $63, $C9, $26, $2D, $2F, $2B, $D3, $34, $C9, $32, $30, $62, $30, $D3
+	db $62, $C9, $30, $62, $30, $6C, $0A, $AD, $64, $30, $BF, $12, $1F, $12, $7B, $00
+	db $94, $79, $BA, $75, $D3, $24, $C9, $23, $D3, $24, $C9, $23, $24, $6A
+MusicPhrase_TreasureIsland_Ch3_3:
+	db $6C, $0A, $94, $64, $6B, $5A, $21, $D3, $24, $C9, $23, $D3, $24, $C9, $23, $24
+	db $D3, $28, $C9, $24, $6B, $3C, $1F, $C9, $1F, $24, $26, $CC, $28, $29, $CD, $28
+	db $D3, $2B, $C9, $29, $6B, $3C, $26, $C9, $1F, $23, $24, $CC, $26, $28, $CD, $29
+	db $D3, $2D, $C9, $2B, $D3, $2B, $2A, $2B, $30, $C9, $2F, $D3, $30, $C9, $2F, $30
+	db $6A, $6B, $5A, $2D, $D3, $30, $C9, $2F, $D3, $30, $C9, $2F, $30, $D3, $34, $C9
+	db $30, $D3, $2B, $29, $28, $C9, $2B, $30, $CC, $32, $34, $CD, $35, $CC, $34, $34
+	db $CD, $32, $6B, $3C, $32, $C9, $2B, $2F, $30, $CC, $32, $34, $CD, $32, $D3, $30
+	db $DD, $30, $D3, $30, $C9, $30, $6B, $3C, $6C, $0A, $BB, $64, $30, $6A
+MusicPhrase_TreasureIsland_Ch3_4:
+	db $7E, $FF, $63, $7D, $83, $64
+MusicPhrase_TreasureIsland_Ch3_5:
+	db $7E, $FF, $63, $D3, $62, $6A
+MusicPhrase_TreasureIsland_Ch3_0:
+	db $79, $AA, $75, $6C, $0A, $94, $64, $7A, $0C, $BF, $00, $1F, $12, $AB, $DD, $21
+	db $6B, $64, $1F, $C9, $1A, $1C, $1D, $DD, $21, $6B, $64, $1F, $C9, $1A, $1C, $1D
+	db $D3, $21, $C9, $23, $6B, $64, $1F, $C9, $1F, $21, $23, $D3, $24, $DD, $24, $D3
+	db $24, $C9, $24, $6C, $0A, $AD, $64, $6B, $3C, $24, $7C, $BA, $15, $1F, $10, $79
+	db $9A, $75, $63, $19, $01, $04, $7B, $02, $53, $D3, $2B, $6A, $43, $01, $06, $45
+	db $09, $43, $01, $01, $05, $45, $09, $43, $06, $01, $06, $45, $09, $43, $01, $01
+	db $05, $45, $09, $04, $FF, $43, $01, $06, $45, $09, $43, $06, $05, $06, $05, $C4
+	db $05, $05, $FF, $43, $01, $06, $45, $09, $45, $01, $09, $01, $09, $C4, $09, $09
+	db $FF
 
-Data_a1d8:
-	db $8F, $7B, $02, $10, $F1, $7E, $B4, $61, $80, $D3, $0C, $8A, $C9, $21, $8F, $D3, $15, $C9, $13, $8A, $21, $8F, $13, $D3, $0C, $8A, $E7, $21, $8F, $D3, $13, $6A
-
-; Music pattern command streams for the song loaded by Func_a152 (referenced by the
-; Data_a172/Data_a188/Data_a19e pattern-pointer lists above).
-INCBIN "baserom.gbc", $a1f8, $a4c9 - $a1f8
-
-Func_a4c9:
+LoadSong_Menu:
 	call ResetMusicChannels
-	ld de, $64de
-	call Func_88f8
-	ld de, $64ec
-	call Func_88f4
-	ld de, $64fa
-	jp Func_88f0
+	ld de, MusicChain_Menu_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Menu_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Menu_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_a4c9.
-INCBIN "baserom.gbc", $a4de, $a6df - $a4de
+; Song data for LoadSong_Menu: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Menu_Ch3:
+	dw MusicPhrase_Menu_Ch3_0
+	dw MusicPhrase_Menu_Ch3_1
+	dw MusicPhrase_Menu_Ch3_2
+	dw MusicPhrase_Menu_Ch3_1
+	dw MusicPhrase_Menu_Ch3_2
+	dw $0000
+	dw MusicChain_Menu_Ch3 ; loop
+MusicChain_Menu_Ch2:
+	dw MusicPhrase_Menu_Ch2_0
+	dw MusicPhrase_Menu_Ch2_1
+	dw MusicPhrase_Menu_Ch2_2
+	dw MusicPhrase_Menu_Ch2_1
+	dw MusicPhrase_Menu_Ch2_2
+	dw $0000
+	dw MusicChain_Menu_Ch2 ; loop
+MusicChain_Menu_Ch1:
+	dw MusicPhrase_Menu_Ch1_0
+	dw MusicPhrase_Menu_Ch1_1
+	dw MusicPhrase_Menu_Ch1_2
+	dw MusicPhrase_Menu_Ch1_1
+	dw MusicPhrase_Menu_Ch1_2
+	dw $0000
+	dw MusicChain_Menu_Ch1 ; loop
 
-Func_a6df:
+MusicPhrase_Menu_Ch3_0:
+	db $7A, $0C, $90, $CF, $0C, $C7, $18, $CF, $0C, $C7, $18, $CF, $0C, $C7, $18, $CF
+	db $0C, $C7, $18, $13, $15, $13, $11, $10, $0E, $CF, $0C, $C7, $16, $CF, $15, $C7
+	db $13, $6A, $90, $CF, $11, $89, $C7, $29, $90, $CF, $0C, $89, $C7, $29, $90, $CF
+	db $11, $89, $C7, $29, $90, $CF, $0C, $89, $C7, $29, $90, $CF, $13, $8A, $C7, $2B
+	db $90, $CF, $0E, $8A, $C7, $2B, $90, $CF, $13, $8A, $C7, $2B, $90, $CF, $0E, $8A
+	db $C7, $2B, $90, $CF, $0C, $89, $C7, $24, $90, $CF, $18, $89, $C7, $24, $90, $CF
+	db $0C, $89, $C7, $24, $90, $CF, $18, $89, $C7, $24, $90, $CF, $11, $89, $C7, $29
+	db $90, $CF, $6A
+MusicPhrase_Menu_Ch3_1:
+	db $7E, $2A, $65, $10, $89, $C7, $29, $90, $CF, $0E, $89, $C7, $29, $90, $CF, $0C
+	db $89, $C7, $29, $6A
+MusicPhrase_Menu_Ch3_2:
+	db $7E, $2A, $65, $0C, $89, $C7, $29, $90, $CF, $11, $89, $C7, $29, $90, $CF, $11
+	db $89, $C7, $29, $6A
+MusicPhrase_Menu_Ch2_0:
+	db $6B, $50, $74, $00, $00, $66, $74, $59, $04, $70, $7B, $01, $53, $71, $63, $08
+	db $02, $04, $72, $94, $C7, $3C, $40, $43, $40, $3C, $37, $39, $3B, $3C, $62, $34
+	db $32, $62, $31, $6A
+MusicPhrase_Menu_Ch2_1:
+	db $C7, $30, $62, $2F, $30, $62, $32, $30, $3C, $3E, $CF, $3C, $C7, $62, $CF, $32
+	db $C7, $31, $32, $62, $34, $32, $3E, $40, $CF, $3E, $C7, $62, $2B, $34, $35, $CF
+	db $34, $62, $C7, $30, $32, $CF, $30, $C7, $2E, $2D, $62, $29, $CF, $2D, $C7, $32
+	db $DF, $30, $CF, $62, $6A
+MusicPhrase_Menu_Ch2_2:
+	db $C7, $30, $62, $2F, $30, $62, $32, $30, $3C, $3E, $CF, $3C, $C7, $62, $CF, $32
+	db $C7, $31, $32, $62, $34, $32, $3E, $40, $CF, $3E, $C7, $62, $2B, $34, $35, $CF
+	db $34, $C7, $2B, $24, $30, $32, $30, $2B, $2E, $2D, $62, $30, $30, $32, $34, $35
+	db $30, $2D, $98, $29, $CF, $62, $7C, $6A
+MusicPhrase_Menu_Ch1_0:
+	db $6C, $08, $DA, $66, $74, $79, $02, $A0, $7B, $02, $82, $63, $10, $02, $04, $94
+	db $71, $C7, $30, $66, $30, $30, $2B, $30, $D7, $34, $C7, $66, $30, $34, $37, $34
+	db $30, $2B, $2D, $2F, $CF, $30, $C7, $66, $D7, $24, $6A
+MusicPhrase_Menu_Ch1_1:
+	db $6C, $08, $D2, $66, $CF, $2D, $C7, $2C, $CF, $2D, $C7, $2E, $CF, $30, $C7, $2E
+	db $CF, $2D, $C7, $29, $CF, $2B, $C7, $2D, $CF, $2B, $C7, $26, $E7, $2B, $C7, $29
+	db $28, $30, $32, $CF, $30, $C7, $62, $18, $24, $26, $CF, $24, $C7, $22, $CF, $21
+	db $C7, $1D, $CF, $21, $C7, $26, $D7, $24, $C7, $28, $29, $2B, $6A
+MusicPhrase_Menu_Ch1_2:
+	db $CF, $2D, $C7, $2C, $CF, $2D, $C7, $2E, $CF, $30, $C7, $2E, $CF, $2D, $C7, $29
+	db $CF, $2B, $C7, $2D, $CF, $2B, $C7, $26, $E7, $2B, $C7, $29, $28, $30, $32, $CF
+	db $30, $C7, $1F, $18, $24, $26, $24, $26, $28, $29, $62, $24, $21, $62, $24, $D7
+	db $1D, $C7, $29, $CF, $62, $6A, $44, $01, $06, $04, $09, $06, $04, $FF, $44, $01
+	db $00, $06, $FF
+
+LoadSong_Unused3:
 	call ResetMusicChannels
 	ld a, $6f
 	ld [wMusicMacroTable + 1], a
 	ld a, $93
 	ld [wMusicMacroTable], a
-	ld de, $66fe
-	call Func_88f0
-	ld de, $6704
-	call Func_88f4
-	ld de, $670a
-	jp Func_88f8
+	ld de, MusicChain_Unused3_Ch1
+	call StartMusicChannel1
+	ld de, MusicChain_Unused3_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Unused3_Ch3
+	jp StartMusicChannel3
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_a6df.
-INCBIN "baserom.gbc", $a6fe, $a792 - $a6fe
+; Song data for LoadSong_Unused3: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Unused3_Ch1:
+	dw MusicPhrase_Unused3_Ch1_0
+	dw $0000
+	dw MusicChain_Unused3_Ch1 ; loop
+MusicChain_Unused3_Ch2:
+	dw MusicPhrase_Unused3_Ch2_0
+	dw $0000
+	dw MusicChain_Unused3_Ch2 ; loop
+MusicChain_Unused3_Ch3:
+	dw MusicPhrase_Unused3_Ch3_0
+	dw $0000
+	dw MusicChain_Unused3_Ch3 ; loop
 
-Func_a792:
+MusicPhrase_Unused3_Ch1_0:
+	db $69, $01, $8F, $D4, $13, $8A, $CD, $21, $8F, $C6, $13, $D4, $0E, $8A, $CD, $21
+	db $8F, $C6, $0E, $CD, $0C, $C6, $65, $CD, $0D, $74, $F2, $00, $6B, $A4, $0C, $68
+MusicPhrase_Unused3_Ch2_0:
+	db $74, $F1, $07, $65, $73, $94, $CD, $1F, $C6, $1E, $98, $CD, $2B, $94, $C6, $21
+	db $CD, $23, $C6, $1F, $98, $CD, $2B, $94, $C6, $23, $D4, $24, $98, $CD, $25, $6B
+	db $A4, $24, $68
+MusicPhrase_Unused3_Ch3_0:
+	db $6C, $07, $7B, $67, $BF, $11, $1F, $12, $94, $7A, $0C, $79, $DA, $74, $CD, $2B
+	db $C6, $2A, $CD, $2B, $C6, $2D, $CD, $2F, $C6, $2B, $CD, $2D, $C6, $2F, $D4, $30
+	db $CD, $2B, $24, $6D, $6B, $A4, $65, $68, $45, $01, $00, $06, $02, $00, $06, $01
+	db $00, $06, $02, $00, $06, $01, $06, $06, $07, $00, $07, $00, $00, $00, $00
+
+LoadSong_Unused4:
 	call ResetMusicChannels
-	ld de, $67a7
-	call Func_88f8
-	ld de, $67ad
-	call Func_88f4
-	ld de, $67b3
-	jp Func_88f0
+	ld de, MusicChain_Unused4_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Unused4_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Unused4_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_a792.
-INCBIN "baserom.gbc", $a7a7, $a816 - $a7a7
+; Song data for LoadSong_Unused4: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Unused4_Ch3:
+	dw MusicPhrase_Unused4_Ch3_0
+	dw $0000
+	dw MusicChain_Unused4_Ch3 ; loop
+MusicChain_Unused4_Ch2:
+	dw MusicPhrase_Unused4_Ch2_0
+	dw $0000
+	dw MusicChain_Unused4_Ch2 ; loop
+MusicChain_Unused4_Ch1:
+	dw MusicPhrase_Unused4_Ch1_0
+	dw $0000
+	dw MusicChain_Unused4_Ch1 ; loop
 
-Func_a816:
+MusicPhrase_Unused4_Ch3_0:
+	db $7A, $0C, $69, $01, $CD, $6C, $07, $33, $58, $F1, $90, $0C, $89, $24, $90, $13
+	db $89, $24, $80, $90, $11, $12, $6D, $7F, $28, $77, $6B, $FC, $13, $68
+MusicPhrase_Unused4_Ch2_0:
+	db $92, $C6, $24, $62, $1F, $62, $28, $62, $24, $62, $2B, $28, $27, $28, $30, $2B
+	db $2A, $2B, $34, $34, $32, $62, $30, $62, $CD, $28, $2D, $C6, $2F, $30, $DB, $32
+	db $6B, $D9, $62, $68
+MusicPhrase_Unused4_Ch1_0:
+	db $8B, $C6, $30, $30, $CD, $2F, $2D, $2B, $E9, $28, $CD, $2B, $C6, $30, $30, $CD
+	db $2F, $2D, $2B, $29, $C6, $2B, $2D, $6B, $FC, $2B, $68
+
+LoadSong_Unused5:
 	call ResetMusicChannels
-	ld de, $682b
-	call Func_88f8
-	ld de, $6831
-	call Func_88f4
-	ld de, $6837
-	jp Func_88f0
+	ld de, MusicChain_Unused5_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_Unused5_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_Unused5_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_a816.
-INCBIN "baserom.gbc", $a82b, $a904 - $a82b
+; Song data for LoadSong_Unused5: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_Unused5_Ch3:
+	dw MusicPhrase_Unused5_Ch3_0
+	dw $0000
+	dw MusicChain_Unused5_Ch3 ; loop
+MusicChain_Unused5_Ch2:
+	dw MusicPhrase_Unused5_Ch2_0
+	dw $0000
+	dw MusicChain_Unused5_Ch2 ; loop
+MusicChain_Unused5_Ch1:
+	dw MusicPhrase_Unused5_Ch1_0
+	dw $0000
+	dw MusicChain_Unused5_Ch1 ; loop
 
-Func_a904:
+MusicPhrase_Unused5_Ch3_0:
+	db $7A, $0C, $6C, $06, $FA, $68, $CB, $90, $0D, $89, $25, $90, $0D, $89, $25, $90
+	db $0D, $89, $25, $90, $0D, $89, $C5, $25, $90, $0D, $CB, $14, $89, $2C, $90, $14
+	db $89, $2C, $90, $14, $89, $2C, $90, $14, $89, $C5, $2C, $90, $0F, $CB, $14, $89
+	db $2C, $90, $14, $89, $2C, $90, $14, $89, $C5, $2C, $90, $12, $CB, $11, $0F, $D7
+	db $0D, $14, $6D, $7F, $28, $77, $6B, $30, $19, $68
+MusicPhrase_Unused5_Ch2_0:
+	db $74, $A2, $00, $7C, $71, $CB, $25, $20, $29, $25, $2C, $29, $31, $2C, $2C, $C5
+	db $2A, $29, $CB, $27, $2C, $C5, $20, $22, $20, $22, $20, $22, $20, $22, $CB, $20
+	db $C5, $22, $24, $25, $27, $29, $2A, $CB, $2C, $C5, $2A, $29, $27, $25, $24, $20
+	db $CB, $25, $C5, $27, $29, $2A, $2C, $2E, $30, $6B, $30, $31, $68
+MusicPhrase_Unused5_Ch1_0:
+	db $92, $6B, $36, $3D, $C5, $62, $3D, $62, $3C, $62, $3A, $62, $6B, $36, $38, $C5
+	db $62, $38, $62, $36, $62, $35, $62, $CB, $33, $C5, $3A, $62, $2C, $62, $2E, $62
+	db $CB, $30, $C5, $38, $62, $2C, $62, $2E, $30, $31, $62, $33, $35, $36, $38, $3A
+	db $3C, $D1, $3D, $DD, $62, $68, $45, $01, $00, $05, $06, $02, $00, $05, $06, $FF
+
+LoadSong_CrazyTown:
 	call ResetMusicChannels
-	ld de, $6919
-	call Func_88f8
-	ld de, $6937
-	call Func_88f4
-	ld de, $6955
-	jp Func_88f0
+	ld de, MusicChain_CrazyTown_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_CrazyTown_Ch2
+	call StartMusicChannel2
+	ld de, MusicChain_CrazyTown_Ch1
+	jp StartMusicChannel1
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_a904.
-INCBIN "baserom.gbc", $a919, $ac37 - $a919
+; Song data for LoadSong_CrazyTown: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_CrazyTown_Ch3:
+	dw MusicPhrase_CrazyTown_Ch3_0
+	dw MusicPhrase_CrazyTown_Ch3_1
+	dw MusicPhrase_CrazyTown_Ch3_2
+	dw MusicPhrase_CrazyTown_Ch3_3
+	dw MusicPhrase_CrazyTown_Ch3_4
+	dw MusicPhrase_CrazyTown_Ch3_1
+	dw MusicPhrase_CrazyTown_Ch3_2
+	dw MusicPhrase_CrazyTown_Ch3_3
+	dw MusicPhrase_CrazyTown_Ch3_4
+	dw MusicPhrase_CrazyTown_Ch3_5
+	dw MusicPhrase_CrazyTown_Ch3_2
+	dw MusicPhrase_CrazyTown_Ch3_5
+	dw MusicPhrase_CrazyTown_Ch3_2
+	dw $0000
+	dw MusicChain_CrazyTown_Ch3 ; loop
+MusicChain_CrazyTown_Ch2:
+	dw MusicPhrase_CrazyTown_Ch2_0
+	dw MusicPhrase_CrazyTown_Ch2_1
+	dw MusicPhrase_CrazyTown_Ch2_2
+	dw MusicPhrase_CrazyTown_Ch2_3
+	dw MusicPhrase_CrazyTown_Ch2_4
+	dw MusicPhrase_CrazyTown_Ch2_1
+	dw MusicPhrase_CrazyTown_Ch2_2
+	dw MusicPhrase_CrazyTown_Ch2_3
+	dw MusicPhrase_CrazyTown_Ch2_4
+	dw MusicPhrase_CrazyTown_Ch2_5
+	dw MusicPhrase_CrazyTown_Ch2_6
+	dw MusicPhrase_CrazyTown_Ch2_5
+	dw MusicPhrase_CrazyTown_Ch2_6
+	dw $0000
+	dw MusicChain_CrazyTown_Ch2 ; loop
+MusicChain_CrazyTown_Ch1:
+	dw MusicPhrase_CrazyTown_Ch1_0
+	dw MusicPhrase_CrazyTown_Ch1_1
+	dw MusicPhrase_CrazyTown_Ch2_2
+	dw MusicPhrase_CrazyTown_Ch2_3
+	dw MusicPhrase_CrazyTown_Ch2_4
+	dw MusicPhrase_CrazyTown_Ch1_1
+	dw MusicPhrase_CrazyTown_Ch2_2
+	dw MusicPhrase_CrazyTown_Ch2_3
+	dw MusicPhrase_CrazyTown_Ch2_4
+	dw MusicPhrase_CrazyTown_Ch1_2
+	dw MusicPhrase_CrazyTown_Ch1_3
+	dw MusicPhrase_CrazyTown_Ch1_2
+	dw MusicPhrase_CrazyTown_Ch1_3
+	dw $0000
+	dw MusicChain_CrazyTown_Ch1 ; loop
 
-Func_ac37:
+MusicPhrase_CrazyTown_Ch3_1:
+	db $7A, $0C
+MusicPhrase_CrazyTown_Ch3_5:
+	db $90, $F0, $D4, $11, $89, $CD, $29, $90, $C6, $11, $D4, $0C, $89, $CD, $29, $90
+	db $C6, $0C, $80, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $0F, $89, $CD, $27
+	db $90, $C6, $0C, $CD, $18, $89, $C6, $24, $90, $CD, $16, $89, $C6, $24, $90, $CD
+	db $15, $89, $C6, $24, $90, $CD, $13, $89, $C6, $24, $6A, $90, $D4, $11, $89, $CD
+	db $29, $90, $C6, $11, $D4, $0C, $89, $CD, $29, $90, $C6, $0C, $D4, $11, $89, $CD
+	db $29, $90, $C6, $11, $D4, $0C, $6A
+MusicPhrase_CrazyTown_Ch3_2:
+	db $7E, $B0, $69, $11, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $0F, $89, $CD, $27
+	db $90, $C6, $0F, $CD, $0C, $89, $C6, $24, $90, $CD, $0E, $89, $C6, $24, $90, $CD
+	db $0F, $89, $C6, $24, $90, $CD, $10, $89, $C6, $24, $6A
+MusicPhrase_CrazyTown_Ch3_3:
+	db $90, $7E, $B0, $69, $89, $CD, $29, $90, $C6, $11, $D4, $16, $89, $CD, $2E, $90
+	db $C6, $16, $D4, $11, $89, $CD, $2E, $90, $C6, $11, $D4, $16, $89, $CD, $2E, $90
+	db $C6, $16, $CD, $11, $89, $C6, $2E, $90, $CD, $16, $89, $C6, $2E, $6A
+MusicPhrase_CrazyTown_Ch3_4:
+	db $90, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $D4, $16, $89, $CD, $27, $90, $C6
+	db $16, $D4, $0F, $89, $CD, $27, $90, $C6, $0F, $CD, $16, $89, $C6, $27, $90, $CD
+	db $13, $89, $C6, $27, $90, $D4, $0C, $89, $CD, $24, $90, $C6, $0C, $D4, $13, $89
+	db $CD, $24, $90, $C6, $13, $CD, $0C, $89, $C6, $24, $90, $CD, $0E, $89, $C6, $26
+	db $90, $CD, $0F, $89, $C6, $27, $90, $CD, $10, $89, $C6, $28, $6A
+MusicPhrase_CrazyTown_Ch3_0:
+	db $7A, $0C, $6C, $07, $2F, $6C, $90, $D4, $11, $89, $CD, $29, $90, $C6, $11, $D4
+	db $0C, $89, $CD, $29, $90, $C6, $0C, $D4, $11, $89, $CD, $29, $90, $C6, $11, $D4
+	db $18, $89, $CD, $29, $90, $C6, $18, $D4, $1D, $1C, $1A, $18, $CD, $16, $C6, $18
+	db $CD, $1A, $D4, $18, $89, $C6, $30, $90, $CD, $0C, $C6, $18, $6A
+MusicPhrase_CrazyTown_Ch2_1:
+	db $74, $40, $00, $7A, $0C, $7D, $3C, $6B, $6A
+MusicPhrase_CrazyTown_Ch2_0:
+	db $74, $F1, $07, $50, $71, $63, $07, $02, $04, $D4, $21, $CD, $1D, $E9, $18, $C6
+	db $18, $CD, $1D, $C6, $1F, $CD, $21, $E9, $24, $C6, $24, $D4, $29, $28, $26, $24
+	db $CD, $22, $C6, $24, $CD, $26, $6B, $31, $28, $6A
+MusicPhrase_CrazyTown_Ch2_5:
+	db $7A, $00, $D4, $18, $1A, $1C, $1D, $CD, $1F, $C6, $1D, $1C, $1D, $E9, $21, $C6
+	db $18, $CD, $24, $C6, $24, $D4, $22, $21, $CD, $22, $6B, $3F, $1F, $C6, $18, $CD
+	db $1A, $C6, $1C, $6A
+MusicPhrase_CrazyTown_Ch2_6:
+	db $7A, $F4, $7E, $01, $6C, $7A, $00, $6A, $CD, $2D, $C6, $2C, $CD, $2D, $C6, $2C
+	db $CD, $2D, $D4, $30, $C6, $2C, $CD, $2D, $C6, $30, $CD, $2D, $D4, $29, $C6, $24
+	db $CD, $26, $C6, $24, $D4, $27, $27, $CD, $27, $C6, $26, $D4, $24, $6A
+MusicPhrase_CrazyTown_Ch1_1:
+	db $74, $F2, $0E, $47, $63, $07, $02, $04, $7E, $0E, $6B, $CD, $28, $D4, $28, $6B
+	db $31, $28, $6A
+MusicPhrase_CrazyTown_Ch2_2:
+	db $7E, $0E, $6B, $30, $2E, $2D, $2B, $6A
+MusicPhrase_CrazyTown_Ch2_3:
+	db $CD, $65, $C6, $2C, $CD, $2D, $C6, $30, $CD, $2C, $C6, $2D, $CD, $30, $C6, $2C
+	db $CD, $2D, $C6, $30, $CD, $2D, $6B, $3F, $29, $C6, $25, $CD, $26, $C6, $29, $CD
+	db $25, $C6, $26, $CD, $29, $C6, $25, $CD, $26, $C6, $29, $CD, $25, $6B, $31, $26
+	db $6A
+MusicPhrase_CrazyTown_Ch2_4:
+	db $CD, $65, $C6, $2A, $CD, $2B, $C6, $2E, $CD, $2A, $C6, $2B, $CD, $2E, $C6, $2A
+	db $CD, $2B, $C6, $2E, $CD, $2A, $D4, $2B, $C6, $24, $CD, $26, $C6, $24, $D4, $28
+	db $29, $2A, $2B, $30, $CD, $2E, $D4, $2D, $DB, $2B, $6A
+MusicPhrase_CrazyTown_Ch1_0:
+	db $74, $C1, $07, $43, $73, $94, $D4, $2D, $CD, $29, $E9, $24, $C6, $24, $CD, $29
+	db $C6, $2B, $CD, $2D, $E9, $30, $C6, $30, $D4, $35, $34, $32, $30, $CD, $2E, $C6
+	db $30, $CD, $32, $6B, $31, $30, $6A
+MusicPhrase_CrazyTown_Ch1_2:
+	db $74, $F1, $07, $67, $71, $7C, $D4, $24, $26, $28, $29, $CD, $2B, $C6, $29, $28
+	db $29, $E9, $2D, $C6, $24, $CD, $30, $C6, $30, $D4, $2E, $2D, $CD, $2E, $D4, $2B
+	db $C6, $29, $CD, $28, $C6, $29, $CD, $2B, $C6, $24, $CD, $26, $C6, $28, $6A
+MusicPhrase_CrazyTown_Ch1_3:
+	db $CD, $29, $C6, $2B, $CD, $2D, $D4, $30, $C6, $2D, $CD, $30, $C6, $32, $CD, $30
+	db $C6, $32, $CD, $34, $D4, $35, $C6, $37, $CD, $39, $C6, $35, $D4, $37, $39, $3A
+	db $39, $CD, $37, $C6, $39, $CD, $3A, $D4, $3C, $C6, $3E, $D4, $3C, $6A, $44, $01
+	db $00, $06, $09, $00, $06, $FF
+
+LoadSong_FuddForest:
 	call ResetMusicChannels
 	ld a, $6f
 	ld [wMusicMacroTable + 1], a
 	ld a, $93
 	ld [wMusicMacroTable], a
-	ld de, $6c56
-	call Func_88f0
-	ld de, $6c68
-	call Func_88f8
-	ld de, $6c7a
-	jp Func_88f4
+	ld de, MusicChain_FuddForest_Ch1
+	call StartMusicChannel1
+	ld de, MusicChain_FuddForest_Ch3
+	call StartMusicChannel3
+	ld de, MusicChain_FuddForest_Ch2
+	jp StartMusicChannel2
 
-; Music sequence data (per-channel command streams) for the song loaded by Func_ac37.
-INCBIN "baserom.gbc", $ac56, $b1a4 - $ac56
+; Song data for LoadSong_FuddForest: the three per-channel chains (each a
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+MusicChain_FuddForest_Ch1:
+	dw MusicPhrase_FuddForest_Ch1_0
+	dw MusicPhrase_FuddForest_Ch1_1
+	dw MusicPhrase_FuddForest_Ch1_2
+	dw MusicPhrase_FuddForest_Ch1_1
+	dw MusicPhrase_FuddForest_Ch1_3
+	dw MusicPhrase_FuddForest_Ch1_4
+	dw MusicPhrase_FuddForest_Ch1_4
+	dw $0000
+	dw MusicChain_FuddForest_Ch1 ; loop
+MusicChain_FuddForest_Ch3:
+	dw MusicPhrase_FuddForest_Ch3_0
+	dw MusicPhrase_FuddForest_Ch3_1
+	dw MusicPhrase_FuddForest_Ch3_0
+	dw MusicPhrase_FuddForest_Ch3_1
+	dw MusicPhrase_FuddForest_Ch3_2
+	dw MusicPhrase_FuddForest_Ch3_3
+	dw MusicPhrase_FuddForest_Ch3_3
+	dw $0000
+	dw MusicChain_FuddForest_Ch3 ; loop
+MusicChain_FuddForest_Ch2:
+	dw MusicPhrase_FuddForest_Ch2_0
+	dw MusicPhrase_FuddForest_Ch2_1
+	dw MusicPhrase_FuddForest_Ch2_0
+	dw MusicPhrase_FuddForest_Ch2_1
+	dw MusicPhrase_FuddForest_Ch2_2
+	dw MusicPhrase_FuddForest_Ch2_3
+	dw MusicPhrase_FuddForest_Ch2_3
+	dw $0000
+	dw MusicChain_FuddForest_Ch2 ; loop
+
+MusicPhrase_FuddForest_Ch1_2:
+	db $72, $94, $7D, $9F, $6C
+MusicPhrase_FuddForest_Ch1_0:
+	db $69, $02, $74, $D2, $0C, $60, $63, $0C, $02, $05, $71, $7B, $06, $53, $CB, $2D
+	db $2B, $2D, $2B, $2D, $2B, $2D, $E3, $2B, $CB, $26, $28, $D7, $29, $CB, $2B, $D7
+	db $28, $24, $6B, $9C, $1F, $CB, $2D, $2B, $2D, $2B, $2D, $2B, $2D, $E3, $2B, $CB
+	db $26, $28, $D7, $29, $CB, $2B, $D7, $28, $24, $30, $CB, $30, $2F, $E3, $2E, $D7
+	db $2B, $28, $24, $6A
+MusicPhrase_FuddForest_Ch1_1:
+	db $CB, $30, $2D, $30, $2D, $30, $2D, $30, $E3, $2D, $CB, $2F, $30, $D7, $32, $CB
+	db $30, $D7, $2B, $28, $2B, $CB, $28, $2B, $6B, $48, $2D, $CB, $28, $2D, $2B, $D7
+	db $2A, $CB, $2D, $D7, $32, $30, $CB, $2D, $26, $2A, $2D, $D7, $32, $30, $CB, $2D
+	db $2F, $30, $32, $D7, $2B, $CB, $2D, $2F, $D7, $29, $CB, $2B, $2D, $D7, $23, $CB
+	db $1F, $D7, $2B, $6A
+MusicPhrase_FuddForest_Ch1_3:
+	db $6B, $60, $24, $CB, $24, $24, $E3, $30, $74, $90, $00, $7C, $71, $7B, $00, $CB
+	db $2B, $2D, $2F, $6A
+MusicPhrase_FuddForest_Ch1_4:
+	db $6B, $9C, $2D, $CB, $2B, $2D, $2F, $E3, $2D, $28, $6B, $54, $2B, $CB, $2B, $30
+	db $2F, $6B, $9C, $32, $CB, $2B, $32, $30, $D7, $34, $CB, $30, $D7, $2D, $2C, $2B
+	db $CB, $24, $26, $28, $29, $2B, $2D, $2F, $6A, $F0, $87, $CB, $18, $1C, $85, $D7
+	db $21, $80, $F0, $87, $CB, $1A, $1D, $85, $D7, $21, $80, $F0, $87, $CB, $18, $1C
+	db $85, $D7, $21, $80, $6A
+MusicPhrase_FuddForest_Ch3_0:
+	db $7A, $0C, $7E, $56, $6D, $F0, $87, $CB, $1F, $23, $85, $D7, $21, $80, $7E, $56
+	db $6D, $87, $CB, $22, $1D, $85, $D7, $21, $87, $CB, $24, $22, $85, $D7, $21, $6A
+MusicPhrase_FuddForest_Ch3_1:
+	db $F0, $87, $CB, $1D, $21, $85, $D7, $21, $80, $F0, $87, $CB, $1F, $23, $85, $D7
+	db $21, $80, $F0, $87, $CB, $18, $1C, $85, $D7, $21, $80, $F0, $87, $CB, $1C, $21
+	db $85, $D7, $21, $80, $F1, $87, $CB, $1E, $21, $85, $D7, $21, $80, $87, $CB, $21
+	db $26, $85, $D7, $21, $87, $CB, $1F, $1A, $85, $21, $87, $D7, $1D, $CB, $1D, $85
+	db $21, $87, $1A, $1F, $1A, $85, $21, $87, $D7, $21, $CB, $1F, $85, $21, $87, $1F
+	db $6A
+MusicPhrase_FuddForest_Ch3_2:
+	db $87, $CB, $18, $1C, $85, $21, $87, $D7, $1F, $CB, $1F, $85, $21, $87, $21, $85
+	db $21, $21, $6B, $30, $21, $93, $CB, $2B, $2D, $6A
+MusicPhrase_FuddForest_Ch3_3:
+	db $93, $CB, $2F, $2D, $F1, $85, $CB, $21, $93, $E3, $2D, $80, $85, $CB, $21, $93
+	db $2D, $2F, $2D, $85, $21, $93, $2D, $D7, $28, $F0, $85, $CB, $21, $93, $E3, $2B
+	db $80, $85, $CB, $21, $93, $30, $2F, $32, $85, $21, $93, $E3, $32, $F0, $85, $CB
+	db $21, $93, $E3, $32, $80, $85, $CB, $21, $93, $32, $30, $34, $85, $21, $93, $30
+	db $D7, $2D, $85, $CB, $21, $93, $2C, $D7, $2B, $85, $CB, $21, $93, $26, $28, $29
+	db $85, $21, $93, $2B, $6A
+MusicPhrase_FuddForest_Ch2_0:
+	db $6C, $06, $65, $6F, $90, $F1, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B
+	db $CB, $24, $90, $13, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB, $2B
+	db $90, $0C, $80, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B, $CB, $24, $90
+	db $16, $D7, $16, $8B, $CB, $24, $90, $10, $D7, $10, $8B, $CB, $24, $90, $10, $6A
+MusicPhrase_FuddForest_Ch2_1:
+	db $90, $D7, $11, $8B, $CB, $29, $90, $18, $D7, $18, $8B, $CB, $29, $90, $13, $D7
+	db $13, $8B, $CB, $2B, $90, $1A, $D7, $1A, $8B, $CB, $2B, $90, $13, $D7, $0C, $8B
+	db $CB, $24, $90, $13, $D7, $13, $8B, $CB, $24, $90, $15, $D7, $15, $8B, $CB, $21
+	db $90, $10, $D7, $10, $8B, $CB, $21, $90, $15, $D7, $0E, $8B, $CB, $26, $90, $15
+	db $D7, $15, $8B, $CB, $26, $90, $0E, $D7, $0E, $8B, $CB, $26, $90, $15, $D7, $15
+	db $8B, $CB, $26, $90, $13, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB
+	db $2B, $90, $D7, $13, $CB, $13, $D7, $11, $10, $0E, $6A
+MusicPhrase_FuddForest_Ch2_2:
+	db $90, $D7, $0C, $8B, $CB, $24, $90, $D7, $13, $CB, $13, $8B, $24, $90, $15, $18
+	db $18, $6B, $48, $18, $6A, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB
+	db $2B, $90, $13, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB, $2B, $90
+	db $0C, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B, $CB, $24, $90, $18, $6A
+MusicPhrase_FuddForest_Ch2_3:
+	db $6C, $06, $7A, $6F, $90, $7E, $12, $6F, $D7, $18, $8B, $CB, $24, $90, $13, $D7
+	db $13, $8B, $CB, $24, $90, $13, $7E, $12, $6F, $D7, $18, $8B, $CB, $24, $90, $D7
+	db $13, $CB, $10, $8B, $24, $90, $0C, $6A, $5D, $44, $01, $00, $06, $00, $09, $00
+	db $01, $00, $36, $01, $00, $06, $00, $09, $06, $46, $04, $00, $FF, $5D, $44, $01
+	db $00, $05, $06, $09, $00, $01, $06, $36, $01, $00, $04, $06, $09, $06, $46, $04
+	db $00, $FF, $69, $00, $6A, $69, $02, $6A, $B7, $6F, $C2, $6F, $CB, $6F, $D4, $6F
+	db $DD, $6F, $E3, $6F, $EB, $6F, $F2, $6F, $F9, $6F, $FE, $6F, $03, $70, $0A, $70
+	db $11, $70, $11, $70, $11, $70, $19, $70, $19, $70, $BF, $11, $2F, $12, $60, $FE
+	db $A6, $79, $6A, $75, $68, $BF, $11, $1A, $12, $98, $79, $CA, $74, $68, $BA, $11
+	db $1F, $11, $94, $79, $DA, $74, $68, $BF, $11, $1F, $12, $94, $79, $3A, $75, $68
+	db $74, $F2, $00, $94, $72, $68, $74, $F1, $04, $51, $60, $FE, $71, $68, $74, $F1
+	db $00, $98, $76, $04, $68, $74, $F1, $00, $99, $76, $04, $68, $74, $D1, $00, $73
+	db $68, $74, $D2, $00, $71, $68, $74, $F2, $0A, $50, $94, $71, $68, $74, $F1, $0C
+	db $50, $94, $71, $68, $BA, $00, $00, $00, $79, $CA, $74, $68, $BF, $11, $1F, $12
+	db $94, $79, $3A, $75, $68, $40, $70, $45, $70, $4E, $70, $55, $70, $5C, $70, $65
+	db $70, $6E, $70, $7B, $70, $89, $70, $8E, $70, $97, $70, $A0, $70, $A9, $70, $B2
+	db $70, $BE, $70, $74, $F3, $00, $72, $68, $BF, $11, $1F, $11, $A6, $79, $6A, $75
+	db $68, $74, $F2, $04, $75, $71, $94, $68, $74, $C2, $04, $72, $72, $A0, $68, $BD
+	db $11, $18, $11, $98, $79, $DA, $75, $68, $BD, $11, $18, $11, $99, $79, $DA, $75
+	db $68, $74, $E1, $08, $55, $7B, $00, $63, $08, $01, $02, $71, $94, $68, $BD, $11
+	db $1F, $12, $79, $CA, $74, $68, $BF, $11, $1F, $14, $94, $68, $74, $B1, $00, $94
+	db $68, $74, $91, $04, $52, $73, $94, $7B, $00, $68, $BF, $11, $1F, $1F, $95, $79
+	db $6A, $75, $68, $BF, $11, $1F, $12, $95, $79, $3A, $75, $68, $BB, $11, $1F, $11
+	db $7C, $79, $4A, $75, $68, $74, $A0, $00, $72, $7B, $02, $52, $63, $12, $02, $04
+	db $68, $74, $C1, $04, $63, $73, $68, $68, $FD, $70, $0A, $71, $06, $71, $00, $71
+	db $0E, $71, $12, $71, $16, $71, $1A, $71, $1D, $71, $2D, $71, $31, $71, $34, $71
+	db $43, $71, $47, $71, $47, $71, $47, $71, $5E, $71, $75, $71, $8C, $71, $97, $71
+	db $97, $71, $9C, $71, $A2, $71, $A2, $71, $A6, $71, $A6, $71, $A6, $71, $A6, $71
+	db $0C, $00, $FF, $00, $00, $01, $01, $02, $FF, $00, $01, $02, $FF, $18, $0C, $00
+	db $FF, $00, $04, $07, $6A, $00, $03, $07, $6A, $00, $04, $07, $6A, $F4, $00, $FF
+	db $0C, $00, $00, $00, $00, $00, $00, $18, $0C, $0C, $0C, $0C, $0C, $0C, $0C, $FF
+	db $0C, $0C, $00, $FF, $00, $01, $FF, $0C, $00, $00, $00, $00, $00, $00, $0C, $0C
+	db $0C, $0C, $0C, $0C, $0C, $FF, $00, $0C, $00, $FF, $00, $00, $00, $03, $03, $08
+	db $08, $0C, $0C, $0C, $0F, $0F, $13, $13, $0F, $0F, $0C, $0C, $07, $07, $03, $03
+	db $6A, $0C, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $18, $0C, $0C, $0C
+	db $0C, $0C, $0C, $0C, $0C, $0C, $0C, $6A, $00, $00, $00, $03, $03, $08, $08, $0C
+	db $0C, $0C, $0F, $0F, $14, $14, $0F, $0F, $08, $08, $03, $03, $00, $00, $6A, $06
+	db $02, $00, $FE, $FB, $F8, $F6, $F2, $F0, $EC, $FF, $0C, $0C, $00, $00, $6A, $02
+	db $02, $01, $01, $00, $FF, $18, $0C
 
 SoundEffects:
 	dw $ff00
@@ -22979,7 +24158,7 @@ SoundEffect1:
 	dbw $7F, Func_b3c6
 	db $C7, $79, $2A, $75, $3C, $81, $0A, $3C, $68
 
-; Sound effect command streams (the SFX entries after SoundEffect1), referenced by
+; Sound effect phrases (the SFX entries after SoundEffect1), referenced by
 ; the SoundEffects table above.
 INCBIN "baserom.gbc", $b1e2, $b3c6 - $b1e2
 
