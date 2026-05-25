@@ -24174,44 +24174,156 @@ MusicPhrase_FuddForest_Ch2_3:
 	db $02, $01, $01, $00, $FF, $18, $0C
 
 SoundEffects:
-	dw $ff00
-	dw $71d0
-	dw $71e6
-	dw $721e
-	dw $722d
-	dw $723c
-	dw $7342
-	dw $7329
-	dw $7333
-	dw $7354
-	dw $7254
-	dw $72f0
-	dw $7265
-	dw $731a
-	dw $72fc
-	dw $7285
-	dw $729d
-	dw $72bb
-	dw $72d5
-	dw $7360
-	dw $71e2
-	dw $730b
+	dw $ff00 ; id 0 (invalid/unused)
+	dw SoundEffect1
+	dw SoundEffect2
+	dw SoundEffect3
+	dw SoundEffect4
+	dw SoundEffect5
+	dw SoundEffect6
+	dw SoundEffect7
+	dw SoundEffect8
+	dw SoundEffect9
+	dw SoundEffect10
+	dw SoundEffect11
+	dw SoundEffect12
+	dw SoundEffect13
+	dw SoundEffect14
+	dw SoundEffect15
+	dw SoundEffect16
+	dw SoundEffect17
+	dw SoundEffect18
+	dw SoundEffect19
+	dw SoundEffect20
+	dw SoundEffect21
 
+; Sound-effect phrases.
+; Same command format as the music phrases; each ends with $68 (StopChannel).
 SoundEffect1:
 	db $BF, $11, $1F, $11
 	db $60, $FD
-	dbw $7F, LoadNoiseInstrumentSfx
+	dbw $7F, LoadNoiseInstrumentSfx2
 	db $C7, $79, $2A, $75, $3C, $81, $0A, $3C, $68
 
-; Sound effect phrases (the SFX entries after SoundEffect1), referenced by
-; the SoundEffects table above.
-INCBIN "baserom.gbc", $b1e2, $b3c6 - $b1e2
+SoundEffect20:
+	dbw $7F, LoadNoiseInstrumentSfx4
+	db $68
+
+SoundEffect2:
+	db $BF, $11, $1F, $12, $7A, $02
+	dbw $7F, LoadNoiseInstrumentSfx6
+	db $94, $82, $0A, $79, $FA, $74, $C3, $60, $04, $12, $C3, $60, $FF, $65, $C3, $60
+	db $01, $65, $60, $01, $65, $C3, $60, $03, $65, $7C, $BC, $11, $1F, $11, $79, $EA
+	db $74, $60, $FE, $C7, $53, $53, $53, $B8, $11, $1F, $11, $53, $53, $53, $68
+
+SoundEffect3:
+	dbw $7F, LoadNoiseInstrumentSfx6
+	db $BF, $11, $1F, $11, $79, $FA, $74, $C5, $60, $FD, $26, $68
+
+SoundEffect4:
+	db $BF, $11, $2F, $11, $C6, $79, $1A, $75, $60, $04, $1F, $60, $FC, $37, $68
+
+SoundEffect5:
+	db $79, $FA, $74, $BF, $11, $2F, $11
+	dbw $7F, LoadNoiseInstrumentSfx3
+	db $C3, $60, $FC, $26, $C1, $66, $C0, $BA, $00, $00, $00, $54, $66, $68
+
+SoundEffect10:
+	db $B5, $2A, $2F, $11, $7A, $18, $79, $7A, $75, $60, $02, $C6, $18, $1A, $1C, $1E
+	db $68
+
+SoundEffect12:
+	db $BF, $11, $1F, $12, $7A, $02, $94, $82, $0A, $79, $FA, $74, $C3, $60, $04, $12
+	db $C3, $60, $FF, $65, $C3, $60, $01, $65, $60, $01, $65, $C3, $60, $03, $65, $68
+
+SoundEffect15:
+	db $C3, $BF, $11, $1F, $11, $7A, $18, $79, $8A, $75, $30, $3C, $37, $81, $0A, $30
+	db $3C, $37, $81, $05, $30, $3C, $37, $68
+
+SoundEffect16:
+	db $BF, $00, $00, $00, $C3, $7A, $18, $79, $8A, $75, $60, $02, $24, $26, $28, $29
+	db $2B, $2D, $2F, $81, $0A, $2B, $2D, $2F, $81, $05, $2B, $2D, $2F, $68
+
+SoundEffect17:
+	db $C3, $BF, $11, $1F, $11, $7A, $18, $79, $7A, $75, $3C, $37, $30, $2B, $24, $81
+	db $0A, $30, $2B, $24, $81, $05, $3C, $37, $30, $68
+
+SoundEffect18:
+	db $C3, $BF, $11, $1F, $11, $7A, $0C, $79, $EA, $74, $48, $4A, $3C, $3E, $30, $32
+	db $81, $0A, $30, $2B, $24, $81, $05, $30, $2B, $24, $68
+
+SoundEffect11:
+	db $CB, $BF, $10, $1F, $11, $60, $02, $79, $FA, $74, $1C, $68
+
+SoundEffect14:
+	db $BA, $00, $00, $00, $60, $FC, $79, $2A, $75
+	dbw $7F, LoadNoiseInstrumentSfx2
+	db $C4, $39, $68
+
+SoundEffect21:
+	dbw $7F, LoadNoiseInstrumentSfx1
+	db $BF, $11, $1F, $15, $79, $FA, $74, $C8, $60, $FC, $2D, $68
+
+SoundEffect13:
+	dbw $7F, LoadNoiseInstrumentSfx5
+	db $BF, $11, $1F, $15, $79, $FA, $74, $C8, $60, $FD, $21, $68
+
+SoundEffect7:
+	db $BF, $11, $2F, $11, $79, $0A, $75, $C6, $3C, $68
+
+SoundEffect8:
+	db $C3, $BF, $11, $2F, $11, $79, $0A, $75, $C3, $38, $C0, $66, $C3, $44, $68
+
+SoundEffect6:
+	db $C4, $94, $79, $7A, $75, $BF, $10, $1F, $12, $7B, $02, $55, $3C, $43, $40, $3C
+	db $43, $68
+
+SoundEffect9:
+	db $BA, $11, $1F, $14, $79, $FA, $74, $E0, $83, $03, $39, $68
+
+SoundEffect19:
+	dbw $7F, LoadNoiseInstrumentSfx3
+	db $BF, $00, $00, $00, $79, $EA, $75, $C2, $60, $FF, $3D, $79, $CA, $75, $65, $79
+	db $DA, $75, $65, $68
+
+; SFX noise-instrument setup (invoked via $7F from sound-effect phrases): point
+; the noise-instrument playback state at a drum sound and grab the channel via
+; wSfxNoiseLock. This one triggers the noise channel directly (NR42/NR44) and
+; uses no volume sweep.
+LoadNoiseInstrumentSfx1:
+	ld a, $24
+	ld [wSfxNoiseLock], a
+	xor a
+	ld [wNoiseInstrumentIndex], a
+	inc a
+	ld [wNoiseInstrumentActive], a
+	ld a, $f3
+	ldh [rNR42], a
+	ld a, $80
+	ldh [rNR44], a
+	ld a, $73
+	ld [wNoiseInstrumentFreqPtrHi], a
+	ld a, $a1
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $73a1
+	ld a, $00
+	ld [wNoiseInstrumentVolPtrHi], a
+	ld a, $00
+	ld [wNoiseInstrumentVolPtrLo], a ; no volume sweep
+	ret
+
+; NR43 frequency sweep for LoadNoiseInstrumentSfx1 ($ff-terminated).
+NoiseInstrumentSfx1Freq:
+	db $36, $35, $34, $33, $32, $31, $20, $10, $10, $37, $36, $35, $34, $33, $32, $21
+	db $11, $11, $38, $37, $36, $35, $34, $33, $22, $12, $12, $39, $38, $37, $36, $35
+	db $34, $23, $13, $13, $FF
 
 ; Noise-instrument setup routines. Each selects one percussion "instrument" by
-; pointing the playback state at that instrument's data and arming it. LoadNoiseInstrumentSfx
-; is invoked by a sound effect and additionally takes the noise channel from the music
-; by setting wSfxNoiseLock.
-LoadNoiseInstrumentSfx:
+; pointing the playback state at that instrument's data and arming it. The
+; LoadNoiseInstrumentSfx* variants are the ones invoked from sound-effect phrases
+; (via $7F); they additionally steal the noise channel from the music by setting
+; wSfxNoiseLock. The plain LoadNoiseInstrument1-11 below are used by the music's
+; noise sequences.
+LoadNoiseInstrumentSfx2:
 	ld a, $0f
 	ld [wSfxNoiseLock], a
 	xor a
@@ -24228,10 +24340,81 @@ LoadNoiseInstrumentSfx:
 	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $73f5
 	ret
 
-; Noise-instrument sweep data (NR43 frequency + NR42 volume lists, each $ff-
-; terminated), pointed at by the LoadNoiseInstrument* routines and played out by
-; UpdateNoiseChannel.
-INCBIN "baserom.gbc", $b3e8, $b658 - $b3e8
+; SFX noise-instrument sweep data, wave samples, and more SFX noise-instrument
+; setup routines, interleaved.
+INCBIN "baserom.gbc", $b3e8, $b402 - $b3e8 ; GB $73e8-$7402 sweeps
+LoadNoiseInstrumentSfx3:
+	ld a, $04
+	ld [wSfxNoiseLock], a
+	xor a
+	ld [wNoiseInstrumentIndex], a
+	inc a
+	ld [wNoiseInstrumentActive], a
+	ld a, $74
+	ld [wNoiseInstrumentFreqPtrHi], a
+	ld a, $24
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7424
+	ld a, $74
+	ld [wNoiseInstrumentVolPtrHi], a
+	ld a, $2a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $742a
+	ret
+INCBIN "baserom.gbc", $b424, $b42f - $b424 ; GB $7424-$742f sweeps
+LoadNoiseInstrumentSfx4:
+	ld a, $04
+	ld [wSfxNoiseLock], a
+	xor a
+	ld [wNoiseInstrumentIndex], a
+	inc a
+	ld [wNoiseInstrumentActive], a
+	ld a, $74
+	ld [wNoiseInstrumentFreqPtrHi], a
+	ld a, $51
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7451
+	ld a, $74
+	ld [wNoiseInstrumentVolPtrHi], a
+	ld a, $5a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $745a
+	ret
+INCBIN "baserom.gbc", $b451, $b463 - $b451 ; GB $7451-$7463 sweeps
+LoadNoiseInstrumentSfx5:
+	ld a, $21
+	ld [wSfxNoiseLock], a
+	xor a
+	ld [wNoiseInstrumentIndex], a
+	inc a
+	ld [wNoiseInstrumentActive], a
+	ld a, $02
+	ld [wNoiseInstrumentStepLength], a
+	xor a
+	ld [wNoiseInstrumentStepTimer], a
+	ld a, $74
+	ld [wNoiseInstrumentFreqPtrHi], a
+	ld a, $8e
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $748e
+	ld a, $74
+	ld [wNoiseInstrumentVolPtrHi], a
+	ld a, $94
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7494
+	ret
+INCBIN "baserom.gbc", $b48e, $b499 - $b48e ; GB $748e-$7499 sweeps
+LoadNoiseInstrumentSfx6:
+	ld a, $0f
+	ld [wSfxNoiseLock], a
+	xor a
+	ld [wNoiseInstrumentIndex], a
+	inc a
+	ld [wNoiseInstrumentActive], a
+	ld a, $74
+	ld [wNoiseInstrumentFreqPtrHi], a
+	ld a, $bb
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $74bb
+	ld a, $74
+	ld [wNoiseInstrumentVolPtrHi], a
+	ld a, $c3
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $74c3
+	ret
+INCBIN "baserom.gbc", $b4bb, $b658 - $b4bb ; GB $74bb-$7658 sweeps + wave samples
 
 LoadNoiseInstrument1:
 	xor a
