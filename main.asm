@@ -689,7 +689,7 @@ RunPasswordScreen:
 	ld a, $05
 	ld [MBC5RomBank], a
 	ld hl, $ddc9
-	ld de, $6e86
+	ld de, PasswordDisplayCharCoords
 	ld b, $03
 .asm_4c7
 	push bc
@@ -705,7 +705,7 @@ RunPasswordScreen:
 	add a
 	ld l, a
 	ld h, $00
-	ld de, $6df1
+	ld de, PasswordCharSprites
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
@@ -857,7 +857,7 @@ RunLanguageSelectScreen:
 	add 55
 	ld b, a
 	ld c, $14
-	ld hl, $6db3
+	ld hl, MenuCursorSprite
 	ld a, $05
 	ld [MBC5RomBank], a
 	call LoadOAMSprites
@@ -25760,7 +25760,103 @@ FuddForest2Entity67: entity_collectible CLAPBOARD_0, $300, $2F
 CrazyTownBossMap:
 	INCBIN "data/levels/crazy_town_boss.vdmap.lz"
 
-INCBIN "baserom.gbc", $16db3, $16e8c - $16db3
+; Sprite data shared by the password and language-select screens.
+MenuCursorSprite:
+	dw Load3SubSprites
+	sub_sprite $1C, $07,  8, 16
+	sub_sprite $1E, $07, 16, 16
+	sub_sprite $20, $07, 24, 16
+
+PasswordEasySprite:
+	dw Load3SubSprites
+	sub_sprite $66, $01,  8, 16
+	sub_sprite $68, $01, 16, 16
+	sub_sprite $6A, $01, 24, 16
+
+PasswordHardSprite:
+	dw Load3SubSprites
+	sub_sprite $6C, $01,  8, 16
+	sub_sprite $6E, $01, 16, 16
+	sub_sprite $70, $01, 24, 16
+
+PasswordMusicOnSprite:
+	dw Load2SubSprites
+	sub_sprite $5E, $01,  8, 16
+	sub_sprite $60, $01, 16, 16
+
+PasswordMusicOffSprite:
+	dw Load2SubSprites
+	sub_sprite $62, $01,  8, 16
+	sub_sprite $64, $01, 16, 16
+
+PasswordCharSprites:
+	dw PasswordCharMarvinSprite ; PASSWORD_CHAR_MARVIN
+	dw PasswordCharDaffySprite  ; PASSWORD_CHAR_DAFFY
+	dw PasswordCharSamSprite    ; PASSWORD_CHAR_SAM
+	dw PasswordCharTazSprite    ; PASSWORD_CHAR_TAZ
+	dw PasswordCharElmerSprite  ; PASSWORD_CHAR_ELMER
+
+PasswordCharMarvinSprite:
+	dw Load6SubSprites
+	sub_sprite $22, $05,  8, 16
+	sub_sprite $24, $05, 16, 16
+	sub_sprite $26, $05, 24, 16
+	sub_sprite $28, $05,  8, 32
+	sub_sprite $2A, $05, 16, 32
+	sub_sprite $2C, $05, 24, 32
+
+PasswordCharDaffySprite:
+	dw Load6SubSprites
+	sub_sprite $2E, $02,  8, 16
+	sub_sprite $30, $02, 16, 16
+	sub_sprite $32, $02, 24, 16
+	sub_sprite $34, $02,  8, 32
+	sub_sprite $36, $02, 16, 32
+	sub_sprite $38, $02, 24, 32
+
+PasswordCharSamSprite:
+	dw Load6SubSprites
+	sub_sprite $3A, $03,  8, 16
+	sub_sprite $3C, $03, 16, 16
+	sub_sprite $3E, $03, 24, 16
+	sub_sprite $40, $03,  8, 32
+	sub_sprite $42, $03, 16, 32
+	sub_sprite $44, $03, 24, 32
+
+PasswordCharTazSprite:
+	dw Load6SubSprites
+	sub_sprite $46, $04,  8, 16
+	sub_sprite $48, $04, 16, 16
+	sub_sprite $4A, $04, 24, 16
+	sub_sprite $4C, $04,  8, 32
+	sub_sprite $4E, $04, 16, 32
+	sub_sprite $50, $04, 24, 32
+
+PasswordCharElmerSprite:
+	dw Load6SubSprites
+	sub_sprite $52, $06,  8, 16
+	sub_sprite $54, $06, 16, 16
+	sub_sprite $56, $06, 24, 16
+	sub_sprite $58, $06,  8, 32
+	sub_sprite $5A, $06, 16, 32
+	sub_sprite $5C, $06, 24, 32
+
+PasswordCursorYCoords:
+	db $0F, $5F, $6F
+
+; (y, x) position of each of the 3 password character slots when entering a
+; password.
+PasswordEntryCharCoords:
+	db $3F, $44
+	db $1F, $5C
+	db $1F, $2C
+
+; (y, x) position of each of the 3 password character slots when displaying an
+; earned password.
+PasswordDisplayCharCoords:
+	db $57, $44
+	db $37, $5C
+	db $37, $2C
 
 INCLUDE "data/passwords.asm"
 
@@ -27355,14 +27451,14 @@ Func_17cfd:
 	ld a, [$dee6]
 	ld c, a
 	ld b, $00
-	ld hl, $6e7d
+	ld hl, PasswordCursorYCoords
 	add hl, bc
 	ld b, [hl]
-	ld hl, $6db3
+	ld hl, MenuCursorSprite
 	ld c, $08
 	call LoadOAMSprites
 	ld hl, wPasswordCharacters + 2
-	ld de, $6e80
+	ld de, PasswordEntryCharCoords
 	ld a, [wPasswordEntryCursor]
 	ld c, a
 	ld b, $03
@@ -27391,7 +27487,7 @@ Func_17cfd:
 	add a
 	ld l, a
 	ld h, $00
-	ld de, $6df1
+	ld de, PasswordCharSprites
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
@@ -27403,19 +27499,19 @@ Func_17cfd:
 .asm_17d46
 	dec b
 	jr nz, .asm_17d1c
-	ld hl, $6ddd
+	ld hl, PasswordMusicOnSprite
 	ld a, [wDisableMusic]
 	and a
 	jr z, .asm_17d55
-	ld hl, $6de7
+	ld hl, PasswordMusicOffSprite
 .asm_17d55
 	ld bc, $6848
 	call LoadOAMSprites
-	ld hl, $6dc1
+	ld hl, PasswordEasySprite
 	ld a, [wDifficultySetting]
 	and a
 	jr z, .asm_17d67
-	ld hl, $6dcf
+	ld hl, PasswordHardSprite
 .asm_17d67
 	ld bc, $7844
 	call LoadOAMSprites
