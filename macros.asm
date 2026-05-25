@@ -66,6 +66,15 @@ MACRO sub_sprite
 	db \4, \3, \1, \2
 	ENDM
 
+; \1: x velocity (signed 8.8 fixed-point), added to the x position each frame
+; \2: y base offset added to each sub-sprite of the frame
+; \3: sprite frame
+MACRO titlescreen_scroll_sprite
+	dw \1
+	db \2
+	dw \3
+	ENDM
+
 ; \1; num sub sprites
 ; \2: gfx address base
 ; \3: gfx address

@@ -1208,7 +1208,7 @@ RunTitlescreen:
 	call Func_2c2b
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $6eab
+	ld hl, TitlescreenScrollSprites
 	ld de, $ded8
 	ld a, $07
 	ldh [$ff8a], a
@@ -1275,7 +1275,7 @@ RunTitlescreen:
 	ld [$ded4], a
 	jr .asm_8f9
 .asm_8e7
-	ld hl, $6f1e
+	ld hl, TitlescreenTileCopySources
 	and $1e
 	ld c, a
 	ld b, $00
@@ -1325,13 +1325,13 @@ RunTitlescreen:
 	jr z, .asm_94a
 	ld c, a
 	ld b, $00
-	ld hl, $6ef8
+	ld hl, TitlescreenDropYCoords
 	add hl, bc
 	ld a, $05
 	ld [MBC5RomBank], a
 	ld b, [hl]
 	ld c, $3c
-	ld hl, $6eea
+	ld hl, TitlescreenDropSprite
 	call LoadOAMSprites
 	ld hl, $ded4
 	inc [hl]
@@ -1373,7 +1373,7 @@ RunTitlescreen:
 	srl a
 	ld e, a
 	ld d, $00
-	ld hl, $6f3e
+	ld hl, TitlescreenCharAnimFrames
 	add hl, de
 	ld a, $05
 	ld [MBC5RomBank], a
@@ -1393,7 +1393,7 @@ RunTitlescreen:
 .asm_995
 	ld c, [hl]
 	ld b, $70
-	ld hl, $6fe6
+	ld hl, TitlescreenCharIdleFrame
 	ld a, $05
 	ld [MBC5RomBank], a
 	call LoadOAMSprites
@@ -1422,10 +1422,10 @@ RunTitlescreen:
 	ld a, $05
 	ld [MBC5RomBank], a
 	ld a, [$ded7]
-	ld hl, $6ff8
+	ld hl, TitlescreenMenuFrame0
 	and a
 	jr nz, .asm_9e1
-	ld hl, $702a
+	ld hl, TitlescreenMenuFrame1
 .asm_9e1
 	ld bc, $5034
 	call LoadOAMSprites
@@ -1438,7 +1438,7 @@ RunTitlescreen:
 	srl a
 	ld c, a
 	ld b, $00
-	ld hl, $705c
+	ld hl, TitlescreenObp1PulseTable
 	add hl, bc
 	ld a, [hl]
 	ldh [rOBP1], a
@@ -1527,7 +1527,7 @@ RunIntroScene:
 	jr nz, .asm_a84
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $7064
+	ld hl, IntroSceneBgMapData
 	ld bc, $9b80
 	ld de, $9b90
 .asm_a9a
@@ -24508,7 +24508,148 @@ INCBIN "baserom.gbc", $16db3, $16e8c - $16db3
 
 INCLUDE "data/passwords.asm"
 
-INCBIN "baserom.gbc", $16eab, $17084 - $16eab
+; Seven decorative sprites that scroll horizontally and wrap around the screen.
+; Each frame, the sprite's x position (8.8 fixed-point) advances by the velocity;
+; the y base is added to each sub-sprite.
+TitlescreenScrollSprites:
+	titlescreen_scroll_sprite -144, $03, .frame0
+	titlescreen_scroll_sprite -144, $03, .frame0
+	titlescreen_scroll_sprite -112, $18, .frame1
+	titlescreen_scroll_sprite -112, $18, .frame1
+	titlescreen_scroll_sprite -112, $18, .frame1
+	titlescreen_scroll_sprite -80,  $2A, .frame1
+	titlescreen_scroll_sprite -80,  $2A, .frame1
+.frame0
+	dw Load4SubSprites
+	sub_sprite $00, $85,  8, 16
+	sub_sprite $02, $85, 16, 16
+	sub_sprite $04, $85, 24, 16
+	sub_sprite $06, $85, 32, 16
+.frame1
+	dw Load2SubSprites
+	sub_sprite $08, $85,  8, 16
+	sub_sprite $0A, $85, 16, 16
+
+; Slides down following TitlescreenDropYCoords.
+TitlescreenDropSprite:
+	dw Load3SubSprites
+	sub_sprite $24, $01,  8, 16
+	sub_sprite $26, $01, 16, 16
+	sub_sprite $28, $01, 24, 16
+
+; y positions for TitlescreenDropSprite
+TitlescreenDropYCoords:
+	db $1F, $1F, $20, $21, $22, $23, $24, $25, $27, $29, $2B, $2D, $2F, $31, $33, $35
+	db $38, $3B, $3E, $41, $44, $47, $4A, $4D, $50, $53, $56, $59, $5C, $5F, $62, $65
+	db $65, $65, $65, $65, $65, $65
+
+TitlescreenTileCopySources:
+	dw $C140, $C140, $C000, $C000, $C000, $C000, $C000, $C280
+	dw $C000, $C280, $C000, $C280, $C000, $C280, $C000, $C000
+
+; Entrance animation frames for the titlescreen character.
+TitlescreenCharAnimFrames:
+	dw .frame0
+	dw .frame1
+	dw .frame2
+	dw .frame3
+	dw .frame4
+	dw .frame5
+.frame0
+	dw Load6SubSprites
+	sub_sprite $32, $02, 16, 32
+	sub_sprite $34, $02, 24, 32
+	sub_sprite $30, $02,  8, 33
+	sub_sprite $2C, $02, 26, 17
+	sub_sprite $2E, $02, 32, 19
+	sub_sprite $2A, $02, 18, 16
+.frame1
+	dw Load6SubSprites
+	sub_sprite $3C, $02, 12, 32
+	sub_sprite $3E, $02, 20, 32
+	sub_sprite $40, $02, 28, 32
+	sub_sprite $36, $02, 21, 16
+	sub_sprite $38, $02, 29, 16
+	sub_sprite $3A, $02, 37, 16
+.frame2
+	dw Load6SubSprites
+	sub_sprite $48, $02, 10, 32
+	sub_sprite $4A, $02, 18, 32
+	sub_sprite $4C, $02, 26, 32
+	sub_sprite $42, $02, 18, 16
+	sub_sprite $44, $02, 26, 16
+	sub_sprite $46, $02, 34, 16
+.frame3
+	dw Load6SubSprites
+	sub_sprite $56, $02, 16, 32
+	sub_sprite $58, $02, 24, 32
+	sub_sprite $54, $02,  8, 34
+	sub_sprite $52, $02, 30, 20
+	sub_sprite $4E, $02, 18, 16
+	sub_sprite $50, $02, 26, 16
+.frame4
+	dw Load6SubSprites
+	sub_sprite $60, $02, 13, 32
+	sub_sprite $62, $02, 21, 32
+	sub_sprite $64, $02, 29, 32
+	sub_sprite $5A, $02, 19, 16
+	sub_sprite $5C, $02, 27, 16
+	sub_sprite $5E, $02, 35, 16
+.frame5
+	dw Load6SubSprites
+	sub_sprite $6C, $02, 11, 32
+	sub_sprite $6E, $02, 19, 32
+	sub_sprite $70, $02, 27, 32
+	sub_sprite $66, $02, 20, 16
+	sub_sprite $68, $02, 28, 16
+	sub_sprite $6A, $02, 36, 16
+
+; Settled pose shown after TitlescreenCharAnimFrames finishes.
+TitlescreenCharIdleFrame:
+	dw Load4SubSprites
+	sub_sprite $74, $02, 10, 32
+	sub_sprite $76, $02, 18, 32
+	sub_sprite $78, $02, 26, 32
+	sub_sprite $72, $02, 16, 16
+
+; Two-line menu prompt. The two frames swap which line uses OBP1 (attr $15) vs
+; OBP0 (attr $00) to highlight the currently selected option.
+TitlescreenMenuFrame0:
+	dw Load12SubSprites
+	sub_sprite $0C, $00, 16, 16
+	sub_sprite $0E, $00, 24, 16
+	sub_sprite $10, $00, 32, 16
+	sub_sprite $12, $00, 40, 16
+	sub_sprite $14, $00, 48, 16
+	sub_sprite $16, $15,  8, 32
+	sub_sprite $18, $15, 16, 32
+	sub_sprite $1A, $15, 24, 32
+	sub_sprite $1C, $15, 32, 32
+	sub_sprite $1E, $15, 40, 32
+	sub_sprite $20, $15, 48, 32
+	sub_sprite $22, $15, 56, 32
+TitlescreenMenuFrame1:
+	dw Load12SubSprites
+	sub_sprite $0C, $15, 16, 16
+	sub_sprite $0E, $15, 24, 16
+	sub_sprite $10, $15, 32, 16
+	sub_sprite $12, $15, 40, 16
+	sub_sprite $14, $15, 48, 16
+	sub_sprite $16, $00,  8, 32
+	sub_sprite $18, $00, 16, 32
+	sub_sprite $1A, $00, 24, 32
+	sub_sprite $1C, $00, 32, 32
+	sub_sprite $1E, $00, 40, 32
+	sub_sprite $20, $00, 48, 32
+	sub_sprite $22, $00, 56, 32
+
+; rOBP1 values cycled to make the highlighted menu line pulse.
+TitlescreenObp1PulseTable:
+	db $D0, $E4, $F8, $FC, $FC, $F8, $E4, $D0
+
+IntroSceneBgMapData:
+	db $6C, $54, $6D, $70, $6E, $75, $6F, $7A, $71, $55, $72, $7F, $73, $56, $74, $57
+	db $76, $58, $77, $59, $78, $5A, $79, $5B, $7B, $7B, $7C, $7C, $7D, $7D, $7E, $7E
 
 BrickThrowerProjectileSprites:
 	dw .frame0
