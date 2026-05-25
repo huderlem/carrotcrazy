@@ -23142,8 +23142,176 @@ InfogramesCopyrightTiles:
 StudioCameraArrowTiles:
 	INCBIN "gfx/studio/camera_arrow.interleave.2bpp.lz"
 
-; level intro screen oam data stuff
-INCBIN "baserom.gbc", $dde7, $e027 - $dde7
+; OAM metasprites for the animated character head shown during each level intro
+; screen. Each world has two animation frames.
+YosemiteSamHeadSprite0:
+	dw Load14SubSprites
+	sub_sprite $44, $01,  8, -42
+	sub_sprite $46, $01, 16, -42
+	sub_sprite $48, $01, 24, -42
+	sub_sprite $4A, $01, 32, -42
+	sub_sprite $4C, $01,  8, -26
+	sub_sprite $4E, $01, 16, -26
+	sub_sprite $50, $01, 24, -26
+	sub_sprite $52, $01, 32, -26
+	sub_sprite $54, $01,  8, -10
+	sub_sprite $56, $01, 16, -10
+	sub_sprite $58, $01, 24, -10
+	sub_sprite $5A, $01, 32, -10
+	sub_sprite $5C, $01, 16,   6
+	sub_sprite $5E, $01, 24,   6
+
+YosemiteSamHeadSprite1:
+	dw Load14SubSprites
+	sub_sprite $60, $01,  8, -43
+	sub_sprite $62, $01, 16, -43
+	sub_sprite $64, $01, 24, -43
+	sub_sprite $66, $01, 32, -43
+	sub_sprite $68, $01,  8, -27
+	sub_sprite $6A, $01, 16, -27
+	sub_sprite $6C, $01, 24, -27
+	sub_sprite $6E, $01, 32, -27
+	sub_sprite $70, $01,  8, -11
+	sub_sprite $72, $01, 16, -11
+	sub_sprite $74, $01, 24, -11
+	sub_sprite $76, $01, 32, -11
+	sub_sprite $78, $01,  8,   5
+	sub_sprite $7A, $01, 25,   5
+
+DaffyDuckHeadSprite0:
+	dw Load14SubSprites
+	sub_sprite $44, $01, 10, -41
+	sub_sprite $46, $01, 18, -41
+	sub_sprite $48, $01, 26, -41
+	sub_sprite $4A, $01,  2, -25
+	sub_sprite $4C, $01, 10, -25
+	sub_sprite $4E, $01, 18, -25
+	sub_sprite $50, $01, 26, -25
+	sub_sprite $52, $01, 34, -25
+	sub_sprite $54, $01,  2,  -9
+	sub_sprite $56, $01, 10,  -9
+	sub_sprite $58, $01, 18,  -9
+	sub_sprite $5A, $01, 26,  -9
+	sub_sprite $5C, $01, 34,  -9
+	sub_sprite $5E, $01, 42,  -9
+
+DaffyDuckHeadSprite1:
+	dw Load14SubSprites
+	sub_sprite $60, $01, 17, -40
+	sub_sprite $62, $01, 25, -40
+	sub_sprite $64, $01, 33, -40
+	sub_sprite $66, $01,  3, -24
+	sub_sprite $68, $01, 11, -24
+	sub_sprite $6A, $01, 19, -24
+	sub_sprite $6C, $01, 27, -24
+	sub_sprite $6E, $01, 35, -24
+	sub_sprite $70, $01,  0,  -8
+	sub_sprite $72, $01,  8,  -8
+	sub_sprite $74, $01, 16,  -8
+	sub_sprite $76, $01, 24,  -8
+	sub_sprite $78, $01, 32,  -8
+	sub_sprite $7A, $01, 40,  -8
+
+TazHeadSprite0:
+	dw Load14SubSprites
+	sub_sprite $44, $01,  5, -41
+	sub_sprite $46, $01, 13, -41
+	sub_sprite $48, $01, 21, -41
+	sub_sprite $4A, $01, 29, -41
+	sub_sprite $4C, $01, 37, -41
+	sub_sprite $4E, $01,  5, -25
+	sub_sprite $50, $01, 13, -25
+	sub_sprite $52, $01, 21, -25
+	sub_sprite $54, $01, 29, -25
+	sub_sprite $56, $01, 37, -25
+	sub_sprite $58, $01,  9,  -9
+	sub_sprite $5A, $01, 17,  -9
+	sub_sprite $5C, $01, 25,  -9
+	sub_sprite $5E, $01, 33,  -9
+
+TazHeadSprite1:
+	dw Load15SubSprites
+	sub_sprite $60, $01,  9, -44
+	sub_sprite $62, $01, 17, -44
+	sub_sprite $64, $01, 25, -44
+	sub_sprite $66, $01, 33, -44
+	sub_sprite $68, $01,  5, -28
+	sub_sprite $6A, $01, 13, -28
+	sub_sprite $6C, $01, 21, -28
+	sub_sprite $6E, $01, 29, -28
+	sub_sprite $70, $01, 37, -28
+	sub_sprite $72, $01,  9, -12
+	sub_sprite $74, $01, 17, -12
+	sub_sprite $76, $01, 25, -12
+	sub_sprite $78, $01, 33, -12
+	sub_sprite $7A, $01, 17,   4
+	sub_sprite $7C, $01, 25,   4
+
+MarvinMartianHeadSprite0:
+	dw Load13SubSprites
+	sub_sprite $44, $01,  7, -42
+	sub_sprite $46, $01, 15, -44
+	sub_sprite $48, $01, 23, -44
+	sub_sprite $4A, $01, 31, -42
+	sub_sprite $4C, $01,  7, -26
+	sub_sprite $4E, $01, 15, -28
+	sub_sprite $50, $01, 23, -28
+	sub_sprite $52, $01, 31, -26
+	sub_sprite $54, $01,  7, -10
+	sub_sprite $56, $01, 15, -12
+	sub_sprite $58, $01, 23, -12
+	sub_sprite $5A, $01, 31, -10
+	sub_sprite $5C, $01, 39, -18
+
+MarvinMartianHeadSprite1:
+	dw Load13SubSprites
+	sub_sprite $5E, $01,  7, -43
+	sub_sprite $60, $01, 15, -44
+	sub_sprite $62, $01, 23, -44
+	sub_sprite $64, $01, 31, -43
+	sub_sprite $66, $01,  7, -27
+	sub_sprite $68, $01, 15, -28
+	sub_sprite $6A, $01, 23, -28
+	sub_sprite $6C, $01, 31, -27
+	sub_sprite $6E, $01,  7, -11
+	sub_sprite $70, $01, 15, -12
+	sub_sprite $72, $01, 23, -12
+	sub_sprite $74, $01, 31, -11
+	sub_sprite $76, $01, 39, -19
+
+ElmerFuddHeadSprite0:
+	dw Load14SubSprites
+	sub_sprite $44, $01,  8, -40
+	sub_sprite $46, $01, 16, -40
+	sub_sprite $48, $01, 24, -40
+	sub_sprite $4A, $01, 32, -40
+	sub_sprite $4C, $01,  8, -24
+	sub_sprite $4E, $01, 16, -24
+	sub_sprite $50, $01, 24, -24
+	sub_sprite $52, $01, 32, -24
+	sub_sprite $54, $01,  8,  -8
+	sub_sprite $56, $01, 16,  -8
+	sub_sprite $58, $01, 24,  -8
+	sub_sprite $5A, $01, 32,  -8
+	sub_sprite $5C, $01, 23, -56
+	sub_sprite $5E, $01, 31, -56
+
+ElmerFuddHeadSprite1:
+	dw Load14SubSprites
+	sub_sprite $60, $01,  8, -39
+	sub_sprite $62, $01, 16, -39
+	sub_sprite $64, $01, 24, -39
+	sub_sprite $66, $01, 32, -39
+	sub_sprite $68, $01,  8, -23
+	sub_sprite $6A, $01, 16, -23
+	sub_sprite $6C, $01, 24, -23
+	sub_sprite $6E, $01, 32, -23
+	sub_sprite $70, $01,  8,  -7
+	sub_sprite $72, $01, 16,  -7
+	sub_sprite $74, $01, 24,  -7
+	sub_sprite $76, $01, 32,  -7
+	sub_sprite $78, $01, 22, -55
+	sub_sprite $7A, $01, 30, -55
 
 FuddForestLevelTiles:
 	INCBIN "gfx/fudd_forest/level_tiles.2bpp.lz"
@@ -26761,7 +26929,103 @@ StudioScreenGBCPalettes:
 	RGB 19, 9, 0
 	RGB 0, 0, 0
 
-INCBIN "baserom.gbc", $1aac8, $1ab36 - $1aac8
+; Palettes for the level intro screens. The background and first sprite
+; palette share the world's color ramp; the second sprite palette tints
+; the character head.
+TreasureIslandIntroGBCPalettes:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB 31, 31, 31
+	RGB 8, 0, 27
+	RGB 4, 0, 14
+	RGB 1, 0, 6
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB 8, 0, 27
+	RGB 4, 0, 14
+	RGB 1, 0, 6
+
+	; OBJ Palette 1
+	RGB 30, 24, 20
+	RGB 31, 11, 4
+	RGB 16, 6, 0
+
+CrazyTownIntroGBCPalettes:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB 31, 31, 31
+	RGB 19, 0, 17
+	RGB 11, 0, 9
+	RGB 6, 0, 5
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB 19, 0, 17
+	RGB 11, 0, 9
+	RGB 6, 0, 5
+
+	; OBJ Palette 1
+	RGB 31, 31, 31
+	RGB 31, 14, 6
+	RGB 11, 8, 3
+
+TazZooIntroGBCPalettes:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB 31, 31, 31
+	RGB 31, 0, 0
+	RGB 15, 0, 0
+	RGB 7, 0, 0
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB 31, 0, 0
+	RGB 15, 0, 0
+	RGB 7, 0, 0
+
+	; OBJ Palette 1
+	RGB 31, 31, 31
+	RGB 27, 22, 16
+	RGB 13, 10, 5
+
+SpaceStationIntroGBCPalettes:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB 31, 31, 31
+	RGB 22, 12, 0
+	RGB 13, 6, 0
+	RGB 6, 3, 0
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB 24, 15, 0
+	RGB 14, 8, 0
+	RGB 6, 4, 0
+
+	; OBJ Palette 1
+	RGB 31, 31, 31
+	RGB 31, 28, 7
+	RGB 4, 18, 0
+
+FuddForestIntroGBCPalettes:
+	db 1 ; num background palettes
+	; BG Palette 0
+	RGB 31, 31, 31
+	RGB 0, 31, 0
+	RGB 0, 15, 0
+	RGB 0, 7, 0
+
+	db 2 ; num sprite palettes
+	; OBJ Palette 0
+	RGB 0, 31, 0
+	RGB 0, 15, 0
+	RGB 0, 7, 0
+
+	; OBJ Palette 1
+	RGB 31, 31, 31
+	RGB 29, 18, 18
+	RGB 19, 9, 0
 
 Data_1ab36:
 	db 1 ; num background palettes
@@ -27921,106 +28185,151 @@ ScreenData_CrazyTown1Intro:
 	compressed_data DaffyDuckHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b1d1, $1b1da - $1b1d1
+	dw CrazyTownIntroGBCPalettes
+	db $02
+	dw DaffyDuckHeadSprite0
+	dw DaffyDuckHeadSprite1
+	dw $C508 ; level name text
 
 ScreenData_CrazyTown2Intro:
 	compressed_data DaffyDuckHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b1e2, $1b1eb - $1b1e2
+	dw CrazyTownIntroGBCPalettes
+	db $02
+	dw DaffyDuckHeadSprite0
+	dw DaffyDuckHeadSprite1
+	dw $C50A ; level name text
 
 ScreenData_CrazyTownBossIntro:
 	compressed_data DaffyDuckHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b1f3, $1b1fc - $1b1f3
+	dw CrazyTownIntroGBCPalettes
+	db $01
+	dw DaffyDuckHeadSprite0
+	dw DaffyDuckHeadSprite1
+	dw $C512 ; level name text
 
 ScreenData_TreasureIsland1Intro:
 	compressed_data YosemiteSamHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b204, $1b20d - $1b204
+	dw TreasureIslandIntroGBCPalettes
+	db $02
+	dw YosemiteSamHeadSprite0
+	dw YosemiteSamHeadSprite1
+	dw $C50C ; level name text
 
 ScreenData_TreasureIsland2Intro:
 	compressed_data YosemiteSamHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b215, $1b21e - $1b215
+	dw TreasureIslandIntroGBCPalettes
+	db $02
+	dw YosemiteSamHeadSprite0
+	dw YosemiteSamHeadSprite1
+	dw $C50E ; level name text
 
 ScreenData_TreasureIslandBossIntro:
 	compressed_data YosemiteSamHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b226, $1b22f- $1b226
+	dw TreasureIslandIntroGBCPalettes
+	db $01
+	dw YosemiteSamHeadSprite0
+	dw YosemiteSamHeadSprite1
+	dw $C510 ; level name text
 
 ScreenData_TazZoo1Intro:
 	compressed_data TazHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b237, $1b240 - $1b237
+	dw TazZooIntroGBCPalettes
+	db $02
+	dw TazHeadSprite0
+	dw TazHeadSprite1
+	dw $C514 ; level name text
 
 ScreenData_TazZoo2Intro:
 	compressed_data TazHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b248, $1b251 - $1b248
+	dw TazZooIntroGBCPalettes
+	db $02
+	dw TazHeadSprite0
+	dw TazHeadSprite1
+	dw $C516 ; level name text
 
 ScreenData_TazZooBossIntro:
 	compressed_data TazHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b259, $1b262 - $1b259
+	dw TazZooIntroGBCPalettes
+	db $01
+	dw TazHeadSprite0
+	dw TazHeadSprite1
+	dw $C518 ; level name text
 
 ScreenData_SpaceStation1Intro:
 	compressed_data MarvinMartianHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b26a, $1b273 - $1b26a
+	dw SpaceStationIntroGBCPalettes
+	db $02
+	dw MarvinMartianHeadSprite0
+	dw MarvinMartianHeadSprite1
+	dw $C51A ; level name text
 
 ScreenData_SpaceStation2Intro:
 	compressed_data MarvinMartianHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b27b, $1b284 - $1b27b
+	dw SpaceStationIntroGBCPalettes
+	db $02
+	dw MarvinMartianHeadSprite0
+	dw MarvinMartianHeadSprite1
+	dw $C51C ; level name text
 
 ScreenData_SpaceStationBossIntro:
 	compressed_data MarvinMartianHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b28c, $1b295 - $1b28c
+	dw SpaceStationIntroGBCPalettes
+	db $01
+	dw MarvinMartianHeadSprite0
+	dw MarvinMartianHeadSprite1
+	dw $C51E ; level name text
 
 ScreenData_FuddForest1Intro:
 	compressed_data ElmerFuddHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b29d, $1b2a6 - $1b29d
+	dw FuddForestIntroGBCPalettes
+	db $01
+	dw ElmerFuddHeadSprite0
+	dw ElmerFuddHeadSprite1
+	dw $C520 ; level name text
 
 ScreenData_FuddForest2Intro:
 	compressed_data ElmerFuddHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b2ae, $1b2b7 - $1b2ae
+	dw FuddForestIntroGBCPalettes
+	db $01
+	dw ElmerFuddHeadSprite0
+	dw ElmerFuddHeadSprite1
+	dw $C522 ; level name text
 
 ScreenData_FuddForestBossIntro:
 	compressed_data ElmerFuddHeadTiles, $8440
 	db $ff
 	dw RunLevelIntroScreen
-
-INCBIN "baserom.gbc", $1b2bf, $1b2c8 - $1b2bf
+	dw FuddForestIntroGBCPalettes
+	db $01
+	dw ElmerFuddHeadSprite0
+	dw ElmerFuddHeadSprite1
+	dw $C524 ; level name text
 
 ScreenData_Studio:
 	compressed_data StudioTiles, $8C80
