@@ -21610,7 +21610,7 @@ InitSoundEngine:
 	ld [wMusicInMacro], a
 	ld [wMusicPaused], a
 	ld [wSfxNoiseLock], a
-	ld [$db5d], a
+	ld [wNoiseSeqVolumeAttenuation], a
 ; Silences all four channels, resets master volume/panning, and reinitialises
 ; each channel's state struct.
 ResetMusicChannels:
@@ -21628,8 +21628,8 @@ ResetMusicChannels:
 	ldh [rNR34], a
 	ldh [rNR44], a
 	ld [wMusicMasterVolSeqActive], a
-	ld [$db52], a
-	ld [$db5c], a
+	ld [wNoiseSeqActive], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $88
 	ld [wMusicNoisePanning], a
 	ld a, $77
@@ -21685,8 +21685,8 @@ ResetChannel:
 	xor a
 	ld [wActiveSoundEffect], a
 	ld [MUSIC_CHAN_4 + MUSIC_CH_VOLUME], a
-	ld [$db5e], a
-	ld [$db5f], a
+	ld [wNoiseInstrumentStepTimer], a
+	ld [wNoiseInstrumentStepLength], a
 	dec a
 	ld [wMusicLastWaveVolume], a
 	jp ReloadWaveChannel
@@ -22311,7 +22311,7 @@ StartMusicChannel3:
 	ld h, HIGH(MUSIC_CHAN_3)
 	xor a
 	ld [wMusicMasterVolSeqActive], a
-	ld [$db52], a
+	ld [wNoiseSeqActive], a
 	ld a, $77
 	ldh [rNR50], a
 LoadChannelChain:
@@ -22393,85 +22393,109 @@ FadeInMusic_:
 	ld hl, FadeInVolumeSequence
 	jp StartMasterVolumeSequence
 
+; Command $6D: stop the percussion track.
 MusicCommand_StopNoiseSequence:
 	xor a
-	ld [$db52], a
+	ld [wNoiseSeqActive], a
 	ret
 
+; Command $6C: start a percussion track on the noise channel. Its three parameter
+; bytes are the step length (frames per noise-sequence step) followed by a 16-bit
+; pointer to the noise sequence: a separate byte stream, decoded by AdvanceNoiseSequence.
 MusicCommand_StartNoiseSequence:
 	ld a, [de]
-	ld [$db53], a
+	ld [wNoiseSeqStepLength], a
 	inc de
 	ld a, [de]
-	ld [$db50], a
+	ld [wNoiseSeqPtrLo], a
 	inc de
 	ld a, [de]
-	ld [$db4f], a
+	ld [wNoiseSeqPtrHi], a
 	inc de
 	xor a
-	ld [$db51], a
-	ld [$db5d], a
-	ld [$db5e], a
-	ld [$db5f], a
-	ld [$db4e], a
+	ld [wNoiseSeqIndex], a
+	ld [wNoiseSeqVolumeAttenuation], a
+	ld [wNoiseInstrumentStepTimer], a
+	ld [wNoiseInstrumentStepLength], a
+	ld [wNoiseSeqPanInterval], a
 	inc a
-	ld [$db52], a
-	ld [$db54], a
+	ld [wNoiseSeqActive], a
+	ld [wNoiseSeqStepTimer], a
 	ld a, $88
 	ld [wMusicNoisePanning], a
 	ret
 
-Func_8994:
-	ld a, [$db52]
+; Advances the percussion track ("noise sequence") by one step. Called from
+; UpdateNoiseChannel whenever the step timer expires. A noise sequence is its own
+; little byte language, distinct from the melodic phrase commands. Each byte is:
+;   $00       rest for this step (and advance)
+;   $01-$0b   trigger noise instrument 1-11 (a drum hit); ends the step
+;   $32       pan the noise channel to both speakers
+;   $33       pan right only       (ignored while a sound effect owns the channel)
+;   $34       pan left only        (ignored while a sound effect owns the channel)
+;   $35 nn    set the stereo ping-pong interval to nn (see UpdateNoiseChannel)
+;   $36       jump back to the repeat point if iterations remain (pairs with $5b-$bf)
+;   $37-$46   set drum volume: attenuation = $0f - (byte - $37) ($37 = loudest)
+;   $47-$5a   set the noise-instrument step speed = byte - $47 (frames per step)
+;   $5b-$bf   begin a repeat block of (byte - $5a) iterations from the next byte
+;   $c0-$fe   set the step length = byte - $bf (frames per noise-sequence step)
+;   $ff       loop the whole sequence (rewind the cursor to the start)
+; The modifier bytes ($32-$5a, $c0-$fe) take effect immediately and fall through to
+; the next byte in the same frame; only a rest or a drum hit ends the step.
+AdvanceNoiseSequence:
+	ld a, [wNoiseSeqActive]
 	and a
 	ret z
-	ld a, [$db53]
-	ld [$db54], a
-Func_899f:
-	ld a, [$db51]
-Func_89a2:
+	ld a, [wNoiseSeqStepLength]
+	ld [wNoiseSeqStepTimer], a ; reload the per-step countdown
+.readCommand:
+	ld a, [wNoiseSeqIndex]
+.readCommandAtIndex:
 	ld e, a
 	inc a
-	ld [$db51], a
-	ld a, [$db50]
+	ld [wNoiseSeqIndex], a ; advance the cursor past this byte
+	ld a, [wNoiseSeqPtrLo]
 	add e
 	ld l, a
-	ld a, [$db4f]
+	ld a, [wNoiseSeqPtrHi]
 	adc a, $00
-	ld h, a
-Func_89b2:
+	ld h, a ; hl = sequence base + cursor
+.dispatch:
 	ld a, [hl]
 	and a
-	ret z
+	ret z ; $00: rest this step
 	cp $ff
-	jr z, Func_8a13
+	jr z, .loopSequence
 	cp $32
-	jr z, Func_8a2c
+	jr z, .panCenter
 	cp $33
-	jr z, Func_8a33
+	jr z, .panRight
 	cp $34
-	jr z, Func_8a40
+	jr z, .panLeft
 	cp $35
-	jp z, Func_8a58
+	jp z, .setPanInterval
 	cp $36
-	jp z, Func_8a63
+	jp z, .repeatLoop
 	cp $c0
-	jr nc, Func_8a09
+	jr nc, .setStepLength
 	cp $5b
-	jp nc, Func_8a72
+	jp nc, .startRepeat
 	cp $47
-	jr nc, Func_8a4d
+	jr nc, .setInstrumentSpeed
 	cp $37
-	jr nc, Func_8a19
+	jr nc, .setVolume
+	; $01-$0b: trigger the matching noise instrument (.instrumentTable index a-1),
+	; unless a sound effect owns the noise channel (the drum hit is then skipped but
+	; the step still ends).
 	ld e, a
 	ld a, [wSfxNoiseLock]
 	and a
 	ret nz
 	ld a, e
 	add a
-	add a, (Data_89f3 - 2) & $ff
+	add a, (.instrumentTable - 2) & $ff
 	ld l, a
-	adc a, (Data_89f3 >> 8)
+	adc a, (.instrumentTable >> 8)
 	sub l
 	ld h, a
 	ld a, [hli]
@@ -22479,191 +22503,212 @@ Func_89b2:
 	ld l, a
 	jp hl
 
-Data_89f3:
-	dw Func_b658
-	dw Func_b69d
-	dw Func_b6d1
-	dw Func_b6d1
-	dw Func_b6ee
-	dw Func_b70b
-	dw Func_b728
-	dw Func_b675
-	dw Func_b745
-	dw Func_b767
-	dw Func_b784
+; Drum-hit handlers. Each loads the NR43/NR42 one percussion instrument.
+; UpdateNoiseChannel then plays it out.
+.instrumentTable:
+	dw LoadNoiseInstrument1
+	dw LoadNoiseInstrument2
+	dw LoadNoiseInstrument3
+	dw LoadNoiseInstrument3
+	dw LoadNoiseInstrument5
+	dw LoadNoiseInstrument6
+	dw LoadNoiseInstrument7
+	dw LoadNoiseInstrument8
+	dw LoadNoiseInstrument9
+	dw LoadNoiseInstrument10
+	dw LoadNoiseInstrument11
 
-Func_8a09:
+; $c0-$fe: set the frames-per-step length (also applies to the current step).
+.setStepLength:
 	sub $bf
-	ld [$db53], a
-	ld [$db54], a
-	jr Func_8a22
-Func_8a13:
+	ld [wNoiseSeqStepLength], a
+	ld [wNoiseSeqStepTimer], a
+	jr .nextCommand
+; $ff: rewind the cursor to the start and keep reading from there.
+.loopSequence:
 	xor a
-	ld [$db51], a
-	jr Func_899f
+	ld [wNoiseSeqIndex], a
+	jr .readCommand
 
-Func_8a19:
+; $37-$46: set drum volume as an attenuation (high = quieter).
+.setVolume:
 	sub $37
 	ld c, a
 	ld a, $0f
 	sub c
-	ld [$db5d], a
-Func_8a22:
-	ld a, [$db51]
-Func_8a25:
+	ld [wNoiseSeqVolumeAttenuation], a
+; Continue with the next byte this same frame.
+.nextCommand:
+	ld a, [wNoiseSeqIndex]
+.advanceCursor:
 	inc a
-	ld [$db51], a
+	ld [wNoiseSeqIndex], a
 	inc hl
-	jr Func_89b2
+	jr .dispatch
 
-Func_8a2c:
+; $32: noise channel -> both speakers.
+.panCenter:
 	ld a, $88
 	ld [wMusicNoisePanning], a
-	jr Func_8a22
+	jr .nextCommand
 
-Func_8a33:
+; $33: noise channel -> right speaker only (skipped while a sound effect plays).
+.panRight:
 	ld a, [wSfxNoiseLock]
 	and a
-	jr nz, Func_8a22
+	jr nz, .nextCommand
 	ld a, $08
 	ld [wMusicNoisePanning], a
-	jr Func_8a22
+	jr .nextCommand
 
-Func_8a40:
+; $34: noise channel -> left speaker only (skipped while a sound effect plays).
+.panLeft:
 	ld a, [wSfxNoiseLock]
 	and a
-	jr nz, Func_8a22
+	jr nz, .nextCommand
 	ld a, $80
 	ld [wMusicNoisePanning], a
-	jr Func_8a22
+	jr .nextCommand
 
-Func_8a4d:
+; $47-$5a: set the noise-instrument step speed (frames per NR43/NR42 step).
+.setInstrumentSpeed:
 	sub $47
-	ld [$db5f], a
+	ld [wNoiseInstrumentStepLength], a
 	xor a
-	ld [$db5e], a
-	jr Func_8a22
+	ld [wNoiseInstrumentStepTimer], a
+	jr .nextCommand
 
-Func_8a58:
+; $35 nn: set the stereo ping-pong interval from the next byte (skips both bytes).
+.setPanInterval:
 	inc hl
 	ld a, [hl]
-	ld [$db4e], a
-	ld a, [$db51]
+	ld [wNoiseSeqPanInterval], a
+	ld a, [wNoiseSeqIndex]
 	inc a
-	jr Func_8a25
+	jr .advanceCursor
 
-Func_8a63:
-	ld a, [$db55]
+; $36: if the repeat block has iterations left, jump back to its start; else fall
+; through to the next byte.
+.repeatLoop:
+	ld a, [wNoiseSeqLoopCount]
 	dec a
-	jr z, Func_8a22
-	ld [$db55], a
-	ld a, [$db56]
-	jp Func_89a2
+	jr z, .nextCommand
+	ld [wNoiseSeqLoopCount], a
+	ld a, [wNoiseSeqLoopStart]
+	jp .readCommandAtIndex
 
-Func_8a72:
+; $5b-$bf: begin a repeat block of (byte - $5a) iterations starting at the next byte.
+.startRepeat:
 	sub $5a
-	ld [$db55], a
-	ld a, [$db51]
-	ld [$db56], a
-	jr Func_8a22
+	ld [wNoiseSeqLoopCount], a
+	ld a, [wNoiseSeqIndex]
+	ld [wNoiseSeqLoopStart], a
+	jr .nextCommand
 
+; Per-frame update of the hardware noise channel (the drum/percussion voice).
+; Counts down the sound-effect lock, advances the noise sequence when its step
+; timer expires, then plays out the active noise instrument. Every few frames, it
+; writes the next NR43 (frequency) and NR42 (volume) bytes from the instrument's
+; sweeps and retriggers the channel, until the NR43 sweep hits its $ff terminator.
 UpdateNoiseChannel:
 	ld a, [wSfxNoiseLock]
 	and a
-	jr z, .asm_8a89
+	jr z, .tickStepTimer
 	dec a
-	ld [wSfxNoiseLock], a
-.asm_8a89
-	ld hl, $db54
+	ld [wSfxNoiseLock], a ; count down the sound-effect ownership lock
+.tickStepTimer
+	ld hl, wNoiseSeqStepTimer
 	dec [hl]
-	call z, Func_8994
-	ld a, [$db5c]
+	call z, AdvanceNoiseSequence ; step expired -> read the next sequence command(s)
+	ld a, [wNoiseInstrumentActive]
 	and a
-	ret z
-	ld a, [$db5e]
+	ret z ; no drum hit currently sounding
+	ld a, [wNoiseInstrumentStepTimer]
 	and a
-	jr z, .asm_8aa0
+	jr z, .playInstrumentStep
 	dec a
-	ld [$db5e], a
-	ret
-.asm_8aa0
-	ld a, [$db5f]
-	ld [$db5e], a
-	ld a, [$db57]
+	ld [wNoiseInstrumentStepTimer], a
+	ret ; still waiting for the next instrument step
+.playInstrumentStep
+	ld a, [wNoiseInstrumentStepLength]
+	ld [wNoiseInstrumentStepTimer], a ; reload the inter-step delay
+	ld a, [wNoiseInstrumentFreqPtrHi]
 	ld h, a
-	ld a, [$db58]
+	ld a, [wNoiseInstrumentFreqPtrLo]
 	ld l, a
-	ld a, [$db5b]
+	ld a, [wNoiseInstrumentIndex]
 	ld e, a
 	inc a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a ; advance the sweep cursor
 	ld d, $00
 	add hl, de
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_8b1b
+	jr z, .instrumentDone ; $ff terminates the NR43 sweep
 	ldh [rNR43], a
-	ld a, [$db59]
+	ld a, [wNoiseInstrumentVolPtrHi]
 	and a
-	jr z, .asm_8aea
+	jr z, .updatePanning ; no volume sweep -> keep the previous NR42
 	ld h, a
-	ld a, [$db5a]
+	ld a, [wNoiseInstrumentVolPtrLo]
 	ld l, a
 	add hl, de
 	ld c, $00
 	ld a, [wSfxNoiseLock]
 	and a
-	jr nz, .asm_8ad8
-	ld a, [$db5d]
+	jr nz, .writeVolume ; sound effects play at full volume (no attenuation)
+	ld a, [wNoiseSeqVolumeAttenuation]
 	ld c, a
-.asm_8ad8
+.writeVolume
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_8aea
+	jr z, .updatePanning ; $ff in the volume sweep -> skip this NR42 write
 	swap c
-	sub c
-	jr nc, .asm_8ae4
-	and $0f
-.asm_8ae4
+	sub c ; subtract the attenuation from the initial-volume nibble
+	jr nc, .storeVolume
+	and $0f ; underflow -> keep just the envelope-control nibble
+.storeVolume
 	ldh [rNR42], a
 	ld a, $80
-	ldh [rNR44], a
-.asm_8aea
+	ldh [rNR44], a ; retrigger the noise channel
+.updatePanning
 	ld a, [wSfxNoiseLock]
 	and a
-	ret nz
-	ld a, [$db4e]
+	ret nz ; a sound effect controls the panning while it owns the channel
+	ld a, [wNoiseSeqPanInterval]
 	and a
-	ret z
+	ret z ; ping-pong disabled
+	; Rotate the noise channel's panning as the instrument plays out: both at
+	; sweep index 1, right at 1+interval, left at 1+2*interval, both at 1+3*interval.
 	ld b, a
-	ld a, [$db5b]
+	ld a, [wNoiseInstrumentIndex]
 	dec a
-	jr nz, .asm_8b01
+	jr nz, .panRightStep
 	ld a, $88
 	ld [wMusicNoisePanning], a
 	ret
-.asm_8b01
+.panRightStep
 	sub b
-	jr nz, .asm_8b0a
+	jr nz, .panLeftStep
 	ld a, $08
 	ld [wMusicNoisePanning], a
 	ret
-.asm_8b0a
+.panLeftStep
 	sub b
-	jr nz, .asm_8b13
+	jr nz, .panBothStep
 	ld a, $80
 	ld [wMusicNoisePanning], a
 	ret
-.asm_8b13
+.panBothStep
 	sub b
 	ret nz
 	ld a, $88
 	ld [wMusicNoisePanning], a
 	ret
-.asm_8b1b
+.instrumentDone
 	xor a
-	ld [$db5b], a
-	ld [$db5c], a
+	ld [wNoiseInstrumentIndex], a
+	ld [wNoiseInstrumentActive], a
 	ret
 
 LoadSong_Unused1_Stub:
@@ -24155,194 +24200,199 @@ SoundEffects:
 SoundEffect1:
 	db $BF, $11, $1F, $11
 	db $60, $FD
-	dbw $7F, Func_b3c6
+	dbw $7F, LoadNoiseInstrumentSfx
 	db $C7, $79, $2A, $75, $3C, $81, $0A, $3C, $68
 
 ; Sound effect phrases (the SFX entries after SoundEffect1), referenced by
 ; the SoundEffects table above.
 INCBIN "baserom.gbc", $b1e2, $b3c6 - $b1e2
 
-Func_b3c6:
+; Noise-instrument setup routines. Each selects one percussion "instrument" by
+; pointing the playback state at that instrument's data and arming it. LoadNoiseInstrumentSfx
+; is invoked by a sound effect and additionally takes the noise channel from the music
+; by setting wSfxNoiseLock.
+LoadNoiseInstrumentSfx:
 	ld a, $0f
 	ld [wSfxNoiseLock], a
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $73
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $e8
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $73e8
 	ld a, $73
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $f5
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $73f5
 	ret
 
-; Noise/percussion sequence data for sound effects. Read by UpdateNoiseChannel via
-; the sequence pointers set in Func_b3c6/Func_b658/etc.
+; Noise-instrument sweep data (NR43 frequency + NR42 volume lists, each $ff-
+; terminated), pointed at by the LoadNoiseInstrument* routines and played out by
+; UpdateNoiseChannel.
 INCBIN "baserom.gbc", $b3e8, $b658 - $b3e8
 
-Func_b658:
+LoadNoiseInstrument1:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $75
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $fa
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $75fa
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $02
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7602
 	ret
 
-Func_b675:
+LoadNoiseInstrument8:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $76
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $92
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7692
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $98
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7698
 	ret
 
-; Noise/percussion sequence data for a sound effect (pointed to by Func_b675).
+; Noise-instrument sweep data (pointed to by LoadNoiseInstrument8).
 INCBIN "baserom.gbc", $b692, $b69d - $b692
 
-Func_b69d:
+LoadNoiseInstrument2:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $76
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $ba
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $76ba
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $c6
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $76c6
 	ret
 
-; Noise/percussion sequence data for a sound effect (pointed to by Func_b69d).
+; Noise-instrument sweep data (pointed to by LoadNoiseInstrument2).
 INCBIN "baserom.gbc", $b6ba, $b6d1 - $b6ba
 
-Func_b6d1:
+LoadNoiseInstrument3:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $76
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $32
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7632
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $3a
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $763a
 	ret
 
-Func_b6ee:
+LoadNoiseInstrument5:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $76
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $23
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7623
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $2b
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $762b
 	ret
 
-Func_b70b:
+LoadNoiseInstrument6:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $76
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $14
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7614
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $1c
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $761c
 	ret
 
-Func_b728:
+LoadNoiseInstrument7:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $76
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $09
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7609
 	ld a, $76
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $0f
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $760f
 	ret
 
-Func_b745:
+LoadNoiseInstrument9:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $77
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $62
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7762
 	ld a, $77
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $65
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7765
 	ret
 
-; Noise/percussion sequence data for a sound effect (pointed to by Func_b745).
+; Noise-instrument sweep data (pointed to by LoadNoiseInstrument9).
 INCBIN "baserom.gbc", $b762, $b767 - $b762
 
-Func_b767:
+LoadNoiseInstrument10:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $77
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $a1
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $77a1
 	ld a, $77
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $a4
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $77a4
 	ret
 
-Func_b784:
+LoadNoiseInstrument11:
 	xor a
-	ld [$db5b], a
+	ld [wNoiseInstrumentIndex], a
 	inc a
-	ld [$db5c], a
+	ld [wNoiseInstrumentActive], a
 	ld a, $77
-	ld [$db57], a
+	ld [wNoiseInstrumentFreqPtrHi], a
 	ld a, $a6
-	ld [$db58], a
+	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $77a6
 	ld a, $77
-	ld [$db59], a
+	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $ae
-	ld [$db5a], a
+	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $77ae
 	ret
 
-; Noise/percussion sequence data for sound effects (pointed to by Func_b767/Func_b784).
+; Noise-instrument sweep data (pointed to by LoadNoiseInstrument10/LoadNoiseInstrument11).
 INCBIN "baserom.gbc", $b7a1, $b7ee - $b7a1
 
 ; NR50 master-volume fade sequences

@@ -113,7 +113,64 @@ wMusicArpeggioTable:: ; $db4a
 wMusicWavePtr:: ; $db4c
 	ds 2
 
-	ds $12 ; $db4e: noise/drum sequence state (undocumented)
+; === Noise/drum (percussion) sequence state ($db4e-$db5f) ===
+; The percussion track is a separate "noise sequence": a byte stream (started by
+; MusicCommand_StartNoiseSequence) processed by AdvanceNoiseSequence to drive the
+; hardware noise channel. Some of its command bytes trigger a "noise instrument",
+; which is a short pre-baked pair of NR43 (frequency) and NR42 (volume) sweeps that
+; synthesise one drum hit, played out by UpdateNoiseChannel.
+
+; Stereo ping-pong interval: every this-many drum hits, UpdateNoiseChannel rotates
+; the noise channel's panning (set by noise-sequence command $35). 0 = disabled.
+wNoiseSeqPanInterval:: ; $db4e
+	ds 1
+; Pointer to the active noise sequence (stored high byte first), and the read
+; cursor (byte offset) into it.
+wNoiseSeqPtrHi:: ; $db4f
+	ds 1
+wNoiseSeqPtrLo:: ; $db50
+	ds 1
+wNoiseSeqIndex:: ; $db51
+	ds 1
+; Nonzero while a noise sequence is playing.
+wNoiseSeqActive:: ; $db52
+	ds 1
+; Frames per noise-sequence step (reload) and the running countdown.
+wNoiseSeqStepLength:: ; $db53
+	ds 1
+wNoiseSeqStepTimer:: ; $db54
+	ds 1
+; Noise-sequence repeat loop (commands $5b-$bf / $36): remaining iterations and
+; the cursor to jump back to.
+wNoiseSeqLoopCount:: ; $db55
+	ds 1
+wNoiseSeqLoopStart:: ; $db56
+	ds 1
+; Pointers (stored high byte first) into the active noise instrument's two
+; parallel byte lists: the NR43 frequency sweep and the NR42 volume/envelope sweep.
+wNoiseInstrumentFreqPtrHi:: ; $db57
+	ds 1
+wNoiseInstrumentFreqPtrLo:: ; $db58
+	ds 1
+wNoiseInstrumentVolPtrHi:: ; $db59
+	ds 1
+wNoiseInstrumentVolPtrLo:: ; $db5a
+	ds 1
+; Read cursor into the instrument's sweep lists, and a nonzero "playing" flag.
+wNoiseInstrumentIndex:: ; $db5b
+	ds 1
+wNoiseInstrumentActive:: ; $db5c
+	ds 1
+; Volume attenuation applied to the instrument's NR42 values (noise-sequence
+; command $37-$46): 0 = full volume, $f = quietest.
+wNoiseSeqVolumeAttenuation:: ; $db5d
+	ds 1
+; Frames per noise-instrument step: running countdown and reload (set by
+; noise-sequence command $47-$5a).
+wNoiseInstrumentStepTimer:: ; $db5e
+	ds 1
+wNoiseInstrumentStepLength:: ; $db5f
+	ds 1
 
 ; Master-volume (NR50) envelope sequence: data pointer, current index, frame
 ; countdown, countdown reload (speed), and active flag.
