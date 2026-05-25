@@ -22421,6 +22421,7 @@ MusicCommand_StartNoiseSequence:
 	inc a
 	ld [wNoiseSeqActive], a
 	ld [wNoiseSeqStepTimer], a
+.resetPanning
 	ld a, $88
 	ld [wMusicNoisePanning], a
 	ret
@@ -23416,18 +23417,21 @@ MusicPhrase_TazZoo_Ch2_2:
 MusicPhrase_TazZoo_Ch2_3:
 	db $C7, $65, $8D, $7E, $17, $5D, $65, $7E, $17, $5D, $6A
 MusicPhrase_TazZoo_Ch3_1:
-	db $79, $6A, $75, $BF, $12, $1F, $11, $60, $FF, $7C, $F1, $D7, $24, $C7, $24, $CF
+	dbw $79, WaveSample11
+	db $BF, $12, $1F, $11, $60, $FF, $7C, $F1, $D7, $24, $C7, $24, $CF
 	db $2B, $24, $80, $C7, $24, $CF, $2B, $C7, $24, $CF, $2B, $C7, $24, $2B, $F1, $D7
 	db $24, $C7, $24, $CF, $2B, $24, $80, $C7, $24, $CF, $2C, $C7, $2C, $29, $29, $26
 	db $26, $6A
 MusicPhrase_TazZoo_Ch3_0:
-	db $6C, $08, $52, $5E, $7A, $0C, $63, $08, $01, $04, $BF, $11, $1F, $11, $94, $79
-	db $DA, $74, $6B, $30, $21, $CF, $1F, $C7, $21, $CF, $24, $C7, $21, $CF, $26, $C7
+	db $6C, $08, $52, $5E, $7A, $0C, $63, $08, $01, $04, $BF, $11, $1F, $11, $94
+	dbw $79, WaveSample2
+	db $6B, $30, $21, $CF, $1F, $C7, $21, $CF, $24, $C7, $21, $CF, $26, $C7
 	db $21, $6B, $38, $28, $CF, $24, $C7, $26, $CF, $28, $C7, $24, $CF, $26, $C7, $21
 	db $6B, $38, $24, $CF, $2B, $C7, $2D, $CF, $2D, $E7, $28, $D7, $2D, $DF, $28, $CF
 	db $28, $D7, $28, $CF, $2B, $2D, $6A
 MusicPhrase_TazZoo_Ch3_2:
-	db $79, $CA, $74, $BF, $00, $00, $00, $61, $97, $6B, $40, $2B, $A9, $28, $26, $97
+	dbw $79, WaveSample1
+	db $BF, $00, $00, $00, $61, $97, $6B, $40, $2B, $A9, $28, $26, $97
 	db $29, $A9, $6B, $80, $28, $97, $D7, $32, $A9, $32, $31, $2F, $CF, $2D, $2C, $6A
 	db $CF, $66, $7B, $02, $50, $7C, $79, $CA, $74, $C7, $25, $26, $CF, $28, $C7, $2A
 	db $CF, $28, $2D, $C7, $2D, $CF, $2F, $31, $79, $AA, $75, $32, $C7, $34, $CF, $32
@@ -23502,7 +23506,8 @@ MusicChain_Boss_Ch1:
 	dw $5ec1 ; loop
 
 MusicPhrase_Boss_Ch3_0:
-	db $79, $3A, $75, $7A, $0C, $BF, $11, $1F, $12, $F0, $7F, $28, $77, $94, $D3, $20
+	dbw $79, WaveSample8
+	db $7A, $0C, $BF, $11, $1F, $12, $F0, $7F, $28, $77, $94, $D3, $20
 	db $7C, $2F, $94, $C9, $19, $7C, $2D, $94, $23, $7C, $2C, $94, $D3, $1E, $7C, $2D
 	db $94, $C9, $19, $7C, $2C, $94, $1E, $7C, $2A, $80, $6A
 MusicPhrase_Boss_Ch3_1:
@@ -23672,7 +23677,9 @@ MusicPhrase_TreasureIsland_Ch3_1:
 MusicPhrase_TreasureIsland_Ch3_2:
 	db $7E, $3E, $63, $C9, $26, $2D, $2F, $2B, $D3, $34, $C9, $32, $30, $62, $30, $D3
 	db $62, $C9, $30, $62, $30, $6C, $0A, $AD, $64, $30, $BF, $12, $1F, $12, $7B, $00
-	db $94, $79, $BA, $75, $D3, $24, $C9, $23, $D3, $24, $C9, $23, $24, $6A
+	db $94
+	dbw $79, WaveSample16
+	db $D3, $24, $C9, $23, $D3, $24, $C9, $23, $24, $6A
 MusicPhrase_TreasureIsland_Ch3_3:
 	db $6C, $0A, $94, $64, $6B, $5A, $21, $D3, $24, $C9, $23, $D3, $24, $C9, $23, $24
 	db $D3, $28, $C9, $24, $6B, $3C, $1F, $C9, $1F, $24, $26, $CC, $28, $29, $CD, $28
@@ -23687,11 +23694,13 @@ MusicPhrase_TreasureIsland_Ch3_4:
 MusicPhrase_TreasureIsland_Ch3_5:
 	db $7E, $FF, $63, $D3, $62, $6A
 MusicPhrase_TreasureIsland_Ch3_0:
-	db $79, $AA, $75, $6C, $0A, $94, $64, $7A, $0C, $BF, $00, $1F, $12, $AB, $DD, $21
+	dbw $79, WaveSample15
+	db $6C, $0A, $94, $64, $7A, $0C, $BF, $00, $1F, $12, $AB, $DD, $21
 	db $6B, $64, $1F, $C9, $1A, $1C, $1D, $DD, $21, $6B, $64, $1F, $C9, $1A, $1C, $1D
 	db $D3, $21, $C9, $23, $6B, $64, $1F, $C9, $1F, $21, $23, $D3, $24, $DD, $24, $D3
-	db $24, $C9, $24, $6C, $0A, $AD, $64, $6B, $3C, $24, $7C, $BA, $15, $1F, $10, $79
-	db $9A, $75, $63, $19, $01, $04, $7B, $02, $53, $D3, $2B, $6A, $43, $01, $06, $45
+	db $24, $C9, $24, $6C, $0A, $AD, $64, $6B, $3C, $24, $7C, $BA, $15, $1F, $10
+	dbw $79, WaveSample14
+	db $63, $19, $01, $04, $7B, $02, $53, $D3, $2B, $6A, $43, $01, $06, $45
 	db $09, $43, $01, $01, $05, $45, $09, $43, $06, $01, $06, $45, $09, $43, $01, $01
 	db $05, $45, $09, $04, $FF, $43, $01, $06, $45, $09, $43, $06, $05, $06, $05, $C4
 	db $05, $05, $FF, $43, $01, $06, $45, $09, $45, $01, $09, $01, $09, $C4, $09, $09
@@ -23814,7 +23823,9 @@ MusicPhrase_Unused3_Ch2_0:
 	db $CD, $23, $C6, $1F, $98, $CD, $2B, $94, $C6, $23, $D4, $24, $98, $CD, $25, $6B
 	db $A4, $24, $68
 MusicPhrase_Unused3_Ch3_0:
-	db $6C, $07, $7B, $67, $BF, $11, $1F, $12, $94, $7A, $0C, $79, $DA, $74, $CD, $2B
+	db $6C, $07, $7B, $67, $BF, $11, $1F, $12, $94, $7A, $0C
+	dbw $79, WaveSample2
+	db $CD, $2B
 	db $C6, $2A, $CD, $2B, $C6, $2D, $CD, $2F, $C6, $2B, $CD, $2D, $C6, $2F, $D4, $30
 	db $CD, $2B, $24, $6D, $6B, $A4, $65, $68, $45, $01, $00, $06, $02, $00, $06, $01
 	db $00, $06, $02, $00, $06, $01, $06, $06, $07, $00, $07, $00, $00, $00, $00
@@ -24203,7 +24214,9 @@ SoundEffect1:
 	db $BF, $11, $1F, $11
 	db $60, $FD
 	dbw $7F, LoadNoiseInstrumentSfx2
-	db $C7, $79, $2A, $75, $3C, $81, $0A, $3C, $68
+	db $C7
+	dbw $79, WaveSample7
+	db $3C, $81, $0A, $3C, $68
 
 SoundEffect20:
 	dbw $7F, LoadNoiseInstrumentSfx4
@@ -24212,79 +24225,119 @@ SoundEffect20:
 SoundEffect2:
 	db $BF, $11, $1F, $12, $7A, $02
 	dbw $7F, LoadNoiseInstrumentSfx6
-	db $94, $82, $0A, $79, $FA, $74, $C3, $60, $04, $12, $C3, $60, $FF, $65, $C3, $60
-	db $01, $65, $60, $01, $65, $C3, $60, $03, $65, $7C, $BC, $11, $1F, $11, $79, $EA
-	db $74, $60, $FE, $C7, $53, $53, $53, $B8, $11, $1F, $11, $53, $53, $53, $68
+	db $94, $82, $0A
+	dbw $79, WaveSample4
+	db $C3, $60, $04, $12, $C3, $60, $FF, $65, $C3, $60
+	db $01, $65, $60, $01, $65, $C3, $60, $03, $65, $7C, $BC, $11, $1F, $11
+	dbw $79, WaveSample3
+	db $60, $FE, $C7, $53, $53, $53, $B8, $11, $1F, $11, $53, $53, $53, $68
 
 SoundEffect3:
 	dbw $7F, LoadNoiseInstrumentSfx6
-	db $BF, $11, $1F, $11, $79, $FA, $74, $C5, $60, $FD, $26, $68
+	db $BF, $11, $1F, $11
+	dbw $79, WaveSample4
+	db $C5, $60, $FD, $26, $68
 
 SoundEffect4:
-	db $BF, $11, $2F, $11, $C6, $79, $1A, $75, $60, $04, $1F, $60, $FC, $37, $68
+	db $BF, $11, $2F, $11, $C6
+	dbw $79, WaveSample6
+	db $60, $04, $1F, $60, $FC, $37, $68
 
 SoundEffect5:
-	db $79, $FA, $74, $BF, $11, $2F, $11
+	dbw $79, WaveSample4
+	db $BF, $11, $2F, $11
 	dbw $7F, LoadNoiseInstrumentSfx3
 	db $C3, $60, $FC, $26, $C1, $66, $C0, $BA, $00, $00, $00, $54, $66, $68
 
 SoundEffect10:
-	db $B5, $2A, $2F, $11, $7A, $18, $79, $7A, $75, $60, $02, $C6, $18, $1A, $1C, $1E
+	db $B5, $2A, $2F, $11, $7A, $18
+	dbw $79, WaveSample12
+	db $60, $02, $C6, $18, $1A, $1C, $1E
 	db $68
 
 SoundEffect12:
-	db $BF, $11, $1F, $12, $7A, $02, $94, $82, $0A, $79, $FA, $74, $C3, $60, $04, $12
+	db $BF, $11, $1F, $12, $7A, $02, $94, $82, $0A
+	dbw $79, WaveSample4
+	db $C3, $60, $04, $12
 	db $C3, $60, $FF, $65, $C3, $60, $01, $65, $60, $01, $65, $C3, $60, $03, $65, $68
 
 SoundEffect15:
-	db $C3, $BF, $11, $1F, $11, $7A, $18, $79, $8A, $75, $30, $3C, $37, $81, $0A, $30
+	db $C3, $BF, $11, $1F, $11, $7A, $18
+	dbw $79, WaveSample13
+	db $30, $3C, $37, $81, $0A, $30
 	db $3C, $37, $81, $05, $30, $3C, $37, $68
 
 SoundEffect16:
-	db $BF, $00, $00, $00, $C3, $7A, $18, $79, $8A, $75, $60, $02, $24, $26, $28, $29
+	db $BF, $00, $00, $00, $C3, $7A, $18
+	dbw $79, WaveSample13
+	db $60, $02, $24, $26, $28, $29
 	db $2B, $2D, $2F, $81, $0A, $2B, $2D, $2F, $81, $05, $2B, $2D, $2F, $68
 
 SoundEffect17:
-	db $C3, $BF, $11, $1F, $11, $7A, $18, $79, $7A, $75, $3C, $37, $30, $2B, $24, $81
+	db $C3, $BF, $11, $1F, $11, $7A, $18
+	dbw $79, WaveSample12
+	db $3C, $37, $30, $2B, $24, $81
 	db $0A, $30, $2B, $24, $81, $05, $3C, $37, $30, $68
 
 SoundEffect18:
-	db $C3, $BF, $11, $1F, $11, $7A, $0C, $79, $EA, $74, $48, $4A, $3C, $3E, $30, $32
+	db $C3, $BF, $11, $1F, $11, $7A, $0C
+	dbw $79, WaveSample3
+	db $48, $4A, $3C, $3E, $30, $32
 	db $81, $0A, $30, $2B, $24, $81, $05, $30, $2B, $24, $68
 
 SoundEffect11:
-	db $CB, $BF, $10, $1F, $11, $60, $02, $79, $FA, $74, $1C, $68
+	db $CB, $BF, $10, $1F, $11, $60, $02
+	dbw $79, WaveSample4
+	db $1C, $68
 
 SoundEffect14:
-	db $BA, $00, $00, $00, $60, $FC, $79, $2A, $75
+	db $BA, $00, $00, $00, $60, $FC
+	dbw $79, WaveSample7
 	dbw $7F, LoadNoiseInstrumentSfx2
 	db $C4, $39, $68
 
 SoundEffect21:
 	dbw $7F, LoadNoiseInstrumentSfx1
-	db $BF, $11, $1F, $15, $79, $FA, $74, $C8, $60, $FC, $2D, $68
+	db $BF, $11, $1F, $15
+	dbw $79, WaveSample4
+	db $C8, $60, $FC, $2D, $68
 
 SoundEffect13:
 	dbw $7F, LoadNoiseInstrumentSfx5
-	db $BF, $11, $1F, $15, $79, $FA, $74, $C8, $60, $FD, $21, $68
+	db $BF, $11, $1F, $15
+	dbw $79, WaveSample4
+	db $C8, $60, $FD, $21, $68
 
 SoundEffect7:
-	db $BF, $11, $2F, $11, $79, $0A, $75, $C6, $3C, $68
+	db $BF, $11, $2F, $11
+	dbw $79, WaveSample5
+	db $C6, $3C, $68
 
 SoundEffect8:
-	db $C3, $BF, $11, $2F, $11, $79, $0A, $75, $C3, $38, $C0, $66, $C3, $44, $68
+	db $C3, $BF, $11, $2F, $11
+	dbw $79, WaveSample5
+	db $C3, $38, $C0, $66, $C3, $44, $68
 
 SoundEffect6:
-	db $C4, $94, $79, $7A, $75, $BF, $10, $1F, $12, $7B, $02, $55, $3C, $43, $40, $3C
+	db $C4, $94
+	dbw $79, WaveSample12
+	db $BF, $10, $1F, $12, $7B, $02, $55, $3C, $43, $40, $3C
 	db $43, $68
 
 SoundEffect9:
-	db $BA, $11, $1F, $14, $79, $FA, $74, $E0, $83, $03, $39, $68
+	db $BA, $11, $1F, $14
+	dbw $79, WaveSample4
+	db $E0, $83, $03, $39, $68
 
 SoundEffect19:
 	dbw $7F, LoadNoiseInstrumentSfx3
-	db $BF, $00, $00, $00, $79, $EA, $75, $C2, $60, $FF, $3D, $79, $CA, $75, $65, $79
-	db $DA, $75, $65, $68
+	db $BF, $00, $00, $00
+	dbw $79, WaveSample19
+	db $C2, $60, $FF, $3D
+	dbw $79, WaveSample17
+	db $65
+	dbw $79, WaveSample18
+	db $65, $68
 
 ; SFX noise-instrument setup (invoked via $7F from sound-effect phrases): point
 ; the noise-instrument playback state at a drum sound and grab the channel via
@@ -24301,10 +24354,10 @@ LoadNoiseInstrumentSfx1:
 	ldh [rNR42], a
 	ld a, $80
 	ldh [rNR44], a
-	ld a, $73
+	ld a, HIGH(NoiseInstrumentSfx1Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $a1
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $73a1
+	ld a, LOW(NoiseInstrumentSfx1Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
 	ld a, $00
 	ld [wNoiseInstrumentVolPtrHi], a
 	ld a, $00
@@ -24330,19 +24383,22 @@ LoadNoiseInstrumentSfx2:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $73
+	ld a, HIGH(NoiseInstrumentSfx2Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $e8
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $73e8
-	ld a, $73
+	ld a, LOW(NoiseInstrumentSfx2Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrumentSfx2Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $f5
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $73f5
+	ld a, LOW(NoiseInstrumentSfx2Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
-; SFX noise-instrument sweep data, wave samples, and more SFX noise-instrument
-; setup routines, interleaved.
-INCBIN "baserom.gbc", $b3e8, $b402 - $b3e8 ; GB $73e8-$7402 sweeps
+; NR43 frequency + NR42 volume sweeps played by LoadNoiseInstrumentSfx2.
+NoiseInstrumentSfx2Freq:
+	db $10, $10, $20, $31, $32, $33, $33, $34, $34, $35, $35, $36, $ff
+NoiseInstrumentSfx2Vol:
+	db $5c, $ff, $ff, $ff, $ff, $ff, $a1, $ff, $ff, $ff, $ff, $ff, $ff
+
 LoadNoiseInstrumentSfx3:
 	ld a, $04
 	ld [wSfxNoiseLock], a
@@ -24350,16 +24406,22 @@ LoadNoiseInstrumentSfx3:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $74
+	ld a, HIGH(NoiseInstrumentSfx3Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $24
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7424
-	ld a, $74
+	ld a, LOW(NoiseInstrumentSfx3Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrumentSfx3Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $2a
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $742a
+	ld a, LOW(NoiseInstrumentSfx3Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
-INCBIN "baserom.gbc", $b424, $b42f - $b424 ; GB $7424-$742f sweeps
+
+; NR43 frequency + NR42 volume sweeps played by LoadNoiseInstrumentSfx3.
+NoiseInstrumentSfx3Freq:
+	db $31, $53, $71, $41, $51, $ff
+NoiseInstrumentSfx3Vol:
+	db $b1, $ff, $ff, $ff, $51
+
 LoadNoiseInstrumentSfx4:
 	ld a, $04
 	ld [wSfxNoiseLock], a
@@ -24367,16 +24429,23 @@ LoadNoiseInstrumentSfx4:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $74
+	ld a, HIGH(NoiseInstrumentSfx4Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $51
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7451
-	ld a, $74
+	ld a, LOW(NoiseInstrumentSfx4Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrumentSfx4Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $5a
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $745a
+	ld a, LOW(NoiseInstrumentSfx4Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
-INCBIN "baserom.gbc", $b451, $b463 - $b451 ; GB $7451-$7463 sweeps
+
+; NR43 frequency + NR42 volume sweeps played by LoadNoiseInstrumentSfx4.
+NoiseInstrumentSfx4Freq:
+	db $54, $54, $53, $55, $63, $51, $21, $53, $ff
+NoiseInstrumentSfx4Vol:
+	db $b1, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	db $52 ; unused padding
+
 LoadNoiseInstrumentSfx5:
 	ld a, $21
 	ld [wSfxNoiseLock], a
@@ -24388,16 +24457,22 @@ LoadNoiseInstrumentSfx5:
 	ld [wNoiseInstrumentStepLength], a
 	xor a
 	ld [wNoiseInstrumentStepTimer], a
-	ld a, $74
+	ld a, HIGH(NoiseInstrumentSfx5Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $8e
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $748e
-	ld a, $74
+	ld a, LOW(NoiseInstrumentSfx5Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrumentSfx5Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $94
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7494
+	ld a, LOW(NoiseInstrumentSfx5Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
-INCBIN "baserom.gbc", $b48e, $b499 - $b48e ; GB $748e-$7499 sweeps
+
+; NR43 frequency + NR42 volume sweeps played by LoadNoiseInstrumentSfx5.
+NoiseInstrumentSfx5Freq:
+	db $03, $93, $80, $72, $70, $ff
+NoiseInstrumentSfx5Vol:
+	db $f0, $ff, $ff, $ff, $f3
+
 LoadNoiseInstrumentSfx6:
 	ld a, $0f
 	ld [wSfxNoiseLock], a
@@ -24405,30 +24480,111 @@ LoadNoiseInstrumentSfx6:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $74
+	ld a, HIGH(NoiseInstrumentSfx6Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $bb
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $74bb
-	ld a, $74
+	ld a, LOW(NoiseInstrumentSfx6Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrumentSfx6Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $c3
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $74c3
+	ld a, LOW(NoiseInstrumentSfx6Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
-INCBIN "baserom.gbc", $b4bb, $b658 - $b4bb ; GB $74bb-$7658 sweeps + wave samples
+
+; NR43 frequency + NR42 volume sweeps played by LoadNoiseInstrumentSfx6.
+NoiseInstrumentSfx6Freq:
+	db $22, $81, $64, $71, $53, $44, $35, $ff
+NoiseInstrumentSfx6Vol:
+	db $f0, $f0, $f0, $f0, $f0, $70, $63
+
+; 16-byte wave-RAM patterns loaded by the $79 LoadWave command (used by both
+; music channel 3 and sound effects). WaveSample10 is defined but unreferenced.
+WaveSample1:
+	db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $76, $54, $32, $10, $77, $77, $77, $77
+WaveSample2:
+	db $8c, $fe, $ed, $b8, $53, $21, $10, $24, $84, $01, $12, $35, $8b, $de, $ef, $8c
+WaveSample3:
+	db $00, $16, $8a, $ff, $ff, $a8, $61, $00, $00, $16, $8a, $ff, $ff, $a8, $61, $00
+WaveSample4:
+	db $00, $00, $00, $00, $ff, $ff, $ff, $ff, $00, $00, $00, $00, $ff, $ff, $ff, $ff
+WaveSample5:
+	db $00, $00, $00, $00, $cd, $ef, $fd, $ec, $00, $12, $21, $00, $dd, $dd, $dd, $dd
+WaveSample6:
+	db $00, $00, $00, $00, $00, $00, $ff, $ff, $00, $00, $00, $00, $00, $00, $ff, $ff
+WaveSample7:
+	db $00, $00, $00, $00, $00, $00, $ff, $00, $00, $00, $00, $00, $00, $00, $ff, $00
+WaveSample8:
+	db $00, $01, $23, $45, $67, $89, $ab, $cd, $ef, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+WaveSample9:
+	db $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $00, $00, $00, $00, $00, $ff, $ff, $ff
+WaveSample10:
+	db $12, $34, $56, $78, $9a, $bc, $de, $ff, $ed, $cb, $a9, $87, $65, $43, $21, $00
+WaveSample11:
+	db $63, $10, $00, $00, $00, $00, $01, $36, $9c, $ef, $ff, $ff, $ff, $ff, $fe, $c9
+WaveSample12:
+	db $63, $10, $01, $47, $74, $10, $01, $36, $9c, $ef, $fe, $b8, $8b, $ef, $fe, $c9
+WaveSample13:
+	db $63, $1f, $01, $47, $74, $10, $01, $36, $9c, $e0, $fe, $b8, $8b, $ef, $fe, $c9
+WaveSample14:
+	db $65, $43, $22, $27, $72, $22, $22, $29, $ab, $cc, $ba, $98, $9c, $ee, $ee, $c9
+WaveSample15:
+	db $b7, $40, $04, $7b, $cd, $ff, $fe, $dc, $02, $46, $8a, $bd, $fd, $ba, $64, $20
+WaveSample16:
+	db $fe, $db, $97, $53, $13, $54, $32, $10, $fe, $dc, $bc, $ef, $db, $85, $32, $10
+WaveSample17:
+	db $04, $8b, $de, $ff, $ed, $cb, $a9, $87, $65, $44, $44, $32, $11, $24, $7a, $74
+WaveSample18:
+	db $20, $24, $68, $ac, $ec, $a8, $64, $20, $24, $68, $a8, $64, $20, $24, $68, $64
+WaveSample19:
+	db $02, $48, $ac, $ff, $fc, $53, $00, $27, $9c, $dd, $dc, $b7, $7b, $cd, $dd, $c9
+
+; NR43/NR42 sweeps for the music's melodic noise instruments 1,7,6,5,3
+NoiseInstrument1Freq:
+	db $01, $61, $71, $a1, $b1, $b1, $a1, $ff
+NoiseInstrument1Vol:
+	db $c1, $f0, $a0, $90, $70, $40, $33
+NoiseInstrument7Freq:
+	db $06, $04, $03, $03, $07, $ff
+NoiseInstrument7Vol:
+	db $f0, $c0, $80, $60, $55
+NoiseInstrument6Freq:
+	db $04, $02, $01, $01, $01, $01, $01, $ff
+NoiseInstrument6Vol:
+	db $60, $30, $12, $ff, $ff, $ff, $ff
+NoiseInstrument5Freq:
+	db $04, $00, $00, $00, $00, $00, $00, $ff
+NoiseInstrument5Vol:
+	db $90, $53, $ff, $ff, $ff, $ff, $ff
+NoiseInstrument3Freq:
+	db $04, $02, $01, $01, $01, $11, $11, $ff
+NoiseInstrument3Vol:
+	db $70, $40, $40, $40, $40, $43, $ff
+
+UnusedNoiseInstrumentFreq:
+	db $50, $41, $50, $51, $42, $53, $51, $ff
+UnusedNoiseInstrumentVol:
+	db $f0, $70, $f0, $70, $d0, $70, $61
+
+; Unreferenced routine: locks the noise channel for 8 frames, recenters the
+; noise panning, then falls through into LoadNoiseInstrument1.
+Func_7650:
+	ld a, $08
+	ld [wSfxNoiseLock], a
+	call MusicCommand_StartNoiseSequence.resetPanning
+	; falls through into LoadNoiseInstrument1
 
 LoadNoiseInstrument1:
 	xor a
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $75
+	ld a, HIGH(NoiseInstrument1Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $fa
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $75fa
-	ld a, $76
+	ld a, LOW(NoiseInstrument1Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument1Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $02
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7602
+	ld a, LOW(NoiseInstrument1Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
 LoadNoiseInstrument8:
@@ -24436,50 +24592,54 @@ LoadNoiseInstrument8:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $76
+	ld a, HIGH(NoiseInstrument8Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $92
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7692
-	ld a, $76
+	ld a, LOW(NoiseInstrument8Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument8Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $98
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7698
+	ld a, LOW(NoiseInstrument8Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
-; Noise-instrument sweep data (pointed to by LoadNoiseInstrument8).
-INCBIN "baserom.gbc", $b692, $b69d - $b692
+NoiseInstrument8Freq:
+	db $04, $02, $01, $00, $00, $ff
+NoiseInstrument8Vol:
+	db $40, $60, $70, $82, $71
 
 LoadNoiseInstrument2:
 	xor a
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $76
+	ld a, HIGH(NoiseInstrument2Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $ba
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $76ba
-	ld a, $76
+	ld a, LOW(NoiseInstrument2Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument2Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $c6
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $76c6
+	ld a, LOW(NoiseInstrument2Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
-; Noise-instrument sweep data (pointed to by LoadNoiseInstrument2).
-INCBIN "baserom.gbc", $b6ba, $b6d1 - $b6ba
+NoiseInstrument2Freq:
+	db $51, $31, $32, $32, $32, $32, $32, $32, $33, $34, $35, $ff
+NoiseInstrument2Vol:
+	db $f0, $63, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 
 LoadNoiseInstrument3:
 	xor a
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $76
+	ld a, HIGH(NoiseInstrument3Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $32
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7632
-	ld a, $76
+	ld a, LOW(NoiseInstrument3Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument3Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $3a
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $763a
+	ld a, LOW(NoiseInstrument3Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
 LoadNoiseInstrument5:
@@ -24487,14 +24647,14 @@ LoadNoiseInstrument5:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $76
+	ld a, HIGH(NoiseInstrument5Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $23
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7623
-	ld a, $76
+	ld a, LOW(NoiseInstrument5Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument5Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $2b
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $762b
+	ld a, LOW(NoiseInstrument5Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
 LoadNoiseInstrument6:
@@ -24502,14 +24662,14 @@ LoadNoiseInstrument6:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $76
+	ld a, HIGH(NoiseInstrument6Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $14
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7614
-	ld a, $76
+	ld a, LOW(NoiseInstrument6Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument6Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $1c
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $761c
+	ld a, LOW(NoiseInstrument6Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
 LoadNoiseInstrument7:
@@ -24517,14 +24677,14 @@ LoadNoiseInstrument7:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $76
+	ld a, HIGH(NoiseInstrument7Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $09
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7609
-	ld a, $76
+	ld a, LOW(NoiseInstrument7Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument7Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $0f
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $760f
+	ld a, LOW(NoiseInstrument7Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
 LoadNoiseInstrument9:
@@ -24532,32 +24692,34 @@ LoadNoiseInstrument9:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $77
+	ld a, HIGH(NoiseInstrument9Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $62
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $7762
-	ld a, $77
+	ld a, LOW(NoiseInstrument9Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument9Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $65
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $7765
+	ld a, LOW(NoiseInstrument9Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
-; Noise-instrument sweep data (pointed to by LoadNoiseInstrument9).
-INCBIN "baserom.gbc", $b762, $b767 - $b762
+NoiseInstrument9Freq:
+	db $51, $32, $ff
+NoiseInstrument9Vol:
+	db $f0, $62
 
 LoadNoiseInstrument10:
 	xor a
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $77
+	ld a, HIGH(NoiseInstrument10Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $a1
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $77a1
-	ld a, $77
+	ld a, LOW(NoiseInstrument10Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument10Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $a4
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $77a4
+	ld a, LOW(NoiseInstrument10Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
 LoadNoiseInstrument11:
@@ -24565,18 +24727,37 @@ LoadNoiseInstrument11:
 	ld [wNoiseInstrumentIndex], a
 	inc a
 	ld [wNoiseInstrumentActive], a
-	ld a, $77
+	ld a, HIGH(NoiseInstrument11Freq)
 	ld [wNoiseInstrumentFreqPtrHi], a
-	ld a, $a6
-	ld [wNoiseInstrumentFreqPtrLo], a ; NR43 sweep @ $77a6
-	ld a, $77
+	ld a, LOW(NoiseInstrument11Freq)
+	ld [wNoiseInstrumentFreqPtrLo], a
+	ld a, HIGH(NoiseInstrument11Vol)
 	ld [wNoiseInstrumentVolPtrHi], a
-	ld a, $ae
-	ld [wNoiseInstrumentVolPtrLo], a ; NR42 sweep @ $77ae
+	ld a, LOW(NoiseInstrument11Vol)
+	ld [wNoiseInstrumentVolPtrLo], a
 	ret
 
-; Noise-instrument sweep data (pointed to by LoadNoiseInstrument10/LoadNoiseInstrument11).
-INCBIN "baserom.gbc", $b7a1, $b7ee - $b7a1
+NoiseInstrument10Freq:
+	db $51, $32, $ff
+NoiseInstrument10Vol:
+	db $70, $52
+
+NoiseInstrument11Freq:
+	db $51, $32, $32, $32, $32, $51, $32, $ff
+NoiseInstrument11Vol:
+	db $70, $51, $ff, $ff, $ff, $70, $51
+
+; Three unreferenced NR50 master-volume sequences (stereo L/R nibble pairs,
+; $6a = loop). Same format as the Fade*VolumeSequence tables below; appear
+; to be cut content - no code points StartMasterVolumeSequence at them.
+UnusedMasterVolumeSequence1:
+	db $44, $53, $62, $71, $62, $53, $44, $35, $26, $17, $26, $35, $6a
+UnusedMasterVolumeSequence2:
+	db $77, $67, $57, $47, $37, $47, $57, $67, $77, $76, $75, $74, $73, $74, $75, $76
+	db $6a
+UnusedMasterVolumeSequence3:
+	db $00, $01, $02, $03, $04, $05, $06, $07, $17, $27, $36, $46, $55, $64, $73, $72
+	db $71, $70, $60, $50, $40, $30, $20, $10, $00, $00, $6a
 
 ; NR50 master-volume fade sequences
 FadeOutVolumeSequence:
