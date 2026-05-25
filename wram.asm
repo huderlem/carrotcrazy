@@ -2,9 +2,57 @@ SECTION "WRAM Bank 0", WRAM0
 
 wRAMStart::
 
-; Every 4-byte group is a metatile.
-wMetatiles:: ; $c000
-	ds $400
+UNION
+	; Every 4-byte group is a metatile.
+	wMetatiles:: ; $c000
+		ds $400
+NEXTU
+	; While the EXTRA bonus minigame runs (see RunLevelBonusScreen), the level
+	; metatile buffer is unused and reused as scratch. 
+	; 16 entries, 3 bytes each. First byte is an attribute, second two are the pointer.
+	wBonusSpritePtrTable:: ; $c000
+		ds 16 * 3
+
+	; One slot per target the player throws carrots at, indexed by the active
+	; LevelBonusSequence.
+	; Each entry is 4 bytes: state flags, move timer, x, y
+	wBonusTargets:: ; $c030
+		ds 12 * 4
+
+	; Pointer to each target character's sprite.
+	wBonusTargetSprites:: ; $c060
+		ds 6 * 2
+	; Same, for the "hit" sprite shown after a target is struck.
+	wBonusTargetHitSprites:: ; $c06c
+		ds 6 * 2
+
+		ds $10c ; sprite OAM data referenced by the target sprite tables above
+
+	; Thrown-carrot animation frames, indexed by the toss timer ($ddcf).
+	wBonusThrownCarrotSprites:: ; $c184
+		ds $64
+
+	; Player sprite at the bottom of the screen.
+	wBonusPlayerSprite:: ; $c1e8
+		ds $3a
+	; Player sprite while throwing (drawn when $ddcd bit 7 is set).
+	wBonusPlayerThrowSprite:: ; $c222
+		ds $3a
+	; Prompt that blinks until the player presses B to start.
+	wBonusReadyPrompt:: ; $c25c
+		ds $16
+	; Prompt shown when the bonus round is completed.
+	wBonusClearPrompt:: ; $c272
+		ds $16
+
+	; Frames for the scripted carrot animation (path script at $ddd2).
+	wBonusCarrotScriptSprites:: ; $c288
+		ds $40
+
+	; Pointers to the carrot-meter fill graphics.
+	wBonusCarrotMeterGfx:: ; $c2c8
+		ds 3 * 2
+ENDU
 
 wMetatileCollisionAttributes:: ; $c400
 	ds $100

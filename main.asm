@@ -19756,9 +19756,9 @@ Func_795e:
 	ld c, a
 	ld b, $88
 	bit 7, [hl]
-	ld hl, $c1e8
+	ld hl, wBonusPlayerSprite
 	jr z, .asm_7973
-	ld hl, $c222
+	ld hl, wBonusPlayerThrowSprite
 .asm_7973
 	call LoadOAMSprites
 	ld a, [$ddcd]
@@ -19768,7 +19768,7 @@ Func_795e:
 	bit 4, a
 	jr z, .asm_798c
 	ld bc, $3844
-	ld hl, $c25c
+	ld hl, wBonusReadyPrompt
 	call LoadOAMSprites
 .asm_798c
 	ld a, [wNewKeys]
@@ -19792,7 +19792,7 @@ Func_795e:
 	bit 4, a
 	ret z
 	ld bc, $3844
-	ld hl, $c272
+	ld hl, wBonusClearPrompt
 	call LoadOAMSprites
 	ret
 .asm_79bb
@@ -19846,9 +19846,9 @@ Func_795e:
 	jr nc, .asm_7a02
 	ld a, b
 	add a
-	add $c8
+	add LOW(wBonusCarrotMeterGfx)
 	ld c, a
-	ld a, $c2
+	ld a, HIGH(wBonusCarrotMeterGfx)
 	adc $00
 	ld b, a
 	ld a, [bc]
@@ -19928,9 +19928,9 @@ Func_795e:
 	and $f8
 	srl a
 	srl a
-	add $84
+	add LOW(wBonusThrownCarrotSprites)
 	ld l, a
-	ld a, $c1
+	ld a, HIGH(wBonusThrownCarrotSprites)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -19978,9 +19978,9 @@ Func_795e:
 	inc l
 	ld [hl], d
 	add a
-	add $88
+	add LOW(wBonusCarrotScriptSprites)
 	ld l, a
-	ld a, $c2
+	ld a, HIGH(wBonusCarrotScriptSprites)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -20010,10 +20010,10 @@ Func_795e:
 	ld a, d
 	and $07
 	add a
-	add $0c
-	add $60
+	add $0c ; hit-sprite table is wBonusTargetSprites + $0c
+	add LOW(wBonusTargetSprites)
 	ld l, a
-	ld a, $c0
+	ld a, HIGH(wBonusTargetSprites)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -20029,9 +20029,9 @@ Func_795e:
 	ld a, d
 	and $07
 	add a
-	add $60
+	add LOW(wBonusTargetSprites)
 	ld l, a
-	ld a, $c0
+	ld a, HIGH(wBonusTargetSprites)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -20146,7 +20146,7 @@ Func_7b8a:
 	ld a, c
 	ld [hli], a
 	ld [hl], b
-	ld hl, $c030
+	ld hl, wBonusTargets
 	add hl, de
 	ld bc, $ddd5
 	ld a, [hli]
@@ -20166,7 +20166,37 @@ Func_7b8a:
 	inc [hl]
 	ret
 
-INCBIN "baserom.gbc", $7bd3, $7c71 - $7bd3
+; Target activation order for the EXTRA bonus screen. Each value 0-11 selects a
+; 4-byte target slot in wBonusTargets; the list is the order targets light up,
+; terminated by $ff.
+LevelBonusSequence_TreasureIsland1:
+	db 11, 8, 7, 4, 3, 0, $ff
+LevelBonusSequence_TreasureIsland2:
+	db 4, 9, 0, 11, 6, 3, $ff
+LevelBonusSequence_TreasureIslandBoss:
+	db 0, 7, 8, 3, 10, 5, 6, $ff
+LevelBonusSequence_CrazyTown1:
+	db 5, 2, 9, 0, 11, 6, 3, 10, $ff
+LevelBonusSequence_CrazyTown2:
+	db 1, 4, 11, 6, 9, 2, 5, 10, $ff
+LevelBonusSequence_CrazyTownBoss:
+	db 11, 2, 9, 4, 1, 6, 3, 10, 5, $ff
+LevelBonusSequence_TazZoo1:
+	db 0, 5, 8, 3, 6, 11, 2, 7, 10, 1, $ff
+LevelBonusSequence_TazZoo2:
+	db 2, 7, 10, 1, 4, 9, 0, 5, 8, 3, 6, $ff
+LevelBonusSequence_TazZooBoss:
+	db 8, 5, 0, 11, 6, 3, 10, 7, 2, 9, 4, 1, $ff
+LevelBonusSequence_SpaceStation1:
+	db 10, 1, 4, 9, 0, 5, 2, 7, 8, 3, 6, 11, $ff
+LevelBonusSequence_SpaceStation2:
+	db 4, 3, 10, 7, 2, 9, 6, 1, 8, 5, 0, 11, 3, $ff
+LevelBonusSequence_SpaceStationBoss:
+	db 3, 10, 7, 0, 9, 4, 1, 8, 5, 2, 11, 6, 0, $ff
+LevelBonusSequence_FuddForest1:
+	db 8, 3, 4, 11, 0, 7, 10, 1, 6, 9, 2, 5, 11, 0, $ff
+LevelBonusSequence_FuddForest2:
+	db 5, 10, 1, 6, 9, 2, 7, 8, 3, 4, 11, 0, 7, 8, 3, $ff
 
 HandleLadderEntity:
 	ld a, [hli]
@@ -25574,7 +25604,7 @@ INCBIN "baserom.gbc", $17bce, $17be2 - $17bce
 Func_17be2:
 	ld hl, $3d83
 	ld bc, hNumClapboards
-	ld de, $c001
+	ld de, wBonusSpritePtrTable + 1 ; skip entry 0's attribute byte; write its pointer field
 .asm_17beb
 	ld a, l
 	ld [de], a
@@ -28450,86 +28480,86 @@ ScreenData_Credits:
 ScreenData_TreasureIsland1Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b797, $1b79b - $1b797
+	dw LevelBonusSequence_TreasureIsland1
+	db $01, $ff ; X slide speed, delay frames before animating away
 
 ScreenData_TreasureIsland2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b79e, $1b7a2 - $1b79e
+	dw LevelBonusSequence_TreasureIsland2
+	db $01, $f1 ; X slide speed, delay frames before animating away
 
 ScreenData_TreasureIslandBossBonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7a5, $1b7a9 - $1b7a5
+	dw LevelBonusSequence_TreasureIslandBoss
+	db $01, $e3 ; X slide speed, delay frames before animating away
 
 ScreenData_CrazyTown1Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7ac, $1b7b0 - $1b7ac
+	dw LevelBonusSequence_CrazyTown1
+	db $01, $d5 ; X slide speed, delay frames before animating away
 
 ScreenData_CrazyTown2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7b3, $1b7b7 - $1b7b3
+	dw LevelBonusSequence_CrazyTown2
+	db $01, $c7 ; X slide speed, delay frames before animating away
 
 ScreenData_CrazyTownBossBonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7ba, $1b7be - $1b7ba
+	dw LevelBonusSequence_CrazyTownBoss
+	db $01, $b9 ; X slide speed, delay frames before animating away
 
 ScreenData_TazZoo1Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7c1, $1b7c5 - $1b7c1
+	dw LevelBonusSequence_TazZoo1
+	db $01, $ab ; X slide speed, delay frames before animating away
 
 ScreenData_TazZoo2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7c8, $1b7cc - $1b7c8
+	dw LevelBonusSequence_TazZoo2
+	db $01, $9d ; X slide speed, delay frames before animating away
 
 ScreenData_TazZooBossBonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7cf, $1b7d3 - $1b7cf
+	dw LevelBonusSequence_TazZooBoss
+	db $01, $8f ; X slide speed, delay frames before animating away
 
 ScreenData_SpaceStation1Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7d6, $1b7da - $1b7d6
+	dw LevelBonusSequence_SpaceStation1
+	db $01, $81 ; X slide speed, delay frames before animating away
 
 ScreenData_SpaceStation2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7dd, $1b7e1 - $1b7dd
+	dw LevelBonusSequence_SpaceStation2
+	db $01, $77 ; X slide speed, delay frames before animating away
 
 ScreenData_SpaceStationBossBonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7e4, $1b7e8 - $1b7e4
+	dw LevelBonusSequence_SpaceStationBoss
+	db $01, $6d ; X slide speed, delay frames before animating away
 
 ScreenData_FuddForest1Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7eb, $1b7ef - $1b7eb
+	dw LevelBonusSequence_FuddForest1
+	db $01, $63 ; X slide speed, delay frames before animating away
 
 ScreenData_FuddForest2Bonus:
 	db $ff
 	dw RunLevelBonusScreen
-
-INCBIN "baserom.gbc", $1b7f2, $1b7f6 - $1b7f2
+	dw LevelBonusSequence_FuddForest2
+	db $01, $59 ; X slide speed, delay frames before animating away
 
 ScreenDataGBC_LevelBonus:
 	compressed_data LevelBonusBackgroundTilesGBC, $9500
