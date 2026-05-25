@@ -26336,9 +26336,9 @@ Func_173fa:
 	ret nz
 	ld a, [$ddc3]
 	add a
-	add $3e
+	add LOW(TazZooBossScreenTilemapFrames)
 	ld l, a
-	ld a, $75
+	ld a, HIGH(TazZooBossScreenTilemapFrames)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -26510,9 +26510,9 @@ Func_173fa:
 .asm_174df
 	ld a, [hl]
 	add a
-	add $44
+	add LOW(TazZooBossScreenSpriteFrames)
 	ld l, a
-	ld a, $75
+	ld a, HIGH(TazZooBossScreenSpriteFrames)
 	adc $00
 	ld h, a
 	ld a, [hli]
@@ -26568,7 +26568,33 @@ Func_173fa:
 	call Func_1ae2
 	ret
 
-INCBIN "baserom.gbc", $1753e, $17568 - $1753e
+; Per-frame source pointers for Taz's animated body. Each entry points to a
+; 19x3 ($39-byte) tile region in WRAM, stored consecutively starting at $d455.
+TazZooBossScreenTilemapFrames:
+	dw $d455
+	dw $d48e
+	dw $d4c7
+
+; Per-frame OAM sub-sprite overlays for Taz, loaded by LoadOAMSprites.
+TazZooBossScreenSpriteFrames:
+	dw TazZooBossScreenSpriteFrame0
+	dw TazZooBossScreenSpriteFrame1
+	dw TazZooBossScreenSpriteFrame2
+
+TazZooBossScreenSpriteFrame0:
+	dw Load2SubSprites
+	sub_sprite $58, $00, -46, 0
+	sub_sprite $5a, $00, -38, 0
+
+TazZooBossScreenSpriteFrame1:
+	dw Load2SubSprites
+	sub_sprite $5c, $00, -39, 0
+	sub_sprite $5e, $00, -31, 0
+
+TazZooBossScreenSpriteFrame2:
+	dw Load2SubSprites
+	sub_sprite $60, $00, -37, 0
+	sub_sprite $62, $00, -29, 0
 
 TryInitNextScreen:
 	ldh a, [hPaused]
