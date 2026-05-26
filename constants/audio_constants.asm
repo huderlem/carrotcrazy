@@ -84,6 +84,16 @@ DEF MUSIC_CH_PITCH_BEND EQU $25 ; 2 bytes
 ; Nonzero = channel enabled. On channel 4 this holds the active sound effect ID.
 DEF MUSIC_CH_ENABLED    EQU $27
 
+; Hardware-envelope (NRx2) state for channels 1/2, set by command $74
+; (MusicCommand_SetEnvelope). MUSIC_CH_NRX2_RELOAD is copied back into
+; MUSIC_CH_NRX2 at every note start. The optional one-shot sweep at $29-$2b
+; ($29 = delay reload (0 = sweep disabled, else N+1 frames before the sweep
+; fires), $2a = countdown timer reloaded from $29 on note start, $2b = target
+; NRx2 value) is ticked by UpdateVolumeEnvelope: when the countdown reaches 0
+; the target is installed into MUSIC_CH_NRX2 and a retrigger is requested.
+DEF MUSIC_CH_NRX2_RELOAD EQU $28
+DEF MUSIC_CH_NRX2_SWEEP  EQU $29 ; $29-$2b
+
 ; Stereo-panning sequence: pointer + countdown, advanced into MUSIC_CH_PAN.
 DEF MUSIC_CH_PAN_SEQ    EQU $2c ; $2c-$2e
 
@@ -110,8 +120,21 @@ DEF MUSIC_CH_NR51       EQU $38
 ; Subroutine call state (commands $F0-$FF): repeat count + return pointer.
 DEF MUSIC_CH_CALL       EQU $39 ; $39-$3b
 
-; Pointer to a per-note callback routine (invoked when flag bit 5 is set).
+; Saved-note window for the per-note callback system (channel flag bit 5). On each new
+; note these rotate -- the prior MUSIC_CH_NOTE_CUR becomes MUSIC_CH_NOTE_PREV
+; and the new note is stored in MUSIC_CH_NOTE_CUR -- before MUSIC_CH_NOTE_CB
+; is invoked, letting the callback inspect both values. The note-end command
+; ($62/$65; Func_8502) then calls MUSIC_CH_NOTE_END_CB and replays
+; MUSIC_CH_NOTE_PREV via StartNote.
+DEF MUSIC_CH_NOTE_PREV  EQU $3c
+DEF MUSIC_CH_NOTE_CUR   EQU $3d
+
+; Pointer to a per-note callback routine (invoked when channel flag bit 5 is set).
 DEF MUSIC_CH_NOTE_CB    EQU $3e ; 2 bytes
+
+; Pointer to a per-note-end callback routine (invoked by Func_8502 / command
+; $62/$65 when channel flag bit 5 is set).
+DEF MUSIC_CH_NOTE_END_CB EQU $40 ; 2 bytes
 
 
 ; === Phrase command opcodes ===

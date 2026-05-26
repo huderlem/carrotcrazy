@@ -20648,6 +20648,9 @@ PlaySong_CrazyTown:
 PlaySong_FuddForest:
 	jp LoadSong_FuddForest
 
+; Two trailing dead slots in the PlaySong_* trampoline above. Both jump to
+; an address that exists in the middle of MusicPhrase_FuddForest_Ch2_3.
+; Presumably, these are leftover slots whose song loaders were removed during development.
 Func_8092:
 	jp $6f8f
 
@@ -20692,30 +20695,34 @@ PauseMusic_:
 	ldh [rNR34], a ; ch3: retrigger
 	ret
 
+; Command $84: arm the per-note callback system. Clears the saved-note buffer
+; ($3c/$3d) and either installs the two callback pointers from the stream
+; (per-note CB at $3e/$3f, note-end CB at $40/$41) and sets flag bit 5, or
+; if the first parameter is 0, clears the flag and stops here.
 MusicCommand_SetNoteCallback:
-	ld l, $3c
+	ld l, MUSIC_CH_NOTE_PREV
 	xor a
-	ld [hli], a
-	ld [hli], a
+	ld [hli], a ; clear MUSIC_CH_NOTE_PREV
+	ld [hli], a ; clear MUSIC_CH_NOTE_CUR
 	ld a, [de]
 	inc de
 	and a
-	jr z, .asm_80e1
-	ld [hli], a
+	jr z, .disable
+	ld [hli], a ; MUSIC_CH_NOTE_CB low
 	ld a, [de]
 	inc de
-	ld [hli], a
+	ld [hli], a ; MUSIC_CH_NOTE_CB high
 	ld a, [de]
 	inc de
-	ld [hli], a
+	ld [hli], a ; MUSIC_CH_NOTE_END_CB low
 	ld a, [de]
 	inc de
-	ld [hl], a
-	ld l, $04
+	ld [hl], a  ; MUSIC_CH_NOTE_END_CB high
+	ld l, MUSIC_CH_FLAGS
 	set 5, [hl]
 	ret
-.asm_80e1
-	ld l, $04
+.disable
+	ld l, MUSIC_CH_FLAGS
 	res 5, [hl]
 	ret
 
@@ -21052,15 +21059,15 @@ ReadMusicCommand:
 	ld l, MUSIC_CH_FLAGS
 	bit 5, [hl]
 	jr z, StartNote ; no per-note callback configured
-	; flag bit 5: call the per-note callback ($3e/$3f) with the new note in a,
-	; saving the previous note ($3c) and current note ($3d) for it to use.
+	; flag bit 5: rotate the saved-note window (previous := current, current :=
+	; new) and invoke MUSIC_CH_NOTE_CB with the new note in `a`.
 	ld b, a
-	ld l, $3d
-	ld a, [hld]
-	ld [hli], a
+	ld l, MUSIC_CH_NOTE_CUR
+	ld a, [hld]    ; a = current, l = previous
+	ld [hli], a    ; previous := current, l = current
 	ld a, b
 	push af
-	ld [hl], a
+	ld [hl], a     ; current := new note
 	ld l, MUSIC_CH_NOTE_CB
 	ld a, [hli]
 	ld c, a
@@ -21131,14 +21138,14 @@ StartNote:
 	ld [hl], a ; start at the peak level
 	ret
 .hardwareEnvelope
-	ld l, $28
+	ld l, MUSIC_CH_NRX2_RELOAD
 	ld a, [hl]
 	ld l, MUSIC_CH_NRX2
 	ld [hli], a ; queue the NRx2 envelope value
 	ld [hl], $01 ; request a retrigger
-	ld l, $29
+	ld l, MUSIC_CH_NRX2_SWEEP
 	ld a, [hli]
-	ld [hl], a
+	ld [hl], a ; reload the sweep countdown from the sweep delay
 	ret
 
 ; End-of-loop command: counts down the repeat counter set by a $F0-$FF command,
@@ -21236,7 +21243,9 @@ ReadMusicMetaCommand_B:
 	ld [hl], a
 	jp TryReadMusicCommand
 
-; Same as ReadMusicMetaCommand_B, but reads the envelope bytes from bc.
+; Same as ReadMusicMetaCommand_B, but reads the envelope bytes from bc (no
+; opcode-encoded peak level. The peak comes from the data stream too).
+; Unreferenced, likely a leftover helper.
 Func_8372:
 	ld a, [bc]
 	inc bc
@@ -21573,20 +21582,20 @@ MusicCommand_NoteOff:
 	jp Func_8518
 
 ; Command $62/$65: end the note. With a per-note callback armed (flag bit 5) it
-; calls the routine at $40/$41 and replays the saved note ($3c); otherwise it just
+; invokes MUSIC_CH_NOTE_END_CB and replays MUSIC_CH_NOTE_PREV; otherwise it just
 ; holds for another note length (Func_8518).
 Func_8502:
 	pop af
 	ld l, MUSIC_CH_FLAGS
 	bit 5, [hl]
 	jr z, Func_8518
-	ld l, $40
+	ld l, MUSIC_CH_NOTE_END_CB
 	ld a, [hli]
 	ld c, a
 	ld a, [hl]
 	ld b, a
 	call JumpToBC
-	ld l, $3c
+	ld l, MUSIC_CH_NOTE_PREV
 	ld a, [hl]
 	jp StartNote
 
@@ -21798,7 +21807,7 @@ MusicCommand_SetEnvelope:
 	ld a, [de]
 	ld l, MUSIC_CH_NRX2
 	ld [hl], a
-	ld l, $28
+	ld l, MUSIC_CH_NRX2_RELOAD
 	ld [hli], a
 	inc de
 	ld a, [de]
@@ -22237,66 +22246,71 @@ NoteFrequencies:
 	dw $07ec
 	dw $07ed
 
+; Per-frame envelope tick. Channels 1/2 run the optional hardware-envelope sweep
+; (MUSIC_CH_NRX2_SWEEP -> MUSIC_CH_NRX2 once the countdown hits 0); channels 3/4
+; run the two-phase software envelope (attack ramp up toward $0f, then decay
+; toward 0).
 UpdateVolumeEnvelope:
 	ld a, h
 	cp $dd
-	jr nc, .asm_88b7
-	ld l, $2a
+	jr nc, .softwareEnvelope
+	; Channels 1/2: tick the one-shot NRx2 sweep.
+	ld l, MUSIC_CH_NRX2_SWEEP + 1 ; sweep countdown
 	ld a, [hl]
 	and a
-	ret z
+	ret z ; no sweep armed
 	dec [hl]
-	ret nz
-	ld l, $2b
+	ret nz ; not yet
+	ld l, MUSIC_CH_NRX2_SWEEP + 2 ; sweep target NRx2
 	ld a, [hl]
-	ld l, $32
-	ld [hli], a
-	ld [hl], $01
+	ld l, MUSIC_CH_NRX2
+	ld [hli], a ; install the swept-in NRx2
+	ld [hl], $01 ; request a retrigger
 	ret
-.asm_88b7
-	ld l, $11
+.softwareEnvelope
+	ld l, MUSIC_CH_VOL_ENV + 1 ; attack steps remaining
 	ld a, [hl]
 	and a
-	jr z, .asm_88d4
-	ld l, $18
+	jr z, .decayPhase
+	ld l, MUSIC_CH_VOL_ENV_T + 1 ; attack timer countdown
 	dec [hl]
 	ret nz
 	inc l
 	ld a, [hld]
-	ld [hl], a
-	ld l, $11
-	dec [hl]
+	ld [hl], a ; reload attack timer from MUSIC_CH_VOL_ENV_T + 2
+	ld l, MUSIC_CH_VOL_ENV + 1
+	dec [hl] ; one attack step taken
 	inc l
-	ld a, [hl]
-	ld l, $08
+	ld a, [hl] ; a = attack step size
+	ld l, MUSIC_CH_VOLUME
 	add [hl]
 	cp $0f
-	jr c, .asm_88d2
-	ld a, $0f
-.asm_88d2
+	jr c, .storeVolume
+	ld a, $0f ; clamp upwards to the max level
+.storeVolume
 	ld [hl], a
 	ret
-.asm_88d4
-	ld l, $14
+.decayPhase
+	ld l, MUSIC_CH_VOL_ENV + 4 ; decay steps remaining
 	ld a, [hl]
 	and a
-	ret z
-	ld l, $1a
+	ret z ; envelope finished
+	ld l, MUSIC_CH_VOL_ENV_T + 3 ; decay timer countdown
 	dec [hl]
 	ret nz
 	inc l
 	ld a, [hld]
-	ld [hl], a
-	ld l, $14
-	dec [hl]
-	ld l, $08
+	ld [hl], a ; reload decay timer from MUSIC_CH_VOL_ENV_T + 4
+	ld l, MUSIC_CH_VOL_ENV + 4
+	dec [hl] ; one decay step taken
+	ld l, MUSIC_CH_VOLUME
 	ld a, [hl]
-	ld l, $15
+	ld l, MUSIC_CH_VOL_ENV + 5 ; decay step size
 	sub [hl]
-	jr nc, .asm_88ec
-	xor a
-.asm_88ec
-	ld l, $08
+	jr nc, .storeDecayVolume
+	xor a ; clamp downwards to 0
+.storeDecayVolume
+	ld l, MUSIC_CH_VOLUME
 	ld [hl], a
 	ret
 
