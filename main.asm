@@ -3137,7 +3137,7 @@ Func_162d:
 	srl a
 	ld b, a
 	ld c, $00
-	ld hl, $7800
+	ld hl, CrazyTownBossAnimationTiles
 	add hl, bc
 	ld a, $02
 	ld [MBC5RomBank], a
@@ -20828,8 +20828,8 @@ TickMusicEngine_:
 	dec h ; no sound effect -> use channel 3's struct ($dd)
 
 ; Commits the wave channel's frequency to NR33/NR34 and its volume to NR32 from
-; the struct selected in `h`. NR32 comes from a 4-level table (at $41ce) indexed
-; by MUSIC_CH_VOLUME, and is cached in wMusicLastWaveVolume.
+; the struct selected in `h`. NR32 comes from WaveVolumeTable indexed by
+; MUSIC_CH_VOLUME, and is cached in wMusicLastWaveVolume.
 CommitWaveFrequency:
 	ld l, MUSIC_CH_PITCH_BEND
 	ld e, [hl]
@@ -20848,9 +20848,9 @@ CommitWaveFrequency:
 .volume
 	inc l ; -> MUSIC_CH_VOLUME
 	ld a, [hl]
-	add $ce
+	add LOW(WaveVolumeTable)
 	ld l, a
-	adc $41
+	adc HIGH(WaveVolumeTable)
 	sub l
 	ld h, a ; hl = wave volume table + level
 	ld a, [wMusicLastWaveVolume]
@@ -20904,9 +20904,13 @@ TickSoundEffectChannel:
 	call CommitWaveFrequency
 	jr WriteStereoPanning
 
-; Wave channel (CH3) volume table: maps MUSIC_CH_VOLUME to an NR32 output-level
-; code ($00/$20/$40/$60). Read at $41ce by CommitWaveFrequency.
-INCBIN "baserom.gbc", $81ce, $81de - $81ce
+; Wave channel (CH3) volume table: maps MUSIC_CH_VOLUME (0-15) to one of NR32's
+; four output-level codes. Read by CommitWaveFrequency.
+WaveVolumeTable:
+	db $00, $00, $00, $00 ; volume 0-3:   mute
+	db $60, $60, $60, $60 ; volume 4-7:   25%
+	db $40, $40, $40, $40 ; volume 8-11:  50%
+	db $20, $20, $20, $20 ; volume 12-15: 100%
 
 ; Advances a single music channel by one frame. `h` selects the channel struct.
 ; Updates the duty/pan sequences, reads the next command if the note has ended,
@@ -22144,8 +22148,11 @@ ReloadWaveChannel:
 	ldh [rNR34], a
 	ret
 
-; Unreferenced zero-filled gap in the audio engine bank, preceding NoteFrequencies.
-INCBIN "baserom.gbc", $87b7, $8800 - $87b7
+; Zero padding so NoteFrequencies lands on a $100 boundary ($4800). The note-
+; lookup code indexes the table with `ld b, HIGH(NoteFrequencies)` / `ld c, note*2`
+; / `ld a, [bc]`, which only works when the table's low byte is $00.
+; TODO: there is definitely a better way to achieve this with RGBDS, maybe with sections?
+ds $4800 - $47b7, $00
 
 NoteFrequencies:
 	dw $002d
@@ -24765,7 +24772,80 @@ FadeOutVolumeSequence:
 FadeInVolumeSequence:
 	db $00, $11, $22, $33, $44, $55, $66, $77, $ff
 
-INCBIN "baserom.gbc", $b800, $bc00 - $b800
+; Four frames of CrazyTown boss tile graphics, 16 tiles ($100 bytes) per frame.
+; Func_162d picks a frame (CrazyTownBossAnimationTiles + frame*$100), points SP at
+; it, and POPs the bytes straight into VRAM tile memory during HBlank. The frame
+; index (0-3) is derived from the boss state at $de82.
+; TODO: ideally, this should be converted to regular PNG graphics.
+CrazyTownBossAnimationTiles:
+.frame0
+	db $f7, $0f, $ec, $1e, $d8, $3c, $b1, $78, $62, $f1, $e4, $e2, $e2, $c5, $87, $c8
+	db $88, $07, $27, $18, $1f, $60, $7c, $80, $f0, $00, $60, $80, $80, $80, $00, $00
+	db $f3, $04, $f7, $0c, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $88, $70, $f2, $0c, $3c, $03, $03, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $f7, $79, $1a, $3f, $0e, $1f, $47, $8f, $a3, $47, $13, $63, $63, $d1, $10, $09
+	db $d7, $88, $0e, $90, $ac, $10, $1c, $20, $18, $20, $58, $20, $38, $40, $30, $40
+	db $05, $08, $08, $04, $02, $04, $04, $02, $00, $02, $01, $02, $02, $01, $00, $01
+	db $30, $40, $00, $50, $10, $70, $30, $40, $30, $40, $30, $40, $30, $40, $50, $20
+	db $36, $52, $fe, $01, $3f, $9b, $7d, $d9, $fe, $01, $6e, $4a, $18, $3c, $00, $00
+	db $00, $01, $00, $01, $00, $03, $02, $07, $00, $01, $00, $01, $02, $01, $01, $02
+	db $10, $20, $18, $20, $a8, $10, $08, $90, $d4, $88, $84, $c8, $e2, $c4, $64, $e3
+	db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $80, $80, $80
+	db $00, $02, $04, $02, $02, $04, $08, $04, $05, $08, $10, $09, $02, $51, $51, $e3
+	db $80, $00, $40, $80, $10, $60, $24, $18, $88, $07, $21, $c0, $c8, $30, $f8, $07
+	db $00, $00, $00, $00, $00, $00, $00, $08, $89, $18, $00, $ff, $00, $00, $80, $00
+	db $00, $00, $01, $00, $04, $03, $12, $0c, $88, $70, $43, $81, $0e, $07, $83, $7c
+.frame1
+	db $f7, $0f, $ec, $1e, $d8, $3c, $b1, $78, $62, $f1, $e5, $e2, $e3, $c4, $81, $ca
+	db $88, $07, $27, $18, $1f, $60, $7c, $80, $f0, $00, $e0, $00, $c0, $00, $00, $00
+	db $9f, $20, $bf, $60, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $88, $70, $f2, $0c, $3c, $03, $01, $02, $02, $06, $00, $00, $00, $00, $00, $00
+	db $f7, $79, $1a, $3f, $0e, $1f, $47, $8f, $a3, $47, $53, $23, $23, $11, $10, $09
+	db $d3, $8e, $0e, $90, $ac, $10, $1c, $20, $18, $20, $58, $20, $38, $40, $30, $40
+	db $05, $08, $08, $04, $02, $04, $04, $02, $00, $02, $01, $02, $02, $01, $00, $05
+	db $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $20, $48, $28, $58, $50, $20
+	db $2e, $62, $fe, $03, $7d, $99, $3f, $99, $fe, $41, $76, $46, $18, $3c, $00, $00
+	db $04, $0d, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $02, $01, $01, $02
+	db $10, $20, $18, $20, $a8, $10, $08, $90, $d4, $88, $84, $c8, $e2, $c4, $65, $e2
+	db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $00, $02, $04, $02, $02, $04, $08, $14, $15, $38, $10, $09, $02, $11, $11, $23
+	db $80, $10, $50, $b0, $10, $60, $24, $18, $88, $07, $21, $c0, $c8, $30, $f8, $07
+	db $00, $00, $00, $00, $00, $00, $00, $01, $81, $00, $00, $ff, $00, $00, $80, $00
+	db $00, $00, $01, $00, $04, $83, $92, $8c, $88, $70, $43, $81, $0e, $07, $83, $7c
+.frame2
+	db $f7, $0f, $ec, $1e, $d8, $3c, $b1, $78, $62, $f1, $e5, $e2, $e3, $c4, $87, $c8
+	db $88, $07, $21, $1a, $1b, $66, $7c, $80, $f0, $00, $e0, $00, $c0, $00, $00, $00
+	db $ff, $00, $ff, $00, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $88, $70, $f2, $0c, $24, $0b, $0b, $18, $00, $00, $00, $00, $00, $00, $00, $00
+	db $f7, $79, $1a, $3f, $0e, $1f, $47, $8f, $a3, $47, $53, $23, $23, $11, $10, $09
+	db $d7, $88, $0e, $90, $a0, $14, $14, $2c, $18, $20, $58, $20, $38, $40, $30, $40
+	db $05, $08, $08, $04, $02, $04, $04, $0a, $08, $1a, $01, $02, $02, $01, $00, $01
+	db $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $50, $20
+	db $1e, $46, $fc, $41, $7f, $99, $7f, $99, $be, $03, $7a, $62, $18, $3c, $00, $00
+	db $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $02, $01, $01, $02
+	db $10, $24, $14, $2c, $a8, $10, $08, $90, $d4, $88, $84, $c8, $e2, $c4, $65, $e2
+	db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $00, $02, $04, $0a, $0a, $1c, $08, $04, $05, $08, $10, $09, $02, $11, $11, $23
+	db $80, $00, $40, $84, $14, $6c, $24, $18, $88, $07, $21, $c0, $c8, $30, $f8, $07
+	db $00, $00, $00, $00, $00, $00, $00, $00, $81, $00, $00, $ff, $00, $00, $80, $00
+	db $00, $00, $01, $10, $14, $33, $12, $0c, $88, $70, $43, $81, $0e, $07, $83, $7c
+.frame3
+	db $f7, $0f, $ec, $1e, $d8, $3c, $b1, $78, $62, $f1, $e5, $e2, $e3, $c4, $87, $c8
+	db $88, $07, $27, $18, $1f, $60, $4c, $90, $d0, $30, $e0, $00, $c0, $00, $00, $00
+	db $ff, $00, $ff, $00, $80, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $88, $70, $92, $2c, $3c, $63, $03, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $f7, $79, $1a, $3f, $0e, $1f, $47, $8f, $a3, $47, $53, $23, $23, $11, $10, $09
+	db $d7, $88, $0e, $90, $ac, $10, $1c, $20, $18, $20, $40, $28, $28, $58, $30, $40
+	db $05, $18, $18, $34, $02, $04, $04, $02, $00, $02, $01, $02, $02, $01, $00, $01
+	db $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $30, $40, $50, $20
+	db $3a, $4a, $be, $01, $7f, $d9, $7f, $9b, $fc, $01, $5e, $52, $18, $3c, $00, $00
+	db $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $02, $05, $05, $0e
+	db $10, $20, $18, $20, $a8, $10, $08, $92, $d2, $8e, $84, $c8, $e2, $c4, $65, $e2
+	db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	db $00, $02, $04, $02, $02, $04, $08, $04, $05, $08, $10, $09, $02, $11, $11, $23
+	db $80, $00, $40, $80, $10, $60, $24, $19, $88, $07, $21, $c0, $c8, $30, $f8, $07
+	db $00, $00, $00, $00, $00, $80, $80, $80, $81, $00, $00, $ff, $00, $00, $80, $00
+	db $00, $02, $03, $06, $04, $03, $12, $0c, $88, $70, $43, $81, $0e, $07, $83, $7c
 
 FuddForestLevelSpriteTiles:
 	INCBIN "gfx/fudd_forest/level_sprites.interleave.2bpp.lz"
