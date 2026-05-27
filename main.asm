@@ -3268,7 +3268,7 @@ Func_170c:
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
-	ld hl, $7ad6
+	ld hl, FuddForestBossScreenSprite
 	call LoadOAMSprites
 	ret
 
@@ -27843,7 +27843,14 @@ Func_17aba:
 	ld [hli], a
 	ret
 
-INCBIN "baserom.gbc", $17ad6, $17af0 - $17ad6
+FuddForestBossScreenSprite:
+	dw Load6SubSprites
+	sub_sprite $56, $10,  -7, 16
+	sub_sprite $58, $10,  -7, 32
+	sub_sprite $6a, $10, -15, 48
+	sub_sprite $5e, $10,  -7, 48
+	sub_sprite $60, $10, -15, 64
+	sub_sprite $62, $10,  -7, 64
 
 ReadJoyPad:
 	ld a, [wEnableLevelSkip]
