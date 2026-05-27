@@ -20593,15 +20593,17 @@ InitSound:
 ;   PlaySong_Menu            language/options/password/summary/bonus screens
 ;   PlaySong_CrazyTown       Crazy Town levels
 ;   PlaySong_FuddForest      Fudd Forest levels 1-2
-; PlaySong_Unused1-5 have working loaders but are not referenced by any screen.
+;   PlaySong_IntroScene      intro scene cutscene (after titlescreen)
+; PlaySong_Unused2-5 have working loaders but are not referenced by any screen.
+; (PlaySong_Unused5 is named in Data_Unknown_71b2, but that block is unreferenced.)
 FadeInMusic:
 	jp FadeInMusic_
 
 FadeOutMusic:
 	jp FadeOutMusic_
 
-PlaySong_Unused1:
-	jp LoadSong_Unused1_Stub
+PlaySong_IntroScene:
+	jp LoadSong_IntroScene_Stub
 
 PlaySong_Studio:
 	jp LoadSong_Studio_Stub
@@ -22736,37 +22738,37 @@ UpdateNoiseChannel:
 	ld [wNoiseInstrumentActive], a
 	ret
 
-LoadSong_Unused1_Stub:
-	jp LoadSong_Unused1
+LoadSong_IntroScene_Stub:
+	jp LoadSong_IntroScene
 
-LoadSong_Unused1:
+LoadSong_IntroScene:
 	call ResetMusicChannels
-	ld de, MusicChain_Unused1_Ch3
+	ld de, MusicChain_IntroScene_Ch3
 	call StartMusicChannel3
-	ld de, MusicChain_Unused1_Ch2
+	ld de, MusicChain_IntroScene_Ch2
 	call StartMusicChannel2
-	ld de, MusicChain_Unused1_Ch1
+	ld de, MusicChain_IntroScene_Ch1
 	jp StartMusicChannel1
 
-; Song data for LoadSong_Unused1: the three per-channel chains (each a
+; Song data for LoadSong_IntroScene: the three per-channel chains (each a
 ; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
-MusicChain_Unused1_Ch3:
-	dw MusicPhrase_Unused1_Ch3_0
-	dw MusicPhrase_Unused1_Ch3_1
+MusicChain_IntroScene_Ch3:
+	dw MusicPhrase_IntroScene_Ch3_0
+	dw MusicPhrase_IntroScene_Ch3_1
 	dw $0000
-	dw MusicChain_Unused1_Ch3 ; loop
-MusicChain_Unused1_Ch2:
-	dw MusicPhrase_Unused1_Ch2_0
-	dw MusicPhrase_Unused1_Ch2_1
+	dw MusicChain_IntroScene_Ch3 ; loop
+MusicChain_IntroScene_Ch2:
+	dw MusicPhrase_IntroScene_Ch2_0
+	dw MusicPhrase_IntroScene_Ch2_1
 	dw $0000
-	dw MusicChain_Unused1_Ch2 ; loop
-MusicChain_Unused1_Ch1:
-	dw MusicPhrase_Unused1_Ch1_0
-	dw MusicPhrase_Unused1_Ch1_1
+	dw MusicChain_IntroScene_Ch2 ; loop
+MusicChain_IntroScene_Ch1:
+	dw MusicPhrase_IntroScene_Ch1_0
+	dw MusicPhrase_IntroScene_Ch1_1
 	dw $0000
-	dw MusicChain_Unused1_Ch1 ; loop
+	dw MusicChain_IntroScene_Ch1 ; loop
 
-MusicPhrase_Unused1_Ch1_0:
+MusicPhrase_IntroScene_Ch1_0:
 	mus_noise_seq $07, MusicNoiseSeq_Studio_0
 	mus_arp $96
 	mus_envelope $e1, $04, $83
@@ -22809,7 +22811,7 @@ MusicPhrase_Unused1_Ch1_0:
 	mus_note_length 21
 	mus_note As5, Gs5, Gn5
 	mus_end_phrase
-MusicPhrase_Unused1_Ch1_1:
+MusicPhrase_IntroScene_Ch1_1:
 	mus_note_length 21
 	mus_note Fn5, Cn6
 	mus_note_length 35
@@ -22847,7 +22849,7 @@ MusicPhrase_Unused1_Ch1_1:
 	mus_note_length 7
 	mus_note Dn6
 	mus_end_phrase
-MusicPhrase_Unused1_Ch3_0:
+MusicPhrase_IntroScene_Ch3_0:
 	mus_octave_shift 0
 	mus_macro $90
 	mus_note_length 21
@@ -22905,7 +22907,7 @@ MusicPhrase_Unused1_Ch3_0:
 	mus_note_length 7
 	mus_note Gs3
 	mus_end_phrase
-MusicPhrase_Unused1_Ch3_1:
+MusicPhrase_IntroScene_Ch3_1:
 	mus_macro $90
 	mus_note_length 21
 	mus_note As3
@@ -22976,7 +22978,7 @@ MusicPhrase_Unused1_Ch3_1:
 	mus_note_length 7
 	mus_note Fn3
 	mus_end_phrase
-MusicPhrase_Unused1_Ch2_0:
+MusicPhrase_IntroScene_Ch2_0:
 	mus_vibrato $00, $03, $04
 	mus_macro $8e
 	mus_note_length 14
@@ -23040,7 +23042,7 @@ MusicPhrase_Unused1_Ch2_0:
 	mus_note_length 7
 	mus_note Dn5, Fn4, Gn4, Gs4
 	mus_end_phrase
-MusicPhrase_Unused1_Ch2_1:
+MusicPhrase_IntroScene_Ch2_1:
 	mus_macro $8e
 	mus_note_length 14
 	mus_note As4
@@ -23117,24 +23119,24 @@ LoadSong_Studio:
 ; Song data for LoadSong_Studio: the three per-channel chains (each a
 ; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
 MusicChain_Studio_Ch3:
-	dw MusicPhrase_Unused1_Ch3_0
-	dw MusicPhrase_Unused1_Ch3_1
-	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_IntroScene_Ch3_0
+	dw MusicPhrase_IntroScene_Ch3_1
+	dw MusicPhrase_IntroScene_Ch3_0
 	dw MusicPhrase_Studio_Ch3_0
 	dw MusicPhrase_Studio_Ch3_1
 	dw MusicPhrase_Studio_Ch3_1
-	dw MusicPhrase_Unused1_Ch3_0
-	dw MusicPhrase_Unused1_Ch3_1
-	dw MusicPhrase_Unused1_Ch3_0
+	dw MusicPhrase_IntroScene_Ch3_0
+	dw MusicPhrase_IntroScene_Ch3_1
+	dw MusicPhrase_IntroScene_Ch3_0
 	dw MusicPhrase_Studio_Ch3_0
 	dw MusicPhrase_Studio_Ch3_1
 	dw MusicPhrase_Studio_Ch3_1
 	dw $0000
 	dw MusicChain_Studio_Ch3 ; loop
 MusicChain_Studio_Ch2:
-	dw MusicPhrase_Unused1_Ch2_0
-	dw MusicPhrase_Unused1_Ch2_1
-	dw MusicPhrase_Unused1_Ch2_0
+	dw MusicPhrase_IntroScene_Ch2_0
+	dw MusicPhrase_IntroScene_Ch2_1
+	dw MusicPhrase_IntroScene_Ch2_0
 	dw MusicPhrase_Studio_Ch2_0
 	dw MusicPhrase_Studio_Ch2_1
 	dw MusicPhrase_Studio_Ch2_2
@@ -23151,9 +23153,9 @@ MusicChain_Studio_Ch2:
 	dw $0000
 	dw MusicChain_Studio_Ch2 ; loop
 MusicChain_Studio_Ch1:
-	dw MusicPhrase_Unused1_Ch1_0
-	dw MusicPhrase_Unused1_Ch1_1
-	dw MusicPhrase_Unused1_Ch1_0
+	dw MusicPhrase_IntroScene_Ch1_0
+	dw MusicPhrase_IntroScene_Ch1_1
+	dw MusicPhrase_IntroScene_Ch1_0
 	dw MusicPhrase_Studio_Ch1_0
 	dw MusicPhrase_Studio_Ch1_1
 	dw MusicPhrase_Studio_Ch1_2
@@ -36625,8 +36627,19 @@ ScreenData_IntroScene:
 	compressed_data GameText, $C500
 	db $ff
 	dw RunIntroScene
+	dw PlaySong_IntroScene
 
-INCBIN "baserom.gbc", $1b1b0, $1b1c9 - $1b1b0
+; Unreferenced data. The byte layout matches a menu-style ScreenData block
+; (background + edge + font + text tile loads, then $ff terminator), but the
+; dw after $ff is PlaySong_Unused5 rather than a Run* function pointer, and
+; no ScreenDataPointers entry points here. Likely leftover from development.
+Data_Unknown_71b2:
+	compressed_data WarnerBrosBackgroundTiles, $8830
+	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
+	compressed_data MenuFontTiles, $C000
+	compressed_data GameText, $C500
+	db $ff
+	dw PlaySong_Unused5
 
 ScreenData_CrazyTown1Intro:
 	compressed_data DaffyDuckHeadTiles, $8440
@@ -37714,8 +37727,7 @@ ScreenDataGBC_IntroScene:
 	compressed_data TitlescreenTileAttributesGBC, $D94B
 	db $ff
 	dw RunIntroScene
-
-INCBIN "baserom.gbc", $1bcae, $1bcb0 - $1bcae
+	dw PlaySong_IntroScene
 
 ScreenDataGBC_InfogramesCopyright:
 	compressed_data InfogramesCopyrightGBCTiles, $9550
