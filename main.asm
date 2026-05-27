@@ -20524,10 +20524,10 @@ SECTION "ROM Bank $02", ROMX[$4000], BANK[$2]
 MusicCommandTable:
 	dw MusicCommand_SetTranspose
 	dw MusicCommand_ClearTranspose
-	dw Func_8502
+	dw MusicCommand_EndNote
 	dw MusicCommand_SetVibrato
 	dw MusicCommand_ClearVibrato
-	dw Func_8502
+	dw MusicCommand_EndNote
 	dw MusicCommand_NoteOff
 	dw ResetMusicChannels
 	dw MusicCommand_StopChannel
@@ -20536,12 +20536,12 @@ MusicCommandTable:
 	dw MusicCommand_SetNoteLength
 	dw MusicCommand_StartNoiseSequence
 	dw MusicCommand_StopNoiseSequence
-	dw SetPanBoth
-	dw SetPanRight
-	dw SetPanLeft
-	dw SetDuty50
-	dw SetDuty75
-	dw SetDuty12
+	dw MusicCommand_SetPanBoth
+	dw MusicCommand_SetPanRight
+	dw MusicCommand_SetPanLeft
+	dw MusicCommand_SetDuty50
+	dw MusicCommand_SetDuty75
+	dw MusicCommand_SetDuty12
 	dw MusicCommand_SetEnvelope
 	dw MusicCommand_PanSequence
 	dw MusicCommand_DutySequence
@@ -20549,15 +20549,15 @@ MusicCommandTable:
 	dw StopMasterVolumeSequence
 	dw MusicCommand_LoadWave
 	dw MusicCommand_SetOctave
-	dw Func_84ac
+	dw MusicCommand_SetNoteFx
 	dw MusicCommand_ClearArpeggio
 	dw MusicCommand_Goto
 	dw MusicCommand_Call
 	dw MusicCommand_CallCode
 	dw MusicCommand_LoopBack
 	dw MusicCommand_SetEnvelopePeak
-	dw Func_8407
-	dw Func_841a
+	dw MusicCommand_PitchSlideUp
+	dw MusicCommand_PitchSlideDown
 	dw MusicCommand_SetNoteCallback
 
 TickMusicEngine:
@@ -20971,7 +20971,7 @@ TickMusicChannel:
 	ld a, [bc]
 	ld [hl], a
 	call UpdateVolumeEnvelope
-	call Func_8447 ; apply the timed mid-note retrigger effect (command $7B)
+	call ApplyNoteFx ; apply the timed mid-note retrigger effect (command $7B)
 	ld l, MUSIC_CH_FLAGS
 	bit 3, [hl]
 	ret z ; done unless vibrato is enabled
@@ -21358,10 +21358,12 @@ ReadMacroCommand:
 	pop de
 	jp ReadMusicCommand
 
-; Command $82: set up the vibrato oscillator from one parameter (depth), with no
-; onset delay and a 1-frame rate. Combined with StartNote's setup the fast rate
-; makes it act as a continuous pitch slide. $83 differs only in direction bit 4.
-Func_8407:
+; Command $82: continuous pitch slide UP by `depth` per frame. Implemented by
+; configuring the vibrato oscillator with zero onset delay and a 1-frame step
+; reload; StartNote then sets the step counter to reload/2 = 0, so when the
+; vibrato updater decrements it the counter underflows to $ff and the direction
+; never flips -- the depth is just added to MUSIC_CH_PITCH_BEND every frame.
+MusicCommand_PitchSlideUp:
 	xor a
 	ld l, MUSIC_CH_VIBRATO
 	ld [hli], a
@@ -21378,8 +21380,9 @@ Func_8407:
 	ld [hl], a
 	ret
 
-; Command $83: like Func_8407, but clears the direction bit.
-Func_841a:
+; Command $83: continuous pitch slide DOWN. Same setup as $82 but clears the
+; vibrato direction bit so the updater subtracts depth from PITCH_BEND each frame.
+MusicCommand_PitchSlideDown:
 	xor a
 	ld l, MUSIC_CH_VIBRATO
 	ld [hli], a
@@ -21427,11 +21430,11 @@ MusicCommand_ClearArpeggio:
 	ld [hl], $00
 	ret
 
-; Per-frame updater for the timed mid-note effect armed by command $7B (Func_84ac).
+; Per-frame updater for the timed mid-note effect armed by command $7B (MusicCommand_SetNoteFx).
 ; Once the note timer reaches the low nibble of MUSIC_CH_NOTE_FX (and the note is
 ; long enough per the high nibble), the channel is retriggered with the new volume
 ; in $35. Exact musical purpose is unclear.
-Func_8447:
+ApplyNoteFx:
 	ld l, MUSIC_CH_NOTE_FX
 	ld a, [hl]
 	and $f0
@@ -21497,7 +21500,7 @@ Func_8447:
 
 ; Command $7B: arm the timed mid-note effect (step value + timing in $34/$35), or
 ; disable it if the first parameter byte is 0.
-Func_84ac:
+MusicCommand_SetNoteFx:
 	ld l, MUSIC_CH_NOTE_FX
 	ld a, [de]
 	inc de
@@ -21573,22 +21576,22 @@ MusicCommand_NoteOff:
 	ld [hl], $00
 	ld a, h
 	cp $dd
-	jr nc, Func_8518
+	jr nc, HoldNote
 	ld l, MUSIC_CH_NRX2
 	xor a
 	ld [hli], a
 	inc a
 	ld [hl], a ; NRx2 = 0, request retrigger
-	jp Func_8518
+	jp HoldNote
 
 ; Command $62/$65: end the note. With a per-note callback armed (flag bit 5) it
 ; invokes MUSIC_CH_NOTE_END_CB and replays MUSIC_CH_NOTE_PREV; otherwise it just
-; holds for another note length (Func_8518).
-Func_8502:
+; holds for another note length (HoldNote).
+MusicCommand_EndNote:
 	pop af
 	ld l, MUSIC_CH_FLAGS
 	bit 5, [hl]
-	jr z, Func_8518
+	jr z, HoldNote
 	ld l, MUSIC_CH_NOTE_END_CB
 	ld a, [hli]
 	ld c, a
@@ -21600,7 +21603,7 @@ Func_8502:
 	jp StartNote
 
 ; Holds the current note for another note length without reading a new command.
-Func_8518:
+HoldNote:
 	ld l, MUSIC_CH_NOTE_LEN
 	ld a, [hli]
 	ld [hl], a
@@ -21852,23 +21855,23 @@ UpdatePanSequence:
 	inc a
 	ld [hl], a ; advance the step index
 	dec a
-	jr z, SetPanBoth
+	jr z, MusicCommand_SetPanBoth
 	dec a
-	jr z, SetPanRight
+	jr z, MusicCommand_SetPanRight
 	dec a
-	jr z, SetPanBoth
+	jr z, MusicCommand_SetPanBoth
 	dec a
-	jr z, SetPanLeft
+	jr z, MusicCommand_SetPanLeft
 	ld [hl], $01 ; past the pattern end: restart it
-SetPanBoth:
+MusicCommand_SetPanBoth:
 	ld l, MUSIC_CH_NR51
 	ld [hl], $11
 	ret
-SetPanRight:
+MusicCommand_SetPanRight:
 	ld l, MUSIC_CH_NR51
 	ld [hl], $01
 	ret
-SetPanLeft:
+MusicCommand_SetPanLeft:
 	ld l, MUSIC_CH_NR51
 	ld [hl], $10
 	ret
@@ -21897,21 +21900,21 @@ UpdateDutySequence:
 	inc a
 	ld [hl], a ; advance the step index
 	dec a
-	jr z, SetDuty50
+	jr z, MusicCommand_SetDuty50
 	dec a
-	jr z, SetDuty75
+	jr z, MusicCommand_SetDuty75
 	dec a
-	jr z, SetDuty12
+	jr z, MusicCommand_SetDuty12
 	dec a
-	jr z, SetDuty75
+	jr z, MusicCommand_SetDuty75
 	ld [hl], $01 ; past the pattern end: restart it
-SetDuty50:
+MusicCommand_SetDuty50:
 	ld l, $80 ; NR11/NR21 duty bits (l is reused as a temp, not a struct offset)
 	jr WriteDutyToRegister
-SetDuty75:
+MusicCommand_SetDuty75:
 	ld l, $c0
 	jr WriteDutyToRegister
-SetDuty12:
+MusicCommand_SetDuty12:
 	ld l, $00
 WriteDutyToRegister:
 	ld a, h
