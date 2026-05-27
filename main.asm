@@ -21615,9 +21615,9 @@ Func_8518:
 InitSoundEngine:
 	ld a, $ff
 	ldh [rNR52], a
-	ld a, $70
+	ld a, HIGH(MusicArpeggioTable)
 	ld [wMusicArpeggioTable + 1], a
-	ld a, $c5
+	ld a, LOW(MusicArpeggioTable)
 	ld [wMusicArpeggioTable], a
 	xor a
 	ld [wMusicInMacro], a
@@ -21627,9 +21627,9 @@ InitSoundEngine:
 ; Silences all four channels, resets master volume/panning, and reinitialises
 ; each channel's state struct.
 ResetMusicChannels:
-	ld a, $70
+	ld a, HIGH(MusicMacroTable2)
 	ld [wMusicMacroTable + 1], a
-	ld a, $20
+	ld a, LOW(MusicMacroTable2)
 	ld [wMusicMacroTable], a
 	xor a
 	ldh [rNR12], a
@@ -23211,9 +23211,9 @@ MusicPhrase_Unused2_Ch1_2:
 
 LoadSong_SpaceStation:
 	call ResetMusicChannels
-	ld a, $6f
+	ld a, HIGH(MusicMacroTable1)
 	ld [wMusicMacroTable + 1], a
-	ld a, $93
+	ld a, LOW(MusicMacroTable1)
 	ld [wMusicMacroTable], a
 	ld de, MusicChain_SpaceStation_Ch1
 	call StartMusicChannel1
@@ -23348,9 +23348,9 @@ MusicPhrase_SpaceStation_Ch2_1:
 
 LoadSong_TazZoo:
 	call ResetMusicChannels
-	ld a, $6f
+	ld a, HIGH(MusicMacroTable1)
 	ld [wMusicMacroTable + 1], a
-	ld a, $93
+	ld a, LOW(MusicMacroTable1)
 	ld [wMusicMacroTable], a
 	ld de, MusicChain_TazZoo_Ch1
 	call StartMusicChannel1
@@ -23599,9 +23599,9 @@ MusicPhrase_Boss_Ch1_6:
 
 LoadSong_TreasureIsland:
 	call ResetMusicChannels
-	ld a, $6f
+	ld a, HIGH(MusicMacroTable1)
 	ld [wMusicMacroTable + 1], a
-	ld a, $93
+	ld a, LOW(MusicMacroTable1)
 	ld [wMusicMacroTable], a
 	ld de, MusicChain_TreasureIsland_Ch1
 	call StartMusicChannel1
@@ -23810,9 +23810,9 @@ MusicPhrase_Menu_Ch1_2:
 
 LoadSong_Unused3:
 	call ResetMusicChannels
-	ld a, $6f
+	ld a, HIGH(MusicMacroTable1)
 	ld [wMusicMacroTable + 1], a
-	ld a, $93
+	ld a, LOW(MusicMacroTable1)
 	ld [wMusicMacroTable], a
 	ld de, MusicChain_Unused3_Ch1
 	call StartMusicChannel1
@@ -24059,9 +24059,9 @@ MusicPhrase_CrazyTown_Ch1_3:
 
 LoadSong_FuddForest:
 	call ResetMusicChannels
-	ld a, $6f
+	ld a, HIGH(MusicMacroTable1)
 	ld [wMusicMacroTable + 1], a
-	ld a, $93
+	ld a, LOW(MusicMacroTable1)
 	ld [wMusicMacroTable], a
 	ld de, MusicChain_FuddForest_Ch1
 	call StartMusicChannel1
@@ -24071,7 +24071,7 @@ LoadSong_FuddForest:
 	jp StartMusicChannel2
 
 ; Song data for LoadSong_FuddForest: the three per-channel chains (each a
-; list of phrase pointers, looping), then the phrases (see audio_constants.asm).
+; list of phrase pointers, looping), then the phrases (see audio_constants.asm). 
 MusicChain_FuddForest_Ch1:
 	dw MusicPhrase_FuddForest_Ch1_0
 	dw MusicPhrase_FuddForest_Ch1_1
@@ -24147,7 +24147,9 @@ MusicPhrase_FuddForest_Ch3_3:
 	db $D7, $2D, $85, $CB, $21, $93, $2C, $D7, $2B, $85, $CB, $21, $93, $26, $28, $29
 	db $85, $21, $93, $2B, $6A
 MusicPhrase_FuddForest_Ch2_0:
-	db $6C, $06, $65, $6F, $90, $F1, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B
+	db $6C, $06          ; $6C StartNoiseSequence, step length 6
+	dw MusicNoiseSeq_FuddForest_Ch2_0
+	db $90, $F1, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B
 	db $CB, $24, $90, $13, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB, $2B
 	db $90, $0C, $80, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B, $CB, $24, $90
 	db $16, $D7, $16, $8B, $CB, $24, $90, $10, $D7, $10, $8B, $CB, $24, $90, $10, $6A
@@ -24161,49 +24163,217 @@ MusicPhrase_FuddForest_Ch2_1:
 	db $2B, $90, $D7, $13, $CB, $13, $D7, $11, $10, $0E, $6A
 MusicPhrase_FuddForest_Ch2_2:
 	db $90, $D7, $0C, $8B, $CB, $24, $90, $D7, $13, $CB, $13, $8B, $24, $90, $15, $18
-	db $18, $6B, $48, $18, $6A, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB
+	db $18, $6B, $48, $18, $6A
+MusicPhrase_FuddForest_Ch2_2_Call0:
+	db $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB
 	db $2B, $90, $13, $D7, $13, $8B, $CB, $2B, $90, $0E, $D7, $0E, $8B, $CB, $2B, $90
 	db $0C, $D7, $0C, $8B, $CB, $24, $90, $13, $D7, $13, $8B, $CB, $24, $90, $18, $6A
 MusicPhrase_FuddForest_Ch2_3:
-	db $6C, $06, $7A, $6F, $90, $7E, $12, $6F, $D7, $18, $8B, $CB, $24, $90, $13, $D7
-	db $13, $8B, $CB, $24, $90, $13, $7E, $12, $6F, $D7, $18, $8B, $CB, $24, $90, $D7
-	db $13, $CB, $10, $8B, $24, $90, $0C, $6A, $5D, $44, $01, $00, $06, $00, $09, $00
-	db $01, $00, $36, $01, $00, $06, $00, $09, $06, $46, $04, $00, $FF, $5D, $44, $01
-	db $00, $05, $06, $09, $00, $01, $06, $36, $01, $00, $04, $06, $09, $06, $46, $04
-	db $00, $FF, $69, $00, $6A, $69, $02, $6A, $B7, $6F, $C2, $6F, $CB, $6F, $D4, $6F
-	db $DD, $6F, $E3, $6F, $EB, $6F, $F2, $6F, $F9, $6F, $FE, $6F, $03, $70, $0A, $70
-	db $11, $70, $11, $70, $11, $70, $19, $70, $19, $70, $BF, $11, $2F, $12, $60, $FE
-	db $A6, $79, $6A, $75, $68, $BF, $11, $1A, $12, $98, $79, $CA, $74, $68, $BA, $11
-	db $1F, $11, $94, $79, $DA, $74, $68, $BF, $11, $1F, $12, $94, $79, $3A, $75, $68
-	db $74, $F2, $00, $94, $72, $68, $74, $F1, $04, $51, $60, $FE, $71, $68, $74, $F1
-	db $00, $98, $76, $04, $68, $74, $F1, $00, $99, $76, $04, $68, $74, $D1, $00, $73
-	db $68, $74, $D2, $00, $71, $68, $74, $F2, $0A, $50, $94, $71, $68, $74, $F1, $0C
-	db $50, $94, $71, $68, $BA, $00, $00, $00, $79, $CA, $74, $68, $BF, $11, $1F, $12
-	db $94, $79, $3A, $75, $68, $40, $70, $45, $70, $4E, $70, $55, $70, $5C, $70, $65
-	db $70, $6E, $70, $7B, $70, $89, $70, $8E, $70, $97, $70, $A0, $70, $A9, $70, $B2
-	db $70, $BE, $70, $74, $F3, $00, $72, $68, $BF, $11, $1F, $11, $A6, $79, $6A, $75
-	db $68, $74, $F2, $04, $75, $71, $94, $68, $74, $C2, $04, $72, $72, $A0, $68, $BD
-	db $11, $18, $11, $98, $79, $DA, $75, $68, $BD, $11, $18, $11, $99, $79, $DA, $75
-	db $68, $74, $E1, $08, $55, $7B, $00, $63, $08, $01, $02, $71, $94, $68, $BD, $11
-	db $1F, $12, $79, $CA, $74, $68, $BF, $11, $1F, $14, $94, $68, $74, $B1, $00, $94
-	db $68, $74, $91, $04, $52, $73, $94, $7B, $00, $68, $BF, $11, $1F, $1F, $95, $79
-	db $6A, $75, $68, $BF, $11, $1F, $12, $95, $79, $3A, $75, $68, $BB, $11, $1F, $11
-	db $7C, $79, $4A, $75, $68, $74, $A0, $00, $72, $7B, $02, $52, $63, $12, $02, $04
-	db $68, $74, $C1, $04, $63, $73, $68, $68, $FD, $70, $0A, $71, $06, $71, $00, $71
-	db $0E, $71, $12, $71, $16, $71, $1A, $71, $1D, $71, $2D, $71, $31, $71, $34, $71
-	db $43, $71, $47, $71, $47, $71, $47, $71, $5E, $71, $75, $71, $8C, $71, $97, $71
-	db $97, $71, $9C, $71, $A2, $71, $A2, $71, $A6, $71, $A6, $71, $A6, $71, $A6, $71
-	db $0C, $00, $FF, $00, $00, $01, $01, $02, $FF, $00, $01, $02, $FF, $18, $0C, $00
-	db $FF, $00, $04, $07, $6A, $00, $03, $07, $6A, $00, $04, $07, $6A, $F4, $00, $FF
+	db $6C, $06          ; $6C StartNoiseSequence, step length 6
+	dw MusicNoiseSeq_FuddForest_Ch2_3
+	db $90, $7E
+	dw MusicPhrase_FuddForest_Ch2_2_Call0
+	db $D7, $18, $8B, $CB, $24, $90, $13, $D7
+	db $13, $8B, $CB, $24, $90, $13, $7E
+	dw MusicPhrase_FuddForest_Ch2_2_Call0
+	db $D7, $18, $8B, $CB, $24, $90, $D7
+	db $13, $CB, $10, $8B, $24, $90, $0C, $6A
+
+MusicNoiseSeq_FuddForest_Ch2_0:
+	db $5D, $44, $01, $00, $06, $00, $09, $00, $01, $00, $36, $01, $00, $06, $00, $09
+	db $06, $46, $04, $00, $FF
+MusicNoiseSeq_FuddForest_Ch2_3:
+	db $5D, $44, $01, $00, $05, $06, $09, $00, $01, $06, $36, $01, $00, $04, $06, $09
+	db $06, $46, $04, $00, $FF
+
+; 4 unused filler bytes between the noise sequences and MusicMacroTable1.
+; The dead Func_8092/Func_8095 trampolines (at the top of the bank) `jp $6f8f`
+; into here, but neither trampoline is referenced from anywhere.
+	db $69, $00, $6A, $69
+
+; Each macro sub-phrase is a stream of phrase commands ending in $68 (StopChannel/end-of-macro).
+MusicMacroTable1:
+	dw $6a02	; unused (opcode $84 isn't a macro call)
+	dw MusicMacro1_85	; opcode $85
+	dw MusicMacro1_86	; opcode $86
+	dw MusicMacro1_87	; opcode $87
+	dw MusicMacro1_88	; opcode $88
+	dw MusicMacro1_89	; opcode $89
+	dw MusicMacro1_8a	; opcode $8a
+	dw MusicMacro1_8b	; opcode $8b
+	dw MusicMacro1_8c	; opcode $8c
+	dw MusicMacro1_8d	; opcode $8d
+	dw MusicMacro1_8e	; opcode $8e
+	dw MusicMacro1_8f	; opcode $8f
+	dw MusicMacro1_90	; opcode $90
+	dw MusicMacro1_91	; opcode $91
+	dw MusicMacro1_91	; opcode $92
+	dw MusicMacro1_91	; opcode $93
+
+	; 4 unused trailing bytes pointing into the orphan sub-phrase
+	; below. Nothing actually reads them.
+	dw $7019, $7019
+
+MusicMacro1_85:
+	db $BF, $11, $2F, $12, $60, $FE, $A6, $79, $6A, $75, $68
+MusicMacro1_86:
+	db $BF, $11, $1A, $12, $98, $79, $CA, $74, $68
+MusicMacro1_87:
+	db $BA, $11, $1F, $11, $94, $79, $DA, $74, $68
+MusicMacro1_88:
+	db $BF, $11, $1F, $12, $94, $79, $3A, $75, $68
+MusicMacro1_89:
+	db $74, $F2, $00, $94, $72, $68
+MusicMacro1_8a:
+	db $74, $F1, $04, $51, $60, $FE, $71, $68
+MusicMacro1_8b:
+	db $74, $F1, $00, $98, $76, $04, $68
+MusicMacro1_8c:
+	db $74, $F1, $00, $99, $76, $04, $68
+MusicMacro1_8d:
+	db $74, $D1, $00, $73, $68
+MusicMacro1_8e:
+	db $74, $D2, $00, $71, $68
+MusicMacro1_8f:
+	db $74, $F2, $0A, $50, $94, $71, $68
+MusicMacro1_90:
+	db $74, $F1, $0C, $50, $94, $71, $68
+; Also used as the sub-phrase for opcodes $92 and $93 (the table entries point here).
+MusicMacro1_91:
+	db $BA, $00, $00, $00, $79, $CA, $74, $68
+
+; Orphan macro sub-phrase at $7019 (7 source bytes). Only "referenced" by the
+; dead trailing dws of MusicMacroTable1 above; the engine never reaches it.
+; Its tail ($75 $68) coincides with the first 2 bytes of MusicMacroTable2 below.
+	db $BF, $11, $1F, $12, $94, $79, $3A
+
+MusicMacroTable2:
+	dw $6875	; unused (opcode $84; bytes also tail the orphan sub-phrase above)
+	dw MusicMacro2_85	; opcode $85
+	dw MusicMacro2_86	; opcode $86
+	dw MusicMacro2_87	; opcode $87
+	dw MusicMacro2_88	; opcode $88
+	dw MusicMacro2_89	; opcode $89
+	dw MusicMacro2_8a	; opcode $8a
+	dw MusicMacro2_8b	; opcode $8b
+	dw MusicMacro2_8c	; opcode $8c
+	dw MusicMacro2_8d	; opcode $8d
+	dw MusicMacro2_8e	; opcode $8e
+	dw MusicMacro2_8f	; opcode $8f
+	dw MusicMacro2_90	; opcode $90
+	dw MusicMacro2_91	; opcode $91
+	dw MusicMacro2_92	; opcode $92
+	dw MusicMacro2_93	; opcode $93
+MusicMacro2_85:
+	db $74, $F3, $00, $72, $68
+MusicMacro2_86:
+	db $BF, $11, $1F, $11, $A6, $79, $6A, $75, $68
+MusicMacro2_87:
+	db $74, $F2, $04, $75, $71, $94, $68
+MusicMacro2_88:
+	db $74, $C2, $04, $72, $72, $A0, $68
+MusicMacro2_89:
+	db $BD, $11, $18, $11, $98, $79, $DA, $75, $68
+MusicMacro2_8a:
+	db $BD, $11, $18, $11, $99, $79, $DA, $75, $68
+MusicMacro2_8b:
+	db $74, $E1, $08, $55, $7B, $00, $63, $08, $01, $02, $71, $94, $68
+MusicMacro2_8c:
+	db $BD, $11, $1F, $12, $79, $CA, $74, $68, $BF, $11, $1F, $14, $94, $68
+MusicMacro2_8d:
+	db $74, $B1, $00, $94, $68
+MusicMacro2_8e:
+	db $74, $91, $04, $52, $73, $94, $7B, $00, $68
+MusicMacro2_8f:
+	db $BF, $11, $1F, $1F, $95, $79, $6A, $75, $68
+MusicMacro2_90:
+	db $BF, $11, $1F, $12, $95, $79, $3A, $75, $68
+MusicMacro2_91:
+	db $BB, $11, $1F, $11, $7C, $79, $4A, $75, $68
+MusicMacro2_92:
+	db $74, $A0, $00, $72, $7B, $02, $52, $63, $12, $02, $04, $68
+MusicMacro2_93:
+	db $74, $C1, $04, $63, $73, $68, $68
+
+; Each arpeggio is a list of signed transpose bytes added per-frame
+; to the played note, terminated by $6a (loop back to start) or $ff (hold last offset).
+MusicArpeggioTable:
+	dw MusicArpeggio_94	; opcode $94
+	dw MusicArpeggio_95	; opcode $95
+	dw MusicArpeggio_96	; opcode $96
+	dw MusicArpeggio_97	; opcode $97
+	dw MusicArpeggio_98	; opcode $98
+	dw MusicArpeggio_99	; opcode $99
+	dw MusicArpeggio_9a	; opcode $9a
+	dw MusicArpeggio_9b	; opcode $9b
+	dw MusicArpeggio_9c	; opcode $9c
+	dw MusicArpeggio_9d	; opcode $9d
+	dw MusicArpeggio_9e	; opcode $9e
+	dw MusicArpeggio_9f	; opcode $9f
+	dw MusicArpeggio_a0	; opcode $a0
+	dw MusicArpeggio_a1	; opcode $a1
+	dw MusicArpeggio_a1	; opcode $a2
+	dw MusicArpeggio_a1	; opcode $a3
+	dw MusicArpeggio_a4	; opcode $a4
+	dw MusicArpeggio_a5	; opcode $a5
+	dw MusicArpeggio_a6	; opcode $a6
+	dw MusicArpeggio_a7	; opcode $a7
+	dw MusicArpeggio_a7	; opcode $a8
+	dw MusicArpeggio_a9	; opcode $a9
+	dw MusicArpeggio_aa	; opcode $aa
+	dw MusicArpeggio_aa	; opcode $ab
+	dw $71a6	; opcode $ac: unused (points into SoundEffects below)
+	dw $71a6	; opcode $ad: unused (points into SoundEffects below)
+	dw $71a6	; opcode $ae: unused (points into SoundEffects below)
+	dw $71a6	; opcode $af: unused (points into SoundEffects below)
+
+MusicArpeggio_94:
+	db $0C, $00, $FF
+MusicArpeggio_97:
+	db $00, $00, $01, $01, $02, $FF
+MusicArpeggio_96:
+	db $00, $01, $02, $FF
+MusicArpeggio_95:
+	db $18, $0C, $00, $FF
+MusicArpeggio_98:
+	db $00, $04, $07, $6A
+MusicArpeggio_99:
+	db $00, $03, $07, $6A
+MusicArpeggio_9a:
+	db $00, $04, $07, $6A
+MusicArpeggio_9b:
+	db $F4, $00, $FF
+MusicArpeggio_9c:
 	db $0C, $00, $00, $00, $00, $00, $00, $18, $0C, $0C, $0C, $0C, $0C, $0C, $0C, $FF
-	db $0C, $0C, $00, $FF, $00, $01, $FF, $0C, $00, $00, $00, $00, $00, $00, $0C, $0C
-	db $0C, $0C, $0C, $0C, $0C, $FF, $00, $0C, $00, $FF, $00, $00, $00, $03, $03, $08
-	db $08, $0C, $0C, $0C, $0F, $0F, $13, $13, $0F, $0F, $0C, $0C, $07, $07, $03, $03
-	db $6A, $0C, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $18, $0C, $0C, $0C
-	db $0C, $0C, $0C, $0C, $0C, $0C, $0C, $6A, $00, $00, $00, $03, $03, $08, $08, $0C
-	db $0C, $0C, $0F, $0F, $14, $14, $0F, $0F, $08, $08, $03, $03, $00, $00, $6A, $06
-	db $02, $00, $FE, $FB, $F8, $F6, $F2, $F0, $EC, $FF, $0C, $0C, $00, $00, $6A, $02
-	db $02, $01, $01, $00, $FF, $18, $0C
+MusicArpeggio_9d:
+	db $0C, $0C, $00, $FF
+MusicArpeggio_9e:
+	db $00, $01, $FF
+MusicArpeggio_9f:
+	db $0C, $00, $00, $00, $00, $00, $00, $0C, $0C, $0C, $0C, $0C, $0C, $0C, $FF
+MusicArpeggio_a0:
+	db $00, $0C, $00, $FF
+; Also used by opcodes $a2, $a3.
+MusicArpeggio_a1:
+	db $00, $00, $00, $03, $03, $08, $08, $0C, $0C, $0C, $0F, $0F, $13, $13, $0F, $0F
+	db $0C, $0C, $07, $07, $03, $03, $6A
+MusicArpeggio_a4:
+	db $0C, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $18, $0C, $0C, $0C, $0C
+	db $0C, $0C, $0C, $0C, $0C, $0C, $6A
+MusicArpeggio_a5:
+	db $00, $00, $00, $03, $03, $08, $08, $0C, $0C, $0C, $0F, $0F, $14, $14, $0F, $0F
+	db $08, $08, $03, $03, $00, $00, $6A
+MusicArpeggio_a6:
+	db $06, $02, $00, $FE, $FB, $F8, $F6, $F2, $F0, $EC, $FF
+; Also used by opcode $a8.
+MusicArpeggio_a7:
+	db $0C, $0C, $00, $00, $6A
+MusicArpeggio_a9:
+	db $02, $02, $01, $01, $00, $FF
+; Also used by opcode $ab. The trailing $00, $ff bytes are shared with the first entry
+; of the SoundEffects table below.
+MusicArpeggio_aa:
+	db $18, $0C
 
 SoundEffects:
 	dw $ff00 ; id 0 (invalid/unused)
