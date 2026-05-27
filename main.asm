@@ -585,7 +585,7 @@ RunLevelSummaryScreen:
 	bit 4, a
 	jr nz, .asm_3f4
 	ld bc, $8044
-	ld hl, $7b43
+	ld hl, LevelSummaryScreenExtraBonusSprite
 	call LoadOAMSprites
 .asm_3f4
 	ld hl, $de80
@@ -27903,7 +27903,20 @@ ReadJoyPad:
 	ld [wHeldKeys], a
 	ret
 
-INCBIN "baserom.gbc", $17b39, $17b59 - $17b39
+LevelSummaryScreenCarrotIconSprite:
+	dw Load2SubSprites
+	sub_sprite $0e, $07, 0, 0
+	sub_sprite $10, $07, 8, 0
+
+; Blinking "EXTRA" message shown on the level summary screen when the player
+; has collected all 5 EXTRA letters.
+LevelSummaryScreenExtraBonusSprite:
+	dw Load5SubSprites
+	sub_sprite $26, $01,  0, 0
+	sub_sprite $28, $01,  8, 0
+	sub_sprite $2a, $01, 16, 0
+	sub_sprite $2c, $01, 24, 0
+	sub_sprite $2e, $01, 32, 0
 
 Func_17b59:
 	ld hl, $c52a
@@ -28156,7 +28169,7 @@ Func_17ca6:
 	ld a, l
 	ldh [hActiveSprites], a
 	ld bc, $5440
-	ld hl, $7b39
+	ld hl, LevelSummaryScreenCarrotIconSprite
 	call LoadOAMSprites
 	ret
 
