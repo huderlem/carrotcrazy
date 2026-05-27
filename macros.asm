@@ -1053,9 +1053,15 @@ MACRO mus_end_phrase
 	db $6A
 	ENDM
 
-; $6B: set the default note length (in frames).
+; Set the default note length (in frames).
+;   length 1-47  -> 1-byte form $C0-$EE (opcode $BF+length).
+;   length 48+   -> 2-byte form $6B, length.
 MACRO mus_note_length ; length
-	db $6B, \1
+	IF (\1) >= 1 && (\1) <= 47
+	db $BF + (\1)
+	ELSE
+	db $6B, (\1)
+	ENDC
 	ENDM
 
 ; $6C: start the percussion (noise) track, with the given step length and
@@ -1237,11 +1243,6 @@ MACRO mus_arp ; opcode ($94-$AF)
 ; three parameter bytes for attack/decay/timer-pair).
 MACRO mus_vol_env ; peak (0-15), attack, decay, timers
 	db $B0 + (\1), \2, \3, \4
-	ENDM
-
-; $C0-$EF: set the default note length to (opcode - $BF), range 1-48.
-MACRO mus_default_length ; length (1-48)
-	db $BF + (\1)
 	ENDM
 
 ; $F0-$FF: begin a loop block that runs (opcode - $EE) total passes (2-17).

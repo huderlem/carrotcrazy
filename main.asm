@@ -22774,335 +22774,335 @@ MusicPhrase_Unused1_Ch1_0:
 	mus_duty_12
 	mus_octave_shift -14
 	mus_note_fx $00
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6, Dn6, Cn6, As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5, Gs5, Gn5
 	mus_end_phrase
 MusicPhrase_Unused1_Ch1_1:
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn5, Cn6
-	mus_default_length 35
+	mus_note_length 35
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6, As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn5, Cn6, As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
 	mus_end_phrase
 MusicPhrase_Unused1_Ch3_0:
 	mus_octave_shift 0
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn3, Gs3, As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs3
 	mus_end_phrase
 MusicPhrase_Unused1_Ch3_1:
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
 	mus_end_phrase
 MusicPhrase_Unused1_Ch2_0:
 	mus_vibrato $00, $03, $04
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5, Fn4, Gn4, Gs4
 	mus_end_phrase
 MusicPhrase_Unused1_Ch2_1:
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_end_phrase
 LoadSong_Studio:
@@ -23172,462 +23172,462 @@ MusicChain_Studio_Ch1:
 
 MusicPhrase_Studio_Ch3_0:
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds4
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3, Fn3, Fs3
 	mus_end_phrase
 MusicPhrase_Studio_Ch3_0_Call0:
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Dn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn4
 	mus_macro $8a
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
 	mus_end_phrase
 MusicPhrase_Studio_Ch3_1:
 	mus_call MusicPhrase_Studio_Ch3_0_Call0
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
 	mus_call MusicPhrase_Studio_Ch3_0_Call0
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs3
 	mus_macro $8a
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn4
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
 	mus_macro $90
 	mus_note Fn3, Gn3, Fn3
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_0:
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_1:
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_2:
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_3:
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
 	mus_note As5
@@ -23636,82 +23636,82 @@ MusicPhrase_Studio_Ch2_3:
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_5:
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
 	mus_note En6
@@ -23720,304 +23720,304 @@ MusicPhrase_Studio_Ch2_5:
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_4:
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
 	mus_macro $93
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
 	mus_macro $93
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $93
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
 	mus_end_phrase
 MusicPhrase_Studio_Ch2_6:
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
 	mus_macro $8e
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $93
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_macro $93
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_0:
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn5, Cn6
-	mus_default_length 35
+	mus_note_length 35
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6, As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds5, Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds5
 	mus_note_length $5b
 	mus_note Ds5
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_1:
-	mus_default_length 21
+	mus_note_length 21
 	mus_end_note_alt
 	mus_envelope $a0
 	mus_duty_50
 	mus_note_fx $02, $62
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
 	mus_note Cn6
 	mus_end_note
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_note
 	mus_note_length $31
 	mus_note Gn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
 	mus_note As5
 	mus_end_note
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_note
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_1_Call0:
-	mus_default_length 21
+	mus_note_length 21
 	mus_end_note_alt
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6, Dn6
 	mus_end_note
 	mus_note Cn6, Bn5
 	mus_end_note
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_2:
 	mus_call MusicPhrase_Studio_Ch1_1_Call0
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6, As5
 	mus_end_note
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_3:
 	mus_call MusicPhrase_Studio_Ch1_1_Call0
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, En6
 	mus_end_note
-	mus_default_length 35
+	mus_note_length 35
 	mus_note Fn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_note
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_4:
@@ -24025,139 +24025,139 @@ MusicPhrase_Studio_Ch1_4:
 	mus_vibrato $00, $03, $04
 	mus_duty_12
 	mus_note_fx $00
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6, Dn6, Cn6, As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5, Gs5, Gn5
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_5:
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn5, Cn6
-	mus_default_length 35
+	mus_note_length 35
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6, As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6, Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Dn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_6:
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn5, Gs5, An5, As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5, Cn6, Cs6
 	mus_end_phrase
 MusicPhrase_Studio_Ch1_7:
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn6, Gn6, Fn6, Ds6, Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds6
 	mus_note_length $5b
 	mus_note Ds6
@@ -24211,7 +24211,7 @@ MusicPhrase_Title_Ch3_0:
 	mus_detune -2
 	mus_noise_seq $06, MusicNoiseSeq_Title_0
 	mus_macro $90
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn3
 	mus_macro $89
 	mus_note Dn5
@@ -24226,7 +24226,7 @@ MusicPhrase_Title_Ch3_0:
 	mus_macro $90
 	mus_note An3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn5
 	mus_macro $90
 	mus_note An3
@@ -24234,7 +24234,7 @@ MusicPhrase_Title_Ch3_0:
 	mus_call_code LoadNoiseInstrument7
 	mus_note_length $60
 	mus_note Dn3
-	mus_default_length 12
+	mus_note_length 12
 	mus_noise_seq $06, MusicNoiseSeq_Title_0
 	mus_loop_start 4
 	mus_macro $90
@@ -24248,7 +24248,7 @@ MusicPhrase_Title_Ch3_0:
 	mus_loop_back
 	mus_end_phrase
 MusicPhrase_Title_Ch3_0_Call0:
-	mus_default_length 12
+	mus_note_length 12
 	mus_macro $90
 	mus_note An3
 	mus_macro $89
@@ -24264,7 +24264,7 @@ MusicPhrase_Title_Ch3_0_Call0:
 	mus_macro $90
 	mus_note En3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5
 	mus_macro $90
 	mus_note En3
@@ -24272,7 +24272,7 @@ MusicPhrase_Title_Ch3_0_Call0:
 	mus_call_code LoadNoiseInstrument7
 	mus_note_length $60
 	mus_note An3
-	mus_default_length 12
+	mus_note_length 12
 	mus_noise_seq $06, MusicNoiseSeq_Title_0
 	mus_loop_start 2
 	mus_macro $90
@@ -24320,7 +24320,7 @@ MusicPhrase_Title_Ch3_2:
 	mus_end_phrase
 MusicPhrase_Title_Ch3_3:
 	mus_macro $90
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn3
 	mus_macro $89
 	mus_note Gn5
@@ -24335,7 +24335,7 @@ MusicPhrase_Title_Ch3_3:
 	mus_macro $90
 	mus_note Dn3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gn5
 	mus_macro $90
 	mus_note Dn3
@@ -24343,7 +24343,7 @@ MusicPhrase_Title_Ch3_3:
 	mus_call_code LoadNoiseInstrument7
 	mus_note_length $60
 	mus_note Gn3
-	mus_default_length 12
+	mus_note_length 12
 	mus_noise_seq $06, MusicNoiseSeq_Title_0
 	mus_loop_start 2
 	mus_macro $90
@@ -24368,7 +24368,7 @@ MusicPhrase_Title_Ch3_3:
 	mus_end_phrase
 MusicPhrase_Title_Ch3_4:
 	mus_macro $90
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An3
 	mus_macro $89
 	mus_note An5
@@ -24383,7 +24383,7 @@ MusicPhrase_Title_Ch3_4:
 	mus_macro $90
 	mus_note En3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5
 	mus_macro $90
 	mus_note En3
@@ -24391,7 +24391,7 @@ MusicPhrase_Title_Ch3_4:
 	mus_call_code LoadNoiseInstrument7
 	mus_note_length $60
 	mus_note An3
-	mus_default_length 12
+	mus_note_length 12
 	mus_noise_seq $06, MusicNoiseSeq_Title_0
 	mus_loop_start 2
 	mus_macro $90
@@ -24422,36 +24422,36 @@ MusicPhrase_Title_Ch3_4:
 	mus_end_phrase
 MusicPhrase_Title_Ch2_0:
 	mus_macro $92
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fs5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn7, An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fs6
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An4
-	mus_default_length 12
+	mus_note_length 12
 	mus_end_note
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An4, Dn5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gs5, An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn5, An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs6, Bn5, As5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4, Gs4, An4
 	mus_end_note
 	mus_note An4, Gs4, An4, Cs5, An4, Gs4, An4
@@ -24459,256 +24459,256 @@ MusicPhrase_Title_Ch2_0:
 MusicPhrase_Title_Ch2_1:
 	mus_call MusicPhrase_Title_Ch2_1_Call0
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Bn5, An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5, Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gn5, Fs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En5, An4
 	mus_end_phrase
 MusicPhrase_Title_Ch2_1_Call0:
 	mus_macro $92
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gn5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs7, An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En6
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An4
-	mus_default_length 12
+	mus_note_length 12
 	mus_end_note
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An4, En5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gs5, An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn5, An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn6, An5, Fs5, Dn5
 	mus_end_note
 	mus_note Fs5, Gn5, Gs5
 	mus_end_phrase
 MusicPhrase_Title_Ch2_2:
 	mus_call MusicPhrase_Title_Ch2_1_Call0
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5, En5, Ds5, En5, Cs6, An5, Gs5, An5, En6, Cs6, Cn6, Cs6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6, Dn5
 	mus_end_phrase
 MusicPhrase_Title_Ch2_3:
 	mus_macro $92
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Bn5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn7, Bn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn6
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_end_note
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn5, Gn5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn6, Cs6, Dn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En6, Dn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fs6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn6
-	mus_default_length 42
+	mus_note_length 42
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gs5, An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn5, An5, Gn5, Fs5
 	mus_end_phrase
 MusicPhrase_Title_Ch2_4:
 	mus_macro $92
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs7, Bn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An6
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An4
-	mus_default_length 12
+	mus_note_length 12
 	mus_end_note
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An4, En5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4, Gs4, An4, Bn4, An4, Fs5, En5
 	mus_note_length $36
 	mus_note Dn5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn5, Cs5, Dn5, En5, Fs5, Gn5, Gs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Bn5, An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5, Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gn5, Fs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En5, An4
 	mus_end_phrase
 MusicPhrase_Title_Ch1_0:
 	mus_macro $8b
 	mus_arp_off
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fs6
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An6, Fs6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn6
 	mus_macro $8b
 	mus_arp_off
-	mus_default_length 18
+	mus_note_length 18
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn6, An6, Gs6, An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn6, An6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6, Gn6, En6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gs5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gs5, An5, Cs6, An5, Gs5, An5
 	mus_end_phrase
 MusicPhrase_Title_Ch1_0_Call0:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note En7, Cs7
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An6
 	mus_macro $8b
 	mus_arp_off
-	mus_default_length 18
+	mus_note_length 18
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En6, An6, Gs6, An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn6, An6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6, Fs6, Dn6
 	mus_note_length $3c
 	mus_note An5
 	mus_end_phrase
 MusicPhrase_Title_Ch1_1:
 	mus_call MusicPhrase_Title_Ch1_0_Call0
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs6, Dn6, Ds6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En6, An5
 	mus_end_phrase
 MusicPhrase_Title_Ch1_2:
 	mus_call MusicPhrase_Title_Ch1_0_Call0
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En6, Cs6, An6, En6, Cs7, An6, An7, Dn6
 	mus_end_phrase
 MusicPhrase_Title_Ch1_3:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn7
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn6
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Bn6, Gn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn6
 	mus_macro $8b
 	mus_arp_off
-	mus_default_length 18
+	mus_note_length 18
 	mus_note Dn6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Dn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn6, Dn7, Cs7, Dn7
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En7, Dn7
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn7
 	mus_note_length $30
 	mus_note An6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6, Gs6, An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn6, An6, Gn6, Fs6
 	mus_end_phrase
 MusicPhrase_Title_Ch1_4:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn6
 	mus_macro $8e
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An6, Gn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En6
 	mus_macro $8b
 	mus_arp_off
-	mus_default_length 18
+	mus_note_length 18
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En6, An5, Gs5, An5, Bn5, An5, Fs6, En6
 	mus_note_length $60
 	mus_note Dn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An5, Bn5, Cn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs6, An5
 	mus_end_phrase
 MusicNoiseSeq_Title_0:
@@ -24733,7 +24733,7 @@ MusicChain_Copyright_Ch1:
 
 MusicPhrase_Copyright_Ch3_0:
 	mus_octave_shift 0
-	mus_default_length 12
+	mus_note_length 12
 	mus_loop_start 2
 	mus_macro $90
 	mus_note Cs4
@@ -24789,18 +24789,18 @@ MusicPhrase_Copyright_Ch3_0:
 	mus_macro $90
 	mus_note_length $60
 	mus_note Gs3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs3
 	mus_note_length $3c
 	mus_note Cs4
 	mus_stop_channel
 MusicPhrase_Copyright_Ch2_0:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note_off
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs5, Cn5, Cs5
 	mus_end_note
 	mus_note Gs4
@@ -24809,20 +24809,20 @@ MusicPhrase_Copyright_Ch2_0:
 	mus_end_note
 	mus_note Cs5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fn5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
-	mus_default_length 6
+	mus_note_length 6
 	mus_note As5, An5, As5
 	mus_end_note
 	mus_note Ds5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Ds6, Cs6, Cn6, As5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cn6
 	mus_end_note
 	mus_note Ds5
@@ -24835,23 +24835,23 @@ MusicPhrase_Copyright_Ch2_0:
 	mus_end_note
 	mus_note Ds5
 	mus_end_note
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gs5
 	mus_end_note
 	mus_note As5
 	mus_end_note
 	mus_note Fn5
 	mus_end_note
-	mus_default_length 18
+	mus_note_length 18
 	mus_note Gs5
-	mus_default_length 42
+	mus_note_length 42
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_end_note_alt
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fn5, Fs5, Gs5
 	mus_end_note
 	mus_note Fn5
@@ -24860,9 +24860,9 @@ MusicPhrase_Copyright_Ch2_0:
 	mus_end_note
 	mus_note Gs4
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fn5
 	mus_end_note
 	mus_note Fs5
@@ -24871,63 +24871,63 @@ MusicPhrase_Copyright_Ch2_0:
 	mus_end_note
 	mus_note As5
 	mus_end_note
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note As5
 	mus_end_note
 	mus_note Gs4
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs5, Gn5, Gs5, An5, As5, Cn6, Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs4, Fn4, Gs4, Cs5, Fn5, Gs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs6
 	mus_note_length $30
 	mus_end_note
 	mus_stop_channel
 MusicPhrase_Copyright_Ch1_0:
 	mus_macro $8b
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gs6, Gs6, Gn6, Gs6, As6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6
 	mus_note_length $3c
 	mus_note As6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn7, Cn7, As6, An6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs6, As6, Fn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gs6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs5, As5, Cn6
 	mus_macro $8b
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6, Cs6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En6, Fn6, Fs6, Gs6, As6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs7
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs7, Cn7
-	mus_default_length 24
+	mus_note_length 24
 	mus_note As6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs6, Gn6, Gs6, An6, As6, Cn7, Gs6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs7
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn7
 	mus_note_length $3c
 	mus_note Cs7
@@ -24952,7 +24952,7 @@ MusicChain_GameOver_Ch1:
 
 MusicPhrase_GameOver_Ch3_0:
 	mus_octave_shift 0
-	mus_default_length 12
+	mus_note_length 12
 	mus_loop_start 2
 	mus_macro $90
 	mus_note Cs4
@@ -24976,18 +24976,18 @@ MusicPhrase_GameOver_Ch3_0:
 	mus_macro $90
 	mus_note_length $60
 	mus_note Gs3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs3
 	mus_note_length $3c
 	mus_note Cs4
 	mus_stop_channel
 MusicPhrase_GameOver_Ch2_0:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note_off
 	mus_macro $92
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs5, Cn5, Cs5
 	mus_end_note
 	mus_note Gs4
@@ -24996,44 +24996,44 @@ MusicPhrase_GameOver_Ch2_0:
 	mus_end_note
 	mus_note Cs5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fn5
-	mus_default_length 18
+	mus_note_length 18
 	mus_end_note
-	mus_default_length 6
+	mus_note_length 6
 	mus_note As5, An5, As5
 	mus_end_note
 	mus_note Ds5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Ds6, Cs6, Cn6, As5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gs4
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs5, Gn5, Gs5, An5, As5, Cn6, Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs4, Fn4, Gs4, Cs5, Fn5, Gs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs6
 	mus_note_length $30
 	mus_end_note
 	mus_stop_channel
 MusicPhrase_GameOver_Ch1_0:
 	mus_macro $8b
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gs6, Gs6, Gn6, Gs6, As6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An6
 	mus_note_length $48
 	mus_note As6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs6, Gn6, Gs6, An6, As6, Cn7, Gs6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs7
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn7
 	mus_note_length $3c
 	mus_note Cs7
@@ -25072,18 +25072,18 @@ MusicPhrase_Unused2_Ch3_0:
 	mus_octave_shift 0
 	mus_detune 2
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn3
 	mus_macro $89
 	mus_note Bn4
 	mus_macro $90
 	mus_note Fs3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
 	mus_macro $90
 	mus_note Fs3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn3
 	mus_macro $89
 	mus_note Bn4, Bn4
@@ -25094,16 +25094,16 @@ MusicPhrase_Unused2_Ch3_0:
 	mus_macro $90
 	mus_note Fs3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
 	mus_macro $90
 	mus_note Fs3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4, Bn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn4
 	mus_macro $90
 	mus_note Bn3, Fs3
@@ -25122,20 +25122,20 @@ MusicPhrase_Unused2_Ch3_0:
 	mus_macro $89
 	mus_note En5
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fs3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs3, Gs3
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Fs3
 	mus_macro $89
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Unused2_Ch3_1:
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn3
 	mus_macro $89
 	mus_note Bn4
@@ -25188,7 +25188,7 @@ MusicPhrase_Unused2_Ch3_1:
 	mus_end_phrase
 MusicPhrase_Unused2_Ch3_2:
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn3
 	mus_macro $89
 	mus_note Bn4
@@ -25235,96 +25235,96 @@ MusicPhrase_Unused2_Ch3_2:
 	mus_end_phrase
 MusicPhrase_Unused2_Ch2_0:
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Ds6, Bn5
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5, Ds5, Bn4
 	mus_end_note
 	mus_macro $8e
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Ds6, Bn5
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Fs5, Ds5
-	mus_default_length 21
+	mus_note_length 21
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs4
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4, Fs4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs4, Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4, Gs4
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
 	mus_end_note
 	mus_note Bn5
 	mus_end_note
 	mus_note As5
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5, En5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note
 	mus_end_phrase
 MusicPhrase_Unused2_Ch2_1:
 	mus_note_length $46
 	mus_end_note
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, En6, Fs6
 	mus_note_length $5b
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs6, Fn6, En6
 	mus_note_length $cb
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs6, Gs6, As6, Bn6, As6, Gs6
 	mus_end_phrase
 MusicPhrase_Unused2_Ch2_2:
 	mus_macro $92
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Fs6
-	mus_default_length 42
+	mus_note_length 42
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, En6, Fs6
 	mus_note_length $5b
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs6, Fn6, En6
 	mus_note_length $77
 	mus_end_note
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds4
 	mus_end_note
 	mus_note Fs4, Fs5, Gn4, Gn5, Gs4, Gs5, As4, As5, Bn4
@@ -25334,126 +25334,126 @@ MusicPhrase_Unused2_Ch2_2:
 MusicPhrase_Unused2_Ch1_0:
 	mus_noise_seq $07, MusicNoiseSeq_Unused2_0
 	mus_macro $8e
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Bn4, Fs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn4
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5, Bn4, Fs4
-	mus_default_length 21
+	mus_note_length 21
 	mus_end_note
 	mus_macro $8e
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Bn4, Fs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn4
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5, Ds5, Bn4
-	mus_default_length 21
+	mus_note_length 21
 	mus_end_note
 	mus_note_fx $07, $a1
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5, Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5, Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5, Gs5
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Ds6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cs6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs6, Ds6
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Cs6, Fs6
 	mus_end_phrase
 MusicPhrase_Unused2_Ch1_1:
 	mus_noise_seq $07, MusicNoiseSeq_Unused2_1
 	mus_macro $8b
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, Gs5, Fs5, Ds5
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Cs6, Ds6
 	mus_end_note
 	mus_macro $8b
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, Gs5, An5, As5
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, Dn6, Cs6
 	mus_end_note
 	mus_macro $8b
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, As5, Fs5, Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Gs5, Ds5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5, Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs5, En5, Ds5
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Unused2_Ch1_2:
 	mus_macro $8b
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, Gs5, Fs5, Ds5
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Cs6, Ds6
 	mus_end_note
 	mus_macro $8b
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, Gs5, An5, As5
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, Dn6, Cs6
 	mus_end_note
 	mus_macro $8b
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, As5, Fs5, Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Gs5, Ds5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5, Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5, Gs5, As5
 	mus_noise_seq_off
 	mus_call_code LoadNoiseInstrument7
@@ -25540,7 +25540,7 @@ MusicChain_SpaceStation_Ch2:
 
 MusicPhrase_SpaceStation_Ch1_0:
 	mus_detune 1
-	mus_default_length 14
+	mus_note_length 14
 	mus_envelope $f1
 	mus_arp $94
 	mus_duty_75
@@ -25555,33 +25555,33 @@ MusicPhrase_SpaceStation_Ch1_2:
 	mus_envelope $d1, $07, $30
 	mus_duty_seq $03
 	mus_arp $98
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Ds5, Ds5, Ds5, Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs5, Cs5, Cs5, Cs5, Cs5, Cs5, Cs5, Cs5
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Ds5, Ds5, Ds5, Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Fs5, Fs5, Fs5, Fs5, Fs5, Fs5, Fs5
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch1_3:
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Gs5, Gs6, Gs5, Gs6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5, Gs4, Gs4, Gs5, Gs4, Gs4, Gs5, Gs4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch1_4:
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Ds6, Ds5, Ds6, Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5, Ds6, Ds6, Ds5, Ds6, Ds5, Ds6, Ds5
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch1_5:
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, As4, As5, As4, As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4, As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, As4
 	mus_duty_seq $00
 	mus_envelope $d2
@@ -25590,18 +25590,18 @@ MusicPhrase_SpaceStation_Ch1_5:
 	mus_arp_off
 	mus_noise_seq $07, MusicNoiseSeq_SpaceStation_3
 	mus_note Cs6, Cs6, As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5, Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5, Cs5
 	mus_transpose_off
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch1_1:
-	mus_default_length 14
+	mus_note_length 14
 	mus_loop_start 3
 	mus_note_off
 	mus_note Ds3, As3, Ds3, Ds4, Ds3, As3, Ds3
@@ -25618,7 +25618,7 @@ MusicPhrase_SpaceStation_Ch3_0:
 	mus_octave_shift 0
 	mus_noise_seq $07, MusicNoiseSeq_SpaceStation_1
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $87
 	mus_note Ds6
@@ -25627,13 +25627,13 @@ MusicPhrase_SpaceStation_Ch3_0:
 	mus_macro $87
 	mus_note Ds5
 	mus_macro $85
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An4
 	mus_macro $87
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $87
 	mus_note As4
@@ -25646,20 +25646,20 @@ MusicPhrase_SpaceStation_Ch3_0:
 	mus_macro $87
 	mus_note As5
 	mus_macro $85
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An4
 	mus_macro $87
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As6
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $87
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
 	mus_macro $85
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $87
 	mus_note Ds7
@@ -25668,13 +25668,13 @@ MusicPhrase_SpaceStation_Ch3_0:
 	mus_macro $87
 	mus_note Ds6
 	mus_macro $85
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An4
 	mus_macro $87
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds7
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $87
 	mus_note As5
@@ -25687,19 +25687,19 @@ MusicPhrase_SpaceStation_Ch3_0:
 	mus_macro $87
 	mus_note As5
 	mus_macro $85
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An4
 	mus_macro $87
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As6
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An4, An4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch3_2:
-	mus_default_length 14
+	mus_note_length 14
 	mus_noise_seq $07, MusicNoiseSeq_SpaceStation_0
 	mus_loop_start 4
 	mus_macro $85
@@ -25716,11 +25716,11 @@ MusicPhrase_SpaceStation_Ch3_2:
 	mus_macro $85
 	mus_note An4
 	mus_macro $88
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
 	mus_macro $85
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_loop_start 4
 	mus_macro $85
 	mus_note An4
@@ -25735,7 +25735,7 @@ MusicPhrase_SpaceStation_Ch3_2:
 	mus_loop_back
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch3_3:
-	mus_default_length 14
+	mus_note_length 14
 	mus_loop_start 4
 	mus_macro $85
 	mus_note An4
@@ -25751,13 +25751,13 @@ MusicPhrase_SpaceStation_Ch3_3:
 	mus_macro $85
 	mus_note An4
 	mus_macro $88
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs2
 	mus_macro $85
 	mus_note An4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch3_4:
-	mus_default_length 14
+	mus_note_length 14
 	mus_loop_start 4
 	mus_macro $85
 	mus_note An4
@@ -25779,13 +25779,13 @@ MusicPhrase_SpaceStation_Ch3_4:
 	mus_macro $85
 	mus_note An4
 	mus_macro $88
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
 	mus_macro $85
 	mus_note An4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch3_5:
-	mus_default_length 14
+	mus_note_length 14
 	mus_loop_start 5
 	mus_macro $85
 	mus_note An4
@@ -25803,13 +25803,13 @@ MusicPhrase_SpaceStation_Ch3_5:
 	mus_macro $85
 	mus_note An4
 	mus_macro $88
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
 	mus_macro $85
 	mus_note An4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch3_1:
-	mus_default_length 14
+	mus_note_length 14
 	mus_loop_start 2
 	mus_macro $85
 	mus_note An4
@@ -25819,11 +25819,11 @@ MusicPhrase_SpaceStation_Ch3_1:
 	mus_macro $85
 	mus_note An4
 	mus_macro $86
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds4
 	mus_macro $87
 	mus_note Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_macro $85
 	mus_note An4
 	mus_macro $86
@@ -25837,19 +25837,19 @@ MusicPhrase_SpaceStation_Ch3_1:
 	mus_macro $85
 	mus_note An4
 	mus_macro $86
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
 	mus_macro $87
 	mus_note As6
-	mus_default_length 14
+	mus_note_length 14
 	mus_macro $85
 	mus_note An4
 	mus_macro $86
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
 	mus_macro $85
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $86
 	mus_note Ds6
@@ -25860,12 +25860,12 @@ MusicPhrase_SpaceStation_Ch3_1:
 	mus_macro $85
 	mus_note An4
 	mus_macro $86
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6
 	mus_macro $87
 	mus_note Ds7
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $86
 	mus_note Ds6
@@ -25877,9 +25877,9 @@ MusicPhrase_SpaceStation_Ch3_1:
 	mus_note As5
 	mus_noise_seq $07, MusicNoiseSeq_SpaceStation_2
 	mus_macro $85
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An4, An4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch2_0:
@@ -25891,74 +25891,74 @@ MusicPhrase_SpaceStation_Ch2_0:
 	mus_note Ds4, As4, Ds5, As4
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch2_2:
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_note_alt
 	mus_envelope $c2
 	mus_arp $94
 	mus_duty_50
 	mus_note Ds5, As5, Ds5, Gs5, Ds5, As5
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs5, Gs5, Cs5, Cs6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6, As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
-	mus_default_length 28
+	mus_note_length 28
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5, As5, Ds5, Gs5, Ds5, As5, Ds5, Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cs6, Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, Ds5, Cs6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cs6, Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5, Gs5
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch2_3:
 	mus_arp_off
 	mus_envelope $d0, $04, $23
 	mus_duty_seq $07
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds6, Ds4, Ds5, Gs5, Gs6, Gs4, Ds5, Ds6, Gs4, Gs5, Gs6, Gs5, Gs6, Gs7, Gs4, Gs7
 	mus_duty_50
 	mus_duty_seq $00
 	mus_arp $94
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5, Gs5, Gs6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5, Gs6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
 	mus_arp_off
 	mus_end_phrase
 MusicPhrase_SpaceStation_Ch2_4:
 	mus_duty_seq $07
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As6, As4, As5, Ds6, Ds7, Ds5, As5, As6, Ds5, Ds6, Ds7, Ds6, Ds7, Ds6, Ds5, Ds6
 	mus_duty_50
 	mus_duty_seq $00
 	mus_arp $94
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5, Ds6, Ds6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6, Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As4, As5
 	mus_arp_off
 	mus_end_phrase
@@ -25971,7 +25971,7 @@ MusicPhrase_SpaceStation_Ch2_5:
 MusicPhrase_SpaceStation_Ch2_1:
 	mus_note_length $70
 	mus_note Ds5, As5, Ds6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
 	mus_note_length $62
 	mus_note Fn6
@@ -26042,17 +26042,17 @@ MusicChain_TazZoo_Ch3:
 	dw MusicChain_TazZoo_Ch3 ; loop
 
 MusicPhrase_TazZoo_Ch1_0:
-	mus_default_length 24
+	mus_note_length 24
 	mus_detune 2
 	mus_note_fx $01, $00
 	mus_macro $89
 	mus_loop_start 8
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note Gn3
@@ -26060,91 +26060,91 @@ MusicPhrase_TazZoo_Ch1_0:
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch1_1:
 	mus_loop_start 3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note Gn3
 	mus_loop_back
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En3
 	mus_macro $8a
 	mus_note Fn4
 	mus_macro $89
 	mus_note Gn3
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En3
 	mus_loop_start 2
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note Gn3
 	mus_loop_back
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note Dn4
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note En4
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch1_2:
 	mus_loop_start 2
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note Gs3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note An3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note Dn4
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn3
 	mus_macro $8a
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn4
 	mus_macro $89
 	mus_note En4
@@ -26153,71 +26153,71 @@ MusicPhrase_TazZoo_Ch1_2:
 MusicPhrase_TazZoo_Ch1_2_Call0:
 	mus_note An5
 	mus_macro $8c
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
 	mus_macro $8e
 	mus_note An5
 	mus_macro $8c
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
 	mus_macro $8e
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn6
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn5
 	mus_macro $8e
 	mus_note Cn6
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
 	mus_macro $8e
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn6
 	mus_macro $8c
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
 	mus_macro $8e
 	mus_note Dn6
 	mus_macro $8c
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
 	mus_macro $8e
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn6
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch2_1:
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note_alt
 	mus_macro $8e
 	mus_call MusicPhrase_TazZoo_Ch1_2_Call0
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5
 	mus_macro $8c
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8e
 	mus_note Gn5
 	mus_macro $8c
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8e
 	mus_note Gn5
 	mus_end_note_alt
 	mus_call MusicPhrase_TazZoo_Ch1_2_Call0
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
 	mus_macro $8c
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8e
 	mus_note En5
 	mus_macro $8c
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8e
 	mus_note Gn5
@@ -26225,127 +26225,127 @@ MusicPhrase_TazZoo_Ch2_1:
 MusicPhrase_TazZoo_Ch2_0:
 	mus_note_fx $01, $00
 	mus_macro $8e
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_note_length $68
 	mus_note En4
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_note_length $68
 	mus_note En4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
 	mus_note_length $58
 	mus_note En4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En4
-	mus_default_length 32
+	mus_note_length 32
 	mus_note En4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En4, Gn4, An4
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch2_2:
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note_alt
 	mus_macro $8d
 	mus_note An5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8d
 	mus_note An5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8d
 	mus_note En5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8d
 	mus_note Dn5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8d
 	mus_note Gn5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
 	mus_loop_start 2
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
 	mus_macro $8d
 	mus_note En5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
 	mus_loop_back
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En6
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5
 	mus_macro $8d
 	mus_note En6
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
 	mus_macro $8d
 	mus_note Bn5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
 	mus_macro $8d
 	mus_note Bn5
@@ -26353,57 +26353,57 @@ MusicPhrase_TazZoo_Ch2_2:
 MusicPhrase_TazZoo_Ch2_2_Call0:
 	mus_note An4
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8d
 	mus_note An4
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_macro $8d
 	mus_note An4
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5
 	mus_macro $8d
 	mus_note Dn5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
 	mus_macro $8d
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
 	mus_macro $8b
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
 	mus_macro $8d
 	mus_note En5
 	mus_macro $8b
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
 	mus_macro $8d
 	mus_note En5
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch2_3:
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note_alt
 	mus_macro $8d
 	mus_call MusicPhrase_TazZoo_Ch2_2_Call0
@@ -26416,36 +26416,36 @@ MusicPhrase_TazZoo_Ch3_1:
 	mus_transpose -1
 	mus_arp_off
 	mus_loop_start 3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5, Cn5
 	mus_loop_back
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5, Gn5
 	mus_loop_start 3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5, Cn5
 	mus_loop_back
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gs5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gs5, Fn5, Fn5, Dn5, Dn5
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch3_0:
@@ -26457,51 +26457,51 @@ MusicPhrase_TazZoo_Ch3_0:
 	mus_load_wave WaveSample2
 	mus_note_length $30
 	mus_note An4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
 	mus_note_length $38
 	mus_note En5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An4
 	mus_note_length $38
 	mus_note Cn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 40
+	mus_note_length 40
 	mus_note En5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An5
-	mus_default_length 32
+	mus_note_length 32
 	mus_note En5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5, An5
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch3_2:
@@ -26519,81 +26519,81 @@ MusicPhrase_TazZoo_Ch3_2:
 	mus_note_length $80
 	mus_note En5
 	mus_arp $97
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn6
 	mus_arp $a9
 	mus_note Dn6, Cs6, Bn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5, Gs5
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch3_2_Call0:
-	mus_default_length 16
+	mus_note_length 16
 	mus_note_off
 	mus_note_fx $02, $50
 	mus_arp_off
 	mus_load_wave WaveSample1
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cs5, Dn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fs5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5, An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Bn5, Cs6
 	mus_load_wave WaveSample15
 	mus_note Dn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn6, Cs6, Bn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5, Gs5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
 	mus_load_wave WaveSample1
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5, En6, Dn6, Cs6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Bn5, An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cs6, Dn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fs5
 	mus_load_wave WaveSample15
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5, An5, Gs5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fs5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fs5
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch3_3:
 	mus_call MusicPhrase_TazZoo_Ch3_2_Call0
 	mus_note Fs5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En5, Dn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cs5, En5
 	mus_end_phrase
 MusicPhrase_TazZoo_Ch3_4:
 	mus_call MusicPhrase_TazZoo_Ch3_2_Call0
 	mus_note En5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn5, Cs5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Bn4, An4
 	mus_note_fx $00
 	mus_end_phrase
@@ -26667,12 +26667,12 @@ MusicPhrase_Boss_Ch3_0:
 	mus_loop_start 2
 	mus_call_code LoadNoiseInstrument7
 	mus_arp $94
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gs4
 	mus_arp_off
 	mus_note Bn5
 	mus_arp $94
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs4
 	mus_arp_off
 	mus_note An5
@@ -26681,12 +26681,12 @@ MusicPhrase_Boss_Ch3_0:
 	mus_arp_off
 	mus_note Gs5
 	mus_arp $94
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fs4
 	mus_arp_off
 	mus_note An5
 	mus_arp $94
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs4
 	mus_arp_off
 	mus_note Gs5
@@ -26697,7 +26697,7 @@ MusicPhrase_Boss_Ch3_0:
 	mus_loop_back
 	mus_end_phrase
 MusicPhrase_Boss_Ch3_1:
-	mus_default_length 20
+	mus_note_length 20
 	mus_call_code LoadNoiseInstrument7
 	mus_arp $94
 	mus_note Gs4
@@ -26716,7 +26716,7 @@ MusicPhrase_Boss_Ch3_1:
 	mus_note Cs4
 	mus_arp_off
 	mus_note As5
-	mus_default_length 10
+	mus_note_length 10
 MusicPhrase_Boss_Ch3_2:
 	mus_noise_seq $05, MusicNoiseSeq_Boss_0
 	mus_loop_start 2
@@ -26741,7 +26741,7 @@ MusicPhrase_Boss_Ch3_2:
 	mus_loop_back
 	mus_end_phrase
 MusicPhrase_Boss_Ch3_4:
-	mus_default_length 10
+	mus_note_length 10
 	mus_loop_start 2
 	mus_arp $94
 	mus_note Fs3
@@ -26770,7 +26770,7 @@ MusicPhrase_Boss_Ch3_4:
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Boss_Ch3_3:
-	mus_default_length 10
+	mus_note_length 10
 	mus_call MusicPhrase_Boss_Ch3_3_Call0
 MusicPhrase_Boss_Ch3_3_Call0:
 	mus_loop_start 2
@@ -26796,52 +26796,52 @@ MusicPhrase_Boss_Ch3_3_Call0:
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_0:
 	mus_envelope $00
-	mus_default_length 20
+	mus_note_length 20
 	mus_note_off
 	mus_macro $8b
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Gs5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cs5
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cs5, Fs5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cs5
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cs5, Gs5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cs5
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cs5, Fs5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cs5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs5
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_1:
-	mus_default_length 20
+	mus_note_length 20
 	mus_end_note_alt
 	mus_macro $8b
-	mus_default_length 40
+	mus_note_length 40
 	mus_note Fn5, Fn5, Fs5
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Fs5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn5, Fn5, Fn5, Fn5, Fs5, Fs5, Fs5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_2:
-	mus_default_length 10
+	mus_note_length 10
 	mus_end_note_alt
 	mus_macro $8b
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn5, Fn5, Fn5, Fn5, Fs5, Fs5, Fs5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fs5
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_3:
-	mus_default_length 10
+	mus_note_length 10
 	mus_end_note_alt
 	mus_macro $8b
 	mus_note Gs4, Gs5, Gs4, Gs4, Gs4, Gs5, Gs4
@@ -26857,88 +26857,88 @@ MusicPhrase_Boss_Ch2_3:
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_4:
 	mus_macro $8b
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn5, Fs5, Ds5, Bn4, Ds5, Fs5, Bn5, Ds6, As5, Fs5, Cs5, As4, Cs5, Fs5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note As5
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_5:
-	mus_default_length 10
+	mus_note_length 10
 	mus_macro $8d
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Bn5
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note As5
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Ds6
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Fs6
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_6:
 	mus_macro $8d
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Ds6, Bn5, Fs5, Ds5, Fs5, Bn5, Ds6, Fs6, Cs6, As5, Fs5, Cs5, Fs5, As5
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Cs6
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_end_phrase
 MusicPhrase_Boss_Ch2_7:
-	mus_default_length 5
+	mus_note_length 5
 	mus_end_note_alt
 	mus_macro $8e
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Dn4
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note En4
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note An4
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Gn4
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Fn4
@@ -26951,9 +26951,9 @@ MusicPhrase_Boss_Ch2_7:
 	mus_macro $8b
 	mus_note Dn4
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Dn4
@@ -26966,37 +26966,37 @@ MusicPhrase_Boss_Ch2_7:
 	mus_macro $8b
 	mus_note Cn4
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Cs5
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Fn5
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note As5
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Gs5
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Fs5
@@ -27009,9 +27009,9 @@ MusicPhrase_Boss_Ch2_7:
 	mus_macro $8b
 	mus_note Ds5
 	mus_macro $8e
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cs7
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs7
 	mus_macro $8b
 	mus_note Ds5
@@ -27027,7 +27027,7 @@ MusicPhrase_Boss_Ch2_7:
 	mus_note Cs7
 	mus_end_phrase
 MusicPhrase_Boss_Ch1_0:
-	mus_default_length 5
+	mus_note_length 5
 	mus_envelope $91
 	mus_duty_75
 	mus_loop_start 8
@@ -27052,70 +27052,70 @@ MusicPhrase_Boss_Ch1_2:
 	mus_end_phrase
 MusicPhrase_Boss_Ch1_3:
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Bn5
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note As5
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Ds6
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Cs6
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Fs6
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_loop_back
 	mus_end_phrase
 MusicPhrase_Boss_Ch1_4:
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Ds6, Bn5, Fs5, Ds5, Fs5, Bn5, Ds6, Fs6, Cs6, As5, Fs5, Cs5, Fs5, As5
-	mus_default_length 15
+	mus_note_length 15
 	mus_note Cs6
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Cs6
 	mus_end_phrase
 MusicPhrase_Boss_Ch1_5:
-	mus_default_length 5
+	mus_note_length 5
 	mus_note Ds7, Ds6, Ds7, Ds7, Ds8, Ds7, Ds7, Ds6, Ds7, Ds6, Ds6, Ds6, Ds7, Ds6, Ds6, Ds6, Cs7, Cs6, Cs7, Cs7, Cs8, Cs7, Cs7, Cs6, Cs7, Cs6, Cs6, Cs6, Cs7, Cs6, Cs6, Cs6
 	mus_end_phrase
 MusicPhrase_Boss_Ch1_6:
-	mus_default_length 10
+	mus_note_length 10
 	mus_end_note_alt
 	mus_envelope $f2, $0a, $57
 	mus_duty_50
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cs4, Fn4, As4, Gs4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fs4, Fn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Ds4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Ds4, Dn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cs4, Cs4, Fn4, As4, Gs4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fs4, Fn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Ds4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Ds4, Dn4, Cs4
 	mus_end_phrase
 MusicNoiseSeq_Boss_0:
@@ -27175,31 +27175,31 @@ MusicChain_TreasureIsland_Ch3:
 	dw MusicChain_TreasureIsland_Ch3 ; loop
 
 MusicPhrase_TreasureIsland_Call0:
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Dn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Dn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
@@ -27216,102 +27216,102 @@ MusicPhrase_TreasureIsland_Ch1_0:
 	mus_loop_start 3
 	mus_call MusicPhrase_TreasureIsland_Call0
 	mus_loop_back
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
-	mus_default_length 20
+	mus_note_length 20
 	mus_note An3
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn3
 	mus_macro $8a
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 40
+	mus_note_length 40
 	mus_note An4
 	mus_macro $8f
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch1_2:
 	mus_macro $8f
 	mus_loop_start 2
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Fn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn4
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
 	mus_loop_back
 	mus_loop_start 2
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Dn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Dn3
 	mus_loop_back
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn3
 	mus_macro $8a
 	mus_note An4
@@ -27320,208 +27320,208 @@ MusicPhrase_TreasureIsland_Ch1_2:
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch1_3:
 	mus_macro $8f
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Fn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn4
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Fn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Cn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
 	mus_loop_start 2
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Dn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
 	mus_note Dn3
 	mus_loop_back
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn3
 	mus_macro $8a
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
 	mus_macro $8f
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn3
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn3
 	mus_macro $8a
 	mus_note An4
 	mus_macro $8f
 	mus_note Gn3
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn4
 	mus_macro $8a
 	mus_note An4, An4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note An4
-	mus_default_length 5
+	mus_note_length 5
 	mus_note An4, An4
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch1_3_Call0:
 	mus_arp $98
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Fn5, Gn5, Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
 	mus_arp $99
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Dn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Dn5
 	mus_arp $98
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5, Cn5, Gn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5, Gn5
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch2_2:
 	mus_call MusicPhrase_TreasureIsland_Ch1_3_Call0
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn7
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn7
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6, Bn5
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch2_3:
 	mus_call MusicPhrase_TreasureIsland_Ch1_3_Call0
 	mus_note Cn6
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
 	mus_note_length $50
 	mus_note Cn6
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch2_3_Call0:
-	mus_default_length 20
+	mus_note_length 20
 	mus_arp $98
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
 	mus_arp $99
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Dn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Dn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note En5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note En5, Dn5
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch2_1:
@@ -27533,19 +27533,19 @@ MusicPhrase_TreasureIsland_Ch2_0:
 	mus_duty_50
 	mus_envelope $d1, $07, $20
 	mus_duty_seq $03
-	mus_default_length 20
+	mus_note_length 20
 	mus_loop_start 3
 	mus_call MusicPhrase_TreasureIsland_Ch2_3_Call0
 	mus_loop_back
 	mus_arp $98
 	mus_note Cn5
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
 	mus_note_length $3c
 	mus_note Cn6
@@ -27555,35 +27555,35 @@ MusicPhrase_TreasureIsland_Ch2_0_Call0:
 	mus_note_length $5a
 	mus_note Fn6
 	mus_arp_off
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn6, Fn6, Gn6
-	mus_default_length 13
+	mus_note_length 13
 	mus_note An6, Bn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn7
-	mus_default_length 12
+	mus_note_length 12
 	mus_arp $a9
 	mus_note Bn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_arp_off
 	mus_end_note
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn6
 	mus_note_length $3c
 	mus_note En6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note En6, Dn6, En6
-	mus_default_length 13
+	mus_note_length 13
 	mus_note Fn6, Gn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An6
-	mus_default_length 12
+	mus_note_length 12
 	mus_arp $a9
 	mus_note Gn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_arp_off
 	mus_end_note
-	mus_default_length 10
+	mus_note_length 10
 	mus_note En6
 	mus_note_length $3c
 	mus_note Cn6
@@ -27591,17 +27591,17 @@ MusicPhrase_TreasureIsland_Ch2_0_Call0:
 MusicPhrase_TreasureIsland_Ch3_1:
 	mus_noise_seq $0a, MusicNoiseSeq_TreasureIsland_0
 	mus_call MusicPhrase_TreasureIsland_Ch2_0_Call0
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6, Bn5, Cn6
-	mus_default_length 13
+	mus_note_length 13
 	mus_note An5, Bn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
 	mus_note_length $5a
 	mus_arp $97
 	mus_note Fn6
 	mus_arp $97
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn6
 	mus_arp $a9
 	mus_note Gn6
@@ -27618,17 +27618,17 @@ MusicPhrase_TreasureIsland_Ch3_1:
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch3_2:
 	mus_call MusicPhrase_TreasureIsland_Ch2_0_Call0
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Dn5, An5, Bn5, Gn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note En6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Dn6, Cn6
 	mus_end_note
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_end_note
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
 	mus_end_note
 	mus_note Cn6
@@ -27638,106 +27638,106 @@ MusicPhrase_TreasureIsland_Ch3_2:
 	mus_note_fx $00
 	mus_arp $94
 	mus_load_wave WaveSample16
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn4, Cn5
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch3_3:
 	mus_noise_seq $0a, MusicNoiseSeq_TreasureIsland_0
 	mus_note_length $5a
 	mus_note An4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn4, Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note En5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
 	mus_note_length $3c
 	mus_note Gn4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn4, Cn5, Dn5
-	mus_default_length 13
+	mus_note_length 13
 	mus_note En5, Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Fn5
 	mus_note_length $3c
 	mus_note Dn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn4, Bn4, Cn5
-	mus_default_length 13
+	mus_note_length 13
 	mus_note Dn5, En5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note An5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5, Fs5, Gn5, Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn5, Cn6
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch3_3_Call0:
 	mus_note_length $5a
 	mus_note An5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn5, Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note En6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5, Fn5, En5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5, Cn6
-	mus_default_length 13
+	mus_note_length 13
 	mus_note Dn6, En6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn6
-	mus_default_length 13
+	mus_note_length 13
 	mus_note En6, En6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_note_length $3c
 	mus_note Dn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn5, Bn5, Cn6
-	mus_default_length 13
+	mus_note_length 13
 	mus_note Dn6, En6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cn6
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn6
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn6
 	mus_note_length $3c
 	mus_noise_seq $0a, $64bb
@@ -27748,7 +27748,7 @@ MusicPhrase_TreasureIsland_Ch3_4:
 	mus_goto MusicPhrase_TreasureIsland_Ch3_0_Loop0
 MusicPhrase_TreasureIsland_Ch3_5:
 	mus_call MusicPhrase_TreasureIsland_Ch3_3_Call0
-	mus_default_length 20
+	mus_note_length 20
 	mus_end_note
 	mus_end_phrase
 MusicPhrase_TreasureIsland_Ch3_0:
@@ -27757,33 +27757,33 @@ MusicPhrase_TreasureIsland_Ch3_0:
 	mus_octave_shift 0
 	mus_vol_env 15, $00, $1f, $12
 	mus_arp $ab
-	mus_default_length 30
+	mus_note_length 30
 	mus_note An4
 	mus_note_length $64
 	mus_note Gn4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Dn4, En4, Fn4
-	mus_default_length 30
+	mus_note_length 30
 	mus_note An4
 	mus_note_length $64
 	mus_note Gn4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Dn4, En4, Fn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note An4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Bn4
 	mus_note_length $64
 	mus_note Gn4
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Gn4, An4, Bn4
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 30
+	mus_note_length 30
 	mus_note Cn5
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Cn5
-	mus_default_length 10
+	mus_note_length 10
 	mus_note Cn5
 	mus_noise_seq $0a, MusicNoiseSeq_TreasureIsland_1
 	mus_note_length $3c
@@ -27794,7 +27794,7 @@ MusicPhrase_TreasureIsland_Ch3_0_Loop0:
 	mus_load_wave WaveSample14
 	mus_vibrato $19, $01, $04
 	mus_note_fx $02, $53
-	mus_default_length 20
+	mus_note_length 20
 	mus_note Gn5
 	mus_end_phrase
 MusicNoiseSeq_TreasureIsland_0:
@@ -27803,7 +27803,7 @@ MusicNoiseSeq_TreasureIsland_0:
 MusicNoiseSeq_TreasureIsland_1:
 	db $43, $01, $06, $45, $09, $43, $06, $05, $06, $05, $c4, $05, $05, $ff
 	mus_note Gn7, Cs2, Fs2, An7, An2, An7, Cs2, An2, Cs2, An2
-	mus_default_length 5
+	mus_note_length 5
 	mus_note An2, An2
 	mus_loop_start 17
 LoadSong_Menu:
@@ -27845,149 +27845,149 @@ MusicChain_Menu_Ch1:
 MusicPhrase_Menu_Ch3_0:
 	mus_octave_shift 0
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn4, Gn3, An3, Gn3, Fn3, En3, Dn3
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As3
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An3
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn3
 	mus_end_phrase
 MusicPhrase_Menu_Ch3_0_Call0:
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn3
 	mus_macro $8a
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn3
 	mus_macro $8a
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn4
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn4
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_end_phrase
 MusicPhrase_Menu_Ch3_1:
 	mus_call MusicPhrase_Menu_Ch3_0_Call0
 	mus_note En3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_end_phrase
 MusicPhrase_Menu_Ch3_2:
 	mus_call MusicPhrase_Menu_Ch3_0_Call0
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
 	mus_end_phrase
 MusicPhrase_Menu_Ch2_0:
@@ -28000,7 +28000,7 @@ MusicPhrase_Menu_Ch2_0:
 	mus_vibrato $08, $02, $04
 	mus_duty_75
 	mus_arp $94
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn7, En7, Gn7, En7, Cn7, Gn6, An6, Bn6, Cn7
 	mus_end_note
 	mus_note En6, Dn6
@@ -28008,78 +28008,78 @@ MusicPhrase_Menu_Ch2_0:
 	mus_note Cs6
 	mus_end_phrase
 MusicPhrase_Menu_Ch2_1:
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn6
 	mus_end_note
 	mus_note Bn5, Cn6
 	mus_end_note
 	mus_note Dn6, Cn6, Cn7, Dn7
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn7
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cs6, Dn6
 	mus_end_note
 	mus_note En6, Dn6, Dn7, En7
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn7
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note
 	mus_note Gn5, En6, Fn6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En6
 	mus_end_note
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn6, Dn6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As5, An5
 	mus_end_note
 	mus_note Fn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn6
-	mus_default_length 32
+	mus_note_length 32
 	mus_note Cn6
-	mus_default_length 16
+	mus_note_length 16
 	mus_end_note
 	mus_end_phrase
 MusicPhrase_Menu_Ch2_2:
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn6
 	mus_end_note
 	mus_note Bn5, Cn6
 	mus_end_note
 	mus_note Dn6, Cn6, Cn7, Dn7
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn7
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cs6, Dn6
 	mus_end_note
 	mus_note En6, Dn6, Dn7, En7
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Dn7
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note
 	mus_note Gn5, En6, Fn6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note En6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn5, Cn5, Cn6, Dn6, Cn6, Gn5, As5, An5
 	mus_end_note
 	mus_note Cn6, Cn6, Dn6, En6, Fn6, Cn6, An5
 	mus_arp $98
 	mus_note Fn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_end_note
 	mus_arp_off
 	mus_end_phrase
@@ -28090,116 +28090,116 @@ MusicPhrase_Menu_Ch1_0:
 	mus_vibrato $10, $02, $04
 	mus_arp $94
 	mus_duty_50
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Cn6
 	mus_note_off
 	mus_note Cn6, Cn6, Gn5, Cn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note_off
 	mus_note Cn6, En6, Gn6, En6, Cn6, Gn5, An5, Bn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note_off
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn5
 	mus_end_phrase
 MusicPhrase_Menu_Ch1_1:
 	mus_noise_seq $08, MusicNoiseSeq_Menu_0
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gs5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
-	mus_default_length 40
+	mus_note_length 40
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5, En5, Cn6, Dn6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_end_note
 	mus_note Cn4, Cn5, Dn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn4
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note En5, Fn5, Gn5
 	mus_end_phrase
 MusicPhrase_Menu_Ch1_2:
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gs5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note As5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note An5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note An5
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Dn5
-	mus_default_length 40
+	mus_note_length 40
 	mus_note Gn5
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5, En5, Cn6, Dn6
-	mus_default_length 16
+	mus_note_length 16
 	mus_note Cn6
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Gn4, Cn4, Cn5, Dn5, Cn5, Dn5, En5, Fn5
 	mus_end_note
 	mus_note Cn5, An4
 	mus_end_note
 	mus_note Cn5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn4
-	mus_default_length 8
+	mus_note_length 8
 	mus_note Fn5
-	mus_default_length 16
+	mus_note_length 16
 	mus_end_note
 	mus_end_phrase
 MusicNoiseSeq_Menu_0:
@@ -28237,27 +28237,27 @@ MusicChain_Unused3_Ch3:
 MusicPhrase_Unused3_Ch1_0:
 	mus_detune 1
 	mus_macro $8f
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn3
 	mus_macro $8a
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $8f
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Dn3
 	mus_macro $8a
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
 	mus_macro $8f
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn3
-	mus_default_length 7
+	mus_note_length 7
 	mus_end_note_alt
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs3
 	mus_envelope $f2
 	mus_note_length $a4
@@ -28267,30 +28267,30 @@ MusicPhrase_Unused3_Ch2_0:
 	mus_envelope $f1, $07, $65
 	mus_duty_12
 	mus_arp $94
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs4
 	mus_arp $98
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
 	mus_arp $94
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
 	mus_arp $98
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
 	mus_arp $94
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn4
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn5
 	mus_arp $98
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs5
 	mus_note_length $a4
 	mus_note Cn5
@@ -28301,25 +28301,25 @@ MusicPhrase_Unused3_Ch3_0:
 	mus_arp $94
 	mus_octave_shift 0
 	mus_load_wave WaveSample2
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5, Cn5
 	mus_noise_seq_off
 	mus_note_length $a4
@@ -28355,7 +28355,7 @@ MusicChain_Unused4_Ch1:
 MusicPhrase_Unused4_Ch3_0:
 	mus_octave_shift 0
 	mus_detune 1
-	mus_default_length 14
+	mus_note_length 14
 	mus_noise_seq $07, MusicNoiseSeq_Unused2_1
 	mus_loop_start 3
 	mus_macro $90
@@ -28376,7 +28376,7 @@ MusicPhrase_Unused4_Ch3_0:
 	mus_stop_channel
 MusicPhrase_Unused4_Ch2_0:
 	mus_macro $92
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_end_note
 	mus_note Gn4
@@ -28389,30 +28389,30 @@ MusicPhrase_Unused4_Ch2_0:
 	mus_end_note
 	mus_note Cn6
 	mus_end_note
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En5, An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Bn5, Cn6
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Dn6
 	mus_note_length $d9
 	mus_end_note
 	mus_stop_channel
 MusicPhrase_Unused4_Ch1_0:
 	mus_macro $8b
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6, Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5, An5, Gn5
-	mus_default_length 42
+	mus_note_length 42
 	mus_note En5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6, Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Bn5, An5, Gn5, Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5, An5
 	mus_note_length $fc
 	mus_note Gn5
@@ -28444,7 +28444,7 @@ MusicChain_Unused5_Ch1:
 MusicPhrase_Unused5_Ch3_0:
 	mus_octave_shift 0
 	mus_noise_seq $06, MusicNoiseSeq_Unused5_0
-	mus_default_length 12
+	mus_note_length 12
 	mus_macro $90
 	mus_note Cs3
 	mus_macro $89
@@ -28460,11 +28460,11 @@ MusicPhrase_Unused5_Ch3_0:
 	mus_macro $90
 	mus_note Cs3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Cs5
 	mus_macro $90
 	mus_note Cs3
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs3
 	mus_macro $89
 	mus_note Gs5
@@ -28479,11 +28479,11 @@ MusicPhrase_Unused5_Ch3_0:
 	mus_macro $90
 	mus_note Gs3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gs5
 	mus_macro $90
 	mus_note Ds3
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs3
 	mus_macro $89
 	mus_note Gs5
@@ -28494,13 +28494,13 @@ MusicPhrase_Unused5_Ch3_0:
 	mus_macro $90
 	mus_note Gs3
 	mus_macro $89
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gs5
 	mus_macro $90
 	mus_note Fs3
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fn3, Ds3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cs3, Gs3
 	mus_noise_seq_off
 	mus_call_code LoadNoiseInstrument7
@@ -28511,25 +28511,25 @@ MusicPhrase_Unused5_Ch2_0:
 	mus_envelope $a2
 	mus_arp_off
 	mus_duty_50
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs5, Gs4, Fn5, Cs5, Gs5, Fn5, Cs6, Gs5, Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fs5, Fn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Ds5, Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gs4, As4, Gs4, As4, Gs4, As4, Gs4, As4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs4
-	mus_default_length 6
+	mus_note_length 6
 	mus_note As4, Cn5, Cs5, Ds5, Fn5, Fs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Fs5, Fn5, Ds5, Cs5, Cn5, Gs4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cs5
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Ds5, Fn5, Fs5, Gs5, As5, Cn6
 	mus_note_length $30
 	mus_note Cs6
@@ -28538,7 +28538,7 @@ MusicPhrase_Unused5_Ch1_0:
 	mus_macro $92
 	mus_note_length $36
 	mus_note Cs7
-	mus_default_length 6
+	mus_note_length 6
 	mus_end_note
 	mus_note Cs7
 	mus_end_note
@@ -28548,7 +28548,7 @@ MusicPhrase_Unused5_Ch1_0:
 	mus_end_note
 	mus_note_length $36
 	mus_note Gs6
-	mus_default_length 6
+	mus_note_length 6
 	mus_end_note
 	mus_note Gs6
 	mus_end_note
@@ -28556,18 +28556,18 @@ MusicPhrase_Unused5_Ch1_0:
 	mus_end_note
 	mus_note Fn6
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Ds6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note As6
 	mus_end_note
 	mus_note Gs5
 	mus_end_note
 	mus_note As5
 	mus_end_note
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6
-	mus_default_length 6
+	mus_note_length 6
 	mus_note Gs6
 	mus_end_note
 	mus_note Gs5
@@ -28575,9 +28575,9 @@ MusicPhrase_Unused5_Ch1_0:
 	mus_note As5, Cn6, Cs6
 	mus_end_note
 	mus_note Ds6, Fn6, Fs6, Gs6, As6, Cn7
-	mus_default_length 18
+	mus_note_length 18
 	mus_note Cs7
-	mus_default_length 30
+	mus_note_length 30
 	mus_end_note
 	mus_stop_channel
 MusicNoiseSeq_Unused5_0:
@@ -28647,309 +28647,309 @@ MusicPhrase_CrazyTown_Ch3_1:
 MusicPhrase_CrazyTown_Ch3_5:
 	mus_macro $90
 	mus_loop_start 2
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn3
 	mus_loop_back
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn4
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch3_5_Call0:
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn3
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch3_2:
 	mus_call MusicPhrase_CrazyTown_Ch3_5_Call0
 	mus_note Fn3, Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch3_3:
 	mus_macro $90
 	mus_call MusicPhrase_CrazyTown_Ch3_5_Call0
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch3_4:
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn3
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Ds5
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En3
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch3_0:
 	mus_octave_shift 0
 	mus_noise_seq $07, MusicNoiseSeq_CrazyTown_0
 	mus_macro $90
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn3
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn3
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn4
 	mus_macro $89
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
 	mus_macro $90
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn4, En4, Dn4, Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn4
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn4
 	mus_macro $89
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
 	mus_macro $90
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn3
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch2_1:
@@ -28961,62 +28961,62 @@ MusicPhrase_CrazyTown_Ch2_0:
 	mus_envelope $f1, $07, $50
 	mus_duty_50
 	mus_vibrato $07, $02, $04
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Cn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An4
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn5, En5, Dn5, Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
 	mus_note_length $31
 	mus_note En5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch2_5:
 	mus_octave_shift -12
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn4, Dn4, En4, Fn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn4, En4, Fn4
-	mus_default_length 42
+	mus_note_length 42
 	mus_note An4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As4, An4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As4
 	mus_note_length $3f
 	mus_note Gn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn4
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En4
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch2_6:
@@ -29025,41 +29025,41 @@ MusicPhrase_CrazyTown_Ch2_6:
 	mus_octave_shift -12
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch2_6_Call0:
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Ds5, Ds5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Ds5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch1_1:
@@ -29067,9 +29067,9 @@ MusicPhrase_CrazyTown_Ch1_1:
 	mus_vibrato $07, $02, $04
 MusicPhrase_CrazyTown_Ch1_1_Loop0:
 	mus_call MusicPhrase_CrazyTown_Ch2_6_Call0
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note En5
 	mus_note_length $31
 	mus_note En5
@@ -29079,122 +29079,122 @@ MusicPhrase_CrazyTown_Ch2_2:
 	mus_note Cn6, As5, An5, Gn5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch2_3:
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_note_alt
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
 	mus_note_length $3f
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cs5
 	mus_note_length $31
 	mus_note Dn5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch2_4:
-	mus_default_length 14
+	mus_note_length 14
 	mus_end_note_alt
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fs5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note As5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fs5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note En5, Fn5, Fs5, Gn5, Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An5
-	mus_default_length 28
+	mus_note_length 28
 	mus_note Gn5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch1_0:
 	mus_envelope $c1, $07, $43
 	mus_duty_12
 	mus_arp $94
-	mus_default_length 21
+	mus_note_length 21
 	mus_note An5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Cn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 42
+	mus_note_length 42
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn6, En6, Dn6, Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn6
 	mus_note_length $31
 	mus_note Cn6
@@ -29203,83 +29203,83 @@ MusicPhrase_CrazyTown_Ch1_2:
 	mus_envelope $f1, $07, $67
 	mus_duty_50
 	mus_arp_off
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn5, Dn5, En5, Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5, En5, Fn5
-	mus_default_length 42
+	mus_note_length 42
 	mus_note An5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note As5, An5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Dn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note En5
 	mus_end_phrase
 MusicPhrase_CrazyTown_Ch1_3:
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Fn5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An5
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An5
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Cn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note En6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Fn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Gn6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note An6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Fn6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Gn6, An6, As6, An6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note Gn6
-	mus_default_length 7
+	mus_note_length 7
 	mus_note An6
-	mus_default_length 14
+	mus_note_length 14
 	mus_note As6
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn7
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Dn7
-	mus_default_length 21
+	mus_note_length 21
 	mus_note Cn7
 	mus_end_phrase
 MusicNoiseSeq_CrazyTown_0:
@@ -29341,146 +29341,146 @@ MusicPhrase_FuddForest_Ch1_0:
 	mus_duty_50
 	mus_note_fx $06, $53
 MusicPhrase_FuddForest_Ch1_0_Loop0:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gn5, An5, Gn5, An5, Gn5, An5
-	mus_default_length 36
+	mus_note_length 36
 	mus_note Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn5, En5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En5, Cn5
 	mus_note_length $9c
 	mus_note Gn4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Gn5, An5, Gn5, An5, Gn5, An5
-	mus_default_length 36
+	mus_note_length 36
 	mus_note Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn5, En5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En5, Cn5, Cn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6, Bn5
-	mus_default_length 36
+	mus_note_length 36
 	mus_note As5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn5, En5, Cn5
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch1_1:
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6, An5, Cn6, An5, Cn6, An5, Cn6
-	mus_default_length 36
+	mus_note_length 36
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Bn5, Cn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn5, En5, Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En5, Gn5
 	mus_note_length $48
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En5, An5, Gn5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fs5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn6, Cn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Dn5, Fs5, An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn6, Cn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Bn5, Cn6, Dn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An5, Bn5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5, An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Bn4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn4
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn5
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch1_3:
 	mus_note_length $60
 	mus_note Cn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5, Cn5
-	mus_default_length 36
+	mus_note_length 36
 	mus_note Cn6
 	mus_envelope $90
 	mus_arp_off
 	mus_duty_50
 	mus_note_fx $00
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5, An5, Bn5
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch1_4:
 	mus_note_length $9c
 	mus_note An5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5, An5, Bn5
-	mus_default_length 36
+	mus_note_length 36
 	mus_note An5, En5
 	mus_note_length $54
 	mus_note Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5, Cn6, Bn5
 	mus_note_length $9c
 	mus_note Dn6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5, Dn6, Cn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En6
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An5, Gs5, Gn5
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5, Dn5, En5, Fn5, Gn5, An5, Bn5
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch1_4_Call0:
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn4, En4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn4, Fn4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn4, En4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_end_phrase
@@ -29489,82 +29489,82 @@ MusicPhrase_FuddForest_Ch3_0:
 	mus_call MusicPhrase_FuddForest_Ch1_4_Call0
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn4, Bn4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_call MusicPhrase_FuddForest_Ch1_4_Call0
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note As4, Fn4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5, As4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch3_1:
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fn4, An4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn4, Bn4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn4, En4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_loop_start 2
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En4, An4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_loop_start 3
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fs4, An4
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_loop_back
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4, Dn5
 	mus_macro $85
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn4, Dn4
 	mus_macro $85
 	mus_note An4
 	mus_macro $87
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fn4
 	mus_macro $85
 	mus_note An4
@@ -29573,9 +29573,9 @@ MusicPhrase_FuddForest_Ch3_1:
 	mus_macro $85
 	mus_note An4
 	mus_macro $87
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn4
 	mus_macro $85
 	mus_note An4
@@ -29584,14 +29584,14 @@ MusicPhrase_FuddForest_Ch3_1:
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch3_2:
 	mus_macro $87
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn4, En4
 	mus_macro $85
 	mus_note An4
 	mus_macro $87
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn4
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn4
 	mus_macro $85
 	mus_note An4
@@ -29602,23 +29602,23 @@ MusicPhrase_FuddForest_Ch3_2:
 	mus_note_length $30
 	mus_note An4
 	mus_macro $93
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5, An5
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch3_3:
 	mus_macro $93
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Bn5, An5
 	mus_loop_start 3
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
-	mus_default_length 36
+	mus_note_length 36
 	mus_note An5
 	mus_loop_back
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
 	mus_note An5, Bn5, An5
@@ -29626,36 +29626,36 @@ MusicPhrase_FuddForest_Ch3_3:
 	mus_note An4
 	mus_macro $93
 	mus_note An5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En5
 	mus_loop_start 2
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
-	mus_default_length 36
+	mus_note_length 36
 	mus_note Gn5
 	mus_loop_back
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
 	mus_note Cn6, Bn5, Dn6
 	mus_macro $85
 	mus_note An4
 	mus_macro $93
-	mus_default_length 36
+	mus_note_length 36
 	mus_note Dn6
 	mus_loop_start 2
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
-	mus_default_length 36
+	mus_note_length 36
 	mus_note Dn6
 	mus_loop_back
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
 	mus_note Dn6, Cn6, En6
@@ -29663,17 +29663,17 @@ MusicPhrase_FuddForest_Ch3_3:
 	mus_note An4
 	mus_macro $93
 	mus_note Cn6
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An5
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
 	mus_note Gs5
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn5
 	mus_macro $85
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $93
 	mus_note Dn5, En5, Fn5
@@ -29686,181 +29686,181 @@ MusicPhrase_FuddForest_Ch2_0:
 	mus_noise_seq $06, MusicNoiseSeq_FuddForest_Ch2_0
 	mus_macro $90
 	mus_loop_start 3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Dn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Cn3
 	mus_loop_back
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note As3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note As3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note En3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note En3
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch2_1:
 	mus_macro $90
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fn5
 	mus_macro $90
 	mus_note Cn4
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn4
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Fn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Dn4
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn4
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note An3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $90
 	mus_note En3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note En3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note An4
 	mus_macro $90
 	mus_note An3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn5
 	mus_macro $90
 	mus_note An3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn5
 	mus_macro $90
 	mus_note Dn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn5
 	mus_macro $90
 	mus_note An3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note An3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Dn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Dn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Fn3, En3, Dn3
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch2_2:
 	mus_macro $90
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn3
 	mus_macro $8b
 	mus_note Cn5
@@ -29870,45 +29870,45 @@ MusicPhrase_FuddForest_Ch2_2:
 	mus_note Cn4
 	mus_end_phrase
 MusicPhrase_FuddForest_Ch2_2_Call0:
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Dn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Dn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Dn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Gn5
 	mus_macro $90
 	mus_note Cn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Cn4
@@ -29917,30 +29917,30 @@ MusicPhrase_FuddForest_Ch2_3:
 	mus_noise_seq $06, MusicNoiseSeq_FuddForest_Ch2_3
 	mus_macro $90
 	mus_call MusicPhrase_FuddForest_Ch2_2_Call0
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn4
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
 	mus_note Gn3
 	mus_call MusicPhrase_FuddForest_Ch2_2_Call0
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Cn4
 	mus_macro $8b
-	mus_default_length 12
+	mus_note_length 12
 	mus_note Cn5
 	mus_macro $90
-	mus_default_length 24
+	mus_note_length 24
 	mus_note Gn3
-	mus_default_length 12
+	mus_note_length 12
 	mus_note En3
 	mus_macro $8b
 	mus_note Cn5
@@ -30257,7 +30257,7 @@ SoundEffect1:
 	mus_vol_env 15, $11, $1f, $11
 	mus_transpose -3
 	mus_call_code LoadNoiseInstrumentSfx2
-	mus_default_length 8
+	mus_note_length 8
 	mus_load_wave WaveSample7
 	mus_note Cn7
 	mus_envelope_peak $0a
@@ -30273,25 +30273,25 @@ SoundEffect2:
 	mus_arp $94
 	mus_pitch_slide_up $0a
 	mus_load_wave WaveSample4
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose 4
 	mus_note Fs3
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose -1
 	mus_end_note_alt
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose 1
 	mus_end_note_alt
 	mus_transpose 1
 	mus_end_note_alt
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose 3
 	mus_end_note_alt
 	mus_arp_off
 	mus_vol_env 12, $11, $1f, $11
 	mus_load_wave WaveSample3
 	mus_transpose -2
-	mus_default_length 8
+	mus_note_length 8
 	; Out-of-table note bytes (>= $50): the pitch lookup clamps them to C2.
 	mus_note $53, $53, $53
 	mus_vol_env 8, $11, $1f, $11
@@ -30301,13 +30301,13 @@ SoundEffect3:
 	mus_call_code LoadNoiseInstrumentSfx6
 	mus_vol_env 15, $11, $1f, $11
 	mus_load_wave WaveSample4
-	mus_default_length 6
+	mus_note_length 6
 	mus_transpose -3
 	mus_note Dn5
 	mus_stop_channel
 SoundEffect4:
 	mus_vol_env 15, $11, $2f, $11
-	mus_default_length 7
+	mus_note_length 7
 	mus_load_wave WaveSample6
 	mus_transpose 4
 	mus_note Gn4
@@ -30318,12 +30318,12 @@ SoundEffect5:
 	mus_load_wave WaveSample4
 	mus_vol_env 15, $11, $2f, $11
 	mus_call_code LoadNoiseInstrumentSfx3
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose -4
 	mus_note Dn5
-	mus_default_length 2
+	mus_note_length 2
 	mus_note_off
-	mus_default_length 1
+	mus_note_length 1
 	mus_vol_env 10, $00, $00, $00
 	mus_note $54 ; out-of-table; clamps to C2
 	mus_note_off
@@ -30333,7 +30333,7 @@ SoundEffect10:
 	mus_octave_shift 12
 	mus_load_wave WaveSample12
 	mus_transpose 2
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn4, Dn4, En4, Fs4
 	mus_stop_channel
 SoundEffect12:
@@ -30342,23 +30342,23 @@ SoundEffect12:
 	mus_arp $94
 	mus_pitch_slide_up $0a
 	mus_load_wave WaveSample4
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose 4
 	mus_note Fs3
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose -1
 	mus_end_note_alt
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose 1
 	mus_end_note_alt
 	mus_transpose 1
 	mus_end_note_alt
-	mus_default_length 4
+	mus_note_length 4
 	mus_transpose 3
 	mus_end_note_alt
 	mus_stop_channel
 SoundEffect15:
-	mus_default_length 4
+	mus_note_length 4
 	mus_vol_env 15, $11, $1f, $11
 	mus_octave_shift 12
 	mus_load_wave WaveSample13
@@ -30370,7 +30370,7 @@ SoundEffect15:
 	mus_stop_channel
 SoundEffect16:
 	mus_vol_env 15, $00, $00, $00
-	mus_default_length 4
+	mus_note_length 4
 	mus_octave_shift 12
 	mus_load_wave WaveSample13
 	mus_transpose 2
@@ -30381,7 +30381,7 @@ SoundEffect16:
 	mus_note Gn5, An5, Bn5
 	mus_stop_channel
 SoundEffect17:
-	mus_default_length 4
+	mus_note_length 4
 	mus_vol_env 15, $11, $1f, $11
 	mus_octave_shift 12
 	mus_load_wave WaveSample12
@@ -30392,7 +30392,7 @@ SoundEffect17:
 	mus_note Cn7, Gn6, Cn6
 	mus_stop_channel
 SoundEffect18:
-	mus_default_length 4
+	mus_note_length 4
 	mus_vol_env 15, $11, $1f, $11
 	mus_octave_shift 0
 	mus_load_wave WaveSample3
@@ -30403,7 +30403,7 @@ SoundEffect18:
 	mus_note Cn6, Gn5, Cn5
 	mus_stop_channel
 SoundEffect11:
-	mus_default_length 12
+	mus_note_length 12
 	mus_vol_env 15, $10, $1f, $11
 	mus_transpose 2
 	mus_load_wave WaveSample4
@@ -30414,14 +30414,14 @@ SoundEffect14:
 	mus_transpose -4
 	mus_load_wave WaveSample7
 	mus_call_code LoadNoiseInstrumentSfx2
-	mus_default_length 5
+	mus_note_length 5
 	mus_note An6
 	mus_stop_channel
 SoundEffect21:
 	mus_call_code LoadNoiseInstrumentSfx1
 	mus_vol_env 15, $11, $1f, $15
 	mus_load_wave WaveSample4
-	mus_default_length 9
+	mus_note_length 9
 	mus_transpose -4
 	mus_note An5
 	mus_stop_channel
@@ -30429,29 +30429,29 @@ SoundEffect13:
 	mus_call_code LoadNoiseInstrumentSfx5
 	mus_vol_env 15, $11, $1f, $15
 	mus_load_wave WaveSample4
-	mus_default_length 9
+	mus_note_length 9
 	mus_transpose -3
 	mus_note An4
 	mus_stop_channel
 SoundEffect7:
 	mus_vol_env 15, $11, $2f, $11
 	mus_load_wave WaveSample5
-	mus_default_length 7
+	mus_note_length 7
 	mus_note Cn7
 	mus_stop_channel
 SoundEffect8:
-	mus_default_length 4
+	mus_note_length 4
 	mus_vol_env 15, $11, $2f, $11
 	mus_load_wave WaveSample5
-	mus_default_length 4
+	mus_note_length 4
 	mus_note Gs6
-	mus_default_length 1
+	mus_note_length 1
 	mus_note_off
-	mus_default_length 4
+	mus_note_length 4
 	mus_note Gs7
 	mus_stop_channel
 SoundEffect6:
-	mus_default_length 5
+	mus_note_length 5
 	mus_arp $94
 	mus_load_wave WaveSample12
 	mus_vol_env 15, $10, $1f, $12
@@ -30461,7 +30461,7 @@ SoundEffect6:
 SoundEffect9:
 	mus_vol_env 10, $11, $1f, $14
 	mus_load_wave WaveSample4
-	mus_default_length 33
+	mus_note_length 33
 	mus_pitch_slide_down $03
 	mus_note An6
 	mus_stop_channel
@@ -30469,7 +30469,7 @@ SoundEffect19:
 	mus_call_code LoadNoiseInstrumentSfx3
 	mus_vol_env 15, $00, $00, $00
 	mus_load_wave WaveSample19
-	mus_default_length 3
+	mus_note_length 3
 	mus_transpose -1
 	mus_note Cs7
 	mus_load_wave WaveSample17
