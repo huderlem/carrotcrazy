@@ -980,3 +980,258 @@ MACRO entity_credits_studio_elmer_fudd
 	db $00
 	dw $77AE
 	ENDM
+
+; Music phrase command macros
+; A "phrase" is a byte stream consumed by the bank sound engine. Bytes below
+; FIRST_MUSIC_COMMAND ($60) are note values; bytes >= $60 are commands by range
+; (see constants/audio_constants.asm).
+
+; Notes: one or more raw note-value bytes (each < $60). Naming a sequence of
+; notes is common in phrase data, so the macro accepts a variable number of args.
+MACRO mus_note
+	rept _NARG
+	db \1
+	shift
+	endr
+	ENDM
+
+; $60: set the one-shot transpose folded into the next note's pitch.
+MACRO mus_transpose ; value
+	db $60, \1
+	ENDM
+
+; $61: clear the transpose.
+MACRO mus_transpose_off
+	db $61
+	ENDM
+
+; $62: end the current note (and invoke MUSIC_CH_NOTE_END_CB if armed).
+MACRO mus_end_note
+	db $62
+	ENDM
+
+; $63: enable vibrato
+MACRO mus_vibrato ; delay, depth, rate
+	db $63, \1, \2, \3
+	ENDM
+
+; $64: disable vibrato.
+MACRO mus_vibrato_off
+	db $64
+	ENDM
+
+; $65: identical to mus_end_note
+MACRO mus_end_note_alt
+	db $65
+	ENDM
+
+; $66: note-off (volume = 0; on channels 1/2, NRx2 also zeroed).
+MACRO mus_note_off
+	db $66
+	ENDM
+
+; $67: reset all music channels
+MACRO mus_reset_channels
+	db $67
+	ENDM
+
+; $68: stop the channel; also terminates a macro sub-phrase.
+MACRO mus_stop_channel
+	db $68
+	ENDM
+
+; $69: set the global detune applied to all melodic channels.
+MACRO mus_detune ; value
+	db $69, \1
+	ENDM
+
+; $6A: end the current phrase (return-from-call or advance the chain).
+MACRO mus_end_phrase
+	db $6A
+	ENDM
+
+; $6B: set the default note length (in frames).
+MACRO mus_note_length ; length
+	db $6B, \1
+	ENDM
+
+; $6C: start the percussion (noise) track, with the given step length and
+; pointer to a noise-sequence label.
+MACRO mus_noise_seq ; step_length, seq_label
+	db $6C, \1
+	dw \2
+	ENDM
+
+; $6D: stop the percussion track.
+MACRO mus_noise_seq_off
+	db $6D
+	ENDM
+
+; $6E: pan to both speakers.
+MACRO mus_pan_center
+	db $6E
+	ENDM
+
+; $6F: pan right only.
+MACRO mus_pan_right
+	db $6F
+	ENDM
+
+; $70: pan left only.
+MACRO mus_pan_left
+	db $70
+	ENDM
+
+; $71: 50% duty cycle.
+MACRO mus_duty_50
+	db $71
+	ENDM
+
+; $72: 75% duty cycle.
+MACRO mus_duty_75
+	db $72
+	ENDM
+
+; $73: 12.5% duty cycle.
+MACRO mus_duty_12
+	db $73
+	ENDM
+
+; $74: set the NRx2 hardware envelope (channels 1/2). The optional volume sweep
+; is N+1 frames of delay followed by a target NRx2 value.
+;   mus_envelope nrx2                  -> $74 nrx2 $00         (no sweep)
+;   mus_envelope nrx2, delay, target   -> $74 nrx2 delay target (sweep enabled)
+MACRO mus_envelope
+	IF _NARG == 1
+	db $74, \1, $00
+	ELSE
+	db $74, \1, \2, \3
+	ENDC
+	ENDM
+
+; $75: start a stereo pan sequence (the parameter is the step speed).
+MACRO mus_pan_seq ; speed
+	db $75, \1
+	ENDM
+
+; $76: start a duty-cycle sequence (the parameter is the step speed).
+MACRO mus_duty_seq ; speed
+	db $76, \1
+	ENDM
+
+; $77: start a master-volume (NR50) sequence (step speed + sequence pointer).
+MACRO mus_master_vol_seq ; speed, seq_label
+	db $77, \1
+	dw \2
+	ENDM
+
+; $78: stop the master-volume sequence.
+MACRO mus_master_vol_seq_off
+	db $78
+	ENDM
+
+; $79: load a 16-byte wave pattern into wave RAM.
+MACRO mus_load_wave ; wave_label
+	db $79
+	dw \1
+	ENDM
+
+; $7A: set the octave base offset (parameter biased by -12).
+MACRO mus_octave ; value
+	db $7A, \1
+	ENDM
+
+; $7B: arm/disable the timed mid-note effect.
+;   mus_note_fx $00          -> $7B $00         (disable)
+;   mus_note_fx step, timing -> $7B step timing (arm: see Func_84ac)
+MACRO mus_note_fx
+	IF _NARG == 1
+	db $7B, \1
+	ELSE
+	db $7B, \1, \2
+	ENDC
+	ENDM
+
+; $7C: disable arpeggio.
+MACRO mus_arp_off
+	db $7C
+	ENDM
+
+; $7D: jump to an absolute position in the current phrase.
+MACRO mus_goto ; target_label
+	db $7D
+	dw \1
+	ENDM
+
+; $7E: call a sub-phrase (saves the current position; returns at $6A).
+MACRO mus_call ; sub_label
+	db $7E
+	dw \1
+	ENDM
+
+; $7F: jump into native code at the given address.
+MACRO mus_call_code ; code_label
+	db $7F
+	dw \1
+	ENDM
+
+; $80: loop-back marker that pairs with mus_loop_start; counts down the
+; repeat counter and rewinds the stream until it reaches zero.
+MACRO mus_loop_back
+	db $80
+	ENDM
+
+; $81: set the software volume envelope's peak level.
+MACRO mus_envelope_peak ; value
+	db $81, \1
+	ENDM
+
+; $82: pitch slide up (sets vibrato to a fast continuous-slide configuration).
+MACRO mus_pitch_slide_up ; depth
+	db $82, \1
+	ENDM
+
+; $83: pitch slide down (same as $82 but clears the direction bit).
+MACRO mus_pitch_slide_down ; depth
+	db $83, \1
+	ENDM
+
+; $84: arm or disable the per-note callback system.
+;   mus_note_cb_off                  -> $84 $00
+;   mus_note_cb per_note, note_end   -> $84 cb1 cb2  (each as a 16-bit pointer)
+MACRO mus_note_cb_off
+	db $84, $00
+	ENDM
+MACRO mus_note_cb ; per_note_cb, note_end_cb
+	db $84
+	dw \1
+	dw \2
+	ENDM
+
+; $85-$93: invoke a macro sub-phrase. The opcode encodes the table index; the
+; macro emits one byte. Argument matches the engine opcode (e.g. mus_macro $85).
+MACRO mus_macro ; opcode ($85-$93)
+	db \1
+	ENDM
+
+; $94-$AF: select an arpeggio table entry.
+MACRO mus_arp ; opcode ($94-$AF)
+	db \1
+	ENDM
+
+; $B0-$BF: load the software volume envelope (peak baked into the opcode, plus
+; three parameter bytes for attack/decay/timer-pair).
+MACRO mus_vol_env ; peak (0-15), attack, decay, timers
+	db $B0 + (\1), \2, \3, \4
+	ENDM
+
+; $C0-$EF: set the default note length to (opcode - $BF), range 1-48.
+MACRO mus_default_length ; length (1-48)
+	db $BF + (\1)
+	ENDM
+
+; $F0-$FF: begin a loop block that runs (opcode - $EE) total passes (2-17).
+; Pair with mus_loop_back at the end of the block.
+MACRO mus_loop_start ; num_passes (2-17)
+	db $EE + (\1)
+	ENDM
