@@ -34179,7 +34179,7 @@ Func_17b59:
 	jp Func_1b9
 
 Func_17ba8:
-	ld hl, $7bce
+	ld hl, LevelBonusInterfaceTileCopyTable
 	ld bc, $8f20
 	ld a, $05
 	ldh [$ff8a], a
@@ -34210,7 +34210,13 @@ Func_17ba8:
 	jr nz, .asm_17bb2
 	ret
 
-INCBIN "baserom.gbc", $17bce, $17be2 - $17bce
+; Each entry is a (source pointer, byte count) pair.
+LevelBonusInterfaceTileCopyTable:
+	dw $c140, $00e0
+	dw $c6c0, $0100
+	dw $c500, $01f0
+	dw $c7c0, $0010
+	dw $c6c0, $0100
 
 Func_17be2:
 	ld hl, $3d83
