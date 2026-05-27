@@ -986,8 +986,11 @@ MACRO entity_credits_studio_elmer_fudd
 ; FIRST_MUSIC_COMMAND ($60) are note values; bytes >= $60 are commands by range
 ; (see constants/audio_constants.asm).
 
-; Notes: one or more raw note-value bytes (each < $60). Naming a sequence of
+; Notes: one or more note-value bytes (each < $60). Naming a sequence of
 ; notes is common in phrase data, so the macro accepts a variable number of args.
+; Each value is an index into NoteFrequencies (one semitone per step, starting at
+; C2 = 0); prefer the `<letter><n|s><octave>` constants in audio_constants.asm
+; (e.g. Cn2, Ds3, Gs7).
 MACRO mus_note
 	rept _NARG
 	db \1
@@ -1136,9 +1139,20 @@ MACRO mus_load_wave ; wave_label
 	dw \1
 	ENDM
 
-; $7A: set the octave base offset (parameter biased by -12).
-MACRO mus_octave ; value
+; $7A: set the octave base offset. The handler stores `param - 12` into
+; MUSIC_CH_OCTAVE, so the stored shift in semitones is signed. Use the
+; mus_octave_shift wrapper below for readable signed-semitone values.
+MACRO mus_octave ; raw byte (stored shift = byte - 12)
 	db $7A, \1
+	ENDM
+
+; Signed-semitone wrapper around $7A: `mus_octave_shift -14` is equivalent to
+; `mus_octave $fe`, and means "shift the played pitch down 14 semitones".
+;   mus_octave_shift 0    -> neutral
+;   mus_octave_shift 12   -> up an octave
+;   mus_octave_shift -12  -> down an octave
+MACRO mus_octave_shift ; signed semitone shift
+	db $7A, (\1) + 12
 	ENDM
 
 ; $7B: arm/disable the timed mid-note effect.

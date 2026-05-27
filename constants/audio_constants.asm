@@ -147,3 +147,97 @@ DEF MUSIC_CH_NOTE_END_CB EQU $40 ; 2 bytes
 ;   $C0-$EF  set note duration (length = opcode - $BF)
 ;   $F0-$FF  call phrase, repeating (opcode - $EE) times
 DEF FIRST_MUSIC_COMMAND EQU $60
+
+
+; === Note value constants ===
+; A note byte in a phrase indexes NoteFrequencies (one semitone per step).
+; Index 0 plays ~65.4 Hz (C natural, octave 2); the table covers 80 semitones
+; up through G natural, octave 8. The played pitch sums these channel fields,
+; mod 256, before the lookup:
+;   transpose + note + octave + arpeggio_offset + detune
+; so the byte you write here is the absolute pitch only when the other fields
+; are zero. The engine's MUSIC_CH_OCTAVE field is stored as a signed semitone
+; shift (mus_octave_shift bakes in the engine's +12 input bias).
+;
+; Constant naming: `<L><a><N>`. L = note letter (C..G,A,B), a = `n` (natural)
+; or `s` (sharp), N = octave number.
+DEF Cn2 EQU 0
+DEF Cs2 EQU 1
+DEF Dn2 EQU 2
+DEF Ds2 EQU 3
+DEF En2 EQU 4
+DEF Fn2 EQU 5
+DEF Fs2 EQU 6
+DEF Gn2 EQU 7
+DEF Gs2 EQU 8
+DEF An2 EQU 9
+DEF As2 EQU 10
+DEF Bn2 EQU 11
+DEF Cn3 EQU 12
+DEF Cs3 EQU 13
+DEF Dn3 EQU 14
+DEF Ds3 EQU 15
+DEF En3 EQU 16
+DEF Fn3 EQU 17
+DEF Fs3 EQU 18
+DEF Gn3 EQU 19
+DEF Gs3 EQU 20
+DEF An3 EQU 21
+DEF As3 EQU 22
+DEF Bn3 EQU 23
+DEF Cn4 EQU 24 ; (middle C, ~262 Hz)
+DEF Cs4 EQU 25
+DEF Dn4 EQU 26
+DEF Ds4 EQU 27
+DEF En4 EQU 28
+DEF Fn4 EQU 29
+DEF Fs4 EQU 30
+DEF Gn4 EQU 31
+DEF Gs4 EQU 32
+DEF An4 EQU 33
+DEF As4 EQU 34
+DEF Bn4 EQU 35
+DEF Cn5 EQU 36
+DEF Cs5 EQU 37
+DEF Dn5 EQU 38
+DEF Ds5 EQU 39
+DEF En5 EQU 40
+DEF Fn5 EQU 41
+DEF Fs5 EQU 42
+DEF Gn5 EQU 43
+DEF Gs5 EQU 44
+DEF An5 EQU 45
+DEF As5 EQU 46
+DEF Bn5 EQU 47
+DEF Cn6 EQU 48
+DEF Cs6 EQU 49
+DEF Dn6 EQU 50
+DEF Ds6 EQU 51
+DEF En6 EQU 52
+DEF Fn6 EQU 53
+DEF Fs6 EQU 54
+DEF Gn6 EQU 55
+DEF Gs6 EQU 56
+DEF An6 EQU 57
+DEF As6 EQU 58
+DEF Bn6 EQU 59
+DEF Cn7 EQU 60
+DEF Cs7 EQU 61
+DEF Dn7 EQU 62
+DEF Ds7 EQU 63
+DEF En7 EQU 64
+DEF Fn7 EQU 65
+DEF Fs7 EQU 66
+DEF Gn7 EQU 67
+DEF Gs7 EQU 68
+DEF An7 EQU 69
+DEF As7 EQU 70
+DEF Bn7 EQU 71
+DEF Cn8 EQU 72
+DEF Cs8 EQU 73
+DEF Dn8 EQU 74
+DEF Ds8 EQU 75
+DEF En8 EQU 76
+DEF Fn8 EQU 77
+DEF Fs8 EQU 78
+DEF Gn8 EQU 79
