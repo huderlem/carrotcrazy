@@ -395,9 +395,9 @@ RunLevelBonusScreen:
 	call Func_17ba8
 	ld hl, Data_1b75e
 	call LoadData
-	ld a, Bank(Func_17be2)
+	ld a, Bank(LoadBonusSprites)
 	ld [MBC5RomBank], a
-	call Func_17be2
+	call LoadBonusSprites
 	pop hl
 	ld a, $06
 	ld [MBC5RomBank], a
@@ -2035,7 +2035,7 @@ Func_d67:
 
 RunLevelIntroScreen:
 	push hl
-	ld hl, $71b2
+	ld hl, WarnerBrosBannerScreenData
 	call LoadData
 	call InitScreenMusic
 	pop hl
@@ -2757,7 +2757,7 @@ RunTreasureIslandBossScreen:
 	jr nz, .asm_1306
 	ld a, [$decd]
 	ldh [rSCX], a
-	call Func_16d2
+	call UpdateTreasureIslandBossScreenSprite
 .asm_1314
 	ldh a, [rLY]
 	cp 103
@@ -3097,7 +3097,7 @@ RunFuddForestBossScreen:
 	ldh [rSCX], a
 	call TryInitNextScreenHome
 	call Func_2c2b
-	call Func_170c
+	call UpdateFuddForestBossScreenSprite
 .asm_1617
 	ldh a, [rLY]
 	cp 112
@@ -3223,7 +3223,7 @@ Func_162d:
 	call Func_1ae2
 	ret
 
-Func_16d2:
+UpdateTreasureIslandBossScreenSprite:
 	ldh a, [hPaused]
 	and a
 	ret nz
@@ -3249,16 +3249,16 @@ Func_16d2:
 	ret
 
 Func_16fc:
-	ld a, Bank(Func_173fa)
+	ld a, Bank(UpdateTazZooBossScreen)
 	ld [MBC5RomBank], a
-	jp Func_173fa
+	jp UpdateTazZooBossScreen
 
 Func_1704:
 	ld a, Bank(Func_177a1)
 	ld [MBC5RomBank], a
 	jp Func_177a1
 
-Func_170c:
+UpdateFuddForestBossScreenSprite:
 	ldh a, [hPaused]
 	and a
 	ret nz
@@ -9887,9 +9887,9 @@ Func_3a82:
 	jr nc, .asm_3b54
 	ld a, [hl]
 	and $07
-	add LOW(Data_Unknown_HBlankTransitionMasks)
+	add LOW(HBlankTransitionMasks)
 	ld l, a
-	ld a, HIGH(Data_Unknown_HBlankTransitionMasks)
+	ld a, HIGH(HBlankTransitionMasks)
 	adc $00
 	ld h, a
 	ld a, [hl]
@@ -20595,7 +20595,6 @@ InitSound:
 ;   PlaySong_FuddForest      Fudd Forest levels 1-2
 ;   PlaySong_IntroScene      intro scene cutscene (after titlescreen)
 ; PlaySong_Unused2-5 have working loaders but are not referenced by any screen.
-; (PlaySong_Unused5 is named in Data_Unknown_71b2, but that block is unreferenced.)
 FadeInMusic:
 	jp FadeInMusic_
 
@@ -33081,7 +33080,7 @@ GameOverScreenBgBlits:
 	dw $c000, $8dd0
 	db $12, $06, $40, $ff
 
-Data_Unknown_HBlankTransitionMasks:
+HBlankTransitionMasks:
 	db $80, $ff, $fe, $fc, $f8, $f0, $e0, $c0
 
 CrazyTownBossScreenSprite:
@@ -33116,7 +33115,7 @@ TreasureIslandBossScreenSprite:
 TreasureIslandBossScreenSpriteYOffsets:
 	db $40, $41, $42, $43, $43, $42, $41, $40
 
-Func_173fa:
+UpdateTazZooBossScreen:
 	ldh a, [hPaused]
 	and a
 	ret nz
@@ -34383,7 +34382,7 @@ LevelBonusInterfaceTileCopyTable:
 	dw $c7c0, $0010
 	dw $c6c0, $0100
 
-Func_17be2:
+LoadBonusSprites:
 	ld hl, $3d83
 	ld bc, hNumClapboards
 	ld de, wBonusSpritePtrTable + 1 ; skip entry 0's attribute byte; write its pointer field
@@ -36792,11 +36791,11 @@ ScreenData_IntroScene:
 	dw RunIntroScene
 	dw PlaySong_IntroScene
 
-; Unreferenced data. The byte layout matches a menu-style ScreenData block
-; (background + edge + font + text tile loads, then $ff terminator), but the
-; dw after $ff is PlaySong_Unused5 rather than a Run* function pointer, and
-; no ScreenDataPointers entry points here. Likely leftover from development.
-Data_Unknown_71b2:
+; Warner Bros. banner graphics shown at the top of every level-intro screen.
+; RunLevelIntroScreen loads these via `ld hl, WarnerBrosBannerScreenData` /
+; `call LoadData`, which consumes the compressed_data entries up to the $ff
+; terminator. The trailing `dw PlaySong_Unused5`is not actually used.
+WarnerBrosBannerScreenData:
 	compressed_data WarnerBrosBackgroundTiles, $8830
 	compressed_data WarnerBrosBackgroundEdgeTiles, $8000
 	compressed_data MenuFontTiles, $C000
