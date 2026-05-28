@@ -235,7 +235,28 @@ wSoundEffectDuration:: ; $de0a
 wActiveSoundEffect:: ; $de27
 	ds 1
 
-	ds $5e
+	ds $58
+
+wLevelSummaryTimer:: ; $de80
+	ds 1
+
+; Target X position the boss vehicle eases toward.
+wBossVehicleTargetXPos:: ; $de81
+	ds 1
+
+; Current boss vehicle position, used to place the boss sprite (or the window
+; layer on some boss screens).
+wBossVehicleXPos:: ; $de82
+	ds 1
+wBossVehicleYPos:: ; $de83
+	ds 1
+
+wSceneLockTimer:: ; $de84
+	ds 1
+
+; Selects the HUD/screen drawing path: $00 = level HUD, $ff = studio HUD.
+wHudMode:: ; $de85
+	ds 1
 
 wQueuedTileGfx:: ; $de86
 	ds 16 * 3

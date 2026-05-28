@@ -588,7 +588,7 @@ RunLevelSummaryScreen:
 	ld hl, LevelSummaryScreenExtraBonusSprite
 	call LoadOAMSprites
 .asm_3f4
-	ld hl, $de80
+	ld hl, wLevelSummaryTimer
 	ld a, [hl]
 	and a
 	jr z, .asm_3ff
@@ -2196,7 +2196,7 @@ asm_e77:
 	call ResetFrameCounter
 	call Func_31e1
 	sub a
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ldh a, [hGameBoyColorDetection]
 	cp GBC_MODE
 	jr nz, .asm_ed7
@@ -2451,7 +2451,7 @@ RunLevelScreen:
 	call ResetFrameCounter
 	call Func_31e1
 	sub a
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ld a, 120
 	ldh [rWY], a
 	ld a, 7
@@ -2547,10 +2547,10 @@ RunCrazyTownBossScreen:
 	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 56
-	ld [$de83], a
+	ld [wBossVehicleYPos], a
 	ldh [rWY], a
 	ld a, $b0
-	ld [$de82], a
+	ld [wBossVehicleXPos], a
 	ld a, 165
 	ldh [rWX], a
 	ld hl, $9a00
@@ -2560,9 +2560,9 @@ RunCrazyTownBossScreen:
 	ld de, $298e
 	call Func_10c9
 	ld a, $6f
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	ld a, $78
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ld hl, PlayerEyePopAnimations
 	call InitPlayerAnimation
 	ld hl, $9ba0
@@ -2574,7 +2574,7 @@ RunCrazyTownBossScreen:
 	ldh [rSCY], a
 	ld a, [$dec7]
 	ldh [rSCX], a
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	cp $a6
 	jr c, .asm_1194
@@ -2683,10 +2683,10 @@ RunTreasureIslandBossScreen:
 	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 64
-	ld [$de83], a
+	ld [wBossVehicleYPos], a
 	ldh [rWY], a
 	ld a, $b8
-	ld [$de82], a
+	ld [wBossVehicleXPos], a
 	ld a, 165
 	ldh [rWX], a
 	ld hl, $9a00
@@ -2696,9 +2696,9 @@ RunTreasureIslandBossScreen:
 	ld de, $1881
 	call Func_10c9
 	ld a, $7f
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	ld a, $78
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ld hl, PlayerEyePopAnimations
 	call InitPlayerAnimation
 	ld hl, $9ba0
@@ -2710,7 +2710,7 @@ RunTreasureIslandBossScreen:
 	ldh [rSCY], a
 	ld a, [$dec7]
 	ldh [rSCX], a
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	cp $a6
 	jr c, .asm_12be
@@ -2838,11 +2838,11 @@ RunTazZooBossScreen:
 	or b
 	jr nz, .asm_13a6
 	ld a, $00
-	ld [$de82], a
+	ld [wBossVehicleXPos], a
 	ld a, $38
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	ld a, $78
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ld hl, PlayerEyePopAnimations
 	call InitPlayerAnimation
 	ld a, 144
@@ -2880,7 +2880,7 @@ RunTazZooBossScreen:
 	ldh a, [rLY]
 	cp 72
 	jr nz, .asm_140f
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	cpl
 	inc a
 	ldh [rSCX], a
@@ -2922,10 +2922,10 @@ RunSpaceStationBossScreen:
 	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 24
-	ld [$de83], a
+	ld [wBossVehicleYPos], a
 	ldh [rWY], a
 	ld a, $b0
-	ld [$de82], a
+	ld [wBossVehicleXPos], a
 	ld a, 165
 	ldh [rWX], a
 	ld hl, vBGWin
@@ -2942,9 +2942,9 @@ RunSpaceStationBossScreen:
 	or b
 	jr nz, .asm_1498
 	ld a, $90
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	ld a, $78
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ld hl, PlayerEyePopAnimations
 	call InitPlayerAnimation
 	ld hl, $9ba0
@@ -2952,7 +2952,7 @@ RunSpaceStationBossScreen:
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ldh [rLCDC], a
 .asm_14bb
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	cp 166
 	jr c, .asm_14cd
@@ -3016,10 +3016,10 @@ RunFuddForestBossScreen:
 	ldh [hForcedSideScrollSpeed], a
 	call Func_31e1
 	ld a, 48
-	ld [$de83], a
+	ld [wBossVehicleYPos], a
 	ldh [rWY], a
 	ld a, $b8
-	ld [$de82], a
+	ld [wBossVehicleXPos], a
 	ld a, 165
 	ldh [rWX], a
 	ld hl, $9a00
@@ -3039,9 +3039,9 @@ RunFuddForestBossScreen:
 	ld de, $c7e
 	call Func_10c9
 	ld a, $87
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	ld a, $78
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	ld hl, PlayerEyePopAnimations
 	call InitPlayerAnimation
 	ld hl, $9ba0
@@ -3053,7 +3053,7 @@ RunFuddForestBossScreen:
 	ldh [rSCY], a
 	ld a, [$dec7]
 	ldh [rSCX], a
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	cp 166
 	jr c, .asm_15c6
@@ -3115,7 +3115,7 @@ Func_162d:
 	ret nz
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
@@ -3124,7 +3124,7 @@ Func_162d:
 	ldh a, [$ffad]
 	bit 2, a
 	ret nz
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hld]
 	cp [hl]
 	ldh a, [hFrameCounter]
@@ -3206,7 +3206,7 @@ Func_162d:
 	ld [hli], a
 	ld [hl], b
 	ld sp, $dffe
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	sub $10
 	ld c, a
 	ldh a, [hCameraXOffset]
@@ -3239,8 +3239,8 @@ UpdateTreasureIslandBossScreenSprite:
 	adc $00
 	ld h, a
 	ld a, [hl]
-	ld [$de83], a
-	ld hl, $de82
+	ld [wBossVehicleYPos], a
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
@@ -3264,7 +3264,7 @@ UpdateFuddForestBossScreenSprite:
 	ret nz
 	ld a, $05
 	ld [MBC5RomBank], a
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
@@ -3282,7 +3282,7 @@ Func_1722:
 	ldh a, [hFrameCounter]
 	rra
 	ret c
-	ld hl, $de81
+	ld hl, wBossVehicleTargetXPos
 	ld a, [hli]
 	cp [hl]
 	ret z
@@ -3695,7 +3695,7 @@ HandlePlayerInput:
 	ldh a, [hPaused]
 	and a
 	ret nz
-	ld hl, $de84
+	ld hl, wSceneLockTimer
 	ld a, [hl]
 	and a
 	jr z, .asm_1996
@@ -6374,7 +6374,7 @@ PrepareCameraUpdate:
 	ldh a, [hPaused]
 	and a
 	ret nz
-	ld a, [$de84]
+	ld a, [wSceneLockTimer]
 	and a
 	ret nz
 	ldh a, [hForcedSideScrollSpeed]
@@ -6827,7 +6827,7 @@ Func_2c2b:
 	ldh a, [hPaused]
 	and a
 	ret nz
-	ld a, [$de84]
+	ld a, [wSceneLockTimer]
 	and a
 	ret nz
 	ldh a, [hForcedSideScrollSpeed]
@@ -7236,11 +7236,11 @@ Func_2e11:
 
 DrawLevelHUD:
 	sub a
-	ld [$de85], a
+	ld [wHudMode], a
 	jr DrawHUD
 DrawStudioHUD:
 	ld a, $ff
-	ld [$de85], a
+	ld [wHudMode], a
 	jr DrawHUD
 DrawHUD:
 	ldh a, [rLY]
@@ -7387,7 +7387,7 @@ DrawHUD:
 	ldh a, [rLY]
 	cp 143
 	jr nz, .asm_2eeb
-	ld a, [$de85]
+	ld a, [wHudMode]
 	and a
 	jp nz, Func_2e11
 	ld a, $05
@@ -14078,7 +14078,7 @@ SeagullCannonBallSprite:
 	sub_sprite $56, $64, 16, 2
 
 HandleJackhammerEntity:
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	sub $18
 	ld c, a
 	ldh a, [hCameraXOffset]
@@ -14659,7 +14659,7 @@ HandleBouncingOilDrumEntity:
 	add $28
 	sub b
 	ld b, a
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	cp b
 	jr nc, .asm_59bc
 	set 7, [hl]
@@ -14950,22 +14950,22 @@ CageWallSprite0:
 
 HandleMoveRightBossVehicleFarLeftEntity:
 	ld a, $37
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleMoveLeftBossVehicleFarLeftEntity:
 	ld a, $38
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleMoveLeftBossVehicleOffScreenEntity:
 	ld a, $00
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleMoveLeftBossVehicleFarRightEntity:
 	ld a, $98
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleFastestScrollRightEntity:
@@ -14985,17 +14985,17 @@ HandleNormalScrollRightEntity:
 
 HandleMoveYosemiteShipMiddleEntity:
 	ld a, $6f
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleMoveRightBossVehicleFarRightEntity:
 	ld a, $87
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleMoveRightBossVehicleOffScreenEntity:
 	ld a, $b8
-	ld [$de81], a
+	ld [wBossVehicleTargetXPos], a
 	jp ExitEntityHandler
 
 HandleTrainTrackDollyEntity:
@@ -15109,7 +15109,7 @@ HandleBossMovablePlatformEntity:
 	ld a, $ff
 	ldh [$ffe8], a
 .asm_5d12
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	sub $20
 	ld e, a
 	ldh a, [hCameraXOffset]
@@ -15426,7 +15426,7 @@ SharkSwimSprites:
 	dw SharkSwimSprite5 + 1
 
 HandleCannonballEntity:
-	ld a, [$de83]
+	ld a, [wBossVehicleYPos]
 	add $28
 	ld e, a
 	ldh a, [hCameraYOffset]
@@ -15437,7 +15437,7 @@ HandleCannonballEntity:
 	adc 0
 	ld d, a
 	ld [hli], a
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	ld c, a
 	ldh a, [hCameraXOffset]
 	add c
@@ -15549,7 +15549,7 @@ HandlePlatformDestructionEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_5fd3
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	sub $20
 	ld e, a
 	ldh a, [hCameraXOffset]
@@ -16297,7 +16297,7 @@ TazFemaleProjectileData:
 	projectile_spawn 1, -16, 2, -1, 12, -12, $18, TazFemaleProjectileSprites
 
 HandleBicycleEntity:
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	ld c, a
 	ldh a, [hCameraXOffset]
 	add c
@@ -19022,7 +19022,7 @@ HandleBoomBarrierEntity:
 	add $28
 	sub b
 	ld b, a
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	cp b
 	jr nc, .asm_74ce
 	set 7, [hl]
@@ -30903,7 +30903,7 @@ FadeInVolumeSequence:
 ; Four frames of CrazyTown boss tile graphics, 16 tiles ($100 bytes) per frame.
 ; Func_162d picks a frame (CrazyTownBossAnimationTiles + frame*$100), points SP at
 ; it, and POPs the bytes straight into VRAM tile memory during HBlank. The frame
-; index (0-3) is derived from the boss state at $de82.
+; index (0-3) is derived from the boss vehicle's current X (wBossVehicleXPos).
 ; TODO: ideally, this should be converted to regular PNG graphics.
 CrazyTownBossAnimationTiles:
 .frame0
@@ -33235,7 +33235,7 @@ UpdateTazZooBossScreen:
 	ld a, $b8
 	ld [hli], a
 	ld [hl], $b9
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	cp $38
 	jr nc, .asm_174cc
 	ld hl, $9b2d
@@ -33304,21 +33304,21 @@ UpdateTazZooBossScreen:
 	ld h, [hl]
 	ld l, a
 	push hl
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	ld c, a
 	ld b, $48
 	call LoadOAMSprites
 	pop hl
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	cp $38
 	jr c, .asm_17509
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	sub $50
 	ld c, a
 	ld b, $48
 	call LoadOAMSprites
 .asm_17509
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	and a
 	ret z
 	ld hl, hCameraXOffset
@@ -33333,7 +33333,7 @@ UpdateTazZooBossScreen:
 	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jr c, .asm_1753a
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	ld b, a
 	ldh a, [hCameraXOffset]
 	add b
@@ -33749,10 +33749,10 @@ Func_177a1:
 	ldh a, [hPaused]
 	and a
 	ret nz
-	ld a, [$de81]
+	ld a, [wBossVehicleTargetXPos]
 	cp $90
 	jr nz, .asm_177c9
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	cp $94
 	jr nc, .asm_177c9
 	ldh a, [hFrameCounter]
@@ -33766,9 +33766,9 @@ Func_177a1:
 	adc $00
 	ld h, a
 	ld a, [hl]
-	ld [$de82], a
+	ld [wBossVehicleXPos], a
 .asm_177c9
-	ld hl, $de82
+	ld hl, wBossVehicleXPos
 	ld a, [hli]
 	ld c, a
 	ld b, [hl]
@@ -33831,7 +33831,7 @@ Func_177a1:
 	dec d
 .asm_17822
 	ld [$9ba6], a
-	ld a, [$de82]
+	ld a, [wBossVehicleXPos]
 	sub $10
 	ld c, a
 	ldh a, [hCameraXOffset]
@@ -34501,7 +34501,7 @@ Func_17c82:
 	sub a
 	ld [$dda2], a
 	ld a, $78
-	ld [$de80], a
+	ld [wLevelSummaryTimer], a
 	ld hl, hNumCarrots
 	ld b, $00
 .asm_17c98
@@ -34650,7 +34650,7 @@ Func_17d6e:
 	ld [hli], a
 	ld [hl], a
 	ldh [hForcedSideScrollSpeed], a
-	ld [$de84], a
+	ld [wSceneLockTimer], a
 	call Func_17db0
 	call ResetPlayerData
 	ld hl, wMetatileRowPointers
