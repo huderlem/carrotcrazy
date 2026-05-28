@@ -1,6 +1,6 @@
 # Looney Tunes: Carrot Crazy
 
-This is a disassembly of Looney Tunes - Carrot Crazy (USA) (En,Fr,Es) (GB Compatible).
+This is a complete disassembly of Looney Tunes - Carrot Crazy (USA) (En,Fr,Es) (GB Compatible).
 
 It builds the following rom:
 
