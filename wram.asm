@@ -284,7 +284,14 @@ wHeldKeys:: ; $def9
 wNewKeys:: ; $defa
 	ds 1
 
-	ds 3
+wScreenFadeTimer:: ; $defb
+	ds 1
+; bit 7 set = fade out, clear = fade in.
+wScreenFadeState:: ; $defc
+	ds 1
+; Palette step index (0/3/6/9) into rBGPSettings.
+wScreenFadeStep:: ; $defd
+	ds 1
 
 wDisableMusic:: ; $defe
 	ds 1

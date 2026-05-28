@@ -300,7 +300,7 @@ Func_1b9:
 	ld a, $c7
 	ldh [rLCDC], a
 .asm_1bd
-	ld a, [$defd]
+	ld a, [wScreenFadeStep]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
@@ -334,7 +334,7 @@ Func_1b9:
 	cp 55
 	jr nz, .asm_1f6
 	call WaitHBlankStart
-	ld a, [$defd]
+	ld a, [wScreenFadeStep]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
@@ -861,7 +861,7 @@ RunLanguageSelectScreen:
 	ld a, $05
 	ld [MBC5RomBank], a
 	call LoadOAMSprites
-	ld a, [$defc]
+	ld a, [wScreenFadeState]
 	and a
 	jp nz, .asm_5f4
 	ld hl, wLanguageSetting
@@ -940,7 +940,7 @@ RunOptionsScreen:
 	ld a, Bank(DrawOptionsScreen)
 	ld [MBC5RomBank], a
 	call DrawOptionsScreen
-	ld a, [$defc]
+	ld a, [wScreenFadeState]
 	and a
 	jp nz, .asm_69c
 	ld hl, wPasswordEntryCursor
@@ -1155,7 +1155,7 @@ RunTitlescreen:
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ldh [rLCDC], a
 .asm_826
-	ld a, [$defd]
+	ld a, [wScreenFadeStep]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
@@ -1255,7 +1255,7 @@ RunTitlescreen:
 	ldh [rSCX], a
 	ld a, 112
 	ldh [rSCY], a
-	ld a, [$defd]
+	ld a, [wScreenFadeStep]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
@@ -1429,7 +1429,7 @@ RunTitlescreen:
 .asm_9e1
 	ld bc, $5034
 	call LoadOAMSprites
-	ld a, [$defc]
+	ld a, [wScreenFadeState]
 	and a
 	jp nz, .asm_826
 	ldh a, [hFrameCounter]
@@ -1583,7 +1583,7 @@ RunIntroScene:
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ldh [rLCDC], a
 .asm_aec
-	ld a, [$defd]
+	ld a, [wScreenFadeStep]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
@@ -1620,7 +1620,7 @@ RunIntroScene:
 	cp 55
 	jr nz, .asm_b2d
 	call WaitHBlankStart
-	ld a, [$defd]
+	ld a, [wScreenFadeStep]
 	ld c, a
 	ld b, $00
 	ld hl, rBGPSettings
@@ -1819,7 +1819,7 @@ RunIntroScene:
 	call WaitVBlank
 	call TryInitNextScreenHome
 	call UpdateFrameCounter
-	ld a, [$defc]
+	ld a, [wScreenFadeState]
 	and a
 	jp nz, .asm_aec
 	ld a, $50
@@ -2132,7 +2132,7 @@ RunLevelIntroScreen:
 .asm_e41
 	call ClearOAMBufferHome
 	call TickMusicEngineHome
-	ld a, [$defc]
+	ld a, [wScreenFadeState]
 	and a
 	jp nz, .asm_df2
 	ld a, [wNewKeys]
@@ -2851,9 +2851,9 @@ RunTazZooBossScreen:
 	ldh [rWX], a
 	sub a
 	ld [$ddc3], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 5, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld hl, $9ba0
 	call Func_fd9
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINON | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
@@ -3121,7 +3121,7 @@ Func_162d:
 	ld b, [hl]
 	ld hl, CrazyTownBossScreenSprite
 	call LoadOAMSprites
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 	ld hl, wBossVehicleXPos
@@ -3276,7 +3276,7 @@ Func_1722:
 	ldh a, [hPaused]
 	and a
 	ret nz
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 	ldh a, [hFrameCounter]
@@ -3365,10 +3365,10 @@ Func_1748:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_17e2
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_17e2
-	ldh a, [$ffae]
+	ldh a, [hPlayerTerrainContact]
 	bit 1, a
 	jr nz, .asm_17e2
 	ldh a, [$ffdd]
@@ -3393,7 +3393,7 @@ Func_1748:
 	jr c, .asm_17e2
 	jr .asm_17dc
 .asm_17c7
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	rra
 	jr nc, .asm_17d5
 	ldh a, [hPlayerYPos]
@@ -3407,9 +3407,9 @@ Func_1748:
 	cp $1e
 	jr nc, .asm_17e2
 .asm_17dc
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_17e2
 	pop hl
 	push hl
@@ -3647,12 +3647,12 @@ Func_1948:
 	ldh [$ffb3], a
 	ldh [$ffb4], a
 	ldh [$ffb6], a
-	ldh [$ffaf], a
+	ldh [hPlayerPose], a
 	ldh [$ffd1], a
 	ldh [$ffd2], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $0c
 	call PlaySoundEffectHome
 	ret
@@ -3702,7 +3702,7 @@ HandlePlayerInput:
 	dec [hl]
 	ret
 .asm_1996
-	ld hl, $ffad
+	ld hl, hPlayerFlags
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -3744,7 +3744,7 @@ Func_19e5:
 	bit 1, b
 	jr nz, asm_19f2
 Func_19e9:
-	ld hl, $ffad
+	ld hl, hPlayerFlags
 	ld a, b
 	ld [hli], a
 	ld a, c
@@ -3759,13 +3759,13 @@ asm_19f2:
 	jr nz, .asm_1a2d
 	bit 4, b
 	jr z, .asm_1a15
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_1a15
 	bit 4, d
 	jr nz, .asm_1a15
 	ld a, $d0
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	res 4, b
 	ld d, $20
 	ld hl, PlayerDamagedAnimations
@@ -3892,14 +3892,14 @@ Func_1a73:
 	jp Func_19e9
 
 Func_1ae2:
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 	set 2, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
 	ldh [hCurHealth], a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jp Func_2326
 
 DizzyStarsSprite:
@@ -3954,7 +3954,7 @@ Func_1b46:
 	ldh a, [$ffe8]
 	and a
 	jr nz, .asm_1ba3
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_1b55
 	cp $38
@@ -3973,13 +3973,13 @@ Func_1b46:
 	jr .asm_1b71
 .asm_1b69
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 .asm_1b6c
 	res 2, d
 	res 3, d
 	ret
 .asm_1b71
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	bit 4, b
 	jr z, .asm_1b6c
 	ldh a, [$ffb4]
@@ -4019,7 +4019,7 @@ Func_1b46:
 	res 5, b
 	ld a, $02
 .asm_1bba
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	bit 4, b
 	ret z
 	ldh a, [$ffb4]
@@ -4058,7 +4058,7 @@ Func_1bdc:
 	ld [hl], $01
 .asm_1bf3
 	ld a, $d0
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	res 4, b
 	jr .asm_1c58
 .asm_1bfb
@@ -4090,7 +4090,7 @@ Func_1bdc:
 	call InitPlayerAnimation
 .asm_1c28
 	ld a, $f0
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	res 4, b
 	jr .asm_1c51
 .asm_1c30
@@ -4122,7 +4122,7 @@ Func_1bdc:
 	ldh a, [$ffb4]
 	and a
 	ret nz
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	jr c, .asm_1c94
 	bit 1, e
@@ -4139,7 +4139,7 @@ Func_1bdc:
 	ld hl, PlayerUmbrellaAnimations
 	jp InitPlayerAnimation
 .asm_1c7b
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	cp $38
 	jr c, .asm_1c89
 	ld d, $00
@@ -4182,7 +4182,7 @@ Func_1c9f:
 	ret nz
 	bit 7, d
 	ret nz
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_1cc8
 	cp $38
@@ -4252,7 +4252,7 @@ Func_1d20:
 	ldh [$ffb7], a
 	jr nz, .asm_1d39
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jr .asm_1d5e
 .asm_1d39
 	bit 7, e
@@ -4264,7 +4264,7 @@ Func_1d20:
 	jr z, .asm_1d49
 	ld a, $ec
 .asm_1d47
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 .asm_1d49
 	sub a
 	bit 5, e
@@ -4278,13 +4278,13 @@ Func_1d20:
 	res 5, b
 	ld a, $01
 .asm_1d5c
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 .asm_1d5e
 	jp Func_19e5
 
 Func_1d61:
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	ldh [$ff8a], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4359,7 +4359,7 @@ Func_1dc9:
 	jr z, .asm_1ddb
 	ld a, $0c
 .asm_1ddb
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	ld hl, BugsClimbingAnimation
 	bit 7, b
 	jr z, .asm_1de7
@@ -4392,7 +4392,7 @@ Func_1dc9:
 	set 6, b
 .asm_1e14
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jr .asm_1e1b
 .asm_1e19
 	res 6, b
@@ -4401,7 +4401,7 @@ Func_1dc9:
 
 Func_1e1e:
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	ldh [$ff8a], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4484,7 +4484,7 @@ Func_1e8c:
 	ldh [$ffc1], a
 	jp nz, .asm_1f70
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld hl, hPlayerYPos
 	ld a, [hl]
 	sub $01
@@ -4627,7 +4627,7 @@ Func_1e8c:
 
 Func_1f73:
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	ldh [$ff8a], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4699,7 +4699,7 @@ Func_1fcf:
 
 Func_1fe3:
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	ldh [$ff8a], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4762,7 +4762,7 @@ Func_1fe3:
 
 Func_2045:
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	ldh [$ff8a], a
 	ld hl, $ffbc
 	ldh a, [hPlayerXPos]
@@ -4915,13 +4915,13 @@ Func_2081:
 	jr c, .asm_2142
 .asm_213f
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 .asm_2142
 	jp Func_19e5
 
 Func_2145:
 	sub a
-	ldh [$ffc4], a
+	ldh [hPlayerXVelocity], a
 	ldh [$ff8a], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -5031,7 +5031,7 @@ Func_2145:
 	jr c, .asm_21f4
 	ld a, $f8
 .asm_21f4
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	push bc
 	push de
 	ldh a, [hPlayerXPos]
@@ -5121,7 +5121,7 @@ Func_226c:
 	ldh [$ffb7], a
 	jr nz, .asm_2285
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jr .asm_22c6
 .asm_2285
 	bit 7, e
@@ -5133,7 +5133,7 @@ Func_226c:
 	jr z, .asm_2295
 	ld a, $f0
 .asm_2293
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 .asm_2295
 	ld a, $f0
 	bit 5, e
@@ -5183,14 +5183,14 @@ Func_22c9:
 	ldh a, [$ffba]
 	ld [hl], a
 	sub a
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	jr .asm_22f5
 .asm_22e0
 	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_22f5
 	ld a, $e0
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerHelicopterAnimations
@@ -5229,7 +5229,7 @@ Func_2324:
 	ld d, $00
 Func_2326:
 	sub a
-	ldh [$ffaf], a
+	ldh [hPlayerPose], a
 Func_2329:
 	sub a
 	ldh [$ffc5], a
@@ -5237,8 +5237,8 @@ Func_232c:
 	sub a
 	ldh [$ffc2], a
 	ldh [$ffc3], a
-	ldh [$ffc4], a
-	ldh [$ffc6], a
+	ldh [hPlayerXVelocity], a
+	ldh [hPlayerYVelocity], a
 	ldh [$ffb2], a
 	ldh [$ffb3], a
 	ldh [$ffb4], a
@@ -5262,9 +5262,9 @@ InitPlayerState:
 	inc c
 	dec b
 	jr nz, .asm_2352
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 4, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ret
 
 HandlePlayerCollision:
@@ -5279,7 +5279,7 @@ HandlePlayerCollision:
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld hl, $ffad
+	ld hl, hPlayerFlags
 	ld a, [hld]
 	and $10
 	ld [hli], a
@@ -5289,10 +5289,10 @@ HandlePlayerCollision:
 	res 1, [hl]
 	sub a
 	ldh [$ffd4], a
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	ret z
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $12
 	jr nz, .asm_2399
 	ld hl, $4
@@ -5403,10 +5403,10 @@ HandlePlayerCollision:
 	ld d, h
 	ld e, l
 	sub a
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	ldh [$ffcc], a
 .asm_2427
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	jr nc, .asm_244a
 	ld hl, $ffe2
@@ -5463,13 +5463,13 @@ HandlePlayerCollision:
 	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jp nz, .asm_2583
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jp nz, .asm_2583
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jp nz, .asm_2583
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_249f
 	cp $38
@@ -5496,13 +5496,13 @@ HandlePlayerCollision:
 	jr c, .asm_2529
 	cp $0c
 	jr nc, .asm_2529
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 4, a
 	jr z, .asm_2529
 	ld a, [wHeldKeys]
 	add a
 	jr nc, .asm_2529
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	bit 4, a
 	jr nz, .asm_2529
 	ld a, e
@@ -5516,31 +5516,31 @@ HandlePlayerCollision:
 	add $09
 	ld c, a
 	ld a, $09
-	ldh [$ffb0], a
-	ldh a, [$ffad]
+	ldh [hPlayerState], a
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	call Func_2326
 	jp .asm_257d
 .asm_24f5
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 4, a
 	jr z, .asm_2529
 	ld a, [wHeldKeys]
 	add a
 	jr nc, .asm_2529
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	bit 4, a
 	jr nz, .asm_2529
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	add a
 	jr c, .asm_2529
 	inc de
 	ld a, $12
-	ldh [$ffb0], a
-	ldh a, [$ffad]
+	ldh [hPlayerState], a
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld hl, PlayerDiggingAnimations
 	call InitPlayerAnimation
 	ld a, $58
@@ -5555,7 +5555,7 @@ HandlePlayerCollision:
 	ld d, h
 	ld e, l
 	call Func_299f
-	ld hl, $ffad
+	ld hl, hPlayerFlags
 	cp $15
 	jr z, .asm_253d
 	cp $12
@@ -5572,7 +5572,7 @@ HandlePlayerCollision:
 	ld a, [wHeldKeys]
 	bit PADB_UP, a
 	jr z, .asm_2571
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	bit 4, a
 	jr nz, .asm_2571
 	res 0, [hl]
@@ -5585,14 +5585,14 @@ HandlePlayerCollision:
 	add $09
 	ld c, a
 	ld a, $09
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	set 6, [hl]
 	call Func_2326
 	jr .asm_2577
 .asm_2571
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 0, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_2577
 	ld hl, $1e
 	add hl, de
@@ -5666,7 +5666,7 @@ Func_25da:
 	ld e, l
 	jr Func_260d
 Func_25ef:
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $09
 	ret nz
 	ld a, e
@@ -5678,16 +5678,16 @@ Func_25fb:
 	ldh a, [$ffb6]
 	and a
 	jr nz, Func_25da
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, Func_25da
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	jr Func_25da
 Func_260d:
 	sub a
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	ldh [$ffcc], a
 	ldh [$ffb2], a
 	ldh [$ffb3], a
@@ -5768,7 +5768,7 @@ Func_267a:
 	jp Func_28b7
 
 Func_2698:
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $09
 	jr nz, Func_2665
 	ret
@@ -5777,12 +5777,12 @@ Func_269f:
 	ldh a, [$ffb6]
 	and a
 	jr nz, Func_2665
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, Func_2665
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	jr Func_2665
 
 Func_26b1:
@@ -6033,7 +6033,7 @@ Func_27fd:
 	and $0f
 	cp $0e
 	ret c
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	ret c
 	ld a, e
@@ -6063,7 +6063,7 @@ Func_2823:
 	and $0f
 	cp $0e
 	ret c
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	ret c
 	ld a, e
@@ -6093,7 +6093,7 @@ Func_2849:
 	and $0f
 	cp $0d
 	ret c
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	ret c
 	ld a, e
@@ -6123,7 +6123,7 @@ Func_286f:
 	and $0f
 	cp $0d
 	ret c
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	ret c
 	ld a, e
@@ -6155,17 +6155,17 @@ Func_2889:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_28b4
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_28b4
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_28b4
 	jp Func_28b7
 
 Func_28b7:
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, Func_28c4
 	cp $38
@@ -6173,14 +6173,14 @@ Func_28b7:
 	call Func_1ae2
 Func_28c4:
 	sub a
-	ldh [$ffc6], a
+	ldh [hPlayerYVelocity], a
 	ldh [$ffb2], a
 	ldh [$ffb3], a
 	ld a, $f0
 	ldh [$ffcc], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 4, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
 	ldh [$ffd1], a
 	ldh [$ffd2], a
@@ -6190,7 +6190,7 @@ Func_28db:
 	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_28e5
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 .asm_28e5
@@ -6265,27 +6265,27 @@ Func_2949:
 	sub a
 	ld [hld], a
 	ld [hl], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 3, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ret
 
 Func_296c:
 	ldh a, [$ffb6]
 	and a
 	jr nz, Func_2949
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, Func_2949
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	jr Func_2949
 
 Func_297e:
-	ldh a, [$ffae]
+	ldh a, [hPlayerTerrainContact]
 	set 1, a
-	ldh [$ffae], a
+	ldh [hPlayerTerrainContact], a
 	ret
 
 Func_2985:
@@ -6293,9 +6293,9 @@ Func_2985:
 	and $0f
 	cp $0c
 	ret nc
-	ldh a, [$ffae]
+	ldh a, [hPlayerTerrainContact]
 	set 1, a
-	ldh [$ffae], a
+	ldh [hPlayerTerrainContact], a
 	ret
 
 Func_2992:
@@ -6303,9 +6303,9 @@ Func_2992:
 	and $0f
 	cp $04
 	ret c
-	ldh a, [$ffae]
+	ldh a, [hPlayerTerrainContact]
 	set 1, a
-	ldh [$ffae], a
+	ldh [hPlayerTerrainContact], a
 	ret
 
 Func_299f:
@@ -6423,7 +6423,7 @@ PrepareCameraUpdate:
 .asm_2a32
 	sub a
 	ldh [$ffa5], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 	ldh a, [hCameraXOffset]
@@ -6449,7 +6449,7 @@ PrepareCameraUpdate:
 .asm_2a57
 	sub a
 	ldh [$ffa5], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 	ldh a, [hCameraXOffset]
@@ -6833,7 +6833,7 @@ Func_2c2b:
 	ldh a, [hForcedSideScrollSpeed]
 	and a
 	jr z, .asm_2c5d
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	ret nz
 	ldh a, [hForcedSideScrollSpeed]
@@ -7001,7 +7001,7 @@ DrawPlayerSprite:
 	bit 1, a
 	ret nz
 .asm_2d16
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 5, a
 	jr z, .asm_2d24
 	ldh a, [$ff8b]
@@ -7059,7 +7059,7 @@ DrawPlayerSprite:
 	ret
 
 InitPlayerAnimation:
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	add a
 	jr nc, .load
 	inc hl
@@ -7717,7 +7717,7 @@ DrawHUDNumClapboards:
 	ret
 
 DrawHUDBunnyFaceTop:
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	add a
 	ld hl, HUDBugsBunnyFaceTiles
 	jr nc, .draw
@@ -7728,7 +7728,7 @@ DrawHUDBunnyFaceTop:
 	jp Func_31a9
 
 DrawHUDBunnyFaceBottom:
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	add a
 	ld hl, HUDBugsBunnyFaceTiles + $30
 	jr nc, .draw
@@ -9580,7 +9580,7 @@ Func_3939:
 	ldh a, [hPlayerXPos + 1]
 	adc 0
 	ld [hli], a
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	ld b, 30 ; pixel height of player
 	rra
 	jr nc, .asm_3960
@@ -10528,7 +10528,7 @@ Func_3dce:
 	jp StartScreenFade
 
 Func_3ddc:
-	ld a, [$defc]
+	ld a, [wScreenFadeState]
 	and a
 	ret nz
 	call FadeOutMusicHome
@@ -10736,7 +10736,7 @@ HandleStudioCharacterEntity:
 	ldh a, [hLevelCleared]
 	and a
 	jr nz, .asm_4049
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 4, a
 	jr z, .asm_4049
 	ld a, [$defa]
@@ -10936,10 +10936,10 @@ HandleCollectibleEntity:
 	cp $22
 	jr nc, .asm_41c1
 .asm_4179
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_41c1
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_41c1
 	sub a
@@ -11004,7 +11004,7 @@ HandleCollectibleEntity:
 	cp $92
 	jr c, .asm_41ff
 	pop hl
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_4200
 	set 4, [hl]
@@ -11074,9 +11074,9 @@ HandleCollectibleEntity:
 	call PlaySoundEffectHome
 	ld a, $f0
 	ldh [$ffb6], a
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	res 2, a
-	ldh [$ffaf], a
+	ldh [hPlayerPose], a
 	jr .asm_423b
 .collectSuperCarrot
 	ld a, $10
@@ -11084,7 +11084,7 @@ HandleCollectibleEntity:
 	ld a, $24
 	ldh [$ffb7], a
 	ld a, $03
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld hl, PlayerFlyingAnimations
 	call InitPlayerAnimation
 	jr .asm_423b
@@ -11284,7 +11284,7 @@ TweetyDownSprite:
 	sub_sprite $38, $26, 16, -32
 
 HandlePushableObjectEntity:
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jp z, ExitEntityHandler
 	call HandlePushableObjectEntity_
@@ -11394,10 +11394,10 @@ HandlePushableObjectEntity_:
 	ldh [$ffc7], a
 	sub a
 	ldh [$ffc5], a
-	ldh [$ffc4], a
-	ldh a, [$ffad]
+	ldh [hPlayerXVelocity], a
+	ldh a, [hPlayerFlags]
 	set 3, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, e
 	ldh [hPlayerXPos], a
 	ld a, d
@@ -11448,10 +11448,10 @@ HandlePushableObjectEntity_:
 	ld a, d
 	ldh [hPlayerYPos + 1], a
 	jr z, .asm_44d8
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_44d8
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	cp $28
 	jr c, .asm_44cf
 	ld a, $28
@@ -11466,10 +11466,10 @@ HandlePushableObjectEntity_:
 	ret
 
 Func_44dc:
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	ret nz
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 4, a
 	ret z
 	add a
@@ -11864,13 +11864,13 @@ HandleSkateboardEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_4878
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_4870
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_4870
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_4870
 	cp $38
@@ -11897,11 +11897,11 @@ HandleSkateboardEntity:
 	cp $10
 	jr nc, .asm_4870
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $06
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -11935,41 +11935,41 @@ HandleSkateboardEntity:
 	ldh a, [hPlayerXPos]
 	ld [hli], a
 	inc hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_48a2
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_48a2
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_48b8
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_48be
 .asm_48a2
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_48be
 .asm_48b8
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_48be
 	jp ExitEntityHandler
 
@@ -12342,9 +12342,9 @@ HandleSylvesterEntity:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_4b18
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_4b18
 	ld a, [hli]
 	cp b
@@ -12716,9 +12716,9 @@ Func_4c1b:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_4d50
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_4d50
 	pop de
 	pop bc
@@ -13299,13 +13299,13 @@ HandleBarrelBoatEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_517b
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_5173
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_5173
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_5173
 	cp $38
@@ -13330,11 +13330,11 @@ HandleBarrelBoatEntity:
 	cp $20
 	jr nc, .asm_5173
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $0c
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -13380,41 +13380,41 @@ HandleBarrelBoatEntity:
 	inc hl
 	inc hl
 	inc hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_51b3
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_51b3
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_51c9
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .exit
 .asm_51b3
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .exit
 .asm_51c9
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .exit
 	jp ExitEntityHandler
 
@@ -13477,13 +13477,13 @@ HandleCannonEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_52b6
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jp nz, .asm_5306
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jp nz, .asm_5306
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jp nz, .asm_5306
 	cp $38
@@ -13504,11 +13504,11 @@ HandleCannonEntity:
 	cp $10
 	jr nc, .asm_5306
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $0f
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld hl, PlayerInvisibleAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -13532,16 +13532,16 @@ HandleCannonEntity:
 	ldh [hPlayerYPos], a
 	ld a, d
 	ldh [hPlayerYPos + 1], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_52f9
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_52f9
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_5300
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_5306
 	ld a, [hl]
@@ -13559,19 +13559,19 @@ HandleCannonEntity:
 	ldh [$ffc2], a
 	ld a, [bc]
 	ld b, a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	and $df
 	or b
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_52f9
 	res 7, [hl]
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jr .asm_5306
 .asm_5300
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_5306
 	jp ExitEntityHandler
 
@@ -13981,9 +13981,9 @@ HandleSeagullEntity:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_5555
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_5555
 	inc hl
 	ld a, [hli]
@@ -14136,22 +14136,22 @@ HandleJackhammerEntity:
 	bit 7, [hl]
 	jp z, .asm_570a
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jp .asm_570a
 .asm_5654
 	bit 7, [hl]
 	jr nz, .asm_56c4
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_56bc
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_56bc
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_56bc
 	cp $38
@@ -14178,11 +14178,11 @@ HandleJackhammerEntity:
 	cp $10
 	jr nc, .asm_56bc
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $15
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -14216,41 +14216,41 @@ HandleJackhammerEntity:
 	ldh a, [hPlayerXPos]
 	ld [hli], a
 	inc hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_56ee
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_56ee
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_5704
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_570a
 .asm_56ee
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_570a
 .asm_5704
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_570a
 	jp ExitEntityHandler
 
@@ -14264,7 +14264,7 @@ HandleWreckingBallEntity:
 	ld a, [hli]
 	ld b, a
 	call RunMovementScript
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	and a
 	jr z, .asm_574a
 	ld hl, $ffe0
@@ -14290,9 +14290,9 @@ HandleWreckingBallEntity:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_574a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_574a
 	ld d, b
 	ld b, e
@@ -14357,7 +14357,7 @@ HandleFixedPathEntity:
 	and $c0
 	ld [hl], a
 .asm_57c1
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	and a
 	ld a, [hl]
 	jr z, .asm_57c9
@@ -14388,10 +14388,10 @@ HandleFixedPathEntity:
 	ld b, a
 	bit 7, [hl]
 	jp nz, .asm_586d
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_5869
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_5869
 	ld a, e
@@ -14445,11 +14445,11 @@ HandleFixedPathEntity:
 	bit 6, [hl]
 	jr nz, .asm_58b8
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $18
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld hl, PlayerSwingingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -14486,35 +14486,35 @@ HandleFixedPathEntity:
 	adc $00
 	ld [hl], a
 	pop hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_589a
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_589a
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_58b2
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_58b8
 .asm_589a
 	res 7, [hl]
 	set 6, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_58b8
 .asm_58b2
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_58b8
 	jp ExitEntityHandler
 
@@ -14632,7 +14632,7 @@ HandleBouncingOilDrumEntity:
 	jr c, .asm_59a5
 	jr .asm_599a
 .asm_5985
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	rra
 	jr c, .asm_5993
 	ldh a, [hPlayerYPos]
@@ -14649,9 +14649,9 @@ HandleBouncingOilDrumEntity:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_59a5
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_59a5
 	ldh a, [hCameraXOffset]
 	ld b, a
@@ -14768,10 +14768,10 @@ HandleBreakableWallEntity:
 	ldh [$ffc7], a
 	sub a
 	ldh [$ffc5], a
-	ldh [$ffc4], a
-	ldh a, [$ffad]
+	ldh [hPlayerXVelocity], a
+	ldh a, [hPlayerFlags]
 	set 3, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_5a51
 	ldh a, [$ff8a]
 	ld b, a
@@ -15376,12 +15376,12 @@ HandleSharkEntity:
 	ld a, $0d
 	call PlaySoundEffectHome
 .asm_5e9e
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and $18
 	srl a
 	srl a
 	ld e, a
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	add e
 	add (SharkSwimSprites & $ff)
 	ld e, a
@@ -15682,10 +15682,10 @@ HandleHippoEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_60df
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_60ce
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_60ce
 	cp $38
@@ -15710,11 +15710,11 @@ HandleHippoEntity:
 	cp $40
 	jr nc, .asm_60ce
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $1b
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -15759,41 +15759,41 @@ HandleHippoEntity:
 	ldh a, [hPlayerXPos + 1]
 	sbc $00
 	ld [hli], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	and $20
 	ld b, a
 	ld a, [hl]
 	and $df
 	or b
 	ld [hl], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_610d
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_610d
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_6123
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_6129
 .asm_610d
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6129
 .asm_6123
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_6129
 	jp ExitEntityHandler
 
@@ -16354,22 +16354,22 @@ HandleBicycleEntity:
 	bit 7, [hl]
 	jp z, .asm_6574
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jp .asm_6574
 .asm_6493
 	bit 7, [hl]
 	jr nz, .asm_6503
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_64fb
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_64fb
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_64fb
 	cp $38
@@ -16396,11 +16396,11 @@ HandleBicycleEntity:
 	cp $18
 	jr nc, .asm_64fb
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $1e
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -16419,9 +16419,9 @@ HandleBicycleEntity:
 	ld [hl], d
 	call Func_2326
 	pop hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 5, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_64fb
 	ld bc, BicycleSprite0 + 1
 	call Func_792d
@@ -16462,37 +16462,37 @@ HandleBicycleEntity:
 	ldh a, [hPlayerXPos]
 	ld [hli], a
 	inc hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 5, a
-	ldh [$ffad], a
-	ldh a, [$ffad]
+	ldh [hPlayerFlags], a
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_6558
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_6558
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_656e
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_6574
 .asm_6558
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6574
 .asm_656e
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_6574
 	jp ExitEntityHandler
 
@@ -16523,11 +16523,11 @@ HandleBalloonEntity:
 	jp z, .asm_66c2
 	res 7, [hl]
 	set 6, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jp .asm_66c2
 .asm_65b7
 	cp $14
@@ -16567,10 +16567,10 @@ HandleBalloonEntity:
 	ld b, a
 	bit 7, [hl]
 	jp nz, .asm_6677
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jp nz, .asm_6673
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_6673
 	ld a, e
@@ -16629,11 +16629,11 @@ HandleBalloonEntity:
 	jr nz, .asm_664b
 	inc [hl]
 .asm_664b
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $18
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld hl, PlayerSwingingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -16670,35 +16670,35 @@ HandleBalloonEntity:
 	adc $00
 	ld [hl], a
 	pop hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_66a4
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_66a4
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_66bc
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_66c2
 .asm_66a4
 	res 7, [hl]
 	set 6, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_66c2
 .asm_66bc
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_66c2
 	jp ExitEntityHandler
 
@@ -17151,9 +17151,9 @@ HandleCageDropEntity:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_6956
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_6956
 	pop hl
 	ld a, e
@@ -17198,10 +17198,10 @@ HandleTeleporterEntity:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_69ed
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_69ed
 	ldh a, [hPlayerYPos]
@@ -17222,11 +17222,11 @@ HandleTeleporterEntity:
 	bit 7, [hl]
 	jr nz, .asm_69ef
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $21
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	inc hl
 	ld a, [hli]
 	ldh [$ffba], a
@@ -17308,15 +17308,15 @@ HandleBombHazardEntity:
 	sub c
 	cp $18
 	jr nc, .asm_6a5f
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_6a5f
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_6a5f
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	pop hl
 	ld [hl], $80
 	jr .asm_6a7d
@@ -17566,7 +17566,7 @@ HandleInstantMartianEntity:
 	call PlaySoundEffectHome
 	jr .asm_6bb8
 .asm_6bdd
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	cp $5c
 	jr nz, .asm_6be9
 	ld bc, InstantMartianProjectileData
@@ -17575,19 +17575,19 @@ HandleInstantMartianEntity:
 	ldh a, [hFrameCounter]
 	rra
 	jr nc, .asm_6bf6
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	and $20
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
 .asm_6bf6
 	ld de, InstantMartianIdleSprites
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	rra
 	jr nc, .asm_6c01
 	ld de, InstantMartianTurnSprites
 .asm_6c01
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and $18
 	srl a
 	srl a
@@ -17839,15 +17839,15 @@ HandleDogEntity:
 	sub c
 	cp $20
 	jr nc, .asm_6d8b
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_6d8b
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_6d8b
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_6d8b
 	pop hl
 	ld bc, $1818
@@ -17884,7 +17884,7 @@ HandleDogEntity:
 	and $f8
 	ld [hl], a
 .asm_6dc3
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
@@ -17979,10 +17979,10 @@ HandleLeverSpringEntity:
 	sub c
 	cp $28
 	jr nc, .asm_6e73
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	add a
 	jr c, .asm_6e73
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_6e73
 	call Func_28b7
@@ -17994,7 +17994,7 @@ HandleLeverSpringEntity:
 	inc de
 	bit 7, [hl]
 	jr z, .asm_6e73
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_6e73
 	res 7, [hl]
@@ -18082,13 +18082,13 @@ HandleHoverShipEntity:
 	jr .asm_6f60
 .asm_6ef3
 	pop hl
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_6f60
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_6f60
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_6f60
 	cp $38
@@ -18113,16 +18113,16 @@ HandleHoverShipEntity:
 	cp $20
 	jr nc, .asm_6f60
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $24
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $04
 	ldh [$ffeb], a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 5, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -18192,34 +18192,34 @@ HandleHoverShipEntity:
 	ldh a, [hPlayerYPos]
 	ld [hl], a
 	pop hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_6fbb
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_6fbb
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_6fd1
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_6fd7
 .asm_6fbb
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6fd7
 .asm_6fd1
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_6fd7
 	jp ExitEntityHandler
 
@@ -18234,13 +18234,13 @@ HandleSpaceScooterEntity:
 	ld b, a
 	bit 7, [hl]
 	jr nz, .asm_704b
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_7045
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_7045
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_7045
 	cp $38
@@ -18265,14 +18265,14 @@ HandleSpaceScooterEntity:
 	cp $28
 	jr nc, .asm_7045
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $27
-	ldh [$ffb0], a
-	ldh a, [$ffad]
+	ldh [hPlayerState], a
+	ldh a, [hPlayerFlags]
 	set 5, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $bf
 	ldh [$ffb7], a
 	push hl
@@ -18325,9 +18325,9 @@ HandleFallingAsteroidEntity:
 	sub c
 	cp $20
 	jr nc, .asm_7082
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_7082
 	pop hl
 	ld bc, FallingAsteroidSprite0 + 1
@@ -18436,9 +18436,9 @@ HandleBearTrapEntity:
 	ldh a, [$ffb6]
 	and a
 	jr nz, .asm_7135
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_7135
 	pop hl
 	ldh a, [hFrameCounter]
@@ -18541,27 +18541,27 @@ HandleDisguisedHunterEntity:
 	call PlaySoundEffectHome
 	jr .asm_71b2
 .asm_71d7
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	rra
 	jr nc, .asm_71e8
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	cp $18
 	jr nz, .asm_71e8
 	ld bc, DisguisedHunterProjectileData
 	call Func_1868
 .asm_71e8
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	and $20
 	res 5, [hl]
 	or [hl]
 	ld [hl], a
 	ld de, DisguisedHunterSprites
-	ldh a, [$ffe5]
+	ldh a, [hMovementScriptState]
 	rra
 	jr nc, .asm_71fb
 	ld de, DisguisedHunterShootingSprites
 .asm_71fb
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and $f8
 	srl a
 	srl a
@@ -18648,13 +18648,13 @@ HandleHelicopterChairEntity:
 	jr .asm_72e4
 .asm_7279
 	pop hl
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_72e4
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_72e4
-	ldh a, [$ffc6]
+	ldh a, [hPlayerYVelocity]
 	bit 7, a
 	jr nz, .asm_72e4
 	cp $38
@@ -18681,14 +18681,14 @@ HandleHelicopterChairEntity:
 	cp $10
 	jr nc, .asm_72e4
 	set 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	ld a, $2a
-	ldh [$ffb0], a
-	ldh a, [$ffad]
+	ldh [hPlayerState], a
+	ldh a, [hPlayerFlags]
 	res 5, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	push hl
 	inc hl
 	ld a, [hli]
@@ -18730,34 +18730,34 @@ HandleHelicopterChairEntity:
 	ldh a, [hPlayerYPos]
 	ld [hl], a
 	pop hl
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_7314
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr z, .asm_7314
 	ld a, [wHeldKeys]
 	bit PADB_B, a
 	jr z, .asm_732a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 6, a
 	jr nz, .asm_7330
 .asm_7314
 	res 7, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld a, $06
 	ldh [$ffb2], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_7330
 .asm_732a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	res 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_7330
 	jp ExitEntityHandler
 
@@ -19012,9 +19012,9 @@ HandleBoomBarrierEntity:
 	and $38
 	cp $20
 	jr c, .asm_74b7
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 1, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 .asm_74b7
 	ldh a, [hCameraXOffset]
 	ld b, a
@@ -19076,7 +19076,7 @@ RunMovementScript:
 .asm_74fb
 	dec [hl]
 	ld a, [hli]
-	ldh [$ffe4], a
+	ldh [hMovementScriptTimer], a
 	cp $ff
 	ld a, [hli]
 	ld h, [hl]
@@ -19104,7 +19104,7 @@ RunMovementScript:
 ; Per-entity movement scripts run by RunMovementScript to drive moving hazards/
 ; platforms. There is one script per entity type. Each step is a tiny routine that
 ; nudges the entity's 16-bit position (de = Y, bc = X), optionally reports a
-; per-frame state byte in [$ffe5], and ends by jumping to MovementScriptApplyResult
+; per-frame state byte in [hMovementScriptState], and ends by jumping to MovementScriptApplyResult
 ; to commit it.
 ;
 ; A "command" is 3 bytes: db <frames>, dw <step>. Eeach command's 3 bytes sit in ROM
@@ -19113,9 +19113,9 @@ RunMovementScript:
 ; the next command from [step-3..step-1] (see RunMovementScript.asm_7507), so each
 ; step is permanently chained to whatever command precedes the next step.
 ;
-; [$ffe4] = the script frame counter (the timer value, decreasing); handlers test
+; [hMovementScriptTimer] = the script frame counter (the timer value, decreasing); handlers test
 ; its low bits to move every Nth frame, or use it to index the delta curves below.
-; [$ffe5] = a per-frame state byte the owning entity reads (e.g. the Instant
+; [hMovementScriptState] = a per-frame state byte the owning entity reads (e.g. the Instant
 ; Martian uses bit 5 = facing left, bit 0 = turning; the wrecking ball treats
 ; any nonzero value as "hazard active").
 
@@ -19193,7 +19193,7 @@ WreckingBallScriptDownA4:
 	inc de
 	inc de
 	inc de
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and a
 	jr nz, WreckingBallScriptApplyActive
 	ld a, $0d
@@ -19238,7 +19238,7 @@ WreckingBallScriptDownB4:
 	inc de
 	inc de
 	inc de
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and a
 	jr nz, WreckingBallScriptApplyActive
 	ld a, $0d
@@ -19258,12 +19258,12 @@ WreckingBallScriptUpB:
 ; Shared tail: report state $01, then commit the position.
 WreckingBallScriptApplyActive:
 	ld a, $01
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 ; Shared tail: report state $00, then commit the position.
 WreckingBallScriptApplyIdle:
 	sub a
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 
 	db $50
@@ -19271,8 +19271,8 @@ WreckingBallScriptApplyIdle:
 ; Move up 1px every other frame; report state $00.
 HangingHookScript:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp c, MovementScriptApplyResult
 	dec de
@@ -19282,8 +19282,8 @@ HangingHookScript:
 ; Move down 1px every other frame; report state $00.
 HangingHookScriptDown:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp c, MovementScriptApplyResult
 	inc de
@@ -19293,14 +19293,14 @@ HangingHookScriptDown:
 	dw BouncingOilDrumScript
 ; Advance X every other frame and add Curve1 to Y; play SFX $0c once the timer reaches 0.
 BouncingOilDrumScript:
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	rra
 	jr nc, .skipAdvanceX
 	inc bc
 .skipAdvanceX:
 	ld hl, BouncingOilDrumDeltas
 	call MovementScriptAddDelta
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and a
 	jp nz, MovementScriptApplyResult
 	ld a, $0c
@@ -19322,15 +19322,15 @@ BouncingOilDrumDeltas:
 ; Hold position; report state $00.
 SharkScript:
 	sub a
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $20
 	dw SharkScriptPauseLeft
 ; Move right 1px every other frame; report state $08.
 SharkScriptRight:
 	ld a, $08
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp c, MovementScriptApplyResult
 	inc bc
@@ -19340,15 +19340,15 @@ SharkScriptRight:
 ; Hold position; report state $10.
 SharkScriptPauseLeft:
 	ld a, $10
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $20
 	dw SharkScript
 ; Move left 1px every other frame; report state $18.
 SharkScriptLeft:
 	ld a, $18
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp c, MovementScriptApplyResult
 	dec bc
@@ -19359,8 +19359,8 @@ SharkScriptLeft:
 ; Move down 1px every other frame; report state $00.
 BalloonsScript:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp c, MovementScriptApplyResult
 	inc de
@@ -19370,8 +19370,8 @@ BalloonsScript:
 ; Move up 1px every other frame; report state $00.
 BalloonsScriptUp:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp c, MovementScriptApplyResult
 	dec de
@@ -19381,7 +19381,7 @@ BalloonsScriptUp:
 	dw InstantMartianScriptPauseRight
 ; Drift X right every other frame and add Curve2 to Y; report state $00.
 InstantMartianScript:
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	rra
 	jr nc, .skipAdvanceX
 	inc bc
@@ -19389,20 +19389,20 @@ InstantMartianScript:
 	ld hl, InstantMartianDeltas
 	call MovementScriptAddDelta
 	ld a, $00
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $60
 	dw InstantMartianScriptArcLeft
 ; Hold position; report state $01.
 InstantMartianScriptPauseRight:
 	ld a, $01
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $20
 	dw InstantMartianScriptPauseLeft
 ; Drift X left every other frame and add Curve2 to Y; report state $20.
 InstantMartianScriptArcLeft:
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	rra
 	jr nc, .skipAdvanceX
 	dec bc
@@ -19410,14 +19410,14 @@ InstantMartianScriptArcLeft:
 	ld hl, InstantMartianDeltas
 	call MovementScriptAddDelta
 	ld a, $20
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $60
 	dw InstantMartianScript
 ; Hold position; report state $21.
 InstantMartianScriptPauseLeft:
 	ld a, $21
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $60
 	dw InstantMartianBossScript
@@ -19426,7 +19426,7 @@ InstantMartianBossScript:
 	ld hl, InstantMartianDeltas
 	call MovementScriptAddDelta
 	ld a, $00
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 ; Signed per-frame Y offsets for a second, gentler swing.
 InstantMartianDeltas:
@@ -19461,8 +19461,8 @@ BombHazardScript:
 ; Move right 1px every other frame; report state $00.
 K9ScriptRight:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp nc, MovementScriptApplyResult
 	inc bc
@@ -19472,8 +19472,8 @@ K9ScriptRight:
 ; Move left 1px every other frame; report state $20.
 K9Script:
 	ld a, $20
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp nc, MovementScriptApplyResult
 	dec bc
@@ -19498,7 +19498,7 @@ FallingAsteroidScript:
 	dw FuelCanisterScriptUp
 ; Move down 1px every 4th frame.
 FuelCanisterScript:
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and $03
 	jp nz, MovementScriptApplyResult
 	inc de
@@ -19507,7 +19507,7 @@ FuelCanisterScript:
 	dw FuelCanisterScript
 ; Move up 1px every 4th frame.
 FuelCanisterScriptUp:
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	and $03
 	jp nz, MovementScriptApplyResult
 	dec de
@@ -19518,8 +19518,8 @@ FuelCanisterScriptUp:
 ; Move right 1px/frame and down 1px every other frame; report state $00.
 HookLineScriptDownRight:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jr c, .skipDownStep
 	inc de
@@ -19531,8 +19531,8 @@ HookLineScriptDownRight:
 ; Move left 1px/frame and up 1px every other frame; report state $00.
 HookLineScript:
 	sub a
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jr c, .skipUpStep
 	dec de
@@ -19545,7 +19545,7 @@ HookLineScript:
 ; Move right 1px; report state $00.
 HuntingDogScriptRight:
 	sub a
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	inc bc
 	jp MovementScriptApplyResult
 	db $40
@@ -19553,7 +19553,7 @@ HuntingDogScriptRight:
 ; Move left 1px; report state $20.
 HuntingDogScript:
 	ld a, $20
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	dec bc
 	jp MovementScriptApplyResult
 
@@ -19562,8 +19562,8 @@ HuntingDogScript:
 ; Move right 1px every other frame; report state $00.
 DisguisedHunterScriptRight:
 	ld a, $00
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp nc, MovementScriptApplyResult
 	inc bc
@@ -19573,15 +19573,15 @@ DisguisedHunterScriptRight:
 ; Hold position; report state $21.
 DisguisedHunterScriptPauseLeft:
 	ld a, $21
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 	db $30
 	dw DisguisedHunterScript
 ; Move left 1px every other frame; report state $20.
 DisguisedHunterScriptLeft:
 	ld a, $20
-	ldh [$ffe5], a
-	ldh a, [$ffe4]
+	ldh [hMovementScriptState], a
+	ldh a, [hMovementScriptTimer]
 	rra
 	jp nc, MovementScriptApplyResult
 	dec bc
@@ -19591,12 +19591,12 @@ DisguisedHunterScriptLeft:
 ; Hold position; report state $01.
 DisguisedHunterScript:
 	ld a, $01
-	ldh [$ffe5], a
+	ldh [hMovementScriptState], a
 	jp MovementScriptApplyResult
 
-; Adds the signed 16-bit entry [$ffe4] of the curve at hl to the position in de.
+; Adds the signed 16-bit entry [hMovementScriptTimer] of the curve at hl to the position in de.
 MovementScriptAddDelta:
-	ldh a, [$ffe4]
+	ldh a, [hMovementScriptTimer]
 	add a
 	add l
 	ld l, a
@@ -19660,7 +19660,7 @@ Func_78ae:
 	jr z, .asm_792a
 	cp $08
 	jr nc, .asm_792a
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 5, a
 	jr nz, .asm_7914
 	ldh a, [$ffdd]
@@ -20349,17 +20349,17 @@ HandleLadderEntity:
 	ld [hl], $20
 	dec hl
 	set 6, [hl]
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	set 6, a
-	ldh [$ffad], a
+	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	jr .asm_7dbf
 .asm_7d49
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	and a
 	jr nz, .asm_7dbf
-	ldh a, [$ffad]
+	ldh a, [hPlayerFlags]
 	bit 2, a
 	jr nz, .asm_7dbf
 	ld a, e
@@ -20414,7 +20414,7 @@ HandleLadderEntity:
 	inc hl
 	ld [hl], $10
 	ld a, $18
-	ldh [$ffb0], a
+	ldh [hPlayerState], a
 	ld hl, PlayerSwingingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -33386,7 +33386,7 @@ TryInitNextScreen:
 	and a
 	ret nz
 TryInitNextScreen_:
-	ld hl, $defb
+	ld hl, wScreenFadeTimer
 	dec [hl]
 	ret nz
 	ld a, $08
@@ -33421,7 +33421,7 @@ TryInitNextScreen_:
 	ret
 
 StartScreenFade:
-	ld hl, $defb
+	ld hl, wScreenFadeTimer
 	ld a, $01
 	ld [hli], a
 	ld a, b
@@ -33941,12 +33941,12 @@ UpdatePlayerState:
 	inc c
 	dec b
 	jr nz, .asm_17934
-	ld hl, $ffc4
+	ld hl, hPlayerXVelocity
 	ld b, $18
 	ld c, $02
 	ld d, $28
 	ld e, $03
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $03
 	jr nz, .asm_17957
 	ld b, $14
@@ -33956,19 +33956,19 @@ UpdatePlayerState:
 	jr nz, .asm_17957
 	ld c, $01
 .asm_17957
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $2a
 	jr nz, .asm_1795f
 	ld d, $10
 .asm_1795f
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $27
 	jr nz, .asm_1796b
 	ld b, $20
 	ld c, $00
 	ld e, $00
 .asm_1796b
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $24
 	jr nz, .asm_1797c
 	ld b, $10
@@ -33978,18 +33978,18 @@ UpdatePlayerState:
 	jr c, .asm_1797c
 	ld c, $01
 .asm_1797c
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $21
 	jr nz, .asm_17984
 	ld e, $00
 .asm_17984
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $1e
 	jr nz, .asm_1798e
 	ld b, $28
 	ld c, $01
 .asm_1798e
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $1b
 	jr nz, .asm_179a2
 	ld b, $08
@@ -34000,12 +34000,12 @@ UpdatePlayerState:
 	jr nz, .asm_179a2
 	ld c, $01
 .asm_179a2
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $18
 	jr nz, .asm_179aa
 	ld e, $00
 .asm_179aa
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $15
 	jr nz, .asm_179bb
 	ld b, $10
@@ -34015,12 +34015,12 @@ UpdatePlayerState:
 	jr c, .asm_179bb
 	ld c, $01
 .asm_179bb
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $12
 	jr nz, .asm_179c3
 	ld e, $00
 .asm_179c3
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $0c
 	jr nz, .asm_179d7
 	ld b, $10
@@ -34031,12 +34031,12 @@ UpdatePlayerState:
 	jr nz, .asm_179d7
 	ld c, $01
 .asm_179d7
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $09
 	jr nz, .asm_179df
 	ld e, $00
 .asm_179df
-	ldh a, [$ffb0]
+	ldh a, [hPlayerState]
 	cp $06
 	jr nz, .asm_179f0
 	ld b, $20
@@ -34070,7 +34070,7 @@ UpdatePlayerState:
 	jr nz, .asm_17a17
 	ld c, $01
 .asm_17a17
-	ldh a, [$ffaf]
+	ldh a, [hPlayerPose]
 	add a
 	jr nc, .asm_17a31
 	ldh a, [$ffd6]
