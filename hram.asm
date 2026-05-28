@@ -1,5 +1,9 @@
 DEF hDMARoutine EQU $ff80
 
+; General-purpose scratch bytes
+DEF hTemp  EQU $ff8a
+DEF hTemp2 EQU $ff8b
+
 ; Set to non-zero value to indicate the game is paused.
 DEF hPaused EQU $ff92
 
@@ -34,6 +38,8 @@ DEF hPlayerState EQU $ffb0
 
 DEF hLevelCleared EQU $ffb5
 
+DEF hHabaneroTimer EQU $ffb6
+
 DEF hPlayerXVelocity EQU $ffc4
 DEF hPlayerYVelocity EQU $ffc6
 
@@ -42,6 +48,9 @@ DEF hPlayerXPos EQU $ffc8
 DEF hPlayerYPos EQU $ffca
 
 DEF hCameraXOffsetScreenRight EQU $ffdb
+
+; 16-bit value; Player center X in world coords (hPlayerXPos + 8); entities read it for proximity/collision checks.
+DEF hPlayerCollisionXPos EQU $ffdd
 
 DEF hMovementScriptTimer EQU $ffe4
 DEF hMovementScriptState EQU $ffe5

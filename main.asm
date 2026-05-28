@@ -256,11 +256,11 @@ RunEpilogueSceneScreen:
 	ld de, $da80
 .asm_170
 	ld a, [bc]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [de]
 	ld [bc], a
 	inc c
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [de], a
 	inc e
 	jr nz, .asm_170
@@ -1211,7 +1211,7 @@ RunTitlescreen:
 	ld hl, TitlescreenScrollSprites
 	ld de, $ded8
 	ld a, $07
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_884
 	ld a, [de]
 	add [hl]
@@ -1242,9 +1242,9 @@ RunTitlescreen:
 	pop de
 	inc hl
 	inc hl
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_884
 .asm_8ae
 	ldh a, [rLY]
@@ -1838,7 +1838,7 @@ Func_c7d:
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [$dec1]
@@ -1857,7 +1857,7 @@ Func_c7d:
 	ldh [$ff8f], a
 	dec hl
 	ld a, [hli]
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ld a, [hl]
 	and $1f
 	ldh [$ff8c], a
@@ -1930,12 +1930,12 @@ Func_cdf:
 	add c
 	ld [de], a
 	inc e
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [de], a
 	inc e
 	add $02
-	ldh [$ff8a], a
-	ldh a, [$ff8b]
+	ldh [hTemp], a
+	ldh a, [hTemp2]
 	ld [de], a
 	inc e
 	inc hl
@@ -1948,7 +1948,7 @@ Func_cdf:
 	ret
 
 Func_d0f:
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [bc]
 	and a
 	ret z
@@ -1958,7 +1958,7 @@ Func_d0f:
 	sub $40
 	add a
 	add $80
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ldh a, [hActiveSprites]
 	ld l, a
 	ld h, $df
@@ -1969,9 +1969,9 @@ Func_d0f:
 	add $08
 	ld e, a
 	ld [hli], a
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	ld [hli], a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [hli], a
 	ld a, l
 	ldh [hActiveSprites], a
@@ -2331,11 +2331,11 @@ Func_fb4:
 	ld de, $da80
 .asm_fba
 	ld a, [bc]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [de]
 	ld [bc], a
 	inc c
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [de], a
 	inc e
 	jr nz, .asm_fba
@@ -2343,11 +2343,11 @@ Func_fb4:
 	ld de, $d980
 .asm_fcc
 	ld a, [bc]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [de]
 	ld [bc], a
 	inc c
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [de], a
 	inc e
 	jr nz, .asm_fcc
@@ -3215,9 +3215,9 @@ Func_162d:
 	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	ret c
 	call Func_1ae2
@@ -3315,7 +3315,7 @@ Func_1748:
 	ret z
 	ld a, [hli]
 	ld d, a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_1763
@@ -3362,7 +3362,7 @@ Func_1748:
 	ld [hli], a
 	ld d, a
 	push hl
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_17e2
 	ldh a, [hPlayerState]
@@ -3371,10 +3371,10 @@ Func_1748:
 	ldh a, [hPlayerTerrainContact]
 	bit 1, a
 	jr nz, .asm_17e2
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	ld l, a
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_17e2
 	ld a, l
@@ -3422,7 +3422,7 @@ Func_1748:
 	ld l, a
 	ld a, $05
 	ld [MBC5RomBank], a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	add a
 	ldh a, [hFrameCounter]
 	jr nc, .asm_17f9
@@ -3646,7 +3646,7 @@ Func_1948:
 	ldh [$ffb2], a
 	ldh [$ffb3], a
 	ldh [$ffb4], a
-	ldh [$ffb6], a
+	ldh [hHabaneroTimer], a
 	ldh [hPlayerPose], a
 	ldh [$ffd1], a
 	ldh [$ffd2], a
@@ -3910,11 +3910,11 @@ DizzyStarsSprite:
 Func_1afd:
 	bit 4, d
 	jp nz, Func_1d0e
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr z, .asm_1b1d
 	dec a
-	ldh [$ffb6], a
+	ldh [hHabaneroTimer], a
 	jr nz, .asm_1b0e
 	res 2, d
 .asm_1b0e
@@ -3993,7 +3993,7 @@ Func_1b46:
 	ret nz
 	ld d, $04
 	ld hl, PlayerRunningAnimations
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jp z, InitPlayerAnimation
 	ld hl, PlayerHabaneroAnimations
@@ -4285,7 +4285,7 @@ Func_1d20:
 Func_1d61:
 	sub a
 	ldh [hPlayerXVelocity], a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
 	sub [hl]
@@ -4307,7 +4307,7 @@ Func_1d61:
 	ld a, $01
 	jr c, .asm_1d93
 .asm_1d88
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ldh [hPlayerXPos], a
 	ld a, [hl]
@@ -4328,7 +4328,7 @@ Func_1d61:
 	rra
 	jr nc, .asm_1dc6
 	bit 5, b
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	jr z, .asm_1db4
 	inc a
 	jr z, .asm_1dc6
@@ -4402,7 +4402,7 @@ Func_1dc9:
 Func_1e1e:
 	sub a
 	ldh [hPlayerXVelocity], a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
 	sub [hl]
@@ -4424,7 +4424,7 @@ Func_1e1e:
 	ld a, $01
 	jr c, .asm_1e50
 .asm_1e45
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ldh [hPlayerXPos], a
 	ld a, [hl]
@@ -4445,7 +4445,7 @@ Func_1e1e:
 	rra
 	jr nc, .asm_1e83
 	bit 5, b
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	jr z, .asm_1e71
 	inc a
 	jr z, .asm_1e83
@@ -4542,13 +4542,13 @@ Func_1e8c:
 	ld a, $05
 	ld [MBC5RomBank], a
 	ld a, [hli]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_1f0a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	and a
 	jr z, .asm_1f6e
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld d, a
 	and $0f
@@ -4567,7 +4567,7 @@ Func_1e8c:
 	jr .asm_1f0a
 .asm_1f28
 	ld a, [hl]
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ld hl, hPlayerYPos
 	ld a, [hli]
 	ld e, a
@@ -4612,7 +4612,7 @@ Func_1e8c:
 	swap a
 	add l
 	ld l, a
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	ld [hl], a
 	pop de
 	pop bc
@@ -4628,7 +4628,7 @@ Func_1e8c:
 Func_1f73:
 	sub a
 	ldh [hPlayerXVelocity], a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
 	sub [hl]
@@ -4650,7 +4650,7 @@ Func_1f73:
 	ld a, $01
 	jr c, .asm_1fa5
 .asm_1f9a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ldh [hPlayerXPos], a
 	ld a, [hl]
@@ -4658,7 +4658,7 @@ Func_1f73:
 	sub a
 	ldh [$ffc5], a
 .asm_1fa5
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	bit 5, e
 	jr z, .asm_1fb4
 	set 5, b
@@ -4700,7 +4700,7 @@ Func_1fcf:
 Func_1fe3:
 	sub a
 	ldh [hPlayerXVelocity], a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
 	sub [hl]
@@ -4722,7 +4722,7 @@ Func_1fe3:
 	ld a, $01
 	jr c, .asm_2015
 .asm_200a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ldh [hPlayerXPos], a
 	ld a, [hl]
@@ -4743,7 +4743,7 @@ Func_1fe3:
 	rra
 	jr nc, .asm_2042
 	bit 5, b
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	jr z, .asm_2036
 	inc a
 	jr z, .asm_2042
@@ -4763,7 +4763,7 @@ Func_1fe3:
 Func_2045:
 	sub a
 	ldh [hPlayerXVelocity], a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld hl, $ffbc
 	ldh a, [hPlayerXPos]
 	sub [hl]
@@ -4773,7 +4773,7 @@ Func_2045:
 	dec l
 	jr c, .asm_2064
 	ld a, $01
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ldh [hPlayerXPos], a
 	ld a, [hl]
@@ -4784,7 +4784,7 @@ Func_2045:
 	ld a, [wNewKeys]
 	rra
 	jr nc, .asm_207e
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
 	jr z, .asm_207e
 	ld a, $28
@@ -4805,9 +4805,9 @@ Func_2081:
 	cp $78
 	jp nz, .asm_2121
 	sub a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, $02
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 .asm_2099
 	ld hl, $ffba
 	ldh a, [hPlayerXPos]
@@ -4817,7 +4817,7 @@ Func_2081:
 	ldh a, [hPlayerXPos + 1]
 	cp [hl]
 	jr nz, .asm_20ad
-	ld hl, $ff8a
+	ld hl, hTemp
 	inc [hl]
 	jr .asm_20d4
 .asm_20ad
@@ -4844,12 +4844,12 @@ Func_2081:
 	adc $00
 	ld [hl], a
 .asm_20ce
-	ld hl, $ff8b
+	ld hl, hTemp2
 	dec [hl]
 	jr nz, .asm_2099
 .asm_20d4
 	ld a, $02
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 .asm_20d8
 	ld hl, $ffbc
 	ldh a, [hPlayerYPos]
@@ -4859,7 +4859,7 @@ Func_2081:
 	ldh a, [hPlayerYPos + 1]
 	cp [hl]
 	jr nz, .asm_20ec
-	ld hl, $ff8a
+	ld hl, hTemp
 	inc [hl]
 	jr .asm_2113
 .asm_20ec
@@ -4886,11 +4886,11 @@ Func_2081:
 	adc $00
 	ld [hl], a
 .asm_210d
-	ld hl, $ff8b
+	ld hl, hTemp2
 	dec [hl]
 	jr nz, .asm_20d8
 .asm_2113
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	cp $02
 	jr nz, .asm_2142
 	ld hl, PlayerTeleportInAnimations
@@ -4922,7 +4922,7 @@ Func_2081:
 Func_2145:
 	sub a
 	ldh [hPlayerXVelocity], a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
 	sub [hl]
@@ -4944,7 +4944,7 @@ Func_2145:
 	ld a, $01
 	jr c, .asm_2177
 .asm_216c
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ldh [hPlayerXPos], a
 	ld a, [hl]
@@ -4967,7 +4967,7 @@ Func_2145:
 .asm_218d
 	ldh a, [$ffeb]
 	add a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	jr nc, .asm_219b
 	inc a
 	jr z, .asm_21a2
@@ -5242,7 +5242,7 @@ Func_232c:
 	ldh [$ffb2], a
 	ldh [$ffb3], a
 	ldh [$ffb4], a
-	ldh [$ffb6], a
+	ldh [hHabaneroTimer], a
 	ldh [$ffd1], a
 	ldh [$ffd2], a
 	ret
@@ -5675,7 +5675,7 @@ Func_25ef:
 	inc de
 	jr Func_260d
 Func_25fb:
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, Func_25da
 	ldh a, [hPlayerState]
@@ -5774,7 +5774,7 @@ Func_2698:
 	ret
 
 Func_269f:
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, Func_2665
 	ldh a, [hPlayerState]
@@ -6152,7 +6152,7 @@ Func_2889:
 	and $f0
 	add $07
 	ld e, a
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_28b4
 	ldh a, [hPlayerState]
@@ -6271,7 +6271,7 @@ Func_2949:
 	ret
 
 Func_296c:
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, Func_2949
 	ldh a, [hPlayerState]
@@ -6965,7 +6965,7 @@ DrawPlayerSprite:
 	ld b, $df
 	ld hl, $ffd8
 	sub a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -6973,7 +6973,7 @@ DrawPlayerSprite:
 	ld l, a
 	dec hl
 	ld a, [hli]
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ld a, [hli]
 	inc hl
 	and $1f
@@ -7004,9 +7004,9 @@ DrawPlayerSprite:
 	ldh a, [hPlayerFlags]
 	bit 5, a
 	jr z, .asm_2d24
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	set 5, a
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	jr .asm_2d42
 .asm_2d24
 	ld a, [hli]
@@ -7018,12 +7018,12 @@ DrawPlayerSprite:
 	add d
 	ld [bc], a
 	inc c
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [bc], a
 	inc c
 	add $02
-	ldh [$ff8a], a
-	ldh a, [$ff8b]
+	ldh [hTemp], a
+	ldh a, [hTemp2]
 	ld [bc], a
 	inc c
 	ldh a, [$ff8c]
@@ -7041,12 +7041,12 @@ DrawPlayerSprite:
 	add d
 	ld [bc], a
 	inc c
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld [bc], a
 	inc c
 	add $02
-	ldh [$ff8a], a
-	ldh a, [$ff8b]
+	ldh [hTemp], a
+	ldh a, [hTemp2]
 	ld [bc], a
 	inc c
 	ldh a, [$ff8c]
@@ -7295,7 +7295,7 @@ DrawHUD:
 	jr .asm_2ee8
 .asm_2e85
 	ld a, $16
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_2e89
 	pop bc
 	pop de
@@ -7340,9 +7340,9 @@ DrawHUD:
 	ld [hli], a
 	ld [hl], b
 	inc hl
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_2e89
 	pop bc
 	pop de
@@ -7771,17 +7771,17 @@ DrawHUDClapboardPiece:
 
 DrawHUDCarrotMeterTop:
 	sub a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr DrawHUDCarrotMeterRow
 DrawHUDCarrotMeterBottom:
 	ld a, $10
-	ldh [$ff8a], a
+	ldh [hTemp], a
 DrawHUDCarrotMeterRow:
 	ld hl, hNumCarrots
 	ld a, [hli]
 	cp [hl]
 	jr z, .asm_310e
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	and a
 	jr nz, .asm_310e
 	inc [hl]
@@ -7809,13 +7809,13 @@ DrawHUDCarrotMeterRow:
 	ld h, $40
 	ld c, a
 	ld b, $8a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	add c
 	ld c, a
 	ld a, b
 	adc $00
 	ld b, a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	add l
 	ld l, a
 	ld a, h
@@ -8051,17 +8051,17 @@ LoadDynamicEntitySprites:
 	ret nz
 	ld hl, $dd80
 	ld a, [hli]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, $14
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ld a, $0c
 	ld [MBC5RomBank], a
 .asm_3265
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	and a
 	jr z, .asm_32df
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -8110,11 +8110,11 @@ LoadDynamicEntitySprites:
 	add d
 	ld [bc], a
 	inc c
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	ld [bc], a
 	inc c
 	add $02
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ldh a, [$ff8c]
 	ld [bc], a
 	inc c
@@ -8133,11 +8133,11 @@ LoadDynamicEntitySprites:
 	add d
 	ld [bc], a
 	inc c
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	ld [bc], a
 	inc c
 	add $02
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ldh a, [$ff8c]
 	ld [bc], a
 	inc c
@@ -8163,13 +8163,13 @@ LoadDynamicEntitySprites:
 	ld hl, wQueuedTileGfx
 	ld a, [bc]
 	inc c
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_32f1
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	and a
 	ret z
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	inc c
 	inc c
 	ld a, [bc]
@@ -8185,7 +8185,7 @@ LoadDynamicEntitySprites:
 	ld a, [de]
 	inc de
 	and $e0
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	ld a, [de]
 	and $c0
 	rlca
@@ -8196,7 +8196,7 @@ LoadDynamicEntitySprites:
 	and $3f
 	add $40 ; high byte of gfx address
 	ld d, a
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	ld e, a
 .asm_331c
 	ld a, c
@@ -8240,7 +8240,7 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8140
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_3352
 	pop bc
 	pop de
@@ -8285,9 +8285,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_3352
 	pop bc
 	pop de
@@ -8330,7 +8330,7 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	inc l
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_33be
 	pop bc
 	pop de
@@ -8375,9 +8375,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_33be
 	ld hl, wQueuedTileGfx + 6
 	ld a, [hli]
@@ -8388,7 +8388,7 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8180
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_3406
 	pop bc
 	pop de
@@ -8433,9 +8433,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_3406
 	pop bc
 	pop de
@@ -8478,7 +8478,7 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	inc l
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_3472
 	pop bc
 	pop de
@@ -8523,9 +8523,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_3472
 	ld hl, wQueuedTileGfx + 12
 	ld a, [hli]
@@ -8536,7 +8536,7 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $81c0
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_34ba
 	pop bc
 	pop de
@@ -8581,9 +8581,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_34ba
 	pop bc
 	pop de
@@ -8714,7 +8714,7 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8200
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_358c
 	pop bc
 	pop de
@@ -8759,9 +8759,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_358c
 	pop bc
 	pop de
@@ -8804,7 +8804,7 @@ LoadQueuedTileGfx:
 	ld [hl], b
 	inc l
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_35f8
 	pop bc
 	pop de
@@ -8849,9 +8849,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_35f8
 	ld hl, wQueuedTileGfx + 24
 	ld a, [hli]
@@ -8862,7 +8862,7 @@ LoadQueuedTileGfx:
 	ld sp, hl
 	ld hl, $8240
 	ld a, $02
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_3640
 	pop bc
 	pop de
@@ -8907,9 +8907,9 @@ LoadQueuedTileGfx:
 	inc l
 	ld [hl], b
 	inc l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_3640
 	pop bc
 	pop de
@@ -9830,7 +9830,7 @@ Func_3a82:
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	add a
 	jr nc, .asm_3ae5
@@ -9850,9 +9850,9 @@ Func_3a82:
 	add hl, de
 	ld d, h
 	ld e, l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_3aa2
 	ld hl, $def3
 	dec [hl]
@@ -9893,10 +9893,10 @@ Func_3a82:
 	adc $00
 	ld h, a
 	ld a, [hl]
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 .asm_3af6
 	call WaitHBlankStart
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	ld l, a
 	cpl
 	ld h, a
@@ -9937,9 +9937,9 @@ Func_3a82:
 	adc $01
 	ld d, a
 .asm_3b28
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_3af6
 	ld hl, $def3
 	dec [hl]
@@ -10092,12 +10092,12 @@ Func_3bb4:
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	push hl
 .asm_3bff
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ldh [$ff8c], a
 .asm_3c03
 	ld h, b
@@ -10132,7 +10132,7 @@ Func_3bb4:
 	dec a
 	ldh [$ff8c], a
 	jr nz, .asm_3c03
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	cpl
 	inc a
 	ld l, a
@@ -10146,9 +10146,9 @@ Func_3bb4:
 	add hl, de
 	ld d, h
 	ld e, l
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	dec a
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	jr nz, .asm_3bff
 	pop hl
 	ld a, [hli]
@@ -10724,10 +10724,10 @@ HandleStudioCharacterEntity:
 	ld a, [hli]
 	sbc 0
 	ld b, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	ld c, a
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_4049
 	ld a, c
@@ -10909,12 +10909,12 @@ HandleCollectibleEntity:
 	call LoadOAMSpritesCameraOffset
 	jp .asm_423b
 .asm_414f
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_41c1
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_41c1
@@ -11073,7 +11073,7 @@ HandleCollectibleEntity:
 	ld a, $10
 	call PlaySoundEffectHome
 	ld a, $f0
-	ldh [$ffb6], a
+	ldh [hHabaneroTimer], a
 	ldh a, [hPlayerPose]
 	res 2, a
 	ldh [hPlayerPose], a
@@ -11319,10 +11319,10 @@ HandlePushableObjectEntity_:
 	ld h, [hl]
 	ld l, a
 	ld a, [hli]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	add $1e
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	call LoadOAMSpritesStandard
 	pop hl
 	ld a, [hli]
@@ -11335,7 +11335,7 @@ HandlePushableObjectEntity_:
 	ldh a, [hPlayerYPos + 1]
 	sbc b
 	jp nz, .return
-	ldh a, [$ff8b]
+	ldh a, [hTemp2]
 	dec a
 	cp e
 	jp c, .return
@@ -11351,7 +11351,7 @@ HandlePushableObjectEntity_:
 	ldh a, [hPlayerXPos + 1]
 	sbc b
 	jp nz, .return
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	add $08
 	cp e
 	jp c, .return
@@ -11373,7 +11373,7 @@ HandlePushableObjectEntity_:
 	ld a, $f0
 	jr .asm_4469
 .asm_444c
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	add $08
 	cp e
 	jr nc, .asm_4486
@@ -11382,7 +11382,7 @@ HandlePushableObjectEntity_:
 	call Func_44dc
 	ld de, -3
 	add hl, de
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	add $09
 	add c
 	ld e, a
@@ -11581,10 +11581,10 @@ HandleFireHydrantEntity:
 	ld d, a
 	ld a, [hli]
 	ld c, a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld b, a
-	ldh [$ff8b], a
+	ldh [hTemp2], a
 	res 0, [hl]
 	ldh a, [hPlayerYPos]
 	sub e
@@ -11595,12 +11595,12 @@ HandleFireHydrantEntity:
 	sub e
 	cp $08
 	jr nc, .asm_461a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_461a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $28
 	jr nc, .asm_461a
@@ -11658,7 +11658,7 @@ HandleFireHydrantEntity:
 	ld b, a
 	push hl
 	call Func_792d
-	ld hl, $ff8a
+	ld hl, hTemp
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -11668,7 +11668,7 @@ HandleFireHydrantEntity:
 	ld b, a
 	ld hl, FireHydrantSprite
 	call LoadOAMSpritesStandard
-	ld hl, $ff8a
+	ld hl, hTemp
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -11887,12 +11887,12 @@ HandleSkateboardEntity:
 	cp $fc
 	jr c, .asm_4870
 	dec de
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_4870
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_4870
@@ -12312,12 +12312,12 @@ HandleSylvesterEntity:
 	ld a, [hli]
 	adc $00
 	ld e, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc d
 	jr nz, .asm_4b18
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_4b18
@@ -12339,7 +12339,7 @@ HandleSylvesterEntity:
 	cp $1e
 	jr nc, .asm_4b18
 .asm_4b0d
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_4b18
 	ldh a, [hPlayerFlags]
@@ -12695,10 +12695,10 @@ Func_4c1b:
 	ld c, a
 	ld a, [hli]
 	ld b, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	ld c, a
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_4d50
 	ld a, c
@@ -12713,7 +12713,7 @@ Func_4c1b:
 	ld a, e
 	cp $36
 	jr nc, .asm_4d50
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_4d50
 	ldh a, [hPlayerFlags]
@@ -13320,12 +13320,12 @@ HandleBarrelBoatEntity:
 	sub e
 	cp $f8
 	jr c, .asm_5173
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_5173
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_5173
@@ -13494,12 +13494,12 @@ HandleCannonEntity:
 	ldh a, [hPlayerYPos + 1]
 	cp d
 	jp nz, .asm_5306
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jp nz, .asm_5306
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_5306
@@ -13951,12 +13951,12 @@ HandleSeagullEntity:
 	ld d, a
 	bit 7, [hl]
 	jr z, .asm_559a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc d
 	jr nz, .asm_5555
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_5555
@@ -13978,7 +13978,7 @@ HandleSeagullEntity:
 	cp $1e
 	jr nc, .asm_5555
 .asm_554a
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_5555
 	ldh a, [hPlayerFlags]
@@ -14168,12 +14168,12 @@ HandleJackhammerEntity:
 	cp $fc
 	jr c, .asm_56bc
 	dec de
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_56bc
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_56bc
@@ -14278,16 +14278,16 @@ HandleWreckingBallEntity:
 	sub l
 	cp $3e
 	jr nc, .asm_574a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_574a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $28
 	jr nc, .asm_574a
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_574a
 	ldh a, [hPlayerFlags]
@@ -14334,7 +14334,7 @@ HandleFixedPathEntity:
 	ldh [$ffe7], a
 	dec bc
 	ld a, [bc]
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -14346,7 +14346,7 @@ HandleFixedPathEntity:
 	call RunMovementScript
 	ld d, b
 	ld b, e
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld e, a
 	inc [hl]
 	ld a, [hl]
@@ -14424,20 +14424,20 @@ HandleFixedPathEntity:
 	ld a, d
 	sbc $00
 	ld d, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr z, .asm_5834
 	inc a
 	jr nz, .asm_5869
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $f8
 	jr c, .asm_5869
 	jr .asm_583b
 .asm_5834
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_5869
@@ -14610,12 +14610,12 @@ HandleBouncingOilDrumEntity:
 	jr .asm_59d4
 .asm_595f
 	call RunMovementScript
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_59a5
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_59a5
@@ -14646,7 +14646,7 @@ HandleBouncingOilDrumEntity:
 	cp $0f
 	jr nc, .asm_59a5
 .asm_599a
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_59a5
 	ldh a, [hPlayerFlags]
@@ -14731,7 +14731,7 @@ HandleBreakableWallEntity:
 	and $7e
 	add a
 	add a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	bit 7, [hl]
 	jr nz, .asm_5a2f
 	add c
@@ -14751,9 +14751,9 @@ HandleBreakableWallEntity:
 	sub a
 	jr .asm_5a44
 .asm_5a2f
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr c, .asm_5a51
 	dec bc
@@ -14773,7 +14773,7 @@ HandleBreakableWallEntity:
 	set 3, a
 	ldh [hPlayerFlags], a
 .asm_5a51
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	ld b, a
 	ld c, $30
 	call Func_78ae
@@ -15010,7 +15010,7 @@ HandleBossMovablePlatformEntity:
 	ld a, b
 	ldh [$ffe7], a
 	sub a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -15059,7 +15059,7 @@ HandleBossMovablePlatformEntity:
 	jr .asm_5ccc
 .asm_5cc8
 	ld a, $ff
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_5ccc
 	dec hl
 	dec hl
@@ -15081,12 +15081,12 @@ HandleBossMovablePlatformEntity:
 	sub e
 	cp $08
 	jr nc, .asm_5d12
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_5d12
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_5d12
@@ -15103,7 +15103,7 @@ HandleBossMovablePlatformEntity:
 	ld a, d
 	ldh [hPlayerYPos + 1], a
 	inc de
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	and a
 	jr z, .asm_5d12
 	ld a, $ff
@@ -15171,11 +15171,11 @@ TrainTrackDollySprites:
 
 HandleTrainTrackBarricadeEntity:
 	ld a, $ff
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr HandleBossGroundTrap
 HandleTNTBarrelEntity:
 	sub a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr HandleBossGroundTrap
 HandleBossGroundTrap:
 	ld a, [hli]
@@ -15239,7 +15239,7 @@ HandleBossGroundTrap:
 	call PlaySoundEffectHome
 	jr .asm_5df3
 .asm_5dce
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	and a
 	jr nz, .asm_5df6
 	ldh a, [hFrameCounter]
@@ -15700,12 +15700,12 @@ HandleHippoEntity:
 	sub e
 	cp $f8
 	jr c, .asm_60ce
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_60ce
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $40
 	jr nc, .asm_60ce
@@ -15813,7 +15813,7 @@ HandleGiraffeFeederEntity:
 	push hl
 	inc hl
 	ld a, $06
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_6147
 	ld a, [hli]
 	ld c, a
@@ -15829,9 +15829,9 @@ HandleGiraffeFeederEntity:
 	ld d, a
 	ld a, [hli]
 	ld [de], a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_6147
 	pop hl
 	jr .asm_6185
@@ -16386,12 +16386,12 @@ HandleBicycleEntity:
 	cp $fc
 	jr c, .asm_64fb
 	dec de
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_64fb
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_64fb
@@ -16603,20 +16603,20 @@ HandleBalloonEntity:
 	ld a, d
 	sbc $00
 	ld d, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr z, .asm_6638
 	inc a
 	jr nz, .asm_6673
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $f8
 	jr c, .asm_6673
 	jr .asm_663f
 .asm_6638
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_6673
@@ -16964,7 +16964,7 @@ HandleTazFemaleBossEntity:
 	ld c, l
 	inc de
 	ld a, $03
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_6843
 	push bc
 	push de
@@ -17002,7 +17002,7 @@ HandleTazFemaleBossEntity:
 	swap a
 	add l
 	ld l, a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	cpl
 	add $05
 	ld [hl], a
@@ -17018,9 +17018,9 @@ HandleTazFemaleBossEntity:
 	add hl, bc
 	ld b, h
 	ld c, l
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_6843
 	jr .asm_68a2
 .asm_688e
@@ -17139,16 +17139,16 @@ HandleCageDropEntity:
 	sub l
 	cp $3e
 	jr nc, .asm_6956
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_6956
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $28
 	jr nc, .asm_6956
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_6956
 	ldh a, [hPlayerFlags]
@@ -17210,12 +17210,12 @@ HandleTeleporterEntity:
 	ldh a, [hPlayerYPos + 1]
 	cp d
 	jr nz, .asm_69e9
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_69e9
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_69e9
@@ -17299,19 +17299,19 @@ HandleBombHazardEntity:
 	sub l
 	cp $2e
 	jr nc, .asm_6a5f
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_6a5f
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_6a5f
 	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_6a5f
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_6a5f
 	ldh a, [hPlayerFlags]
@@ -17830,19 +17830,19 @@ HandleDogEntity:
 	sub l
 	cp $36
 	jr nc, .asm_6d8b
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_6d8b
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_6d8b
 	ldh a, [hPlayerState]
 	cp $21
 	jr z, .asm_6d8b
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_6d8b
 	ldh a, [hPlayerFlags]
@@ -17970,12 +17970,12 @@ HandleLeverSpringEntity:
 	sub e
 	cp $04
 	jr nc, .asm_6e73
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_6e73
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $28
 	jr nc, .asm_6e73
@@ -18103,12 +18103,12 @@ HandleHoverShipEntity:
 	sub e
 	cp $fc
 	jr c, .asm_6f60
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_6f60
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_6f60
@@ -18255,12 +18255,12 @@ HandleSpaceScooterEntity:
 	sub e
 	cp $f8
 	jr c, .asm_7045
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_7045
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $28
 	jr nc, .asm_7045
@@ -18316,12 +18316,12 @@ HandleFallingAsteroidEntity:
 	sub l
 	cp $36
 	jr nc, .asm_7082
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_7082
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_7082
@@ -18358,12 +18358,12 @@ HandleFuelCanisterEntity:
 	sub l
 	cp $36
 	jr nc, .asm_70cc
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_70cc
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $20
 	jr nc, .asm_70cc
@@ -18424,16 +18424,16 @@ HandleBearTrapEntity:
 	sub l
 	cp $22
 	jr nc, .asm_7135
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_7135
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $28
 	jr nc, .asm_7135
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_7135
 	ldh a, [hPlayerFlags]
@@ -18671,12 +18671,12 @@ HandleHelicopterChairEntity:
 	cp $fc
 	jr c, .asm_72ee
 	dec de
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_72e4
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_72e4
@@ -18839,7 +18839,7 @@ HandleRockTeeterTotterEntity:
 	ld bc, $4
 	add hl, bc
 	ld a, $06
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_73ca
 	ld a, [hli]
 	ld c, a
@@ -18868,9 +18868,9 @@ HandleRockTeeterTotterEntity:
 	call DrawMetatile_HBlank
 	call DrawMetatileGBCAttributes_HBlank
 	pop hl
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_73ca
 .asm_73f3
 	pop hl
@@ -18978,12 +18978,12 @@ HandleBoomBarrierEntity:
 	call LoadOAMSpritesStandard
 	jr .asm_74e6
 .asm_747a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr nz, .asm_74b7
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $10
 	jr nc, .asm_74b7
@@ -19005,7 +19005,7 @@ HandleBoomBarrierEntity:
 	cp $1e
 	jr nc, .asm_74b7
 .asm_74a4
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr nz, .asm_74b7
 	ldh a, [hFrameCounter]
@@ -19636,16 +19636,16 @@ Func_78ae:
 	cp c
 	jr nc, .asm_792a
 .asm_78ce
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr z, .asm_78e9
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub e
 	ld e, a
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc d
 	jr nz, .asm_792a
 	ld a, b
@@ -19663,10 +19663,10 @@ Func_78ae:
 	ldh a, [hPlayerFlags]
 	bit 5, a
 	jr nz, .asm_7914
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	add $18
 	ld e, a
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	adc $00
 	ld d, a
 	ld a, e
@@ -20250,7 +20250,7 @@ HandleLadderEntity:
 	ld e, a
 	ld d, [hl]
 	ld a, $06
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_7cb6
 	push bc
 	push de
@@ -20320,9 +20320,9 @@ HandleLadderEntity:
 	ld a, d
 	adc $00
 	ld d, a
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_7cb6
 	jp .asm_7dbf
 .asm_7d1b:
@@ -20392,20 +20392,20 @@ HandleLadderEntity:
 	ld a, d
 	sbc $00
 	ld d, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	jr z, .asm_7d93
 	inc a
 	jr nz, .asm_7dbf
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $f0
 	jr c, .asm_7dbf
 	jr .asm_7d9a
 .asm_7d93
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
 	cp $18
 	jr nc, .asm_7dbf
@@ -33505,7 +33505,7 @@ HandleCameraScroll:
 	jr c, .asm_17699
 	jp z, Func_176e9
 	ld bc, $b0
-	ld de, hScore
+	ld de, $fff0
 	call Func_17791
 .asm_17658
 	ld hl, $ff98
@@ -33554,7 +33554,7 @@ HandleCameraScroll:
 	ld hl, $ff50
 	jr .asm_176e2
 .asm_17699
-	ld bc, hScore
+	ld bc, $fff0
 	ld d, b
 	ld e, c
 	call Func_17791
@@ -33616,7 +33616,7 @@ Func_176e9:
 	add a
 	jr c, .asm_1773a
 	jp z, Func_1778b
-	ld bc, hScore
+	ld bc, $fff0
 	ld de, $90
 	call Func_17791
 .asm_176fa
@@ -33665,7 +33665,7 @@ Func_176e9:
 	ld hl, $ff70
 	jr .asm_17784
 .asm_1773a
-	ld bc, hScore
+	ld bc, $fff0
 	ld d, b
 	ld e, c
 	call Func_17791
@@ -33840,9 +33840,9 @@ UpdateSpaceStationBossScreen:
 	ldh a, [hCameraXOffset + 1]
 	adc $00
 	ld b, a
-	ldh a, [$ffdd]
+	ldh a, [hPlayerCollisionXPos]
 	sub c
-	ldh a, [$ffde]
+	ldh a, [hPlayerCollisionXPos + 1]
 	sbc b
 	ret c
 	call Func_1ae2
@@ -34060,7 +34060,7 @@ UpdatePlayerState:
 	jr c, .asm_17a06
 	ld d, $38
 .asm_17a06
-	ldh a, [$ffb6]
+	ldh a, [hHabaneroTimer]
 	and a
 	jr z, .asm_17a17
 	ld b, $38
@@ -34346,7 +34346,7 @@ LoadLevelBonusInterfaceTiles:
 	ld hl, LevelBonusInterfaceTileCopyTable
 	ld bc, $8f20
 	ld a, $05
-	ldh [$ff8a], a
+	ldh [hTemp], a
 .asm_17bb2
 	ld a, [hli]
 	ld e, a
@@ -34368,9 +34368,9 @@ LoadLevelBonusInterfaceTiles:
 	pop hl
 	inc hl
 	inc hl
-	ldh a, [$ff8a]
+	ldh a, [hTemp]
 	dec a
-	ldh [$ff8a], a
+	ldh [hTemp], a
 	jr nz, .asm_17bb2
 	ret
 
