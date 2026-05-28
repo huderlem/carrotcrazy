@@ -292,9 +292,9 @@ RunEpilogueSceneScreen:
 	sub a
 	ldh [rVBK], a
 .asm_1b1
-	ld a, Bank(Func_17b59)
+	ld a, Bank(InitEpilogueScreen)
 	ld [MBC5RomBank], a
-	jp Func_17b59
+	jp InitEpilogueScreen
 
 Func_1b9:
 	ld a, $c7
@@ -390,9 +390,9 @@ RunLevelBonusScreen:
 .asm_264
 	call LoadData
 	call InitScreenMusic
-	ld a, Bank(Func_17ba8)
+	ld a, Bank(LoadLevelBonusInterfaceTiles)
 	ld [MBC5RomBank], a
-	call Func_17ba8
+	call LoadLevelBonusInterfaceTiles
 	ld hl, Data_1b75e
 	call LoadData
 	ld a, Bank(LoadBonusSprites)
@@ -425,9 +425,9 @@ RunLevelBonusScreen:
 	call Func_3dce
 	call InitKeysState
 	call ResetFrameCounter
-	ld a, Bank(Func_17bf9)
+	ld a, Bank(InitBonusHUDWindow)
 	ld [MBC5RomBank], a
-	call Func_17bf9
+	call InitBonusHUDWindow
 	ld hl, BonusScreenGBCPalettes
 	call LoadCGBPalettesHome
 	ld c, 0
@@ -534,9 +534,9 @@ Data_36d:
 	RGB 13, 3, 1
 
 Func_373:
-	ld a, Bank(Func_17c3a)
+	ld a, Bank(DrawLevelBonusHUD)
 	ld [MBC5RomBank], a
-	call Func_17c3a
+	call DrawLevelBonusHUD
 	ld a, $04
 	ld [MBC5RomBank], a
 	call Func_3153
@@ -557,9 +557,9 @@ RunLevelSummaryScreen:
 	call DrawLocalizedText
 	ld hl, LevelSummaryScreenGBCPalettes
 	call LoadCGBPalettesHome
-	ld a, Bank(Func_17c82)
+	ld a, Bank(InitLevelSummaryScreen)
 	ld [MBC5RomBank], a
-	call Func_17c82
+	call InitLevelSummaryScreen
 	ld a, LCDCF_ON | LCDCF_WIN9C00 | LCDCF_WINOFF | LCDCF_BG8800 | LCDCF_BG9800 | LCDCF_OBJ16 | LCDCF_OBJON | LCDCF_BGON
 	ldh [rLCDC], a
 .asm_3b4
@@ -575,9 +575,9 @@ RunLevelSummaryScreen:
 	call TryInitNextScreenHome
 	call ReadJoyPadHome
 	call UpdateFrameCounter
-	ld a, Bank(Func_17ca6)
+	ld a, Bank(DrawLevelSummaryHUD)
 	ld [MBC5RomBank], a
-	call Func_17ca6
+	call DrawLevelSummaryHUD
 	ldh a, [hEXTRALetters]
 	cp 5
 	jr nz, .asm_3f4
@@ -937,9 +937,9 @@ RunOptionsScreen:
 	call TryInitNextScreenHome
 	call ReadJoyPadHome
 	call UpdateFrameCounter
-	ld a, Bank(Func_17cfd)
+	ld a, Bank(DrawOptionsScreen)
 	ld [MBC5RomBank], a
-	call Func_17cfd
+	call DrawOptionsScreen
 	ld a, [$defc]
 	and a
 	jp nz, .asm_69c
@@ -1116,9 +1116,9 @@ RunTitlescreen:
 	call Func_3dce
 	call InitKeysState
 	call ResetFrameCounter
-	ld a, Bank(Func_17d6e)
+	ld a, Bank(InitTitlescreen)
 	ld [MBC5RomBank], a
-	call Func_17d6e
+	call InitTitlescreen
 	ld a, $09
 	ld [MBC5RomBank], a
 	ld hl, $4000
@@ -3254,9 +3254,9 @@ Func_16fc:
 	jp UpdateTazZooBossScreen
 
 Func_1704:
-	ld a, Bank(Func_177a1)
+	ld a, Bank(UpdateSpaceStationBossScreen)
 	ld [MBC5RomBank], a
-	jp Func_177a1
+	jp UpdateSpaceStationBossScreen
 
 UpdateFuddForestBossScreenSprite:
 	ldh a, [hPaused]
@@ -10522,20 +10522,20 @@ TryInitNextScreenHome:
 
 Func_3dce:
 	call FadeInMusicHome
-	ld a, Bank(Func_1759b)
+	ld a, Bank(StartScreenFade)
 	ld [MBC5RomBank], a
 	ld bc, $1fd
-	jp Func_1759b
+	jp StartScreenFade
 
 Func_3ddc:
 	ld a, [$defc]
 	and a
 	ret nz
 	call FadeOutMusicHome
-	ld a, Bank(Func_1759b)
+	ld a, Bank(StartScreenFade)
 	ld [MBC5RomBank], a
 	ld bc, $ff0c
-	jp Func_1759b
+	jp StartScreenFade
 
 rBGPSettings:
 	db %00000000
@@ -33018,7 +33018,7 @@ FuddForest2DiggingMetatileReplacements:
 	db $63, $f3
 	db $64, $f4
 
-; In-level status-bar tilemaps copied into the BG window by Func_31e1 / Func_17bf9.
+; In-level status-bar tilemaps copied into the BG window by Func_31e1 / InitBonusHUDWindow.
 ; Each is 3 rows of 20 tiles.
 HUDWindowTilemap: ; standard HUD (hForcedSideScrollSpeed == 0)
 	db $8e, $8e, $8e, $8e, $8e, $8e, $80, $82, $8e, $90, $91, $8e, $a0, $a2, $a4, $a6, $a8, $aa, $ac, $ae
@@ -33420,7 +33420,7 @@ TryInitNextScreen_:
 	ldh [rOBP1], a
 	ret
 
-Func_1759b:
+StartScreenFade:
 	ld hl, $defb
 	ld a, $01
 	ld [hli], a
@@ -33745,7 +33745,7 @@ Func_17791:
 	ld d, a
 	ret
 
-Func_177a1:
+UpdateSpaceStationBossScreen:
 	ldh a, [hPaused]
 	and a
 	ret nz
@@ -34163,12 +34163,12 @@ UpdatePlayerState:
 	ldh [$ffc2], a
 .asm_17a96
 	ld a, [hli]
-	call Func_17aba
+	call ApplyVelocityToPosition
 	ld a, b
 	ldh [$ffc7], a
 	inc c
 	ldh a, [$ffcc]
-	call Func_17aba
+	call ApplyVelocityToPosition
 	ld [hl], b
 	ld hl, $ffcf
 	ld a, [hli]
@@ -34189,7 +34189,7 @@ UpdatePlayerState:
 	ld [hl], a
 	ret
 
-Func_17aba:
+ApplyVelocityToPosition:
 	ld b, a
 	ld d, $00
 	ld a, [$ff00+c]
@@ -34289,7 +34289,7 @@ LevelSummaryScreenExtraBonusSprite:
 	sub_sprite $2c, $01, 24, 0
 	sub_sprite $2e, $01, 32, 0
 
-Func_17b59:
+InitEpilogueScreen:
 	ld hl, $c52a
 	ld a, [hli]
 	ld h, [hl]
@@ -34342,7 +34342,7 @@ Func_17b59:
 .asm_17ba5
 	jp Func_1b9
 
-Func_17ba8:
+LoadLevelBonusInterfaceTiles:
 	ld hl, LevelBonusInterfaceTileCopyTable
 	ld bc, $8f20
 	ld a, $05
@@ -34400,7 +34400,7 @@ LoadBonusSprites:
 	jr nz, .asm_17beb
 	ret
 
-Func_17bf9:
+InitBonusHUDWindow:
 	ld hl, BonusHUDWindowTilemap
 	ld bc, vBGWin
 	ld d, $03
@@ -34446,7 +34446,7 @@ Func_17bf9:
 	ldh [rWX], a
 	ret
 
-Func_17c3a:
+DrawLevelBonusHUD:
 	ld hl, $9c49
 	ldh a, [hNumLives]
 	and $f0
@@ -34493,7 +34493,7 @@ Func_17c3a:
 	ld b, $90
 	ret
 
-Func_17c82:
+InitLevelSummaryScreen:
 	call Func_d67
 	sub a
 	ldh [rSCY], a
@@ -34518,31 +34518,31 @@ Func_17c82:
 	ld [hl], b
 	ret
 
-Func_17ca6:
+DrawLevelSummaryHUD:
 	ldh a, [hActiveSprites]
 	ld l, a
 	ld h, $df
 	ld bc, $7058
 	ldh a, [$fff1]
 	swap a
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	ldh a, [$fff1]
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	ldh a, [hScore]
 	swap a
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	ldh a, [hScore]
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	sub a
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	sub a
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	ld bc, $5858
 	ldh a, [hNumCarrots]
 	swap a
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	ldh a, [hNumCarrots]
-	call Func_17cea
+	call WriteSummaryDigitSprite
 	ld a, l
 	ldh [hActiveSprites], a
 	ld bc, $5440
@@ -34550,7 +34550,7 @@ Func_17ca6:
 	call LoadOAMSprites
 	ret
 
-Func_17cea:
+WriteSummaryDigitSprite:
 	and $0f
 	add a
 	add $12
@@ -34567,7 +34567,7 @@ Func_17cea:
 	ld [hli], a
 	ret
 
-Func_17cfd:
+DrawOptionsScreen:
 	ld a, [$dee6]
 	ld c, a
 	ld b, $00
@@ -34637,7 +34637,7 @@ Func_17cfd:
 	call LoadOAMSprites
 	ret
 
-Func_17d6e:
+InitTitlescreen:
 	sub a
 	ldh [rSCY], a
 	ldh [rSCX], a
@@ -34651,7 +34651,7 @@ Func_17d6e:
 	ld [hl], a
 	ldh [hForcedSideScrollSpeed], a
 	ld [wSceneLockTimer], a
-	call Func_17db0
+	call InitTitlescreenState
 	call ResetPlayerData
 	ld hl, wMetatileRowPointers
 	ld a, [hli]
@@ -34682,7 +34682,7 @@ Func_17d6e:
 	jr nz, .asm_17d9f
 	ret
 
-Func_17db0:
+InitTitlescreenState:
 	ld hl, $ded8
 	sub a
 	ld [hli], a
