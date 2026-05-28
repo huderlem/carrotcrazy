@@ -5,14 +5,7 @@ Dependencies:
 	sudo apt-get install make gcc bison git
 	sudo easy_install pip
 
-The assembler used is [**rgbds**](https://github.com/bentley/rgbds).
-
-	git clone https://github.com/rednex/rgbds
-	cd rgbds
-	sudo mkdir -p /usr/local/man/man{1,7}
-	sudo make install
-	cd ..
-	rm -rf rgbds
+The assembler used is [**rgbds**](https://github.com/gbdev/rgbds).  Follow its installation instructions: https://rgbds.gbdev.io/install/linux
 
 Set up the repository.
 
@@ -20,8 +13,6 @@ Set up the repository.
 	cd carrotcrazy
 
 Install `libpng` becaause `tools/metasprite.c` depends on it for image processing.
-
-This project is incomplete and requires the user to provide an original Looney Tunes: Carrot Crazy GBC ROM.  Name this file `baserom.gbc` and place it in the root `carrotcrazy` directory.
 
 To build `carrotcrazy.gbc`:
 
@@ -49,22 +40,4 @@ Then follow the Linux instructions.
 
 # Windows
 
-To build on Windows, install [**Cygwin**](http://cygwin.com/install.html) with the default settings.
-
-Dependencies are downloaded in the installer rather than the command line.
-Select the following packages:
-* make
-* git
-* gcc-core
-* libpng-devel
-
-The latest compatible version of **rgbds** is  [**0.4.0**](https://github.com/rednex/rgbds/releases/download/v0.4.0/rgbds-0.4.0-win32.zip). To install, put each of the files in the download in `C:\cygwin\usr\local\bin`.
-
-Then set up the repository. In the **Cygwin terminal**:
-
-	git clone https://github.com/huderlem/carrotcrazy.git
-	cd carrotcrazy
-
-To build `carrotcrazy.gbc`:
-
-	make
+To build on Windows, use WSL2 and follow the above Linux instructions.
