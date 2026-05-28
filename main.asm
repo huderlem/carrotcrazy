@@ -627,7 +627,7 @@ Func_433:
 	ld [MBC5RomBank], a
 	ld hl, $dda2
 	ld bc, $80e0
-	ld de, $4280
+	ld de, AnimatedInterfaceTilesB
 	ld a, $12
 	call Func_2f9e
 	ret
@@ -7407,12 +7407,12 @@ DrawHUD:
 	jr nz, .asm_2f34
 	ld hl, $dda1
 	ld bc, $8440
-	ld de, $4000
+	ld de, AnimatedInterfaceTilesA
 	ld a, $0a
 	call Func_2f9e
 	ld hl, $dda2
 	ld bc, $8400
-	ld de, $4280
+	ld de, AnimatedInterfaceTilesB
 	ld a, $12
 	call Func_2f9e
 	jr .asm_2f98
@@ -31812,7 +31812,170 @@ TazZooLevelSpriteTiles:
 
 SECTION "ROM Bank $05", ROMX[$4000], BANK[$5]
 
-INCBIN "baserom.gbc", $14000, $15d58 - $14000
+AnimatedInterfaceTilesA:
+	INCBIN "gfx/animated_interface_a.interleave.2bpp"  ; 10 frames
+
+AnimatedInterfaceTilesB:
+	INCBIN "gfx/animated_interface_b.interleave.2bpp"  ; 18 frames
+
+; Per-world animated tile frame banks. Each tile is 16 bytes; the *AnimatedTiles
+; tables below pick which 16-byte chunks land in which VRAM destinations.
+CrazyTownAnimatedTileFrames:           ; 4 frames * 8 tiles
+	INCBIN "gfx/crazy_town/animated_tiles.2bpp"
+
+CrazyTownBossAnimatedTileFrames:       ; 4 frames * 8 tiles (mono + GBC share)
+	INCBIN "gfx/crazy_town/boss_animated_tiles.2bpp"
+
+TreasureIslandAnimatedTileFrames:      ; 8 frames * 6 tiles (mono)
+	INCBIN "gfx/treasure_island/animated_tiles.2bpp"
+
+TreasureIslandBossAnimatedTileFrames:  ; 6 frames * 8 tiles (mono + GBC share)
+	INCBIN "gfx/treasure_island/boss_animated_tiles.2bpp"
+
+TazZooBossAnimatedTileFrames:          ; 6 frames * 8 tiles (mono)
+	INCBIN "gfx/taz_zoo/boss_animated_tiles.2bpp"
+
+SpaceStationAnimatedTileFrames:        ; 8 frames * 4 tiles (mono + GBC share)
+	INCBIN "gfx/space_station/animated_tiles.2bpp"
+
+TreasureIslandAnimatedTileFramesGBC:   ; 8 frames * 6 tiles
+	INCBIN "gfx/treasure_island/animated_tiles_gbc.2bpp"
+
+TazZooBossAnimatedTileFramesGBC:       ; 6 frames * 8 tiles
+	INCBIN "gfx/taz_zoo/boss_animated_tiles_gbc.2bpp"
+
+; Animated tile metadata, referenced by the "animated tiles" field of each
+; ScreenData_*. Each entry is:
+;   db count    ; low 7 bits = frame count; bit 7 = looping
+;   dw .destinations
+;   dw frame_0_src, frame_1_src, ...  ; each src is 16 * (dest count) bytes
+;   .destinations:
+;   dw dest_0, dest_1, ...            ; VRAM addresses, $0000-terminated
+; On each tick the engine reads the current frame's source and copies 16 bytes
+; (one BG tile) to every destination address in order.
+
+NoAnimatedTiles:
+	db 0  ; sentinel used by screens that don't animate any BG tiles
+
+CrazyTownAnimatedTiles:
+	db $84  ; 4 frames, looping
+	dw .destinations
+	dw CrazyTownAnimatedTileFrames + $000, CrazyTownAnimatedTileFrames + $080
+	dw CrazyTownAnimatedTileFrames + $100, CrazyTownAnimatedTileFrames + $180
+.destinations
+	dw $9580, $9570, $95E0, $95D0
+	dw $9560, $9590, $95F0, $95C0
+	dw $0000
+
+CrazyTownAnimatedTilesGBC:
+	db $84  ; 4 frames, looping
+	dw .destinations
+	dw CrazyTownAnimatedTileFrames + $000, CrazyTownAnimatedTileFrames + $080
+	dw CrazyTownAnimatedTileFrames + $100, CrazyTownAnimatedTileFrames + $180
+.destinations
+	dw $9580, $9570, $95F0, $95E0
+	dw $9560, $9590, $9600, $95D0
+	dw $0000
+
+CrazyTownBossAnimatedTiles:
+	db $84  ; 4 frames, looping
+	dw .destinations
+	dw CrazyTownBossAnimatedTileFrames + $000, CrazyTownBossAnimatedTileFrames + $080
+	dw CrazyTownBossAnimatedTileFrames + $100, CrazyTownBossAnimatedTileFrames + $180
+.destinations
+	dw $9620, $9610, $9760, $9750
+	dw $9600, $9630, $9770, $9740
+	dw $0000
+
+SpaceStationAnimatedTiles:
+	db $08  ; 8 frames, no loop
+	dw .destinations
+	dw SpaceStationAnimatedTileFrames + $000, SpaceStationAnimatedTileFrames + $040
+	dw SpaceStationAnimatedTileFrames + $080, SpaceStationAnimatedTileFrames + $0C0
+	dw SpaceStationAnimatedTileFrames + $100, SpaceStationAnimatedTileFrames + $140
+	dw SpaceStationAnimatedTileFrames + $180, SpaceStationAnimatedTileFrames + $1C0
+.destinations
+	dw $8FE0, $8FF0, $9000, $9010
+	dw $0000
+
+SpaceStationAnimatedTilesGBC:
+	db $08  ; 8 frames, no loop
+	dw .destinations
+	dw SpaceStationAnimatedTileFrames + $000, SpaceStationAnimatedTileFrames + $040
+	dw SpaceStationAnimatedTileFrames + $080, SpaceStationAnimatedTileFrames + $0C0
+	dw SpaceStationAnimatedTileFrames + $100, SpaceStationAnimatedTileFrames + $140
+	dw SpaceStationAnimatedTileFrames + $180, SpaceStationAnimatedTileFrames + $1C0
+.destinations
+	dw $8E10, $8E20, $8E30, $8E40
+	dw $0000
+
+TreasureIslandAnimatedTiles:
+	db $08  ; 8 frames, no loop
+	dw .destinations
+	dw TreasureIslandAnimatedTileFrames + $000, TreasureIslandAnimatedTileFrames + $060
+	dw TreasureIslandAnimatedTileFrames + $0C0, TreasureIslandAnimatedTileFrames + $120
+	dw TreasureIslandAnimatedTileFrames + $180, TreasureIslandAnimatedTileFrames + $1E0
+	dw TreasureIslandAnimatedTileFrames + $240, TreasureIslandAnimatedTileFrames + $2A0
+.destinations
+	dw $8E30, $8E60, $8E40
+	dw $8E10, $8E20, $8E50
+	dw $0000
+
+TreasureIslandBossAnimatedTiles:
+	db $06  ; 6 frames, no loop
+	dw .destinations
+	dw TreasureIslandBossAnimatedTileFrames + $000, TreasureIslandBossAnimatedTileFrames + $080
+	dw TreasureIslandBossAnimatedTileFrames + $100, TreasureIslandBossAnimatedTileFrames + $180
+	dw TreasureIslandBossAnimatedTileFrames + $200, TreasureIslandBossAnimatedTileFrames + $280
+.destinations
+	dw $8F20, $8F30, $8F40, $8F50
+	dw $8F60, $8F70, $8F80, $8F90
+	dw $0000
+
+TreasureIslandBossAnimatedTilesGBC:
+	db $06  ; 6 frames, no loop
+	dw .destinations
+	dw TreasureIslandBossAnimatedTileFrames + $000, TreasureIslandBossAnimatedTileFrames + $080
+	dw TreasureIslandBossAnimatedTileFrames + $100, TreasureIslandBossAnimatedTileFrames + $180
+	dw TreasureIslandBossAnimatedTileFrames + $200, TreasureIslandBossAnimatedTileFrames + $280
+.destinations
+	dw $8F70, $8F80, $8F90, $8FA0
+	dw $8FB0, $8FC0, $8FD0, $8FE0
+	dw $0000
+
+TazZooBossAnimatedTiles:
+	db $06  ; 6 frames, no loop
+	dw .destinations
+	dw TazZooBossAnimatedTileFrames + $000, TazZooBossAnimatedTileFrames + $080
+	dw TazZooBossAnimatedTileFrames + $100, TazZooBossAnimatedTileFrames + $180
+	dw TazZooBossAnimatedTileFrames + $200, TazZooBossAnimatedTileFrames + $280
+.destinations
+	dw $8B40, $8B50, $8B60, $8B70
+	dw $8B80, $8B90, $8BA0, $8BB0
+	dw $0000
+
+TazZooBossAnimatedTilesGBC:
+	db $06  ; 6 frames, no loop
+	dw .destinations
+	dw TazZooBossAnimatedTileFramesGBC + $000, TazZooBossAnimatedTileFramesGBC + $080
+	dw TazZooBossAnimatedTileFramesGBC + $100, TazZooBossAnimatedTileFramesGBC + $180
+	dw TazZooBossAnimatedTileFramesGBC + $200, TazZooBossAnimatedTileFramesGBC + $280
+.destinations
+	dw $8B30, $8B40, $8B50, $8B60
+	dw $8B70, $8B80, $8B90, $8BA0
+	dw $0000
+
+TreasureIslandAnimatedTilesGBC:
+	db $08  ; 8 frames, no loop
+	dw .destinations
+	dw TreasureIslandAnimatedTileFramesGBC + $000, TreasureIslandAnimatedTileFramesGBC + $060
+	dw TreasureIslandAnimatedTileFramesGBC + $0C0, TreasureIslandAnimatedTileFramesGBC + $120
+	dw TreasureIslandAnimatedTileFramesGBC + $180, TreasureIslandAnimatedTileFramesGBC + $1E0
+	dw TreasureIslandAnimatedTileFramesGBC + $240, TreasureIslandAnimatedTileFramesGBC + $2A0
+.destinations
+	dw $8D20, $8D50, $8D30
+	dw $8D00, $8D10, $8D40
+	dw $0000
 
 TreasureIsland1EntityTriggers:
 	dw $ffff, $0000, $763a
@@ -36869,7 +37032,7 @@ ScreenData_CrazyTown1:
 	dw CrazyTown1EntityTriggers
 	dw CrazyTown1Entities
 	dw PlaySong_CrazyTown
-	dw $5C01 ; animated tiles
+	dw CrazyTownAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenData_CrazyTown2:
@@ -36889,7 +37052,7 @@ ScreenData_CrazyTown2:
 	dw CrazyTown2EntityTriggers
 	dw CrazyTown2Entities
 	dw $408C
-	dw $5C01 ; animated tiles
+	dw CrazyTownAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenData_TreasureIsland1:
@@ -36909,7 +37072,7 @@ ScreenData_TreasureIsland1:
 	dw TreasureIsland1EntityTriggers
 	dw TreasureIsland1Entities
 	dw PlaySong_TreasureIsland
-	dw $5c92 ; animated tiles
+	dw TreasureIslandAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenData_TreasureIsland2:
@@ -36929,7 +37092,7 @@ ScreenData_TreasureIsland2:
 	dw TreasureIsland2EntityTriggers
 	dw TreasureIsland2Entities
 	dw PlaySong_TreasureIsland
-	dw $5C92 ; animated tiles
+	dw TreasureIslandAnimatedTiles ; animated tiles
 	dw TreasureIsland2DiggingMetatileReplacements
 
 ScreenData_CrazyTownBoss:
@@ -36954,7 +37117,7 @@ ScreenData_CrazyTownBoss:
 	dw CrazyTownBossEntityTriggers
 	dw CrazyTownBossEntities
 	dw PlaySong_Boss
-	dw $5C3B ; animated tiles
+	dw CrazyTownBossAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw CrazyTownBossBgScrollSpeeds
 
@@ -36980,7 +37143,7 @@ ScreenData_TreasureIslandBoss:
 	dw TreasureIslandBossEntityTriggers
 	dw TreasureIslandBossEntities
 	dw PlaySong_Boss
-	dw $5CB3 ; animated tiles
+	dw TreasureIslandBossAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw TreasureIslandBossBgScrollSpeeds
 
@@ -37001,7 +37164,7 @@ ScreenData_TazZoo1:
 	dw TazZoo1EntityTriggers
 	dw TazZoo1Entities
 	dw PlaySong_TazZoo
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw TazZoo1DiggingMetatileReplacements
 
 ScreenData_TazZoo2:
@@ -37021,7 +37184,7 @@ ScreenData_TazZoo2:
 	dw TazZoo2EntityTriggers
 	dw TazZoo2Entities
 	dw PlaySong_TazZoo
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw TazZoo2DiggingMetatileReplacements
 
 ScreenData_TazZooBoss:
@@ -37048,7 +37211,7 @@ ScreenData_TazZooBoss:
 	dw TazZooBossEntityTriggers
 	dw TazZooBossEntities
 	dw PlaySong_Boss
-	dw $5CF5 ; animated tiles
+	dw TazZooBossAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw TazZooBossBgScrollSpeeds
 
@@ -37069,7 +37232,7 @@ ScreenData_SpaceStation1:
 	dw SpaceStation1EntityTriggers
 	dw SpaceStation1Entities
 	dw PlaySong_SpaceStation
-	dw $5C58 ; animated tiles
+	dw SpaceStationAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenData_SpaceStation2:
@@ -37089,7 +37252,7 @@ ScreenData_SpaceStation2:
 	dw SpaceStation2EntityTriggers
 	dw SpaceStation2Entities
 	dw PlaySong_SpaceStation
-	dw $5C58 ; animated tiles
+	dw SpaceStationAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenData_SpaceStationBoss:
@@ -37112,7 +37275,7 @@ ScreenData_SpaceStationBoss:
 	dw SpaceStationBossEntityTriggers
 	dw SpaceStationBossEntities
 	dw PlaySong_Boss
-	dw $5C00
+	dw NoAnimatedTiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenData_FuddForest1:
@@ -37132,7 +37295,7 @@ ScreenData_FuddForest1:
 	dw FuddForest1EntityTriggers
 	dw FuddForest1Entities
 	dw PlaySong_FuddForest
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw FuddForest1DiggingMetatileReplacements
 
 ScreenData_FuddForest2:
@@ -37152,7 +37315,7 @@ ScreenData_FuddForest2:
 	dw FuddForest2EntityTriggers
 	dw FuddForest2Entities
 	dw PlaySong_FuddForest
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw FuddForest2DiggingMetatileReplacements
 
 ScreenData_FuddForestBoss:
@@ -37177,7 +37340,7 @@ ScreenData_FuddForestBoss:
 	dw FuddForestBossEntityTriggers
 	dw FuddForestBossEntities
 	dw PlaySong_Boss
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw FuddForestBossBgScrollSpeeds
 
@@ -37361,7 +37524,7 @@ ScreenDataGBC_CrazyTown1:
 	dw CrazyTown1EntityTriggers
 	dw CrazyTown1Entities
 	dw PlaySong_CrazyTown
-	dw $5C1E ; animated tiles
+	dw CrazyTownAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_CrazyTown2:
@@ -37382,7 +37545,7 @@ ScreenDataGBC_CrazyTown2:
 	dw CrazyTown2EntityTriggers
 	dw CrazyTown2Entities
 	dw $408C
-	dw $5C1E ; animated tiles
+	dw CrazyTownAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_TreasureIsland1:
@@ -37403,7 +37566,7 @@ ScreenDataGBC_TreasureIsland1:
 	dw TreasureIsland1EntityTriggers
 	dw TreasureIsland1Entities
 	dw PlaySong_TreasureIsland
-	dw $5d37 ; animated tiles
+	dw TreasureIslandAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_TreasureIsland2:
@@ -37424,7 +37587,7 @@ ScreenDataGBC_TreasureIsland2:
 	dw TreasureIsland2EntityTriggers
 	dw TreasureIsland2Entities
 	dw PlaySong_TreasureIsland
-	dw $5d37 ; animated tiles
+	dw TreasureIslandAnimatedTilesGBC ; animated tiles
 	dw TreasureIsland2DiggingMetatileReplacements
 
 ScreenDataGBC_CrazyTownBoss:
@@ -37451,7 +37614,7 @@ ScreenDataGBC_CrazyTownBoss:
 	dw CrazyTownBossEntityTriggers
 	dw CrazyTownBossEntities
 	dw PlaySong_Boss
-	dw $5C3B ; animated tiles
+	dw CrazyTownBossAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw CrazyTownBossBgScrollSpeeds
 
@@ -37473,7 +37636,7 @@ ScreenDataGBC_TazZoo1:
 	dw TazZoo1EntityTriggers
 	dw TazZoo1Entities
 	dw PlaySong_TazZoo
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw TazZoo1DiggingMetatileReplacements
 
 ScreenDataGBC_TazZoo2:
@@ -37494,7 +37657,7 @@ ScreenDataGBC_TazZoo2:
 	dw TazZoo2EntityTriggers
 	dw TazZoo2Entities
 	dw PlaySong_TazZoo
-	dw $5C00
+	dw NoAnimatedTiles
 	dw TazZoo2DiggingMetatileReplacements
 
 ScreenDataGBC_TreasureIslandBoss:
@@ -37521,7 +37684,7 @@ ScreenDataGBC_TreasureIslandBoss:
 	dw TreasureIslandBossEntityTriggers
 	dw TreasureIslandBossEntities
 	dw PlaySong_Boss
-	dw $5CD4 ; animated tiles
+	dw TreasureIslandBossAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw TreasureIslandBossBgScrollSpeeds
 
@@ -37543,7 +37706,7 @@ ScreenDataGBC_SpaceStation1:
 	dw SpaceStation1EntityTriggers
 	dw SpaceStation1Entities
 	dw PlaySong_SpaceStation
-	dw $5C75 ; animated tiles
+	dw SpaceStationAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_SpaceStation2:
@@ -37564,7 +37727,7 @@ ScreenDataGBC_SpaceStation2:
 	dw SpaceStation2EntityTriggers
 	dw SpaceStation2Entities
 	dw PlaySong_SpaceStation
-	dw $5C75 ; animated tiles
+	dw SpaceStationAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_SpaceStationBoss:
@@ -37589,7 +37752,7 @@ ScreenDataGBC_SpaceStationBoss:
 	dw SpaceStationBossEntityTriggers
 	dw SpaceStationBossEntities
 	dw PlaySong_Boss
-	dw $5C00
+	dw NoAnimatedTiles
 	dw EmptyDiggingMetatileReplacements
 
 ScreenDataGBC_FuddForest1:
@@ -37610,7 +37773,7 @@ ScreenDataGBC_FuddForest1:
 	dw FuddForest1EntityTriggers
 	dw FuddForest1Entities
 	dw PlaySong_FuddForest
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw FuddForest1DiggingMetatileReplacements
 
 ScreenDataGBC_FuddForest2:
@@ -37631,7 +37794,7 @@ ScreenDataGBC_FuddForest2:
 	dw FuddForest2EntityTriggers
 	dw FuddForest2Entities
 	dw PlaySong_FuddForest
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw FuddForest2DiggingMetatileReplacements
 
 ScreenDataGBC_FuddForestBoss:
@@ -37658,7 +37821,7 @@ ScreenDataGBC_FuddForestBoss:
 	dw FuddForestBossEntityTriggers
 	dw FuddForestBossEntities
 	dw PlaySong_Boss
-	dw $5C00 ; animated tiles
+	dw NoAnimatedTiles ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw FuddForestBossBgScrollSpeeds
 
@@ -37688,7 +37851,7 @@ ScreenDataGBC_TazZooBoss:
 	dw TazZooBossEntityTriggers
 	dw TazZooBossEntities
 	dw PlaySong_Boss
-	dw $5D16 ; animated tiles
+	dw TazZooBossAnimatedTilesGBC ; animated tiles
 	dw EmptyDiggingMetatileReplacements
 	dw TazZooBossBgScrollSpeeds
 
