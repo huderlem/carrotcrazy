@@ -3973,13 +3973,13 @@ Func_1b46:
 	jr .asm_1b71
 .asm_1b69
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 .asm_1b6c
 	res 2, d
 	res 3, d
 	ret
 .asm_1b71
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	bit 4, b
 	jr z, .asm_1b6c
 	ldh a, [$ffb4]
@@ -4019,7 +4019,7 @@ Func_1b46:
 	res 5, b
 	ld a, $02
 .asm_1bba
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	bit 4, b
 	ret z
 	ldh a, [$ffb4]
@@ -4278,13 +4278,13 @@ Func_1d20:
 	res 5, b
 	ld a, $01
 .asm_1d5c
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 .asm_1d5e
 	jp Func_19e5
 
 Func_1d61:
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4313,7 +4313,7 @@ Func_1d61:
 	ld a, [hl]
 	ldh [hPlayerXPos + 1], a
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_1d93
 	bit 5, e
 	jr z, .asm_1d9b
@@ -4339,7 +4339,7 @@ Func_1d61:
 	jr z, .asm_1dc6
 	ld a, $20
 .asm_1db9
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerSkateboardingPushAnimations
@@ -4401,7 +4401,7 @@ Func_1dc9:
 
 Func_1e1e:
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4430,7 +4430,7 @@ Func_1e1e:
 	ld a, [hl]
 	ldh [hPlayerXPos + 1], a
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_1e50
 	bit 5, e
 	jr z, .asm_1e58
@@ -4456,7 +4456,7 @@ Func_1e1e:
 	jr z, .asm_1e83
 	ld a, $10
 .asm_1e76
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerBarrelPaddleAnimations
@@ -4506,7 +4506,7 @@ Func_1e8c:
 	res 5, b
 	ld a, $0c
 .asm_1ec9
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ld hl, $786e
 	ldh a, [hPlayerXPos]
 	bit 2, a
@@ -4627,7 +4627,7 @@ Func_1e8c:
 
 Func_1f73:
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4656,7 +4656,7 @@ Func_1f73:
 	ld a, [hl]
 	ldh [hPlayerXPos + 1], a
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_1fa5
 	ldh a, [hTemp]
 	bit 5, e
@@ -4674,7 +4674,7 @@ Func_1f73:
 	jr z, .asm_1fc1
 	ld a, $10
 .asm_1fbf
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_1fc1
 	ldh a, [hFrameCounter]
 	and $0f
@@ -4699,7 +4699,7 @@ Func_1fcf:
 
 Func_1fe3:
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4728,7 +4728,7 @@ Func_1fe3:
 	ld a, [hl]
 	ldh [hPlayerXPos + 1], a
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_2015
 	bit 5, e
 	jr z, .asm_201d
@@ -4754,7 +4754,7 @@ Func_1fe3:
 	jr z, .asm_2042
 	ld a, $08
 .asm_203b
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ld a, $04
 	call PlaySoundEffectHome
 .asm_2042
@@ -4762,7 +4762,7 @@ Func_1fe3:
 
 Func_2045:
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, $ffbc
 	ldh a, [hPlayerXPos]
@@ -4779,7 +4779,7 @@ Func_2045:
 	ld a, [hl]
 	ldh [hPlayerXPos + 1], a
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_2064
 	ld a, [wNewKeys]
 	rra
@@ -4788,7 +4788,7 @@ Func_2045:
 	dec a
 	jr z, .asm_207e
 	ld a, $28
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ld a, $04
 	call PlaySoundEffectHome
 	ld hl, PlayerBicyclePedalAnimations
@@ -4921,7 +4921,7 @@ Func_2081:
 
 Func_2145:
 	sub a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
 	ldh a, [$ffba]
@@ -4950,7 +4950,7 @@ Func_2145:
 	ld a, [hl]
 	ldh [hPlayerXPos + 1], a
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_2177
 	bit 5, e
 	jr z, .asm_2183
@@ -4978,7 +4978,7 @@ Func_2145:
 	jr z, .asm_21a2
 	ld a, $10
 .asm_21a0
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 .asm_21a2
 	ldh a, [hFrameCounter]
 	and $03
@@ -5145,7 +5145,7 @@ Func_226c:
 	jr z, .asm_22a5
 	ld a, $10
 .asm_22a5
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ld hl, hPlayerYPos
 	ld a, [hli]
 	sub $30
@@ -5232,12 +5232,12 @@ Func_2326:
 	ldh [hPlayerPose], a
 Func_2329:
 	sub a
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 Func_232c:
 	sub a
 	ldh [$ffc2], a
 	ldh [$ffc3], a
-	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh [hPlayerYVelocity], a
 	ldh [$ffb2], a
 	ldh [$ffb3], a
@@ -5404,7 +5404,7 @@ HandlePlayerCollision:
 	ld e, l
 	sub a
 	ldh [hPlayerYVelocity], a
-	ldh [$ffcc], a
+	ldh [hPlayerYSubpixel], a
 .asm_2427
 	ldh a, [hPlayerYVelocity]
 	add a
@@ -5428,7 +5428,7 @@ HandlePlayerCollision:
 	ld b, h
 	ld c, l
 .asm_244a
-	ldh a, [$ffc5]
+	ldh a, [hPlayerXVelocity]
 	add a
 	jr nc, .asm_2469
 	ld hl, $8
@@ -5688,7 +5688,7 @@ Func_25fb:
 Func_260d:
 	sub a
 	ldh [hPlayerYVelocity], a
-	ldh [$ffcc], a
+	ldh [hPlayerYSubpixel], a
 	ldh [$ffb2], a
 	ldh [$ffb3], a
 	ret
@@ -6177,7 +6177,7 @@ Func_28c4:
 	ldh [$ffb2], a
 	ldh [$ffb3], a
 	ld a, $f0
-	ldh [$ffcc], a
+	ldh [hPlayerYSubpixel], a
 	ldh a, [hPlayerFlags]
 	set 4, a
 	ldh [hPlayerFlags], a
@@ -6244,7 +6244,7 @@ Func_2948:
 	ret
 
 Func_2949:
-	ldh a, [$ffc5]
+	ldh a, [hPlayerXVelocity]
 	add a
 	jr c, .asm_2957
 	ld a, c
@@ -6260,8 +6260,8 @@ Func_2949:
 	inc bc
 	sub a
 .asm_295d
-	ldh [$ffc7], a
-	ld hl, $ffc5
+	ldh [hPlayerXSubpixel], a
+	ld hl, hPlayerXVelocity
 	sub a
 	ld [hld], a
 	ld [hl], a
@@ -11391,10 +11391,10 @@ HandlePushableObjectEntity_:
 	ld d, a
 	sub a
 .asm_4469
-	ldh [$ffc7], a
+	ldh [hPlayerXSubpixel], a
 	sub a
-	ldh [$ffc5], a
 	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh a, [hPlayerFlags]
 	set 3, a
 	ldh [hPlayerFlags], a
@@ -14765,10 +14765,10 @@ HandleBreakableWallEntity:
 	ldh [hPlayerXPos + 1], a
 	ld a, $f0
 .asm_5a44
-	ldh [$ffc7], a
+	ldh [hPlayerXSubpixel], a
 	sub a
-	ldh [$ffc5], a
 	ldh [hPlayerXVelocity], a
+	ldh [hPlayerXAcceleration], a
 	ldh a, [hPlayerFlags]
 	set 3, a
 	ldh [hPlayerFlags], a
@@ -33941,7 +33941,7 @@ UpdatePlayerState:
 	inc c
 	dec b
 	jr nz, .asm_17934
-	ld hl, hPlayerXVelocity
+	ld hl, hPlayerXAcceleration
 	ld b, $18
 	ld c, $02
 	ld d, $28
@@ -34157,7 +34157,7 @@ UpdatePlayerState:
 	ld a, $e8
 	ld b, $01
 .asm_17a8f
-	ldh [$ffc5], a
+	ldh [hPlayerXVelocity], a
 	ldh a, [$ffc2]
 	add b
 	ldh [$ffc2], a
@@ -34165,9 +34165,9 @@ UpdatePlayerState:
 	ld a, [hli]
 	call ApplyVelocityToPosition
 	ld a, b
-	ldh [$ffc7], a
+	ldh [hPlayerXSubpixel], a
 	inc c
-	ldh a, [$ffcc]
+	ldh a, [hPlayerYSubpixel]
 	call ApplyVelocityToPosition
 	ld [hl], b
 	ld hl, $ffcf

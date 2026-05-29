@@ -40,17 +40,22 @@ DEF hLevelCleared EQU $ffb5
 
 DEF hHabaneroTimer EQU $ffb6
 
-DEF hPlayerXVelocity EQU $ffc4
-DEF hPlayerYVelocity EQU $ffc6
+DEF hPlayerXAcceleration EQU $ffc4
+DEF hPlayerXVelocity     EQU $ffc5
+DEF hPlayerYVelocity     EQU $ffc6
 
 ; The current pixel coordinates of the player
+DEF hPlayerXSubpixel     EQU $ffc7
 DEF hPlayerXPos EQU $ffc8
 DEF hPlayerYPos EQU $ffca
+DEF hPlayerYSubpixel EQU $ffcc
 
 DEF hCameraXOffsetScreenRight EQU $ffdb
 
 ; 16-bit value; Player center X in world coords (hPlayerXPos + 8); entities read it for proximity/collision checks.
 DEF hPlayerCollisionXPos EQU $ffdd
+; 16-bit value; player top-edge Y in world coords (hPlayerYPos - height)
+DEF hPlayerCollisionYPos EQU $ffdf
 
 DEF hMovementScriptTimer EQU $ffe4
 DEF hMovementScriptState EQU $ffe5
