@@ -3641,15 +3641,15 @@ UpdatePlayerStateHome:
 	jp UpdatePlayerState
 
 Func_1948:
-	ldh [$ffc3], a
+	ldh [hPlayerLaunchYTimer], a
 	sub a
-	ldh [$ffb2], a
-	ldh [$ffb3], a
-	ldh [$ffb4], a
+	ldh [hPlayerBounceTimer], a
+	ldh [hPlayerHoverTimer], a
+	ldh [hPlayerHammerTimer], a
 	ldh [hHabaneroTimer], a
 	ldh [hPlayerPose], a
-	ldh [$ffd1], a
-	ldh [$ffd2], a
+	ldh [hPlayerFallDistance], a
+	ldh [hPlayerFallDistance + 1], a
 	ldh a, [hPlayerFlags]
 	set 6, a
 	ldh [hPlayerFlags], a
@@ -3936,7 +3936,7 @@ Func_1afd:
 	jp Func_19e5
 
 Func_1b2f:
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	ret nz
 	bit 7, e
@@ -3982,7 +3982,7 @@ Func_1b46:
 	ldh [hPlayerXAcceleration], a
 	bit 4, b
 	jr z, .asm_1b6c
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	jr nz, .asm_1b69
 	bit 0, d
@@ -4022,7 +4022,7 @@ Func_1b46:
 	ldh [hPlayerXAcceleration], a
 	bit 4, b
 	ret z
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	ret nz
 	bit 0, d
@@ -4034,15 +4034,15 @@ Func_1b46:
 	ld hl, $78f0
 .asm_1bd2
 	ld a, l
-	ldh [$ffd6], a
+	ldh [hPlayerAnimationPtr], a
 	ld a, h
-	ldh [$ffd7], a
+	ldh [hPlayerAnimationPtr + 1], a
 	sub a
-	ldh [$ffd5], a
+	ldh [hPlayerAnimationTimer], a
 	ret
 
 Func_1bdc:
-	ld hl, $ffb2
+	ld hl, hPlayerBounceTimer
 	ld a, [hli]
 	and a
 	jr z, .asm_1bfb
@@ -4098,11 +4098,11 @@ Func_1bdc:
 	jr nz, .asm_1c4d
 	bit 4, b
 	jr z, .asm_1c58
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	ret nz
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	set 6, b
@@ -4119,7 +4119,7 @@ Func_1bdc:
 	res 7, d
 	ret
 .asm_1c58
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	ret nz
 	ldh a, [hPlayerYVelocity]
@@ -4127,7 +4127,7 @@ Func_1bdc:
 	jr c, .asm_1c94
 	bit 1, e
 	jr z, .asm_1c7b
-	ldh a, [$ffb3]
+	ldh a, [hPlayerHoverTimer]
 	and a
 	jr nz, .asm_1c7b
 	bit 7, b
@@ -4159,14 +4159,14 @@ Func_1bdc:
 	jp InitPlayerAnimation
 
 Func_1c9f:
-	ld hl, $ffb4
+	ld hl, hPlayerHammerTimer
 	ld a, [hl]
 	and a
 	jr z, .asm_1cac
 	dec [hl]
 	ld d, $00
 	sub a
-	ldh [$ffb3], a
+	ldh [hPlayerHoverTimer], a
 .asm_1cac
 	bit 0, e
 	jr nz, .asm_1cb3
@@ -4191,7 +4191,7 @@ Func_1c9f:
 	set 0, c
 	ld d, $00
 	sub a
-	ldh [$ffb3], a
+	ldh [hPlayerHoverTimer], a
 	ld [hl], $0e
 	ld a, $01
 	call PlaySoundEffectHome
@@ -4199,7 +4199,7 @@ Func_1c9f:
 	jp InitPlayerAnimation
 
 Func_1cdc:
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	ret nz
 	ld a, d
@@ -4372,12 +4372,12 @@ Func_1dc9:
 	and $1c
 .asm_1df0
 	add l
-	ldh [$ffd6], a
+	ldh [hPlayerAnimationPtr], a
 	ld a, h
 	adc $00
-	ldh [$ffd7], a
+	ldh [hPlayerAnimationPtr + 1], a
 	sub a
-	ldh [$ffd5], a
+	ldh [hPlayerAnimationTimer], a
 	bit 4, b
 	jr nz, .asm_1e14
 	bit 1, e
@@ -4385,7 +4385,7 @@ Func_1dc9:
 	bit 6, b
 	jr nz, .asm_1e1b
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	set 0, b
@@ -4470,18 +4470,18 @@ Func_1e86:
 
 Func_1e8c:
 	call Func_2324
-	ldh a, [$ffc0]
+	ldh a, [hPlayerDigEnterTimer]
 	and a
 	jr z, .asm_1e9a
 	dec a
-	ldh [$ffc0], a
+	ldh [hPlayerDigEnterTimer], a
 	jp .asm_1f70
 .asm_1e9a
-	ldh a, [$ffc1]
+	ldh a, [hPlayerDigEmergeTimer]
 	and a
 	jr z, .asm_1eb6
 	dec a
-	ldh [$ffc1], a
+	ldh [hPlayerDigEmergeTimer], a
 	jp nz, .asm_1f70
 	sub a
 	ldh [hPlayerState], a
@@ -4514,17 +4514,17 @@ Func_1e8c:
 	ld hl, $7872
 .asm_1ed7
 	ld a, l
-	ldh [$ffd6], a
+	ldh [hPlayerAnimationPtr], a
 	ld a, h
-	ldh [$ffd7], a
+	ldh [hPlayerAnimationPtr + 1], a
 	sub a
-	ldh [$ffd5], a
+	ldh [hPlayerAnimationTimer], a
 	bit 1, c
 	jr z, .asm_1ef2
 	bit 6, e
 	jr z, .asm_1ef2
 	ld a, $2a
-	ldh [$ffc1], a
+	ldh [hPlayerDigEmergeTimer], a
 	ld hl, PlayerDiggingEmergeAnimations
 	call InitPlayerAnimation
 .asm_1ef2
@@ -4798,10 +4798,10 @@ Func_2045:
 
 Func_2081:
 	call Func_2324
-	ldh a, [$ffd6]
+	ldh a, [hPlayerAnimationPtr]
 	cp $3b
 	jp nz, .asm_2121
-	ldh a, [$ffd7]
+	ldh a, [hPlayerAnimationPtr + 1]
 	cp $78
 	jp nz, .asm_2121
 	sub a
@@ -4897,13 +4897,13 @@ Func_2081:
 	call InitPlayerAnimation
 	jr .asm_2142
 .asm_2121
-	ldh a, [$ffd6]
+	ldh a, [hPlayerAnimationPtr]
 	sub $4d
-	ldh a, [$ffd7]
+	ldh a, [hPlayerAnimationPtr + 1]
 	sbc $79
 	jr c, .asm_2142
 	bit 7, b
-	ldh a, [$ffd6]
+	ldh a, [hPlayerAnimationPtr]
 	jr nz, .asm_2139
 	sub $4d
 	cp $0c
@@ -5013,12 +5013,12 @@ Func_2145:
 	add a
 	add a
 	add l
-	ldh [$ffd6], a
+	ldh [hPlayerAnimationPtr], a
 	ld a, h
 	adc $00
-	ldh [$ffd7], a
+	ldh [hPlayerAnimationPtr + 1], a
 	sub a
-	ldh [$ffd5], a
+	ldh [hPlayerAnimationTimer], a
 	ldh a, [$ffbe]
 	ld l, a
 	ldh a, [$ffbf]
@@ -5235,16 +5235,16 @@ Func_2329:
 	ldh [hPlayerXVelocity], a
 Func_232c:
 	sub a
-	ldh [$ffc2], a
-	ldh [$ffc3], a
+	ldh [hPlayerLaunchXTimer], a
+	ldh [hPlayerLaunchYTimer], a
 	ldh [hPlayerXAcceleration], a
 	ldh [hPlayerYVelocity], a
-	ldh [$ffb2], a
-	ldh [$ffb3], a
-	ldh [$ffb4], a
+	ldh [hPlayerBounceTimer], a
+	ldh [hPlayerHoverTimer], a
+	ldh [hPlayerHammerTimer], a
 	ldh [hHabaneroTimer], a
-	ldh [$ffd1], a
-	ldh [$ffd2], a
+	ldh [hPlayerFallDistance], a
+	ldh [hPlayerFallDistance + 1], a
 	ret
 
 InitPlayerState:
@@ -5544,9 +5544,9 @@ HandlePlayerCollision:
 	ld hl, PlayerDiggingAnimations
 	call InitPlayerAnimation
 	ld a, $58
-	ldh [$ffc0], a
+	ldh [hPlayerDigEnterTimer], a
 	sub a
-	ldh [$ffc1], a
+	ldh [hPlayerDigEmergeTimer], a
 	call Func_2326
 	jr .asm_257d
 .asm_2529
@@ -5689,8 +5689,8 @@ Func_260d:
 	sub a
 	ldh [hPlayerYVelocity], a
 	ldh [hPlayerYSubpixel], a
-	ldh [$ffb2], a
-	ldh [$ffb3], a
+	ldh [hPlayerBounceTimer], a
+	ldh [hPlayerHoverTimer], a
 	ret
 
 Func_2617:
@@ -6174,16 +6174,16 @@ Func_28b7:
 Func_28c4:
 	sub a
 	ldh [hPlayerYVelocity], a
-	ldh [$ffb2], a
-	ldh [$ffb3], a
+	ldh [hPlayerBounceTimer], a
+	ldh [hPlayerHoverTimer], a
 	ld a, $f0
 	ldh [hPlayerYSubpixel], a
 	ldh a, [hPlayerFlags]
 	set 4, a
 	ldh [hPlayerFlags], a
 	sub a
-	ldh [$ffd1], a
-	ldh [$ffd2], a
+	ldh [hPlayerFallDistance], a
+	ldh [hPlayerFallDistance + 1], a
 	ret
 
 Func_28db:
@@ -6916,7 +6916,7 @@ DrawPlayerSprite:
 	ret nz
 	ld a, $0e
 	ld [MBC5RomBank], a
-	ld hl, $ffd7
+	ld hl, hPlayerAnimationPtr + 1
 	ld a, [hld]
 	ld b, a
 	ld a, [hld]
@@ -7066,11 +7066,11 @@ InitPlayerAnimation:
 	inc hl
 .load
 	ld a, [hli]
-	ldh [$ffd6], a
+	ldh [hPlayerAnimationPtr], a
 	ld a, [hl]
-	ldh [$ffd7], a
+	ldh [hPlayerAnimationPtr + 1], a
 	sub a
-	ldh [$ffd5], a
+	ldh [hPlayerAnimationTimer], a
 	ret
 
 Func_2d73:
@@ -11962,7 +11962,7 @@ HandleSkateboardEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_48be
@@ -13407,7 +13407,7 @@ HandleBarrelBoatEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .exit
@@ -13556,7 +13556,7 @@ HandleCannonEntity:
 	call Func_1948
 	ld a, [bc]
 	inc bc
-	ldh [$ffc2], a
+	ldh [hPlayerLaunchXTimer], a
 	ld a, [bc]
 	ld b, a
 	ldh a, [hPlayerFlags]
@@ -14243,7 +14243,7 @@ HandleJackhammerEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_570a
@@ -14507,7 +14507,7 @@ HandleFixedPathEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_58b8
@@ -14779,7 +14779,7 @@ HandleBreakableWallEntity:
 	call Func_78ae
 	cp $01
 	jr nz, .asm_5a79
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	dec a
 	jr nz, .asm_5a79
 	ld a, $0d
@@ -15786,7 +15786,7 @@ HandleHippoEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6129
@@ -16430,7 +16430,7 @@ HandleBicycleEntity:
 	push hl
 	push bc
 	push de
-	ld hl, $ffd6
+	ld hl, hPlayerAnimationPtr
 	ld a, [hli]
 	sub $0c
 	ld a, [hld]
@@ -16485,7 +16485,7 @@ HandleBicycleEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6574
@@ -16691,7 +16691,7 @@ HandleBalloonEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_66c2
@@ -18212,7 +18212,7 @@ HandleHoverShipEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_6fd7
@@ -18750,7 +18750,7 @@ HandleHelicopterChairEntity:
 	sub a
 	ldh [hPlayerState], a
 	ld a, $06
-	ldh [$ffb2], a
+	ldh [hPlayerBounceTimer], a
 	ld a, $0b
 	call PlaySoundEffectHome
 	jr .asm_7330
@@ -19655,7 +19655,7 @@ Func_78ae:
 	ld a, $02
 	jr .asm_792b
 .asm_78e9
-	ldh a, [$ffb4]
+	ldh a, [hPlayerHammerTimer]
 	and a
 	jr z, .asm_792a
 	cp $08
@@ -34051,9 +34051,9 @@ UpdatePlayerState:
 	jr z, .asm_179f7
 	ld e, $00
 .asm_179f7
-	ldh a, [$ffd1]
+	ldh a, [hPlayerFallDistance]
 	sub $68
-	ldh a, [$ffd2]
+	ldh a, [hPlayerFallDistance + 1]
 	sbc 0
 	jr c, .asm_17a06
 	add a
@@ -34073,19 +34073,19 @@ UpdatePlayerState:
 	ldh a, [hPlayerPose]
 	add a
 	jr nc, .asm_17a31
-	ldh a, [$ffd6]
+	ldh a, [hPlayerAnimationPtr]
 	sub $87
-	ldh a, [$ffd7]
+	ldh a, [hPlayerAnimationPtr + 1]
 	sbc $77
 	jr c, .asm_17a31
 	ld d, $08
 	sub a
-	ldh [$ffd1], a
-	ldh [$ffd2], a
+	ldh [hPlayerFallDistance], a
+	ldh [hPlayerFallDistance + 1], a
 	ld b, $04
 	ld c, $01
 .asm_17a31
-	ldh a, [$ffb3]
+	ldh a, [hPlayerHoverTimer]
 	cp $1c
 	jr c, .asm_17a3b
 	ld b, $04
@@ -34126,14 +34126,14 @@ UpdatePlayerState:
 .asm_17a60
 	ld c, l
 	ld [hli], a
-	ldh a, [$ffc3]
+	ldh a, [hPlayerLaunchYTimer]
 	and a
 	jr z, .asm_17a73
 	dec a
-	ldh [$ffc3], a
+	ldh [hPlayerLaunchYTimer], a
 	sub a
-	ldh [$ffd1], a
-	ldh [$ffd2], a
+	ldh [hPlayerFallDistance], a
+	ldh [hPlayerFallDistance + 1], a
 	ld a, $d0
 	jr .asm_17a7d
 .asm_17a73
@@ -34146,7 +34146,7 @@ UpdatePlayerState:
 	ld a, d
 .asm_17a7d
 	ld [hli], a
-	ldh a, [$ffc2]
+	ldh a, [hPlayerLaunchXTimer]
 	add a
 	jr z, .asm_17a96
 	jr c, .asm_17a8b
@@ -34158,9 +34158,9 @@ UpdatePlayerState:
 	ld b, $01
 .asm_17a8f
 	ldh [hPlayerXVelocity], a
-	ldh a, [$ffc2]
+	ldh a, [hPlayerLaunchXTimer]
 	add b
-	ldh [$ffc2], a
+	ldh [hPlayerLaunchXTimer], a
 .asm_17a96
 	ld a, [hli]
 	call ApplyVelocityToPosition

@@ -36,9 +36,19 @@ DEF hPlayerTerrainContact EQU $ffae
 DEF hPlayerPose  EQU $ffaf
 DEF hPlayerState EQU $ffb0
 
+DEF hPlayerBounceTimer EQU $ffb2
+DEF hPlayerHoverTimer  EQU $ffb3
+DEF hPlayerHammerTimer EQU $ffb4
+
 DEF hLevelCleared EQU $ffb5
 
 DEF hHabaneroTimer EQU $ffb6
+
+DEF hPlayerDigEnterTimer  EQU $ffc0
+DEF hPlayerDigEmergeTimer EQU $ffc1
+; signed; sign selects launch direction
+DEF hPlayerLaunchXTimer   EQU $ffc2
+DEF hPlayerLaunchYTimer   EQU $ffc3
 
 DEF hPlayerXAcceleration EQU $ffc4
 DEF hPlayerXVelocity     EQU $ffc5
@@ -49,6 +59,13 @@ DEF hPlayerXSubpixel     EQU $ffc7
 DEF hPlayerXPos EQU $ffc8
 DEF hPlayerYPos EQU $ffca
 DEF hPlayerYSubpixel EQU $ffcc
+
+; 16-bit; accumulated fall distance, raises terminal fall velocity past a threshold
+DEF hPlayerFallDistance EQU $ffd1
+
+DEF hPlayerAnimationTimer EQU $ffd5
+; 16-bit pointer to the current player animation data
+DEF hPlayerAnimationPtr EQU $ffd6
 
 DEF hCameraXOffsetScreenRight EQU $ffdb
 
