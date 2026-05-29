@@ -3752,7 +3752,7 @@ Func_19e9:
 	ld [hl], d
 	ret
 asm_19f2:
-	ld hl, $ffb9
+	ld hl, hPlayerHurtTimer
 	ld a, [hl]
 	inc [hl]
 	and a
@@ -3795,8 +3795,8 @@ asm_19f2:
 Func_1a37:
 	call Func_2324
 	sub a
-	ldh [$ffb9], a
-	ldh [$ffb7], a
+	ldh [hPlayerHurtTimer], a
+	ldh [hPlayerStateTimer], a
 	ld hl, hLevelCleared
 	ld a, [hl]
 	inc [hl]
@@ -3827,8 +3827,8 @@ Func_1a37:
 
 Func_1a73:
 	sub a
-	ldh [$ffb9], a
-	ldh [$ffb7], a
+	ldh [hPlayerHurtTimer], a
+	ldh [hPlayerStateTimer], a
 	bit 4, b
 	jr nz, .asm_1a84
 	ld hl, PlayerDamagedAnimations
@@ -3851,7 +3851,7 @@ Func_1a73:
 	call LoadOAMSpritesCameraOffset
 	ld hl, PlayerDeathAnimations
 	call InitPlayerAnimation
-	ld hl, $ffb8
+	ld hl, hPlayerDeathTimer
 	ldh a, [hFrameCounter]
 	rra
 	jr nc, .asm_1aab
@@ -4214,7 +4214,7 @@ Func_1cdc:
 	and a
 	jr nz, .asm_1d00
 	ld a, $3c
-	ldh [$ffb1], a
+	ldh [hPlayerTransformTimer], a
 	ld d, $10
 	ld hl, PlayerTransformationAnimations
 	jp InitPlayerAnimation
@@ -4230,7 +4230,7 @@ Func_1cdc:
 
 Func_1d0e:
 	call Func_2329
-	ld hl, $ffb1
+	ld hl, hPlayerTransformTimer
 	dec [hl]
 	jr nz, .asm_1d1d
 	ld d, $02
@@ -4247,9 +4247,9 @@ Func_1d20:
 	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_1d39
-	ldh a, [$ffb7]
+	ldh a, [hPlayerStateTimer]
 	dec a
-	ldh [$ffb7], a
+	ldh [hPlayerStateTimer], a
 	jr nz, .asm_1d39
 	sub a
 	ldh [hPlayerState], a
@@ -4287,17 +4287,17 @@ Func_1d61:
 	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	sub [hl]
 	inc l
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	sbc [hl]
 	jr c, .asm_1d79
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ld a, $ff
 	jr .asm_1d88
 .asm_1d79
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
@@ -4404,17 +4404,17 @@ Func_1e1e:
 	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	sub [hl]
 	inc l
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	sbc [hl]
 	jr c, .asm_1e36
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ld a, $ff
 	jr .asm_1e45
 .asm_1e36
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
@@ -4630,17 +4630,17 @@ Func_1f73:
 	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	sub [hl]
 	inc l
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	sbc [hl]
 	jr c, .asm_1f8b
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ld a, $ff
 	jr .asm_1f9a
 .asm_1f8b
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
@@ -4702,17 +4702,17 @@ Func_1fe3:
 	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	sub [hl]
 	inc l
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	sbc [hl]
 	jr c, .asm_1ffb
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ld a, $ff
 	jr .asm_200a
 .asm_1ffb
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
@@ -4764,7 +4764,7 @@ Func_2045:
 	sub a
 	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
@@ -4809,7 +4809,7 @@ Func_2081:
 	ld a, $02
 	ldh [hTemp2], a
 .asm_2099
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ldh a, [hPlayerXPos]
 	cp [hl]
 	inc hl
@@ -4821,7 +4821,7 @@ Func_2081:
 	inc [hl]
 	jr .asm_20d4
 .asm_20ad
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc hl
@@ -4851,7 +4851,7 @@ Func_2081:
 	ld a, $02
 	ldh [hTemp2], a
 .asm_20d8
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerYPos]
 	cp [hl]
 	inc hl
@@ -4863,7 +4863,7 @@ Func_2081:
 	inc [hl]
 	jr .asm_2113
 .asm_20ec
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerYPos]
 	sub [hl]
 	inc hl
@@ -4924,17 +4924,17 @@ Func_2145:
 	ldh [hPlayerXAcceleration], a
 	ldh [hTemp], a
 	ld hl, hPlayerXPos
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	sub [hl]
 	inc l
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	sbc [hl]
 	jr c, .asm_215d
-	ld hl, $ffba
+	ld hl, hPlayerClampBoundA
 	ld a, $ff
 	jr .asm_216c
 .asm_215d
-	ld hl, $ffbc
+	ld hl, hPlayerClampBoundB
 	ldh a, [hPlayerXPos]
 	sub [hl]
 	inc l
@@ -5019,9 +5019,9 @@ Func_2145:
 	ldh [hPlayerAnimationPtr + 1], a
 	sub a
 	ldh [hPlayerAnimationTimer], a
-	ldh a, [$ffbe]
+	ldh a, [hPlayerClampBoundC]
 	ld l, a
-	ldh a, [$ffbf]
+	ldh a, [hPlayerClampBoundC + 1]
 	ld h, a
 	ldh a, [hPlayerYPos]
 	sub l
@@ -5116,9 +5116,9 @@ Func_226c:
 	ldh a, [hFrameCounter]
 	and $03
 	jr nz, .asm_2285
-	ldh a, [$ffb7]
+	ldh a, [hPlayerStateTimer]
 	dec a
-	ldh [$ffb7], a
+	ldh [hPlayerStateTimer], a
 	jr nz, .asm_2285
 	sub a
 	ldh [hPlayerState], a
@@ -5172,15 +5172,15 @@ Func_226c:
 
 Func_22c9:
 	ld hl, hPlayerYPos
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	sub [hl]
 	inc l
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	sbc [hl]
 	jr c, .asm_22e0
-	ldh a, [$ffbb]
+	ldh a, [hPlayerClampBoundA + 1]
 	ld [hld], a
-	ldh a, [$ffba]
+	ldh a, [hPlayerClampBoundA]
 	ld [hl], a
 	sub a
 	ldh [hPlayerYVelocity], a
@@ -5288,7 +5288,7 @@ HandlePlayerCollision:
 	ld [hli], a
 	res 1, [hl]
 	sub a
-	ldh [$ffd4], a
+	ldh [hCollisionProbeCount], a
 	ldh a, [hPlayerState]
 	cp $21
 	ret z
@@ -5654,12 +5654,12 @@ Func_25da:
 	ld l, a
 	ld h, d
 	inc hl
-	ldh a, [$ffcf]
+	ldh a, [hPlayerPrevYPos]
 	sub l
 	jr c, .asm_25e7
 	sub $1e
 .asm_25e7
-	ldh a, [$ffd0]
+	ldh a, [hPlayerPrevYPos + 1]
 	sbc h
 	ret c
 	ld d, h
@@ -5694,7 +5694,7 @@ Func_260d:
 	ret
 
 Func_2617:
-	ldh [$ffd3], a
+	ldh [hCollisionProbeEdge], a
 	call Func_299f
 	add (.jumpTable & $ff)
 	ld l, a
@@ -5729,9 +5729,9 @@ Func_2664:
 	ret
 
 Func_2665:
-	ldh a, [$ffcf]
+	ldh a, [hPlayerPrevYPos]
 	ld l, a
-	ldh a, [$ffd0]
+	ldh a, [hPlayerPrevYPos + 1]
 	ld h, a
 	ld a, e
 	and $f0
@@ -5750,9 +5750,9 @@ Func_267a:
 	and $0f
 	cp $08
 	ret c
-	ldh a, [$ffcf]
+	ldh a, [hPlayerPrevYPos]
 	ld l, a
-	ldh a, [$ffd0]
+	ldh a, [hPlayerPrevYPos + 1]
 	ld h, a
 	ld a, e
 	and $f0
@@ -5786,7 +5786,7 @@ Func_269f:
 	jr Func_2665
 
 Func_26b1:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
 	ld a, e
@@ -5799,7 +5799,7 @@ Func_26b1:
 	srl a
 	cp l
 	jr nc, Func_26c8
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 Func_26c8:
@@ -5816,7 +5816,7 @@ Func_26c8:
 	jp Func_28b7
 
 Func_26d9:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
 	ld a, e
@@ -5830,7 +5830,7 @@ Func_26d9:
 	add $08
 	cp l
 	jr nc, Func_26f2
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 Func_26f2:
@@ -5848,7 +5848,7 @@ Func_26f2:
 	jp Func_28b7
 
 Func_2704:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
 	ld a, c
@@ -5859,7 +5859,7 @@ Func_2704:
 	and $0f
 	cp l
 	jr nc, Func_2718
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 Func_2718:
@@ -5875,7 +5875,7 @@ Func_2718:
 	jp Func_28b7
 
 Func_2727:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
 	ld a, c
@@ -5887,7 +5887,7 @@ Func_2727:
 	and $0f
 	cp l
 	jr nc, Func_273d
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 Func_273d:
@@ -5903,7 +5903,7 @@ Func_273d:
 	jp Func_28b7
 
 Func_274d:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
 	ld a, e
@@ -5915,7 +5915,7 @@ Func_274d:
 	and $0f
 	cp l
 	jr nc, Func_2762
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 Func_2762:
@@ -5932,7 +5932,7 @@ Func_2762:
 	jp Func_28b7
 
 Func_2772:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
 	ld a, c
@@ -5942,7 +5942,7 @@ Func_2772:
 	and $0f
 	cp l
 	jr nc, Func_2784
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 Func_2784:
@@ -5995,12 +5995,12 @@ Func_2791:
 	cp $03
 	ret nz
 .asm_27d8
-	ldh a, [$ffd4]
+	ldh a, [hCollisionProbeCount]
 	inc a
-	ldh [$ffd4], a
+	ldh [hCollisionProbeCount], a
 	cp $02
 	ret nz
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 	ld a, e
@@ -6013,7 +6013,7 @@ Func_2791:
 	jp Func_28b7
 
 Func_27f1:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
 	ld a, e
@@ -6023,10 +6023,10 @@ Func_27f1:
 	jp Func_26c8
 
 Func_27fd:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 	ld a, e
@@ -6043,7 +6043,7 @@ Func_27fd:
 	jp Func_26f2
 
 Func_2817:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
 	ld a, e
@@ -6053,10 +6053,10 @@ Func_2817:
 	jp Func_273d
 
 Func_2823:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 	ld a, e
@@ -6073,7 +6073,7 @@ Func_2823:
 	jp Func_2718
 
 Func_283d:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
 	ld a, e
@@ -6083,10 +6083,10 @@ Func_283d:
 	jp Func_2762
 
 Func_2849:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret z
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 	ld a, e
@@ -6103,7 +6103,7 @@ Func_2849:
 	jp Func_2762
 
 Func_2863:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
 	ld a, e
@@ -6113,10 +6113,10 @@ Func_2863:
 	jp Func_2784
 
 Func_286f:
-	ldh a, [$ffd3]
+	ldh a, [hCollisionProbeEdge]
 	and a
 	ret nz
-	ldh a, [$ffac]
+	ldh a, [hSlopeClampOverride]
 	and a
 	ret z
 	ld a, e
@@ -6137,9 +6137,9 @@ Func_2889:
 	and $0f
 	cp $08
 	ret c
-	ldh a, [$ffcf]
+	ldh a, [hPlayerPrevYPos]
 	ld l, a
-	ldh a, [$ffd0]
+	ldh a, [hPlayerPrevYPos + 1]
 	ld h, a
 	ld a, e
 	and $f0
@@ -6949,7 +6949,7 @@ DrawPlayerSprite:
 	ldh a, [hFrameCounter]
 	rra
 	jr c, .asm_2cd9
-	ld hl, $ffd8
+	ld hl, hPlayerSpriteFrameBank
 	inc bc
 	ld a, [bc]
 	inc bc
@@ -6963,7 +6963,7 @@ DrawPlayerSprite:
 	ldh a, [hActiveSprites]
 	ld c, a
 	ld b, $df
-	ld hl, $ffd8
+	ld hl, hPlayerSpriteFrameBank
 	sub a
 	ldh [hTemp], a
 	ld a, [hli]
@@ -6988,14 +6988,14 @@ DrawPlayerSprite:
 	ldh a, [hPlayerYPos]
 	sub e
 	ld e, a
-	ldh a, [$ffb9]
+	ldh a, [hPlayerHurtTimer]
 	and a
 	jr z, .asm_2d0d
 	bit 1, a
 	jr nz, .asm_2d16
 	ret
 .asm_2d0d
-	ldh a, [$ffb7]
+	ldh a, [hPlayerStateTimer]
 	cp $0c
 	jr nc, .asm_2d16
 	bit 1, a
@@ -7076,7 +7076,7 @@ InitPlayerAnimation:
 Func_2d73:
 	ld hl, PlayerIdleAnimations
 	call InitPlayerAnimation
-	ld hl, $ffd8
+	ld hl, hPlayerSpriteFrameBank
 	ld a, $0d
 	ld [hli], a
 	ld a, $c1
@@ -7267,7 +7267,7 @@ DrawHUD:
 	ldh a, [hFrameCounter]
 	rra
 	jp c, LoadQueuedTileGfx
-	ld hl, $ffd8
+	ld hl, hPlayerSpriteFrameBank
 	ld a, [hli]
 	ld [MBC5RomBank], a
 	ld a, [hli]
@@ -11082,7 +11082,7 @@ HandleCollectibleEntity:
 	ld a, $10
 	call PlaySoundEffectHome
 	ld a, $24
-	ldh [$ffb7], a
+	ldh [hPlayerStateTimer], a
 	ld a, $03
 	ldh [hPlayerState], a
 	ld hl, PlayerFlyingAnimations
@@ -11355,10 +11355,10 @@ HandlePushableObjectEntity_:
 	add $08
 	cp e
 	jp c, .return
-	ldh a, [$ffcd]
+	ldh a, [hPlayerPrevXPos]
 	sub c
 	ld e, a
-	ldh a, [$ffce]
+	ldh a, [hPlayerPrevXPos + 1]
 	sbc b
 	jr nc, .asm_444c
 	ld de, $3
@@ -11905,13 +11905,13 @@ HandleSkateboardEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerSkateboardingAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -13338,13 +13338,13 @@ HandleBarrelBoatEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerBarrelIdleAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -14186,13 +14186,13 @@ HandleJackhammerEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerJackhammerAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -15718,13 +15718,13 @@ HandleHippoEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerHippoAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -15739,7 +15739,7 @@ HandleHippoEntity:
 	ld [hl], d
 	call Func_2326
 	sub a
-	ldh [$ffb7], a
+	ldh [hPlayerStateTimer], a
 	pop hl
 .asm_60ce
 	ld bc, HippoSprite0 + 1
@@ -16404,9 +16404,9 @@ HandleBicycleEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerBicycleStationaryAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -17229,13 +17229,13 @@ HandleTeleporterEntity:
 	ldh [hPlayerState], a
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerTeleportOutAnimations
 	call InitPlayerAnimation
 	call Func_2326
@@ -18126,17 +18126,17 @@ HandleHoverShipEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hli]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld a, [hli]
-	ldh [$ffbe], a
+	ldh [hPlayerClampBoundC], a
 	ld a, [hli]
-	ldh [$ffbf], a
+	ldh [hPlayerClampBoundC + 1], a
 	ld hl, hPlayerXPos
 	ld a, c
 	ld [hli], a
@@ -18274,7 +18274,7 @@ HandleSpaceScooterEntity:
 	set 5, a
 	ldh [hPlayerFlags], a
 	ld a, $bf
-	ldh [$ffb7], a
+	ldh [hPlayerStateTimer], a
 	push hl
 	ld hl, PlayerSpaceScooterAnimations
 	call InitPlayerAnimation
@@ -18370,7 +18370,7 @@ HandleFuelCanisterEntity:
 	pop hl
 	set 7, [hl]
 	ld a, $bf
-	ldh [$ffb7], a
+	ldh [hPlayerStateTimer], a
 	ld a, $10
 	call PlaySoundEffectHome
 	jr .asm_70d3
@@ -18692,13 +18692,13 @@ HandleHelicopterChairEntity:
 	push hl
 	inc hl
 	ld a, [hli]
-	ldh [$ffba], a
+	ldh [hPlayerClampBoundA], a
 	ld a, [hli]
-	ldh [$ffbb], a
+	ldh [hPlayerClampBoundA + 1], a
 	ld a, [hli]
-	ldh [$ffbc], a
+	ldh [hPlayerClampBoundB], a
 	ld a, [hl]
-	ldh [$ffbd], a
+	ldh [hPlayerClampBoundB + 1], a
 	ld hl, PlayerHelicopterAnimations
 	call InitPlayerAnimation
 	ld hl, hPlayerXPos
@@ -33775,7 +33775,7 @@ UpdateSpaceStationBossScreen:
 	ld hl, SpaceStationBossScreenSprite
 	call LoadOAMSprites
 	ld bc, $8283
-	ldh a, [$ffb7]
+	ldh a, [hPlayerStateTimer]
 	add $1f
 	and $e0
 	swap a
@@ -33933,7 +33933,7 @@ UpdatePlayerState:
 	and a
 	ret nz
 	ld hl, hPlayerXPos
-	ld c, $cd
+	ld c, LOW(hPlayerPrevXPos)
 	ld b, $04
 .asm_17934
 	ld a, [hli]
@@ -34170,7 +34170,7 @@ UpdatePlayerState:
 	ldh a, [hPlayerYSubpixel]
 	call ApplyVelocityToPosition
 	ld [hl], b
-	ld hl, $ffcf
+	ld hl, hPlayerPrevYPos
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]

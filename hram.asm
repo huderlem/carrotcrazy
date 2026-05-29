@@ -23,6 +23,8 @@ DEF hLevelPixelHeight EQU $ffa8
 
 DEF hDiggingMetatileReplacements EQU $ffaa
 
+DEF hSlopeClampOverride EQU $ffac
+
 ; Player flags bitfield.
 ;   bit 1 = collided with an object this frame;
 ;   bit 2 = dead/dying;
@@ -36,6 +38,8 @@ DEF hPlayerTerrainContact EQU $ffae
 DEF hPlayerPose  EQU $ffaf
 DEF hPlayerState EQU $ffb0
 
+DEF hPlayerTransformTimer EQU $ffb1
+
 DEF hPlayerBounceTimer EQU $ffb2
 DEF hPlayerHoverTimer  EQU $ffb3
 DEF hPlayerHammerTimer EQU $ffb4
@@ -43,6 +47,16 @@ DEF hPlayerHammerTimer EQU $ffb4
 DEF hLevelCleared EQU $ffb5
 
 DEF hHabaneroTimer EQU $ffb6
+
+DEF hPlayerStateTimer EQU $ffb7
+DEF hPlayerDeathTimer EQU $ffb8
+DEF hPlayerHurtTimer EQU $ffb9
+
+; Three 16-bit position clamp bounds applied while riding vehicles.
+; Which axis (X or Y) each bounds depends on the active vehicle handler.
+DEF hPlayerClampBoundA EQU $ffba
+DEF hPlayerClampBoundB EQU $ffbc
+DEF hPlayerClampBoundC EQU $ffbe
 
 DEF hPlayerDigEnterTimer  EQU $ffc0
 DEF hPlayerDigEmergeTimer EQU $ffc1
@@ -59,13 +73,22 @@ DEF hPlayerXSubpixel     EQU $ffc7
 DEF hPlayerXPos EQU $ffc8
 DEF hPlayerYPos EQU $ffca
 DEF hPlayerYSubpixel EQU $ffcc
+DEF hPlayerPrevXPos EQU $ffcd
+DEF hPlayerPrevYPos EQU $ffcf
 
 ; 16-bit; accumulated fall distance, raises terminal fall velocity past a threshold
 DEF hPlayerFallDistance EQU $ffd1
 
+; $00 = left hitbox edge, $ff = right.
+DEF hCollisionProbeEdge EQU $ffd3
+DEF hCollisionProbeCount EQU $ffd4
+
 DEF hPlayerAnimationTimer EQU $ffd5
 ; 16-bit pointer to the current player animation data
 DEF hPlayerAnimationPtr EQU $ffd6
+
+DEF hPlayerSpriteFrameBank EQU $ffd8
+DEF hPlayerSpriteFramePtr  EQU $ffd9
 
 DEF hCameraXOffsetScreenRight EQU $ffdb
 
